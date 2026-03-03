@@ -37,12 +37,25 @@ export default function HomePage() {
         </script>
       </Helmet>
 
-      {/* ─────────────────────────────────────────────
-          HOME PAGE — Sections will be added here
-          ───────────────────────────────────────────── */}
-      <div className="home-placeholder">
-        <p>{lang === "es" ? "Página de inicio — los elementos se agregarán aquí." : "Home page — elements will be added here."}</p>
-      </div>
+      {/* ─── HERO WIREFRAME ─────────────────────────── */}
+      <section className="hero-wf" aria-label="Hero section placeholder">
+        <span className="hero-wf-label">
+          {lang === "es" ? "Sección Hero" : "Hero Section"}
+        </span>
+        <div className="wf-block hero-wf-headline">
+          {lang === "es" ? "Titular Principal" : "Main Headline"}
+        </div>
+        <div className="wf-block hero-wf-sub">
+          {lang === "es" ? "Subtítulo / descripción" : "Subtitle / description"}
+        </div>
+        <div className="hero-wf-btns">
+          <div className="wf-block hero-wf-btn">CTA Primary</div>
+          <div className="wf-block hero-wf-btn">CTA Secondary</div>
+        </div>
+        <div className="wf-block hero-wf-img">
+          {lang === "es" ? "Imagen / Visual Hero" : "Hero Image / Visual"}
+        </div>
+      </section>
     </>
   );
 }
