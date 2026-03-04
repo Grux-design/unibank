@@ -1,17 +1,38 @@
 
-## Plan: Connect Supabase to the Project
+## Resend Integration for Unibank
 
-This is a straightforward integration — we just need to wire up Supabase so it's ready for future backend features (auth, database, contact forms, etc.).
+Resend is a transactional email service — perfect for contact form confirmations and bank communications.
 
-### What will be done
+### What this requires
 
-1. **Enable Lovable Cloud** — spin up a managed Supabase instance directly inside the project (no external account needed)
-2. **Install Supabase client** — add `@supabase/supabase-js` as a dependency
-3. **Create the client** — add `src/integrations/supabase/client.ts` with the configured Supabase client using auto-injected env vars
-4. **Add types file** — create `src/integrations/supabase/types.ts` as a starting point for database types
+Before I can write any code, I need a **Resend API key** stored as a secure secret. This key is private and must never be in the frontend code — it will live exclusively inside a backend edge function.
 
-### Result
+### What will be built
 
-The project will have a fully connected Supabase backend ready to use. When you're ready to add features like contact form submissions, user auth, or a CMS for blog posts, the connection will already be in place.
+1. **Secure secret**: Store the Resend API key as `RESEND_API_KEY` in Lovable Cloud secrets
+2. **Edge function** `supabase/functions/send-email/index.ts`: handles all outbound emails server-side using Resend's API
+3. **Contact form** on `ContactPage.tsx`: bilingual (ES/EN) form with fields for name, email, subject, and message — submits to the edge function
+4. **Two emails sent on submission**:
+   - Confirmation email to the visitor (from `noreply@unibank.com.pa`)
+   - Internal notification email to the Unibank team inbox
 
-No database tables or auth flows will be created yet — just the connection layer.
+### Steps in order
+
+```
+1. You provide Resend API key → stored as secret
+2. Edge function created (send-email)
+3. ContactPage updated with bilingual form + validation (zod)
+4. Done — ready to test
+```
+
+### What I need from you first
+
+To proceed, you'll need a **Resend API key**. Here's how to get one:
+
+1. Go to [resend.com](https://resend.com) and create a free account
+2. Navigate to **API Keys** → **Create API Key**
+3. Copy the key (starts with `re_`)
+
+Also — what email address should receive the internal notification when someone submits the contact form? (e.g. `contacto@unibank.com.pa`)
+
+Once you share those two pieces of information, I'll set up the secure secret and build the full integration.
