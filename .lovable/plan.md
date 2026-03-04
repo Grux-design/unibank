@@ -1,38 +1,34 @@
 
-## Resend Integration for Unibank
+## Plan: Contentful CMS Connection
 
-Resend is a transactional email service — perfect for contact form confirmations and bank communications.
+The user wants to establish a Contentful connection — no pages or components yet, just the integration layer.
 
-### What this requires
+Since the Content Delivery API token is a **public/client-side key** (it's read-only and safe to expose), it can be stored in the codebase via `.env`. However, the Content Preview API token should be kept secret (it exposes unpublished content).
 
-Before I can write any code, I need a **Resend API key** stored as a secure secret. This key is private and must never be in the frontend code — it will live exclusively inside a backend edge function.
+### What will be done
 
-### What will be built
+1. **Store tokens securely in `.env`**:
+   - `VITE_CONTENTFUL_SPACE_ID=bsxwchto8q9z` — public, safe for client-side
+   - `VITE_CONTENTFUL_ACCESS_TOKEN=hPb7E44kegBR2V5fG1Hj147ph7zIWTY7EiLQYronG60` — Content Delivery token (read-only, safe to expose)
+   - Store the Preview token as a Lovable Cloud secret (`CONTENTFUL_PREVIEW_TOKEN`) so it's only accessible from edge functions
 
-1. **Secure secret**: Store the Resend API key as `RESEND_API_KEY` in Lovable Cloud secrets
-2. **Edge function** `supabase/functions/send-email/index.ts`: handles all outbound emails server-side using Resend's API
-3. **Contact form** on `ContactPage.tsx`: bilingual (ES/EN) form with fields for name, email, subject, and message — submits to the edge function
-4. **Two emails sent on submission**:
-   - Confirmation email to the visitor (from `noreply@unibank.com.pa`)
-   - Internal notification email to the Unibank team inbox
+2. **Create `src/integrations/contentful/client.ts`**:
+   - Export a configured Contentful client using the Delivery API
+   - Use `fetch` directly (no extra SDK needed) or a lightweight wrapper
+   - Exports `CONTENTFUL_SPACE_ID` and `CONTENTFUL_BASE_URL` constants for reuse
 
-### Steps in order
+3. **Create `src/integrations/contentful/types.ts`**:
+   - Define base TypeScript types: `ContentfulEntry<T>`, `ContentfulAsset`, `ContentfulCollection<T>`
+   - These will be extended later as content models are defined in Contentful
 
-```
-1. You provide Resend API key → stored as secret
-2. Edge function created (send-email)
-3. ContactPage updated with bilingual form + validation (zod)
-4. Done — ready to test
-```
+### What will NOT be done
+- No pages, components, or data-fetching hooks yet
+- No edge function for preview (can be added when preview mode is needed)
+- No content model-specific types (will be defined when CMS structure is decided)
 
-### What I need from you first
+### Files to create/edit
+- `src/integrations/contentful/client.ts` — Contentful fetch client
+- `src/integrations/contentful/types.ts` — Base types
+- `.env` — Add `VITE_CONTENTFUL_SPACE_ID` and `VITE_CONTENTFUL_ACCESS_TOKEN`
 
-To proceed, you'll need a **Resend API key**. Here's how to get one:
-
-1. Go to [resend.com](https://resend.com) and create a free account
-2. Navigate to **API Keys** → **Create API Key**
-3. Copy the key (starts with `re_`)
-
-Also — what email address should receive the internal notification when someone submits the contact form? (e.g. `contacto@unibank.com.pa`)
-
-Once you share those two pieces of information, I'll set up the secure secret and build the full integration.
+The Preview API token will be stored as a secret (`CONTENTFUL_PREVIEW_TOKEN`) via the secrets tool so it's available for future edge functions but never exposed to the browser.
