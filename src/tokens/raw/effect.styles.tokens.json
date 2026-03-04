@@ -1,0 +1,62 @@
+{
+  "$styles-shadow-xs": {
+    "$type": "shadow",
+    "$value": [
+      {
+        "offsetX": "0px",
+        "offsetY": "4px",
+        "blur": "4px",
+        "spread": "0px",
+        "color": "#0000000f"
+      }
+    ]
+  },
+  "$styles-shadow-sm": {
+    "$type": "shadow",
+    "$value": [
+      {
+        "offsetX": "0px",
+        "offsetY": "4px",
+        "blur": "8px",
+        "spread": "3px",
+        "color": "#0000000f"
+      }
+    ]
+  },
+  "$styles-shadow-md": {
+    "$type": "shadow",
+    "$value": [
+      {
+        "offsetX": "0px",
+        "offsetY": "6px",
+        "blur": "10px",
+        "spread": "4px",
+        "color": "#0000000a"
+      }
+    ]
+  },
+  "$styles-shadow-lg": {
+    "$type": "shadow",
+    "$value": [
+      {
+        "offsetX": "0px",
+        "offsetY": "8px",
+        "blur": "12px",
+        "spread": "6px",
+        "color": "#0000000a"
+      }
+    ]
+  },
+  "$styles-shadow-xl": {
+    "$type": "shadow",
+    "$value": [
+      {
+        "offsetX": "0px",
+        "offsetY": "16px",
+        "blur": "32px",
+        "spread": "6px",
+        "color": "#0000000f"
+      }
+    ]
+  }
+}
