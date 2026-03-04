@@ -95,7 +95,7 @@ export type TokenKey = keyof typeof rawTokens;
  * tokens["shadow-md"].cssValue                  // "0px 6px 10px 4px rgba(0,0,0,0.04)"
  * tokens["typography-headline-lg-semi"].value   // { fontSize: "48px", fontWeight: 600, ... }
  */
-const tokens = rawTokens as Record<string, DesignToken> & { _meta: MetaToken };
+const tokens = rawTokens as unknown as Record<string, DesignToken> & { _meta: MetaToken };
 
 export default tokens;
 
