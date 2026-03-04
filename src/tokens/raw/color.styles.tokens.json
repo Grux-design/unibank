@@ -1,0 +1,186 @@
+{
+  "brand-primary": {
+    "brand-iso": {
+      "$type": "color",
+      "$value": "#726f6e"
+    },
+    "brand--main": {
+      "$type": "color",
+      "$value": "#ff8136"
+    }
+  },
+  ".bases": {
+    "figmaBases": {
+      "figma-1": {
+        "$type": "color",
+        "$value": "#fcfcfc"
+      },
+      "figma-2": {
+        "$type": "color",
+        "$value": "#ccc7c3"
+      },
+      "figma-3": {
+        "$type": "color",
+        "$value": "#ced6df"
+      },
+      "figma-4": {
+        "$type": "color",
+        "$value": "#a0aec0"
+      },
+      "figma-5": {
+        "$type": "color",
+        "$value": "#9fafc1"
+      },
+      "figma-6": {
+        "$type": "color",
+        "$value": "#525456"
+      },
+      "figma-7": {
+        "$type": "color",
+        "$value": "#0f0f0f"
+      },
+      "figma-8": {
+        "$type": "color",
+        "$value": "#801fff"
+      }
+    }
+  },
+  "SuccessGradient": {
+    "$type": "gradient",
+    "$value": {
+      "type": "linear",
+      "angle": 180,
+      "stops": [
+        {
+          "color": "#f0fdf4",
+          "position": 0
+        },
+        {
+          "color": "#ffffff",
+          "position": 1
+        }
+      ]
+    }
+  },
+  "BlueGradient": {
+    "$type": "gradient",
+    "$value": {
+      "type": "linear",
+      "angle": 180,
+      "stops": [
+        {
+          "color": "#f0f7fd",
+          "position": 0
+        },
+        {
+          "color": "#ffffff",
+          "position": 1
+        }
+      ]
+    }
+  },
+  "gradient": {
+    "gray-gradient--01": {
+      "$type": "gradient",
+      "$value": {
+        "type": "linear",
+        "angle": 181,
+        "stops": [
+          {
+            "color": "#e7e4e1",
+            "position": 0
+          },
+          {
+            "color": "#cac6c3",
+            "position": 1
+          }
+        ]
+      }
+    },
+    "grad--header": {
+      "$type": "gradient",
+      "$value": {
+        "type": "linear",
+        "angle": 181,
+        "stops": [
+          {
+            "color": "#484746",
+            "position": 0
+          },
+          {
+            "color": "#817f7e",
+            "position": 1
+          }
+        ]
+      }
+    },
+    "grad--light": {
+      "$type": "gradient",
+      "$value": {
+        "type": "linear",
+        "angle": 222,
+        "stops": [
+          {
+            "color": "#ffba5c",
+            "position": 0.35
+          },
+          {
+            "color": "#fff9c2",
+            "position": 1
+          }
+        ]
+      }
+    },
+    "bg-grad-onb": {
+      "$type": "gradient",
+      "$value": {
+        "type": "linear",
+        "angle": 180,
+        "stops": [
+          {
+            "color": "#ff8136",
+            "position": 0
+          },
+          {
+            "color": "#ce4d00",
+            "position": 1
+          }
+        ]
+      }
+    },
+    "grad--dark": {
+      "$type": "gradient",
+      "$value": {
+        "type": "linear",
+        "angle": 104,
+        "stops": [
+          {
+            "color": "#ef5721",
+            "position": 0
+          },
+          {
+            "color": "#ff9e47",
+            "position": 1
+          }
+        ]
+      }
+    },
+    "forms-grad": {
+      "$type": "gradient",
+      "$value": {
+        "type": "linear",
+        "angle": 295,
+        "stops": [
+          {
+            "color": "#ff8136",
+            "position": 0
+          },
+          {
+            "color": "#ffba5c",
+            "position": 1
+          }
+        ]
+      }
+    }
+  }
+}
