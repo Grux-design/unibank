@@ -141,12 +141,12 @@ export function NavActions({ lang }: NavActionsProps) {
             className={cn(
               "flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none",
               "transition-[opacity,width] duration-300",
-              searchOpen ? "opacity-100 w-full" : "opacity-0 w-0 pointer-events-none"
+              searchVisible ? "opacity-100 w-full" : "opacity-0 w-0 pointer-events-none"
             )}
           />
 
           {/* Close button */}
-          {searchOpen && (
+          {searchVisible && (
             <button
               onClick={closeSearch}
               className="shrink-0 flex h-5 w-5 items-center justify-center rounded-md text-foreground/40 hover:text-foreground transition-colors"
@@ -160,11 +160,11 @@ export function NavActions({ lang }: NavActionsProps) {
         <div
           className={cn(
             "absolute left-0 top-full z-50 w-72 rounded-tl-none rounded-tr-none rounded-bl-[18px] rounded-br-[18px]",
-            "bg-muted overflow-hidden",
-            "transition-[opacity,transform] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]",
+            "bg-background border border-border border-t-0 overflow-hidden",
+            "transition-[opacity,transform] duration-200 ease-[cubic-bezier(0.4,0,0.2,1)]",
             searchOpen
               ? "opacity-100 translate-y-0 pointer-events-auto delay-200"
-              : "opacity-0 -translate-y-2 pointer-events-none delay-0"
+              : "opacity-0 -translate-y-1 pointer-events-none"
           )}
         >
           {/* Results list */}
