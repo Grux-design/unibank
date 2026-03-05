@@ -1,83 +1,110 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { X } from "lucide-react";
+import {
+  PiggyBank, CreditCard, Wallet, Smartphone, Bot,
+  Landmark, TrendingUp, Building2, BarChart3, Globe,
+  Car, Home, Banknote, ArrowRight, ShieldCheck, Users
+} from "lucide-react";
 import { MegaMenuColumn } from "@/components/molecules/MegaMenuColumn";
+import { cn } from "@/lib/utils";
 
 type Lang = "es" | "en";
+type Tab = "personas" | "empresas";
 
 interface MegaMenuProps {
   lang: Lang;
-  onClose: () => void;
+  visible: boolean;
 }
 
-const menuData = {
-  personas: {
-    columns: [
-      {
-        heading: { es: "Cuentas", en: "Accounts" },
-        items: [
-          { label: { es: "Cuenta de Ahorros", en: "Savings Account" }, href: "/cuentas/ahorros" },
-          { label: { es: "Cuenta Corriente", en: "Checking Account" }, href: "/cuentas/corriente" },
-          { label: { es: "Cuenta en USD", en: "USD Account" }, href: "/cuentas/usd" },
-        ],
-      },
-      {
-        heading: { es: "Crédito", en: "Credit" },
-        items: [
-          { label: { es: "Crédito Personal", en: "Personal Loan" }, href: "/credito/personal" },
-          { label: { es: "Crédito Hipotecario", en: "Mortgage" }, href: "/credito/hipotecario" },
-          { label: { es: "Crédito Auto", en: "Auto Loan" }, href: "/credito/auto" },
-        ],
-      },
-      {
-        heading: { es: "Tarjetas", en: "Cards" },
-        items: [
-          { label: { es: "Tarjeta de Crédito", en: "Credit Card" }, href: "/tarjetas/credito" },
-          { label: { es: "Tarjeta de Débito", en: "Debit Card" }, href: "/tarjetas/debito" },
-          { label: { es: "Tarjeta Prepagada", en: "Prepaid Card" }, href: "/tarjetas/prepagada" },
-        ],
-      },
-      {
-        heading: { es: "Canales Digitales", en: "Digital Channels" },
-        items: [
-          { label: { es: "Banca en Línea", en: "Online Banking" }, href: "/digital/banca-linea" },
-          { label: { es: "App Móvil", en: "Mobile App" }, href: "/digital/app" },
-          { label: { es: "UniBot", en: "UniBot" }, href: "/digital/unibot" },
-        ],
-      },
+const personasColumns = [
+  {
+    heading: { es: "Cuentas", en: "Accounts" },
+    items: [
+      { label: { es: "Cuenta de Ahorros", en: "Savings Account" }, description: { es: "Crece tu dinero con rendimientos competitivos", en: "Grow your money with competitive yields" }, href: "/cuentas/ahorros", Icon: PiggyBank },
+      { label: { es: "Cuenta Corriente", en: "Checking Account" }, description: { es: "Gestiona tus finanzas diarias sin límites", en: "Manage your daily finances without limits" }, href: "/cuentas/corriente", Icon: Wallet },
+      { label: { es: "Cuenta en USD", en: "USD Account" }, description: { es: "Opera en dólares con total seguridad", en: "Operate in dollars with full security" }, href: "/cuentas/usd", Icon: Globe },
     ],
   },
-  empresas: {
-    columns: [
-      {
-        heading: { es: "Cuentas Empresariales", en: "Business Accounts" },
-        items: [
-          { label: { es: "Cuenta Corriente", en: "Checking Account" }, href: "/empresas/cuenta-corriente" },
-          { label: { es: "Cuenta Jurídica", en: "Legal Entity Account" }, href: "/empresas/cuenta-juridica" },
-        ],
-      },
-      {
-        heading: { es: "Financiamiento", en: "Financing" },
-        items: [
-          { label: { es: "UniLeasing", en: "UniLeasing" }, href: "/empresas/leasing" },
-          { label: { es: "Crédito Empresarial", en: "Business Loan" }, href: "/empresas/credito" },
-          { label: { es: "Línea de Crédito", en: "Credit Line" }, href: "/empresas/linea-credito" },
-        ],
-      },
-      {
-        heading: { es: "Inversiones", en: "Investments" },
-        items: [
-          { label: { es: "Plazo Fijo", en: "Fixed Term" }, href: "/inversiones/plazo-fijo" },
-          { label: { es: "Fondos de Inversión", en: "Investment Funds" }, href: "/inversiones/fondos" },
-        ],
-      },
-      {
-        heading: { es: "Canales Digitales", en: "Digital Channels" },
-        items: [
-          { label: { es: "Banca Empresarial", en: "Business Banking" }, href: "/empresas/digital" },
-          { label: { es: "Pagos en Línea", en: "Online Payments" }, href: "/empresas/pagos" },
-        ],
-      },
+  {
+    heading: { es: "Crédito", en: "Credit" },
+    items: [
+      { label: { es: "Crédito Personal", en: "Personal Loan" }, description: { es: "Financiamiento rápido para tus proyectos", en: "Fast financing for your projects" }, href: "/credito/personal", Icon: Banknote },
+      { label: { es: "Crédito Hipotecario", en: "Mortgage" }, description: { es: "Haz realidad la casa de tus sueños", en: "Make your dream home a reality" }, href: "/credito/hipotecario", Icon: Home },
+      { label: { es: "Crédito Auto", en: "Auto Loan" }, description: { es: "El vehículo que quieres al mejor plazo", en: "The vehicle you want at the best rate" }, href: "/credito/auto", Icon: Car },
     ],
+  },
+  {
+    heading: { es: "Tarjetas & Digital", en: "Cards & Digital" },
+    items: [
+      { label: { es: "Tarjeta de Crédito", en: "Credit Card" }, description: { es: "Beneficios exclusivos en cada compra", en: "Exclusive benefits on every purchase" }, href: "/tarjetas/credito", Icon: CreditCard },
+      { label: { es: "Banca en Línea", en: "Online Banking" }, description: { es: "Controla todo desde tu computadora", en: "Control everything from your computer" }, href: "/digital/banca-linea", Icon: Landmark },
+      { label: { es: "App Móvil", en: "Mobile App" }, description: { es: "Tu banco en el bolsillo, siempre disponible", en: "Your bank in your pocket, always available" }, href: "/digital/app", Icon: Smartphone },
+      { label: { es: "UniBot", en: "UniBot" }, description: { es: "Asistente inteligente 24/7", en: "Smart assistant 24/7" }, href: "/digital/unibot", Icon: Bot },
+    ],
+  },
+];
+
+const empresasColumns = [
+  {
+    heading: { es: "Cuentas", en: "Accounts" },
+    items: [
+      { label: { es: "Cuenta Corriente", en: "Checking Account" }, description: { es: "Gestión eficiente para tu empresa", en: "Efficient management for your company" }, href: "/empresas/cuenta-corriente", Icon: Building2 },
+      { label: { es: "Cuenta Jurídica", en: "Legal Entity Account" }, description: { es: "Soluciones para personas jurídicas", en: "Solutions for legal entities" }, href: "/empresas/cuenta-juridica", Icon: ShieldCheck },
+    ],
+  },
+  {
+    heading: { es: "Financiamiento", en: "Financing" },
+    items: [
+      { label: { es: "UniLeasing", en: "UniLeasing" }, description: { es: "Renueva tu flota sin inmovilizar capital", en: "Renew your fleet without tying up capital" }, href: "/empresas/leasing", Icon: Car },
+      { label: { es: "Crédito Empresarial", en: "Business Loan" }, description: { es: "Capital para hacer crecer tu negocio", en: "Capital to grow your business" }, href: "/empresas/credito", Icon: Banknote },
+      { label: { es: "Línea de Crédito", en: "Credit Line" }, description: { es: "Liquidez inmediata cuando la necesitas", en: "Immediate liquidity when you need it" }, href: "/empresas/linea-credito", Icon: TrendingUp },
+    ],
+  },
+  {
+    heading: { es: "Inversiones & Digital", en: "Investments & Digital" },
+    items: [
+      { label: { es: "Plazo Fijo", en: "Fixed Term" }, description: { es: "Rendimientos garantizados para tu empresa", en: "Guaranteed returns for your company" }, href: "/inversiones/plazo-fijo", Icon: BarChart3 },
+      { label: { es: "Fondos de Inversión", en: "Investment Funds" }, description: { es: "Diversifica con expertos del mercado", en: "Diversify with market experts" }, href: "/inversiones/fondos", Icon: TrendingUp },
+      { label: { es: "Banca Empresarial", en: "Business Banking" }, description: { es: "Plataforma digital para empresas", en: "Digital platform for businesses" }, href: "/empresas/digital", Icon: Smartphone },
+      { label: { es: "Pagos en Línea", en: "Online Payments" }, description: { es: "Cobra y paga de forma instantánea", en: "Collect and pay instantly" }, href: "/empresas/pagos", Icon: Globe },
+    ],
+  },
+];
+
+const featured = {
+  personas: {
+    es: {
+      tag: "Nuevo",
+      headline: "Abre tu cuenta en minutos, desde tu celular",
+      sub: "Sin filas, sin papeleos. 100% digital.",
+      cta: "Comenzar ahora",
+      href: "/cuentas/ahorros",
+    },
+    en: {
+      tag: "New",
+      headline: "Open your account in minutes, from your phone",
+      sub: "No lines, no paperwork. 100% digital.",
+      cta: "Get started",
+      href: "/cuentas/ahorros",
+    },
+    photo: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&q=80",
+  },
+  empresas: {
+    es: {
+      tag: "Empresas",
+      headline: "Soluciones financieras que escalan con tu negocio",
+      sub: "Crédito, inversión y banca digital en un solo lugar.",
+      cta: "Ver soluciones",
+      href: "/empresas/credito",
+    },
+    en: {
+      tag: "Business",
+      headline: "Financial solutions that scale with your business",
+      sub: "Credit, investment and digital banking in one place.",
+      cta: "See solutions",
+      href: "/empresas/credito",
+    },
+    photo: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80",
   },
 };
 
@@ -96,82 +123,99 @@ const secondaryLinks = {
   ],
 };
 
-export function MegaMenu({ lang, onClose }: MegaMenuProps) {
-  const tabs = [
-    { key: "personas" as const, label: lang === "es" ? "Personas" : "Personal" },
-    { key: "empresas" as const, label: lang === "es" ? "Empresas" : "Business" },
-  ] as const;
-
-  const activeTab = tabs[0].key; // We'll use local state in Header
-
-  return (
-    <MegaMenuInner lang={lang} onClose={onClose} />
-  );
-}
-
-// Inner component with its own tab state
-function MegaMenuInner({ lang, onClose }: MegaMenuProps) {
-  const [activeTab, setActiveTab] = useState<"personas" | "empresas">("personas");
-  const columns = menuData[activeTab].columns;
+export function MegaMenu({ lang, visible }: MegaMenuProps) {
+  const [activeTab, setActiveTab] = useState<Tab>("personas");
+  const columns = activeTab === "personas" ? personasColumns : empresasColumns;
+  const feat = featured[activeTab][lang];
+  const featPhoto = featured[activeTab].photo;
 
   return (
     <div
-      className="absolute left-0 right-0 top-full z-40 border-t border-border bg-background shadow-xl"
+      className={cn(
+        "absolute left-0 right-0 top-full z-40 border-t border-border bg-background/95 backdrop-blur-sm shadow-[0_20px_60px_-12px_hsl(0_0%_0%/0.15)]",
+        "transition-all duration-200 ease-out origin-top",
+        visible ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 -translate-y-2 pointer-events-none"
+      )}
       role="navigation"
       aria-label={lang === "es" ? "Menú principal" : "Main menu"}
     >
-      <div className="mx-auto max-w-screen-xl px-6 py-8">
-        {/* Tab row + close */}
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex gap-1 rounded-full bg-muted p-1">
-            {(["personas", "empresas"] as const).map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`rounded-full px-5 py-2 text-sm font-semibold transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
-                  activeTab === tab
-                    ? "bg-primary text-primary-foreground shadow-sm"
-                    : "text-foreground/60 hover:text-foreground"
-                }`}
-                aria-pressed={activeTab === tab}
-              >
-                {tab === "personas"
-                  ? lang === "es" ? "Personas" : "Personal"
-                  : lang === "es" ? "Empresas" : "Business"}
-              </button>
-            ))}
-          </div>
-          <button
-            onClick={onClose}
-            className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-            aria-label="Close menu"
-          >
-            <X size={18} />
-          </button>
+      <div className="mx-auto max-w-screen-xl px-6 py-6">
+        {/* Tab row */}
+        <div className="flex items-center gap-1 mb-5">
+          {(["personas", "empresas"] as const).map((tab) => (
+            <button
+              key={tab}
+              onMouseEnter={() => setActiveTab(tab)}
+              onClick={() => setActiveTab(tab)}
+              className={cn(
+                "flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+                activeTab === tab
+                  ? "bg-primary text-primary-foreground shadow-sm"
+                  : "text-foreground/50 hover:text-foreground hover:bg-muted"
+              )}
+              aria-pressed={activeTab === tab}
+            >
+              {tab === "personas"
+                ? <><Users size={13} />{lang === "es" ? "Personas" : "Personal"}</>
+                : <><Building2 size={13} />{lang === "es" ? "Empresas" : "Business"}</>
+              }
+            </button>
+          ))}
         </div>
 
-        {/* Columns grid */}
-        <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
+        {/* Content grid: columns + featured card */}
+        <div className="grid grid-cols-[1fr_1fr_1fr_280px] gap-4">
+          {/* Menu columns */}
           {columns.map((col, i) => (
             <MegaMenuColumn
               key={i}
               heading={col.heading[lang]}
               items={col.items.map((item) => ({
                 label: item.label[lang],
+                description: item.description[lang],
                 href: item.href,
+                Icon: item.Icon,
               }))}
             />
           ))}
+
+          {/* Featured card */}
+          <div className="relative overflow-hidden rounded-2xl min-h-[220px]">
+            <img
+              src={featPhoto}
+              alt=""
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            {/* gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[hsl(20_90%_35%/0.92)] via-[hsl(20_80%_45%/0.70)] to-transparent" />
+            <div className="relative flex h-full flex-col justify-end p-5 gap-2">
+              <span className="inline-flex w-fit items-center rounded-full bg-primary-foreground/20 border border-primary-foreground/30 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-widest text-primary-foreground backdrop-blur-sm">
+                {feat.tag}
+              </span>
+              <p className="text-[15px] font-bold text-primary-foreground leading-snug">
+                {feat.headline}
+              </p>
+              <p className="text-xs text-primary-foreground/80 leading-snug">
+                {feat.sub}
+              </p>
+              <Link
+                to={feat.href}
+                className="mt-1 inline-flex items-center gap-1.5 self-start rounded-full bg-primary-foreground/15 hover:bg-primary-foreground/25 border border-primary-foreground/30 px-3 py-1.5 text-xs font-semibold text-primary-foreground transition-colors backdrop-blur-sm"
+              >
+                {feat.cta}
+                <ArrowRight size={11} />
+              </Link>
+            </div>
+          </div>
         </div>
 
-        {/* Secondary links */}
-        <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-border pt-5">
+        {/* Footer row */}
+        <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-border pt-4">
           {secondaryLinks[lang].map((link) => (
             <Link
               key={link.href}
               to={link.href}
-              onClick={onClose}
-              className="text-xs font-semibold uppercase tracking-wider text-foreground/50 hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
+              className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
             >
               {link.label}
             </Link>
@@ -181,5 +225,3 @@ function MegaMenuInner({ lang, onClose }: MegaMenuProps) {
     </div>
   );
 }
-
-import { useState } from "react";
