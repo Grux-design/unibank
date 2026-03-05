@@ -1,30 +1,34 @@
 
-## Plan: "Abre tu cuenta" — Animated Dropdown + Minimalist Menu
+## Plan: Contentful CMS Connection
 
-### What to change in `NavActions.tsx`
+The user wants to establish a Contentful connection — no pages or components yet, just the integration layer.
 
-**Trigger button behavior:**
-- Switch from click-toggle to hover-open (`onMouseEnter` / `onMouseLeave` on the wrapper div)
-- Keep click as fallback for keyboard/touch
-- The `Plus` icon animates: `rotate-45` when open (becomes an `×` shape), with `transition-transform duration-200`
+Since the Content Delivery API token is a **public/client-side key** (it's read-only and safe to expose), it can be stored in the codebase via `.env`. However, the Content Preview API token should be kept secret (it exposes unpublished content).
 
-**Dropdown animation:**
-- Remove the conditional render (`{accountOpen && ...}`) — always render but use CSS to show/hide
-- Animate with: `opacity-0 scale-95 pointer-events-none` → `opacity-100 scale-100 pointer-events-auto`
-- Transform origin: `origin-top-right`
-- Transition: `transition-all duration-200 ease-out`
+### What will be done
 
-**Dropdown content — minimalist redesign:**
-- Remove emoji icons entirely
-- White background instead of orange (`bg-white`) with a subtle shadow (`shadow-lg`)
-- Small overline label at top: `"Tipo de cuenta"` in `text-xs text-foreground/40 uppercase tracking-widest px-4 pt-3 pb-1`
-- Account links: plain text, `text-sm font-medium text-foreground`, `px-4 py-2.5`, hover: `bg-foreground/5 rounded-lg`
-- A thin separator line between the two accounts
-- Dropdown width: `w-52`
-- Bottom padding: `pb-2`
+1. **Store tokens securely in `.env`**:
+   - `VITE_CONTENTFUL_SPACE_ID=bsxwchto8q9z` — public, safe for client-side
+   - `VITE_CONTENTFUL_ACCESS_TOKEN=hPb7E44kegBR2V5fG1Hj147ph7zIWTY7EiLQYronG60` — Content Delivery token (read-only, safe to expose)
+   - Store the Preview token as a Lovable Cloud secret (`CONTENTFUL_PREVIEW_TOKEN`) so it's only accessible from edge functions
 
-**Icon animation on the pill:**
-- Wrap `Plus` in `<span className={cn("transition-transform duration-200", accountOpen && "rotate-45")}>`
+2. **Create `src/integrations/contentful/client.ts`**:
+   - Export a configured Contentful client using the Delivery API
+   - Use `fetch` directly (no extra SDK needed) or a lightweight wrapper
+   - Exports `CONTENTFUL_SPACE_ID` and `CONTENTFUL_BASE_URL` constants for reuse
 
-### Files to edit
-- `src/components/molecules/NavActions.tsx` — hover trigger, icon rotation, animated dropdown, minimalist items
+3. **Create `src/integrations/contentful/types.ts`**:
+   - Define base TypeScript types: `ContentfulEntry<T>`, `ContentfulAsset`, `ContentfulCollection<T>`
+   - These will be extended later as content models are defined in Contentful
+
+### What will NOT be done
+- No pages, components, or data-fetching hooks yet
+- No edge function for preview (can be added when preview mode is needed)
+- No content model-specific types (will be defined when CMS structure is decided)
+
+### Files to create/edit
+- `src/integrations/contentful/client.ts` — Contentful fetch client
+- `src/integrations/contentful/types.ts` — Base types
+- `.env` — Add `VITE_CONTENTFUL_SPACE_ID` and `VITE_CONTENTFUL_ACCESS_TOKEN`
+
+The Preview API token will be stored as a secret (`CONTENTFUL_PREVIEW_TOKEN`) via the secrets tool so it's available for future edge functions but never exposed to the browser.
