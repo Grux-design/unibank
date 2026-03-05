@@ -101,10 +101,10 @@ export function NavActions({ lang }: NavActionsProps) {
         {/* Trigger / Input bar — same "unified shape" pattern as account CTA */}
         <div
           className={cn(
-            "flex items-center bg-[hsl(30_20%_94%)]",
+            "flex items-center bg-muted",
             "transition-[width,border-radius] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]",
             searchOpen
-              ? "w-64 rounded-tl-[18px] rounded-tr-[18px] rounded-bl-none rounded-br-none px-3 gap-2 h-10"
+              ? "w-72 rounded-tl-[18px] rounded-tr-[18px] rounded-bl-none rounded-br-none px-3 gap-2 h-10"
               : "w-10 h-10 rounded-xl justify-center"
           )}
         >
