@@ -53,7 +53,8 @@ export function NavActions({ lang }: NavActionsProps) {
           aria-expanded={accountOpen}
           aria-haspopup="true"
           className={cn(
-            "inline-flex items-center gap-2 bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground transition-all duration-200 focus-visible:outline-none",
+            "inline-flex items-center gap-2 bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground focus-visible:outline-none",
+            "transition-[width,border-radius] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]",
             accountOpen
               ? "w-64 justify-between rounded-tl-[18px] rounded-tr-[18px] rounded-bl-none rounded-br-none"
               : "rounded-[18px]"
@@ -62,7 +63,7 @@ export function NavActions({ lang }: NavActionsProps) {
           {lang === "es" ? "Abre tu cuenta" : "Open Account"}
           <span
             className={cn(
-              "flex h-6 w-6 items-center justify-center rounded-lg bg-primary-foreground/20 transition-all duration-200",
+              "flex h-6 w-6 items-center justify-center rounded-lg bg-primary-foreground/20 transition-all duration-300",
               accountOpen && "bg-primary-foreground/30"
             )}
           >
@@ -73,13 +74,14 @@ export function NavActions({ lang }: NavActionsProps) {
           </span>
         </button>
 
-        {/* Dropdown — absolutely positioned, top-right corner flat to merge with button */}
+        {/* Dropdown — translateY for fluid entrance, no scale distortion */}
         <div
           className={cn(
-            "absolute right-0 top-full z-50 w-64 origin-top rounded-tl-none rounded-tr-none rounded-bl-[18px] rounded-br-[18px] bg-primary px-3 pb-3 pt-3 shadow-xl transition-all duration-200 ease-out",
+            "absolute right-0 top-full z-50 w-64 rounded-tl-none rounded-tr-none rounded-bl-[18px] rounded-br-[18px] bg-primary px-3 pb-3 pt-3 shadow-xl",
+            "transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]",
             accountOpen
-              ? "opacity-100 scale-100 pointer-events-auto"
-              : "opacity-0 scale-95 pointer-events-none"
+              ? "opacity-100 translate-y-0 pointer-events-auto"
+              : "opacity-0 -translate-y-2 pointer-events-none"
           )}
         >
           {/* Overline */}
