@@ -1,212 +1,453 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import {
-  PiggyBank, CreditCard, Wallet, Smartphone, Bot,
-  Landmark, TrendingUp, Building2, BarChart3, Globe,
-  Car, Home, Banknote, ArrowRight, ShieldCheck, Users
-} from "lucide-react";
-import { MegaMenuColumn } from "@/components/molecules/MegaMenuColumn";
-import { cn } from "@/lib/utils";
+import { motion, AnimatePresence } from "motion/react";
+import { Users, Building2, ArrowRight, ChevronRight } from "lucide-react";
 
-type Lang = "es" | "en";
 type Tab = "personas" | "empresas";
 
 interface MegaMenuProps {
-  lang: Lang;
-  visible: boolean;
+  onClose: () => void;
 }
 
-const personasColumns = [
-  {
-    heading: { es: "Cuentas", en: "Accounts" },
-    items: [
-      { label: { es: "Cuenta de Ahorros", en: "Savings Account" }, description: { es: "Crece tu dinero con rendimientos competitivos", en: "Grow your money with competitive yields" }, href: "/cuentas/ahorros", Icon: PiggyBank },
-      { label: { es: "Cuenta Corriente", en: "Checking Account" }, description: { es: "Gestiona tus finanzas diarias sin límites", en: "Manage your daily finances without limits" }, href: "/cuentas/corriente", Icon: Wallet },
-      { label: { es: "Cuenta en USD", en: "USD Account" }, description: { es: "Opera en dólares con total seguridad", en: "Operate in dollars with full security" }, href: "/cuentas/usd", Icon: Globe },
-    ],
+// ─── MENU DATA ──────────────────────────────────────────────
+const personasData = {
+  image:
+    "https://images.unsplash.com/photo-1704088030734-96769c4593a2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800",
+  featured: {
+    tag: "Lo más popular",
+    label: "Cuenta Naranja+",
+    desc: "Sin mantenimiento, sin comisiones. La cuenta que trabaja para ti.",
   },
-  {
-    heading: { es: "Crédito", en: "Credit" },
-    items: [
-      { label: { es: "Crédito Personal", en: "Personal Loan" }, description: { es: "Financiamiento rápido para tus proyectos", en: "Fast financing for your projects" }, href: "/credito/personal", Icon: Banknote },
-      { label: { es: "Crédito Hipotecario", en: "Mortgage" }, description: { es: "Haz realidad la casa de tus sueños", en: "Make your dream home a reality" }, href: "/credito/hipotecario", Icon: Home },
-      { label: { es: "Crédito Auto", en: "Auto Loan" }, description: { es: "El vehículo que quieres al mejor plazo", en: "The vehicle you want at the best rate" }, href: "/credito/auto", Icon: Car },
-    ],
-  },
-  {
-    heading: { es: "Tarjetas & Digital", en: "Cards & Digital" },
-    items: [
-      { label: { es: "Tarjeta de Crédito", en: "Credit Card" }, description: { es: "Beneficios exclusivos en cada compra", en: "Exclusive benefits on every purchase" }, href: "/tarjetas/credito", Icon: CreditCard },
-      { label: { es: "Banca en Línea", en: "Online Banking" }, description: { es: "Controla todo desde tu computadora", en: "Control everything from your computer" }, href: "/digital/banca-linea", Icon: Landmark },
-      { label: { es: "App Móvil", en: "Mobile App" }, description: { es: "Tu banco en el bolsillo, siempre disponible", en: "Your bank in your pocket, always available" }, href: "/digital/app", Icon: Smartphone },
-      { label: { es: "UniBot", en: "UniBot" }, description: { es: "Asistente inteligente 24/7", en: "Smart assistant 24/7" }, href: "/digital/unibot", Icon: Bot },
-    ],
-  },
-];
-
-const empresasColumns = [
-  {
-    heading: { es: "Cuentas", en: "Accounts" },
-    items: [
-      { label: { es: "Cuenta Corriente", en: "Checking Account" }, description: { es: "Gestión eficiente para tu empresa", en: "Efficient management for your company" }, href: "/empresas/cuenta-corriente", Icon: Building2 },
-      { label: { es: "Cuenta Jurídica", en: "Legal Entity Account" }, description: { es: "Soluciones para personas jurídicas", en: "Solutions for legal entities" }, href: "/empresas/cuenta-juridica", Icon: ShieldCheck },
-    ],
-  },
-  {
-    heading: { es: "Financiamiento", en: "Financing" },
-    items: [
-      { label: { es: "UniLeasing", en: "UniLeasing" }, description: { es: "Renueva tu flota sin inmovilizar capital", en: "Renew your fleet without tying up capital" }, href: "/empresas/leasing", Icon: Car },
-      { label: { es: "Crédito Empresarial", en: "Business Loan" }, description: { es: "Capital para hacer crecer tu negocio", en: "Capital to grow your business" }, href: "/empresas/credito", Icon: Banknote },
-      { label: { es: "Línea de Crédito", en: "Credit Line" }, description: { es: "Liquidez inmediata cuando la necesitas", en: "Immediate liquidity when you need it" }, href: "/empresas/linea-credito", Icon: TrendingUp },
-    ],
-  },
-  {
-    heading: { es: "Inversiones & Digital", en: "Investments & Digital" },
-    items: [
-      { label: { es: "Plazo Fijo", en: "Fixed Term" }, description: { es: "Rendimientos garantizados para tu empresa", en: "Guaranteed returns for your company" }, href: "/inversiones/plazo-fijo", Icon: BarChart3 },
-      { label: { es: "Fondos de Inversión", en: "Investment Funds" }, description: { es: "Diversifica con expertos del mercado", en: "Diversify with market experts" }, href: "/inversiones/fondos", Icon: TrendingUp },
-      { label: { es: "Banca Empresarial", en: "Business Banking" }, description: { es: "Plataforma digital para empresas", en: "Digital platform for businesses" }, href: "/empresas/digital", Icon: Smartphone },
-      { label: { es: "Pagos en Línea", en: "Online Payments" }, description: { es: "Cobra y paga de forma instantánea", en: "Collect and pay instantly" }, href: "/empresas/pagos", Icon: Globe },
-    ],
-  },
-];
-
-const featured = {
-  personas: {
-    es: { tag: "Nuevo", headline: "Abre tu cuenta en minutos, desde tu celular", sub: "Sin filas, sin papeleos. 100% digital.", cta: "Comenzar ahora", href: "/cuentas/ahorros" },
-    en: { tag: "New", headline: "Open your account in minutes, from your phone", sub: "No lines, no paperwork. 100% digital.", cta: "Get started", href: "/cuentas/ahorros" },
-    photo: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&q=80",
-  },
-  empresas: {
-    es: { tag: "Empresas", headline: "Soluciones financieras que escalan con tu negocio", sub: "Crédito, inversión y banca digital en un solo lugar.", cta: "Ver soluciones", href: "/empresas/credito" },
-    en: { tag: "Business", headline: "Financial solutions that scale with your business", sub: "Credit, investment and digital banking in one place.", cta: "See solutions", href: "/empresas/credito" },
-    photo: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80",
-  },
-};
-
-const secondaryLinks = {
-  es: [
-    { label: "Sobre UniBank", href: "/about" },
-    { label: "Tarifas", href: "/tarifas" },
-    { label: "Sucursales", href: "/sucursales" },
-    { label: "Contacto", href: "/contact" },
-  ],
-  en: [
-    { label: "About UniBank", href: "/about" },
-    { label: "Rates", href: "/tarifas" },
-    { label: "Branches", href: "/sucursales" },
-    { label: "Contact", href: "/contact" },
+  categories: [
+    {
+      name: "Cuentas",
+      items: [
+        { label: "Cuenta Naranja+", desc: "Sin mantenimiento ni límites", tag: "Popular" },
+        { label: "Cuenta de Ahorro", desc: "Gana intereses mes a mes", tag: null },
+        { label: "Cuenta Corriente", desc: "Flexibilidad para tus pagos", tag: null },
+        { label: "Depósito a Plazo", desc: "Rendimientos garantizados", tag: null },
+      ],
+    },
+    {
+      name: "Crédito",
+      items: [
+        { label: "Préstamo de Auto", desc: "Financia tu próximo vehículo", tag: "Rápido" },
+        { label: "Crédito Hipotecario", desc: "Compra la casa de tus sueños", tag: null },
+        { label: "Préstamo Personal", desc: "Dinero cuando más lo necesitas", tag: null },
+      ],
+    },
+    {
+      name: "Inversiones",
+      items: [
+        { label: "Invertis Global Income Fund", desc: "Portafolio diversificado global", tag: "Exclusivo" },
+        { label: "Depósito a Plazo Fijo", desc: "Tasas preferenciales aseguradas", tag: null },
+      ],
+    },
+    {
+      name: "Tarjetas",
+      items: [
+        { label: "Mastercard Black Débito", desc: "Acepta en más de 200 países", tag: null },
+        { label: "Tarjeta de Crédito", desc: "Cashback en cada compra", tag: null },
+      ],
+    },
+    {
+      name: "Canales Digitales",
+      items: [
+        { label: "Banca Móvil UniBank", desc: "Tu banco en el bolsillo", tag: null },
+        { label: "ACH Xpress", desc: "Transferencias al instante", tag: null },
+        { label: "Xpress Pagos", desc: "Paga facturas en segundos", tag: null },
+      ],
+    },
   ],
 };
 
-export function MegaMenu({ lang, visible }: MegaMenuProps) {
+const empresasData = {
+  image:
+    "https://images.unsplash.com/photo-1758518727077-ffb66ffccced?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800",
+  featured: {
+    tag: "Nuevo",
+    label: "UniLeasing",
+    desc: "Equipa tu empresa sin inmovilizar capital. Aprobación en 48h.",
+  },
+  categories: [
+    {
+      name: "Cuentas",
+      items: [
+        { label: "Cuenta Corriente Jurídica", desc: "Operaciones sin restricciones", tag: null },
+        { label: "Cuenta de Ahorro Empresarial", desc: "Rentabiliza tu liquidez", tag: null },
+      ],
+    },
+    {
+      name: "Financiamiento",
+      items: [
+        { label: "Préstamo Comercial", desc: "Capital para crecer rápido", tag: null },
+        { label: "UniLeasing", desc: "Equipa tu empresa sin comprar", tag: "Nuevo" },
+        { label: "Líneas de Crédito", desc: "Liquidez disponible siempre", tag: null },
+        { label: "Préstamo Agroindustrial", desc: "Apoyo al sector productivo", tag: null },
+      ],
+    },
+    {
+      name: "Mercado de Capitales",
+      items: [
+        { label: "Emisión de Valores", desc: "Accede al mercado bursátil", tag: null },
+        { label: "Portafolio Corporativo", desc: "Gestión institucional de activos", tag: null },
+      ],
+    },
+    {
+      name: "Gestión",
+      items: [
+        { label: "Pago de Planilla", desc: "Paga a tu equipo en un clic", tag: null },
+        { label: "Pagos Masivos ACH", desc: "Miles de pagos simultáneos", tag: null },
+        { label: "Reportes Financieros", desc: "Visibilidad total de tu empresa", tag: null },
+      ],
+    },
+    {
+      name: "Canales Digitales",
+      items: [
+        { label: "Banca en Línea Empresarial", desc: "Control total desde el escritorio", tag: null },
+        { label: "ACH Xpress", desc: "Transferencias inmediatas", tag: null },
+        { label: "Xpress Pagos", desc: "Pagos masivos automatizados", tag: null },
+      ],
+    },
+  ],
+};
+
+const secondaryLinks = ["Sobre UniBank", "Tarifas y Tasas", "Sucursales"];
+
+export function MegaMenu({ onClose }: MegaMenuProps) {
   const [activeTab, setActiveTab] = useState<Tab>("personas");
-  const columns = activeTab === "personas" ? personasColumns : empresasColumns;
-  const feat = featured[activeTab][lang];
-  const featPhoto = featured[activeTab].photo;
+  const data = activeTab === "personas" ? personasData : empresasData;
+  const isPersonas = activeTab === "personas";
 
   return (
-    /* Floating card anchored top-left, matching the reference screenshot proportions */
-    <div
-      className={cn(
-        // Positioning: sits below the header bar, anchored to the left edge
-        "absolute left-4 top-[calc(100%+8px)] z-40",
-        // Floating card shape
-        "w-[880px] max-w-[calc(100vw-2rem)] rounded-2xl",
-        // Surface
-        "bg-background border border-border",
-        // Elevation matching the reference (deep, soft shadow)
-        "shadow-[0_8px_40px_-8px_hsl(0_0%_0%/0.18),0_2px_8px_-2px_hsl(0_0%_0%/0.08)]",
-        // Smooth enter/exit
-        "transition-all duration-200 ease-out origin-top-left",
-        visible
-          ? "opacity-100 translate-y-0 scale-100 pointer-events-auto"
-          : "opacity-0 -translate-y-1 scale-[0.98] pointer-events-none"
-      )}
-      role="navigation"
-      aria-label={lang === "es" ? "Menú principal" : "Main menu"}
+    <motion.div
+      initial={{ opacity: 0, y: -8 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -8 }}
+      transition={{ duration: 0.22, ease: "easeOut" }}
+      style={{
+        position: "absolute",
+        left: 0,
+        right: 0,
+        top: "100%",
+        zIndex: 40,
+        background: "#ffffff",
+        borderTop: "1px solid #E0DDD9",
+        borderBottom: "1px solid #E0DDD9",
+        boxShadow: "0 8px 32px -4px rgba(28,25,23,0.12)",
+      }}
     >
-      <div className="p-5">
+      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 24px" }}>
+
         {/* Tab row */}
-        <div className="flex items-center gap-1 mb-5">
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            borderBottom: "1px solid #E0DDD9",
+          }}
+        >
           {(["personas", "empresas"] as const).map((tab) => (
             <button
               key={tab}
-              onMouseEnter={() => setActiveTab(tab)}
               onClick={() => setActiveTab(tab)}
-              className={cn(
-                "flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
-                activeTab === tab
-                  ? "bg-primary text-primary-foreground shadow-sm"
-                  : "text-foreground/50 hover:text-foreground hover:bg-muted"
-              )}
-              aria-pressed={activeTab === tab}
+              style={{
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                padding: "18px 0",
+                marginRight: 28,
+                fontFamily: "Inter, sans-serif",
+                fontSize: "0.9375rem",
+                fontWeight: activeTab === tab ? 600 : 400,
+                color: activeTab === tab ? "#1C1917" : "#908E8D",
+                borderBottom: `2px solid ${activeTab === tab ? "#FF8136" : "transparent"}`,
+                marginBottom: -1,
+                transition: "color 0.14s",
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+              }}
             >
-              {tab === "personas"
-                ? <><Users size={13} />{lang === "es" ? "Personas" : "Personal"}</>
-                : <><Building2 size={13} />{lang === "es" ? "Empresas" : "Business"}</>
-              }
+              {tab === "personas" ? <Users size={15} /> : <Building2 size={15} />}
+              {tab === "personas" ? "Personas" : "Empresas"}
             </button>
           ))}
+
+          <a
+            href="#"
+            style={{
+              marginLeft: "auto",
+              display: "flex",
+              alignItems: "center",
+              gap: 4,
+              fontFamily: "Inter, sans-serif",
+              fontSize: 13,
+              fontWeight: 500,
+              color: "#908E8D",
+              textDecoration: "none",
+              padding: "18px 0",
+              transition: "color 0.14s",
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.color = "#1C1917"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.color = "#908E8D"; }}
+          >
+            Ver todo <ChevronRight size={13} />
+          </a>
         </div>
 
-        {/* Content grid: 3 menu columns + featured card */}
-        <div className="grid grid-cols-[1fr_1fr_1fr_220px] gap-3">
-          {columns.map((col, i) => (
-            <MegaMenuColumn
-              key={`${activeTab}-${i}`}
-              heading={col.heading[lang]}
-              items={col.items.map((item) => ({
-                label: item.label[lang],
-                description: item.description[lang],
-                href: item.href,
-                Icon: item.Icon,
-              }))}
-            />
-          ))}
-
-          {/* Featured card */}
-          <div className="relative overflow-hidden rounded-xl min-h-[200px]">
-            <img
-              src={featPhoto}
-              alt=""
-              className="absolute inset-0 h-full w-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[hsl(20_90%_30%/0.94)] via-[hsl(20_80%_42%/0.72)] to-transparent" />
-            <div className="relative flex h-full flex-col justify-end p-4 gap-2">
-              <span className="inline-flex w-fit items-center rounded-full bg-primary-foreground/20 border border-primary-foreground/25 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-primary-foreground backdrop-blur-sm">
-                {feat.tag}
-              </span>
-              <p className="text-[13px] font-bold text-primary-foreground leading-snug">
-                {feat.headline}
-              </p>
-              <p className="text-[11px] text-primary-foreground/80 leading-snug">
-                {feat.sub}
-              </p>
-              <Link
-                to={feat.href}
-                className="mt-1 inline-flex items-center gap-1.5 self-start rounded-full bg-primary-foreground/15 hover:bg-primary-foreground/25 border border-primary-foreground/30 px-3 py-1.5 text-[11px] font-semibold text-primary-foreground transition-colors backdrop-blur-sm"
+        {/* Body */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, x: isPersonas ? -10 : 10 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: isPersonas ? 10 : -10 }}
+            transition={{ duration: 0.15, ease: "easeOut" }}
+            style={{ display: "flex", gap: 0, padding: "24px 0" }}
+          >
+            {/* Left: categories grid */}
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
+                  gap: "24px 16px",
+                }}
               >
-                {feat.cta}
-                <ArrowRight size={10} />
-              </Link>
-            </div>
-          </div>
-        </div>
+                {data.categories.map((cat) => (
+                  <div key={cat.name}>
+                    <p
+                      style={{
+                        fontFamily: "Inter, sans-serif",
+                        fontSize: 11,
+                        fontWeight: 600,
+                        letterSpacing: "0.07em",
+                        textTransform: "uppercase",
+                        color: "#908E8D",
+                        marginBottom: 8,
+                        margin: "0 0 8px 0",
+                      }}
+                    >
+                      {cat.name}
+                    </p>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                      {cat.items.map((item) => (
+                        <a
+                          key={item.label}
+                          href="#"
+                          onClick={onClose}
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                            padding: "7px 8px",
+                            borderRadius: 9,
+                            textDecoration: "none",
+                            background: "transparent",
+                            transition: "background 0.12s",
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.background = isPersonas ? "#FFF3EC" : "#F2EFED";
+                            const arrow = e.currentTarget.querySelector(".arr") as HTMLElement | null;
+                            if (arrow) arrow.style.opacity = "1";
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.background = "transparent";
+                            const arrow = e.currentTarget.querySelector(".arr") as HTMLElement | null;
+                            if (arrow) arrow.style.opacity = "0";
+                          }}
+                        >
+                          <span>
+                            <span
+                              style={{
+                                display: "block",
+                                fontFamily: "Inter, sans-serif",
+                                fontSize: 13,
+                                fontWeight: 500,
+                                color: "#1C1917",
+                                lineHeight: 1.3,
+                              }}
+                            >
+                              {item.label}
+                            </span>
+                            {item.tag && (
+                              <span
+                                style={{
+                                  display: "inline-block",
+                                  marginTop: 2,
+                                  padding: "1px 6px",
+                                  borderRadius: 99,
+                                  background: "#FFF3EC",
+                                  color: "#FF8136",
+                                  fontSize: 10,
+                                  fontWeight: 600,
+                                  fontFamily: "Inter, sans-serif",
+                                }}
+                              >
+                                {item.tag}
+                              </span>
+                            )}
+                          </span>
+                          <ChevronRight
+                            className="arr"
+                            size={13}
+                            color="#FF8136"
+                            style={{ opacity: 0, transition: "opacity 0.12s", flexShrink: 0 }}
+                          />
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
 
-        {/* Footer row */}
-        <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-border pt-4">
-          {secondaryLinks[lang].map((link) => (
-            <Link
-              key={link.href}
-              to={link.href}
-              className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
+              {/* Footer links */}
+              <div
+                style={{
+                  display: "flex",
+                  gap: 4,
+                  marginTop: 20,
+                  paddingTop: 16,
+                  borderTop: "1px solid #E8E4E0",
+                }}
+              >
+                {secondaryLinks.map((link) => (
+                  <a
+                    key={link}
+                    href="#"
+                    onClick={onClose}
+                    style={{
+                      fontFamily: "Inter, sans-serif",
+                      fontSize: 12,
+                      fontWeight: 500,
+                      color: "#484746",
+                      textDecoration: "none",
+                      padding: "6px 10px",
+                      borderRadius: 8,
+                      transition: "background 0.12s, color 0.12s",
+                    }}
+                    onMouseEnter={(e) => { e.currentTarget.style.background = "#F2EFED"; e.currentTarget.style.color = "#1C1917"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#484746"; }}
+                  >
+                    {link}
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            {/* Right: featured card */}
+            <div
+              style={{
+                width: 240,
+                flexShrink: 0,
+                marginLeft: 24,
+                borderRadius: 16,
+                overflow: "hidden",
+                position: "relative",
+                minHeight: 280,
+              }}
             >
-              {link.label}
-            </Link>
-          ))}
-        </div>
+              <img
+                src={data.image}
+                alt=""
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                }}
+              />
+              <div
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  background:
+                    "linear-gradient(to top, rgba(28,25,23,0.88) 0%, rgba(28,25,23,0.45) 55%, transparent 100%)",
+                }}
+              />
+              <div
+                style={{
+                  position: "relative",
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "flex-end",
+                  padding: 20,
+                  gap: 8,
+                }}
+              >
+                <span
+                  style={{
+                    display: "inline-block",
+                    padding: "2px 8px",
+                    borderRadius: 99,
+                    background: "rgba(255,129,54,0.9)",
+                    color: "#fff",
+                    fontSize: 10,
+                    fontWeight: 700,
+                    fontFamily: "Inter, sans-serif",
+                    letterSpacing: "0.06em",
+                    textTransform: "uppercase",
+                    width: "fit-content",
+                  }}
+                >
+                  {data.featured.tag}
+                </span>
+                <p
+                  style={{
+                    fontFamily: "Inter, sans-serif",
+                    fontSize: 15,
+                    fontWeight: 700,
+                    color: "#fff",
+                    lineHeight: 1.3,
+                    margin: 0,
+                  }}
+                >
+                  {data.featured.label}
+                </p>
+                <p
+                  style={{
+                    fontFamily: "Inter, sans-serif",
+                    fontSize: 12,
+                    color: "rgba(255,255,255,0.8)",
+                    lineHeight: 1.45,
+                    margin: 0,
+                  }}
+                >
+                  {data.featured.desc}
+                </p>
+                <a
+                  href="#"
+                  onClick={onClose}
+                  style={{
+                    marginTop: 4,
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 6,
+                    padding: "8px 14px",
+                    borderRadius: 10,
+                    background: "rgba(255,255,255,0.15)",
+                    border: "1px solid rgba(255,255,255,0.25)",
+                    color: "#fff",
+                    fontFamily: "Inter, sans-serif",
+                    fontSize: 12,
+                    fontWeight: 600,
+                    textDecoration: "none",
+                    backdropFilter: "blur(4px)",
+                    transition: "background 0.14s",
+                    width: "fit-content",
+                  }}
+                  onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.25)"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.15)"; }}
+                >
+                  Conocer más <ArrowRight size={11} />
+                </a>
+              </div>
+            </div>
+          </motion.div>
+        </AnimatePresence>
       </div>
-    </div>
+    </motion.div>
   );
 }
