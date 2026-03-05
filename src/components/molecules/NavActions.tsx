@@ -1,42 +1,215 @@
-import { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { Search, Lock, X, Plus } from "lucide-react";
+import { useState, useRef, useEffect, useCallback } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  Search, Lock, X, Plus, Home, Users, Briefcase, FileText,
+  Phone, PiggyBank, Building2, SearchX, Loader2, CircleStop
+} from "lucide-react";
 import { cn } from "@/lib/utils";
-import { SearchOverlay } from "@/components/organisms/SearchOverlay";
 
 interface NavActionsProps {
   lang: "es" | "en";
 }
 
+interface SiteEntry {
+  title: string;
+  subtitle: string;
+  href: string;
+  icon: React.ElementType;
+}
+
+const siteIndex: SiteEntry[] = [
+  { title: "Inicio",            subtitle: "Página principal",           href: "/",                icon: Home },
+  { title: "Nosotros",          subtitle: "Quiénes somos",              href: "/about",           icon: Users },
+  { title: "Servicios",         subtitle: "Productos y soluciones",     href: "/services",        icon: Briefcase },
+  { title: "Blog",              subtitle: "Artículos y noticias",       href: "/blog",            icon: FileText },
+  { title: "Contacto",          subtitle: "Escríbenos o llámanos",      href: "/contact",         icon: Phone },
+  { title: "Cuenta de Ahorros", subtitle: "Para personas naturales",    href: "/cuenta-ahorros",  icon: PiggyBank },
+  { title: "Cuenta Jurídica",   subtitle: "Para empresas y negocios",   href: "/cuenta-juridica", icon: Building2 },
+  { title: "Banca en Línea",    subtitle: "Accede a tu cuenta",         href: "/login",           icon: Lock },
+];
+
 export function NavActions({ lang }: NavActionsProps) {
   const [accountOpen, setAccountOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [searchOpen, setSearchOpen]   = useState(false);
+  const [query, setQuery]             = useState("");
+  const [navigating, setNavigating]   = useState(false);
 
+  const accountRef = useRef<HTMLDivElement>(null);
+  const searchRef  = useRef<HTMLDivElement>(null);
+  const inputRef   = useRef<HTMLInputElement>(null);
+  const navigate   = useNavigate();
+
+  /* Close account dropdown on outside click */
   useEffect(() => {
     const handler = (e: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+      if (accountRef.current && !accountRef.current.contains(e.target as Node))
         setAccountOpen(false);
-      }
     };
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  return (
-    <>
-    <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
-    <div className="flex items-center gap-2">
-      {/* Search pill */}
-      <button
-        onClick={() => setSearchOpen(true)}
-        className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[hsl(30_20%_94%)] text-foreground/60 hover:bg-[hsl(30_15%_90%)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-        aria-label={lang === "es" ? "Buscar" : "Search"}
-      >
-        <Search size={17} />
-      </button>
+  /* Close search on outside click */
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(e.target as Node))
+        closeSearch();
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
 
-      {/* Banca en Línea */}
+  /* Esc key */
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") closeSearch(); };
+    if (searchOpen) document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [searchOpen]);
+
+  /* Focus input when search opens */
+  useEffect(() => {
+    if (searchOpen) setTimeout(() => inputRef.current?.focus(), 50);
+  }, [searchOpen]);
+
+  const closeSearch = useCallback(() => {
+    setSearchOpen(false);
+    setQuery("");
+    setNavigating(false);
+  }, []);
+
+  const handleSelect = useCallback((href: string) => {
+    setNavigating(true);
+    setTimeout(() => {
+      navigate(href);
+      closeSearch();
+    }, 800);
+  }, [navigate, closeSearch]);
+
+  const filtered = query.trim()
+    ? siteIndex.filter(e =>
+        e.title.toLowerCase().includes(query.toLowerCase()) ||
+        e.subtitle.toLowerCase().includes(query.toLowerCase())
+      )
+    : siteIndex;
+
+  return (
+    <div className="flex items-center gap-2">
+
+      {/* ── Search widget ── */}
+      <div ref={searchRef} className="relative">
+
+        {/* Trigger / Input bar — same "unified shape" pattern as account CTA */}
+        <div
+          className={cn(
+            "flex items-center bg-[hsl(30_20%_94%)]",
+            "transition-[width,border-radius] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]",
+            searchOpen
+              ? "w-64 rounded-tl-[18px] rounded-tr-[18px] rounded-bl-none rounded-br-none px-3 gap-2 h-10"
+              : "w-10 h-10 rounded-xl justify-center"
+          )}
+        >
+          {/* Search icon — always visible, acts as toggle when closed */}
+          <button
+            onClick={() => !searchOpen && setSearchOpen(true)}
+            aria-label={lang === "es" ? "Buscar" : "Search"}
+            className={cn(
+              "shrink-0 text-foreground/60 focus-visible:outline-none",
+              !searchOpen && "w-full h-full flex items-center justify-center"
+            )}
+          >
+            <Search size={17} />
+          </button>
+
+          {/* Input — only visible when open */}
+          <input
+            ref={inputRef}
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+            placeholder={lang === "es" ? "Buscar…" : "Search…"}
+            className={cn(
+              "flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none",
+              "transition-[opacity,width] duration-300",
+              searchOpen ? "opacity-100 w-full" : "opacity-0 w-0 pointer-events-none"
+            )}
+          />
+
+          {/* Close button */}
+          {searchOpen && (
+            <button
+              onClick={closeSearch}
+              className="shrink-0 flex h-5 w-5 items-center justify-center rounded-md text-foreground/40 hover:text-foreground transition-colors"
+            >
+              <X size={13} strokeWidth={2.5} />
+            </button>
+          )}
+        </div>
+
+        {/* Dropdown results — connected below, same fill as bar */}
+        <div
+          className={cn(
+            "absolute left-0 top-full z-50 w-64 rounded-tl-none rounded-tr-none rounded-bl-[18px] rounded-br-[18px]",
+            "bg-[hsl(30_20%_94%)] overflow-hidden",
+            "transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]",
+            searchOpen
+              ? "opacity-100 translate-y-0 pointer-events-auto"
+              : "opacity-0 -translate-y-2 pointer-events-none"
+          )}
+        >
+          {/* Results list */}
+          <div className="max-h-[320px] overflow-y-auto py-2 px-1.5">
+            {filtered.length > 0 ? (
+              filtered.map(entry => {
+                const Icon = entry.icon;
+                return (
+                  <button
+                    key={entry.href}
+                    onClick={() => handleSelect(entry.href)}
+                    className="flex w-full items-center gap-2.5 rounded-xl px-2 py-2 text-left transition-colors hover:bg-foreground/[0.06] focus:outline-none focus:bg-foreground/[0.06]"
+                  >
+                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-foreground/[0.06] text-foreground/50">
+                      <Icon size={13} />
+                    </span>
+                    <span className="flex flex-col min-w-0">
+                      <span className="text-sm font-semibold text-foreground leading-tight truncate">
+                        {entry.title}
+                      </span>
+                      <span className="text-[11px] text-muted-foreground leading-snug truncate">
+                        {entry.subtitle}
+                      </span>
+                    </span>
+                  </button>
+                );
+              })
+            ) : (
+              <div className="flex flex-col items-center justify-center gap-1.5 py-8 text-muted-foreground">
+                <SearchX size={22} strokeWidth={1.5} />
+                <p className="text-xs font-medium">Sin resultados</p>
+              </div>
+            )}
+          </div>
+
+          {/* Navigating bar */}
+          <div
+            className={cn(
+              "overflow-hidden transition-all duration-300 ease-out",
+              navigating ? "max-h-10 opacity-100" : "max-h-0 opacity-0"
+            )}
+          >
+            <div className="h-px bg-foreground/10" />
+            <div className="flex items-center gap-2 px-3 py-2.5">
+              <Loader2 size={13} className="animate-spin text-primary shrink-0" />
+              <span className="flex-1 text-[11px] font-medium text-muted-foreground">
+                {lang === "es" ? "Navegando…" : "Navigating…"}
+              </span>
+              <button onClick={closeSearch} className="text-muted-foreground hover:text-foreground transition-colors">
+                <CircleStop size={13} />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Banca en Línea ── */}
       <Link
         to="/login"
         className="hidden md:inline-flex items-center gap-2 rounded-xl bg-[hsl(30_20%_94%)] px-4 py-2.5 text-sm font-medium text-foreground hover:bg-[hsl(30_15%_90%)] transition-colors"
@@ -45,16 +218,15 @@ export function NavActions({ lang }: NavActionsProps) {
         {lang === "es" ? "Banca en Línea" : "Online Banking"}
       </Link>
 
-      {/* Abre tu cuenta */}
+      {/* ── Abre tu cuenta ── */}
       <div
-        ref={dropdownRef}
+        ref={accountRef}
         className="relative"
         onMouseEnter={() => setAccountOpen(true)}
         onMouseLeave={() => setAccountOpen(false)}
       >
-        {/* Button — expands to dropdown width and flattens bottom corners when open */}
         <button
-          onClick={() => setAccountOpen((o) => !o)}
+          onClick={() => setAccountOpen(o => !o)}
           aria-expanded={accountOpen}
           aria-haspopup="true"
           className={cn(
@@ -66,20 +238,14 @@ export function NavActions({ lang }: NavActionsProps) {
           )}
         >
           {lang === "es" ? "Abre tu cuenta" : "Open Account"}
-          <span
-            className={cn(
-              "flex h-6 w-6 items-center justify-center rounded-lg bg-primary-foreground/20 transition-all duration-300",
-              accountOpen && "bg-primary-foreground/30"
-            )}
-          >
-            {accountOpen
-              ? <X size={13} strokeWidth={2.5} />
-              : <Plus size={13} strokeWidth={2.5} />
-            }
+          <span className={cn(
+            "flex h-6 w-6 items-center justify-center rounded-lg bg-primary-foreground/20 transition-all duration-300",
+            accountOpen && "bg-primary-foreground/30"
+          )}>
+            {accountOpen ? <X size={13} strokeWidth={2.5} /> : <Plus size={13} strokeWidth={2.5} />}
           </span>
         </button>
 
-        {/* Dropdown — translateY for fluid entrance, no scale distortion */}
         <div
           className={cn(
             "absolute right-0 top-full z-50 w-64 rounded-tl-none rounded-tr-none rounded-bl-[18px] rounded-br-[18px] bg-primary px-3 pb-3 pt-3 shadow-xl",
@@ -89,11 +255,9 @@ export function NavActions({ lang }: NavActionsProps) {
               : "opacity-0 -translate-y-2 pointer-events-none"
           )}
         >
-          {/* Overline */}
           <p className="mb-2.5 px-2 text-[10px] font-semibold uppercase tracking-widest text-primary-foreground/50">
             {lang === "es" ? "Tipo de cuenta" : "Account type"}
           </p>
-
           <div className="flex flex-col">
             <Link
               to="/cuenta-ahorros"
@@ -107,9 +271,7 @@ export function NavActions({ lang }: NavActionsProps) {
                 {lang === "es" ? "Para personas naturales" : "For individuals"}
               </p>
             </Link>
-
             <div className="my-1 mx-2 h-px bg-primary-foreground/15" />
-
             <Link
               to="/cuenta-juridica"
               onClick={() => setAccountOpen(false)}
@@ -126,6 +288,5 @@ export function NavActions({ lang }: NavActionsProps) {
         </div>
       </div>
     </div>
-    </>
   );
 }
