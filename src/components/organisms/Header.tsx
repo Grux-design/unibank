@@ -49,7 +49,7 @@ export function Header({ lang, onToggleLang }: HeaderProps) {
   };
 
   return (
-    <header className="relative sticky top-0 z-50 pt-4" style={{ background: "hsl(30 80% 97%)" }}>
+    <header className="relative sticky top-0 z-50 bg-transparent pt-4">
       {/* Main bar */}
       <div className="mx-auto flex h-16 max-w-screen-xl items-center justify-between px-4 sm:px-6">
 
