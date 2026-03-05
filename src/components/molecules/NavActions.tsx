@@ -31,6 +31,7 @@ const siteIndex: SiteEntry[] = [
 export function NavActions({ lang }: NavActionsProps) {
   const [accountOpen, setAccountOpen] = useState(false);
   const [searchOpen, setSearchOpen]   = useState(false);
+  const [searchVisible, setSearchVisible] = useState(false); // controls bar width (delayed on close)
   const [query, setQuery]             = useState("");
   const [navigating, setNavigating]   = useState(false);
 
