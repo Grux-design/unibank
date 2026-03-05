@@ -51,7 +51,7 @@ export function Header({ lang, onToggleLang }: HeaderProps) {
   return (
     <header className="relative sticky top-0 z-50 bg-transparent pt-4">
       {/* Main bar */}
-      <div className="mx-auto flex h-16 max-w-screen-xl items-center justify-between px-4 sm:px-6">
+      <div className="mx-auto flex max-w-screen-xl items-center justify-between px-4 sm:px-6">
 
         {/* LEFT GROUP */}
         <div className="flex items-center gap-3 rounded-2xl bg-background px-3 py-2 shadow-sm">
