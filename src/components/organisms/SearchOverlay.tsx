@@ -45,7 +45,7 @@ export function SearchOverlay({ open, onClose, lang = "es", triggerRef }: Search
   useEffect(() => {
     if (open && triggerRef.current) {
       const rect = triggerRef.current.getBoundingClientRect();
-      setPos({ top: rect.bottom + 8, left: rect.left });
+      setPos({ top: rect.top, left: rect.left });
     }
   }, [open, triggerRef]);
 
@@ -104,7 +104,7 @@ export function SearchOverlay({ open, onClose, lang = "es", triggerRef }: Search
       <div
         style={{ top: pos.top, left: pos.left }}
         className={cn(
-          "absolute w-[420px] max-w-[calc(100vw-2rem)] overflow-hidden rounded-2xl",
+          "absolute w-[396px] max-w-[calc(100vw-2rem)] overflow-hidden rounded-2xl",
           "bg-background border border-border shadow-[0_8px_32px_-4px_hsl(var(--foreground)/0.12)]",
           "transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] origin-top-left",
           visible ? "opacity-100 scale-100" : "opacity-0 scale-[0.4]"
