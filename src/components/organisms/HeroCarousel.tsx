@@ -161,7 +161,7 @@ export function HeroCarousel({ lang }: HeroCarouselProps) {
     >
       {/* Slide container */}
       <div
-        className="mx-auto flex max-w-screen-xl flex-col items-center gap-10 px-4 py-12 sm:px-6 lg:flex-row lg:gap-16 lg:py-20 xl:py-24"
+        className="mx-auto flex max-w-screen-xl flex-col items-center gap-10 px-4 pb-12 pt-[104px] sm:px-6 lg:flex-row lg:gap-16 lg:pb-20 lg:pt-[104px] xl:pb-24 xl:pt-[104px]"
         aria-live="polite"
         aria-atomic="true"
       >
