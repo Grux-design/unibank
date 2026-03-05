@@ -10,6 +10,7 @@ interface NavActionsProps {
 
 export function NavActions({ lang }: NavActionsProps) {
   const [accountOpen, setAccountOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
