@@ -126,5 +126,6 @@ export function NavActions({ lang }: NavActionsProps) {
         </div>
       </div>
     </div>
+    </>
   );
 }
