@@ -30,6 +30,9 @@ export function NavActions({ lang, onToggleLang }: NavActionsProps) {
   return (
     <div className="flex items-center gap-2">
 
+      {/* ── Language switcher ── */}
+      <LangSwitcher lang={lang} onToggleLang={onToggleLang} />
+
       {/* ── Search trigger ── */}
       <button
         ref={searchBtnRef}
