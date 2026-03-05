@@ -1,6 +1,6 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X, Globe } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Logo } from "@/components/atoms/Logo";
 import { NavPill } from "@/components/atoms/NavPill";
 import { NavActions } from "@/components/molecules/NavActions";
@@ -25,49 +25,46 @@ export function Header({ lang, onToggleLang }: HeaderProps) {
   ];
 
   return (
-    <header className="relative sticky top-0 z-50 border-b border-border/60 bg-background/95 backdrop-blur-sm">
+    <header className="relative sticky top-0 z-50 bg-transparent">
       {/* Main bar */}
-      <div className="mx-auto flex h-16 max-w-screen-xl items-center gap-4 px-4 sm:px-6">
-        {/* Left: Menú pill */}
-        <NavPill
-          variant="ghost"
-          onClick={() => { setMenuOpen((o) => !o); setMobileOpen(false); }}
-          aria-expanded={menuOpen}
-          aria-controls="mega-menu"
-          className="hidden gap-2 sm:inline-flex"
-        >
-          {menuOpen ? <X size={16} /> : <Menu size={16} />}
-          {lang === "es" ? "Menú" : "Menu"}
-        </NavPill>
+      <div className="mx-auto flex h-16 max-w-screen-xl items-center justify-between px-4 sm:px-6">
 
-        {/* Mobile hamburger */}
-        <button
-          className="flex h-9 w-9 items-center justify-center rounded-full border border-foreground/20 sm:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-          onClick={() => { setMobileOpen((o) => !o); setMenuOpen(false); }}
-          aria-label="Toggle mobile menu"
-          aria-expanded={mobileOpen}
-        >
-          {mobileOpen ? <X size={18} /> : <Menu size={18} />}
-        </button>
-
-        {/* Center: Logo */}
-        <Link to="/" className="mx-auto flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-sm" aria-label="UniBank – Inicio">
-          <Logo variant="full-color" height={36} />
-        </Link>
-
-        {/* Right: Nav actions */}
-        <div className="flex items-center gap-2">
-          {/* Language toggle */}
-          <button
-            onClick={onToggleLang}
-            className="hidden items-center gap-1.5 rounded-full border border-foreground/20 px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-foreground/60 hover:border-foreground/40 hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:flex"
-            aria-label="Toggle language"
+        {/* LEFT GROUP: Menu pill + Logo */}
+        <div className="flex items-center gap-3">
+          {/* Desktop menu pill */}
+          <NavPill
+            variant="menu"
+            onClick={() => { setMenuOpen((o) => !o); setMobileOpen(false); }}
+            aria-expanded={menuOpen}
+            aria-controls="mega-menu"
+            className="hidden sm:inline-flex"
           >
-            <Globe size={13} />
-            {lang === "es" ? "EN" : "ES"}
+            {menuOpen ? <X size={16} /> : <Menu size={16} />}
+            {lang === "es" ? "Menú" : "Menu"}
+          </NavPill>
+
+          {/* Mobile hamburger */}
+          <button
+            className="flex h-10 w-10 items-center justify-center rounded-xl bg-[hsl(30_60%_95%)] text-[hsl(20_5%_44%)] sm:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            onClick={() => { setMobileOpen((o) => !o); setMenuOpen(false); }}
+            aria-label="Toggle mobile menu"
+            aria-expanded={mobileOpen}
+          >
+            {mobileOpen ? <X size={18} /> : <Menu size={18} />}
           </button>
-          <NavActions lang={lang} />
+
+          {/* Logo */}
+          <Link
+            to="/"
+            className="flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-sm"
+            aria-label="UniBank – Inicio"
+          >
+            <Logo variant="full-color" height={36} />
+          </Link>
         </div>
+
+        {/* RIGHT GROUP: search + CTAs */}
+        <NavActions lang={lang} />
       </div>
 
       {/* Mega menu overlay (desktop) */}
@@ -94,15 +91,6 @@ export function Header({ lang, onToggleLang }: HeaderProps) {
                 </li>
               ))}
             </ul>
-            <div className="mt-4 flex flex-col gap-2 border-t border-border pt-4">
-              <button
-                onClick={onToggleLang}
-                className="flex w-full items-center gap-2 rounded-xl border border-foreground/20 px-4 py-2.5 text-sm font-semibold text-foreground/60"
-              >
-                <Globe size={14} />
-                {lang === "es" ? "Switch to English" : "Cambiar a Español"}
-              </button>
-            </div>
           </nav>
         </div>
       )}
