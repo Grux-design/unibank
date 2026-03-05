@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Search, Lock, X, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { SearchOverlay } from "@/components/organisms/SearchOverlay";
 
 interface NavActionsProps {
   lang: "es" | "en";
@@ -9,6 +10,7 @@ interface NavActionsProps {
 
 export function NavActions({ lang }: NavActionsProps) {
   const [accountOpen, setAccountOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -22,9 +24,12 @@ export function NavActions({ lang }: NavActionsProps) {
   }, []);
 
   return (
+    <>
+    <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
     <div className="flex items-center gap-2">
       {/* Search pill */}
       <button
+        onClick={() => setSearchOpen(true)}
         className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[hsl(30_20%_94%)] text-foreground/60 hover:bg-[hsl(30_15%_90%)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
         aria-label={lang === "es" ? "Buscar" : "Search"}
       >
@@ -121,5 +126,6 @@ export function NavActions({ lang }: NavActionsProps) {
         </div>
       </div>
     </div>
+    </>
   );
 }

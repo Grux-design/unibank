@@ -1,60 +1,34 @@
 
-## Plan: Site-Wide Search Overlay
+## Plan: Contentful CMS Connection
 
-### Reference analysis
-The screenshots show a command-palette-style search overlay:
-- Dark rounded container, full-width input with a search icon on the left and an "Esc" kbd badge on the right
-- Results list below a divider: each row has an icon on the left, **bold title** on top, muted subtitle below
-- Highlighted/hovered row has a slightly lighter background
-- When typing, filtered results update live
-- Empty state when no results match
-- "Navigating..." loading label with a spinner and a stop button (for future use, we'll just show it as a static UI element on navigation)
+The user wants to establish a Contentful connection — no pages or components yet, just the integration layer.
 
-### Architecture
+Since the Content Delivery API token is a **public/client-side key** (it's read-only and safe to expose), it can be stored in the codebase via `.env`. However, the Content Preview API token should be kept secret (it exposes unpublished content).
 
-**New file: `src/components/organisms/SearchOverlay.tsx`**
-Full-screen backdrop (`fixed inset-0 z-[60] bg-black/50 backdrop-blur-sm`) with a centered card (`max-w-lg w-full mx-auto mt-24`). The card has:
-- Top row: `<Search>` icon + `<input>` + `<kbd>Esc</kbd>` badge
-- Thin `<hr>` separator
-- Scrollable results list (max-h ~[320px])
-- Each result row: icon (from lucide, category-specific) + title (bold) + subtitle (muted, smaller)
-- Hover: `bg-foreground/5 rounded-lg` highlight
-- Empty state: centered icon + "No results found" message
+### What will be done
 
-**Site index (static data, defined inside the component):**
-```ts
-const siteIndex = [
-  { title: "Inicio",          subtitle: "Página principal",             href: "/",         icon: Home },
-  { title: "Nosotros",        subtitle: "Quiénes somos",                href: "/about",    icon: Users },
-  { title: "Servicios",       subtitle: "Productos y soluciones",       href: "/services", icon: Briefcase },
-  { title: "Blog",            subtitle: "Artículos y noticias",         href: "/blog",     icon: FileText },
-  { title: "Contacto",        subtitle: "Escríbenos o llámanos",        href: "/contact",  icon: Phone },
-  { title: "Cuenta de Ahorros", subtitle: "Para personas naturales",   href: "/cuenta-ahorros", icon: PiggyBank },
-  { title: "Cuenta Jurídica", subtitle: "Para empresas y negocios",     href: "/cuenta-juridica", icon: Building2 },
-  { title: "Banca en Línea",  subtitle: "Accede a tu cuenta",          href: "/login",    icon: Lock },
-]
-```
-Filtered in real time via `.filter()` on query string (title + subtitle, case-insensitive).
+1. **Store tokens securely in `.env`**:
+   - `VITE_CONTENTFUL_SPACE_ID=bsxwchto8q9z` — public, safe for client-side
+   - `VITE_CONTENTFUL_ACCESS_TOKEN=hPb7E44kegBR2V5fG1Hj147ph7zIWTY7EiLQYronG60` — Content Delivery token (read-only, safe to expose)
+   - Store the Preview token as a Lovable Cloud secret (`CONTENTFUL_PREVIEW_TOKEN`) so it's only accessible from edge functions
 
-**Interaction:**
-- Opens when clicking the search button in `NavActions`
-- Closes on Esc key, backdrop click, or after navigating
-- `useNavigate` + `useEffect` to close after route change
+2. **Create `src/integrations/contentful/client.ts`**:
+   - Export a configured Contentful client using the Delivery API
+   - Use `fetch` directly (no extra SDK needed) or a lightweight wrapper
+   - Exports `CONTENTFUL_SPACE_ID` and `CONTENTFUL_BASE_URL` constants for reuse
 
-**Wiring:**
-- Lift `searchOpen` state to `NavActions` (already self-contained) — pass `onSearchOpen` from `NavActions` to a trigger button
-- Actually simpler: keep all state inside `NavActions`, render `<SearchOverlay>` as a portal sibling there using a `useState` flag
+3. **Create `src/integrations/contentful/types.ts`**:
+   - Define base TypeScript types: `ContentfulEntry<T>`, `ContentfulAsset`, `ContentfulCollection<T>`
+   - These will be extended later as content models are defined in Contentful
 
-**"Navigating..." state:**
-- When user clicks a result, set `navigating = true` for ~800ms showing the bottom bar: spinner + "Navigating..." text + stop circle icon — then close
+### What will NOT be done
+- No pages, components, or data-fetching hooks yet
+- No edge function for preview (can be added when preview mode is needed)
+- No content model-specific types (will be defined when CMS structure is decided)
 
 ### Files to create/edit
+- `src/integrations/contentful/client.ts` — Contentful fetch client
+- `src/integrations/contentful/types.ts` — Base types
+- `.env` — Add `VITE_CONTENTFUL_SPACE_ID` and `VITE_CONTENTFUL_ACCESS_TOKEN`
 
-1. **Create** `src/components/organisms/SearchOverlay.tsx` — full overlay component
-2. **Edit** `src/components/molecules/NavActions.tsx` — add `searchOpen` state, wire search button `onClick`, render `<SearchOverlay>` 
-
-### Animation
-- Overlay backdrop: `opacity-0` → `opacity-100`, duration-200
-- Card: `opacity-0 scale-95 translate-y-2` → `opacity-100 scale-100 translate-y-0`, duration-200 ease-out
-- Results: immediate (no stagger needed, keeps it snappy)
-- "Navigating..." bar: slides up from bottom of card
+The Preview API token will be stored as a secret (`CONTENTFUL_PREVIEW_TOKEN`) via the secrets tool so it's available for future edge functions but never exposed to the browser.
