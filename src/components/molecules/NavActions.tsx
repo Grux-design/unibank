@@ -24,9 +24,12 @@ export function NavActions({ lang }: NavActionsProps) {
   }, []);
 
   return (
+    <>
+    <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
     <div className="flex items-center gap-2">
       {/* Search pill */}
       <button
+        onClick={() => setSearchOpen(true)}
         className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[hsl(30_20%_94%)] text-foreground/60 hover:bg-[hsl(30_15%_90%)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
         aria-label={lang === "es" ? "Buscar" : "Search"}
       >
