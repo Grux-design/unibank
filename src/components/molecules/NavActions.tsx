@@ -1,24 +1,16 @@
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Search, Lock, Plus, X } from "lucide-react";
+import { Search, Lock, Plus } from "lucide-react";
 import { NavPill } from "@/components/atoms/NavPill";
-import { cn } from "@/lib/utils";
 
 interface NavActionsProps {
   lang: "es" | "en";
 }
 
 export function NavActions({ lang }: NavActionsProps) {
-  const [searchOpen, setSearchOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
-  const searchRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (searchOpen) searchRef.current?.focus();
-  }, [searchOpen]);
-
-  // Close account dropdown on outside click
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
@@ -31,44 +23,22 @@ export function NavActions({ lang }: NavActionsProps) {
 
   return (
     <div className="flex items-center gap-2">
-      {/* Search */}
-      <div className="relative flex items-center">
-        {searchOpen ? (
-          <div className="flex items-center gap-2 rounded-full border border-foreground/20 bg-background px-3 py-1.5">
-            <Search size={16} className="text-foreground/40 shrink-0" />
-            <input
-              ref={searchRef}
-              type="search"
-              placeholder={lang === "es" ? "Buscar…" : "Search…"}
-              className="w-36 bg-transparent text-sm text-foreground outline-none placeholder:text-foreground/40"
-              aria-label={lang === "es" ? "Campo de búsqueda" : "Search field"}
-            />
-            <button
-              onClick={() => setSearchOpen(false)}
-              className="text-foreground/40 hover:text-foreground transition-colors"
-              aria-label="Close search"
-            >
-              <X size={14} />
-            </button>
-          </div>
-        ) : (
-          <button
-            onClick={() => setSearchOpen(true)}
-            className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-foreground/5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-            aria-label={lang === "es" ? "Abrir búsqueda" : "Open search"}
-          >
-            <Search size={18} className="text-foreground/70" />
-          </button>
-        )}
-      </div>
+      {/* Search pill */}
+      <button
+        className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[hsl(30_20%_94%)] text-foreground/60 hover:bg-[hsl(30_15%_90%)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        aria-label={lang === "es" ? "Buscar" : "Search"}
+      >
+        <Search size={17} />
+      </button>
 
       {/* Banca en Línea */}
-      <NavPill variant="outline" asChild className="hidden md:inline-flex">
-        <Link to="/login" className="inline-flex items-center gap-2">
-          <Lock size={13} />
-          {lang === "es" ? "Banca en Línea" : "Online Banking"}
-        </Link>
-      </NavPill>
+      <Link
+        to="/login"
+        className="hidden md:inline-flex items-center gap-2 rounded-xl bg-[hsl(30_20%_94%)] px-4 py-2.5 text-sm font-medium text-foreground hover:bg-[hsl(30_15%_90%)] transition-colors"
+      >
+        <Lock size={14} />
+        {lang === "es" ? "Banca en Línea" : "Online Banking"}
+      </Link>
 
       {/* Abre tu cuenta */}
       <div className="relative" ref={dropdownRef}>
@@ -89,9 +59,7 @@ export function NavActions({ lang }: NavActionsProps) {
               onClick={() => setAccountOpen(false)}
               className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary-foreground/10 transition-colors"
             >
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-foreground/15 text-base">
-                💰
-              </span>
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-foreground/15 text-base">💰</span>
               {lang === "es" ? "Cuenta de Ahorros" : "Savings Account"}
             </Link>
             <Link
@@ -99,9 +67,7 @@ export function NavActions({ lang }: NavActionsProps) {
               onClick={() => setAccountOpen(false)}
               className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary-foreground/10 transition-colors"
             >
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-foreground/15 text-base">
-                🏢
-              </span>
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-foreground/15 text-base">🏢</span>
               {lang === "es" ? "Cuenta Jurídica" : "Business Account"}
             </Link>
           </div>

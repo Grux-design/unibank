@@ -1,33 +1,34 @@
 
-## Floating Header — Pixel-Perfect Redesign
+## Plan: Contentful CMS Connection
 
-### What changes
+The user wants to establish a Contentful connection — no pages or components yet, just the integration layer.
 
-**Header shell** (`Header.tsx`):
-- Remove `border-b`, `bg-background/95`, `backdrop-blur-sm` → replace with `bg-transparent`
-- Layout becomes `justify-between` with two explicit groups: `left-group` and `right-group`
-- No center logo — logo moves into the **left group**, right after the Menu pill
-- Remove language toggle (Globe button) — not present in the reference
+Since the Content Delivery API token is a **public/client-side key** (it's read-only and safe to expose), it can be stored in the codebase via `.env`. However, the Content Preview API token should be kept secret (it exposes unpublished content).
 
-**Left group** (Menu pill + Logo):
-- Menu pill: warm peach fill `bg-[#fdf0e8]` (matches the cream tint from image), no border, rounded-xl (not full-pill), padding `px-4 py-2.5`, hamburger icon + "Menú" text in medium gray `text-[#726f6e]`
-- Logo: `Logo variant="full-color"` immediately after, height 36, no wrapper background
-- Gap between the two: `gap-3`
+### What will be done
 
-**Right group** (NavActions):
-- Search: pill shape `bg-[#f2f0ef]` (light warm gray), `h-10 px-3`, just the search icon centered — matches the square-ish pill in image 2
-- "Banca en Línea 🔒": pill `bg-[#f2f0ef]` (same gray bg), no border, `px-5 py-2.5`, lock icon + text
-- "Abre tu cuenta +": orange filled pill `bg-[#ff8136]`, white text, `+` on the right end, wider padding, slightly bolder
+1. **Store tokens securely in `.env`**:
+   - `VITE_CONTENTFUL_SPACE_ID=bsxwchto8q9z` — public, safe for client-side
+   - `VITE_CONTENTFUL_ACCESS_TOKEN=hPb7E44kegBR2V5fG1Hj147ph7zIWTY7EiLQYronG60` — Content Delivery token (read-only, safe to expose)
+   - Store the Preview token as a Lovable Cloud secret (`CONTENTFUL_PREVIEW_TOKEN`) so it's only accessible from edge functions
 
-**NavPill atom** — add a new `"tinted"` variant: `bg-[#f2f0ef] text-foreground hover:bg-[#e8e5e3]` for the gray pills.
+2. **Create `src/integrations/contentful/client.ts`**:
+   - Export a configured Contentful client using the Delivery API
+   - Use `fetch` directly (no extra SDK needed) or a lightweight wrapper
+   - Exports `CONTENTFUL_SPACE_ID` and `CONTENTFUL_BASE_URL` constants for reuse
 
-**Exact sizing from image:**
-- All pills same height ~40px
-- Menu pill: `px-4 py-2.5` with `gap-2.5`, text `text-sm font-medium`
-- Right pills: equal height, consistent `py-2.5`
+3. **Create `src/integrations/contentful/types.ts`**:
+   - Define base TypeScript types: `ContentfulEntry<T>`, `ContentfulAsset`, `ContentfulCollection<T>`
+   - These will be extended later as content models are defined in Contentful
 
-### Files to edit
+### What will NOT be done
+- No pages, components, or data-fetching hooks yet
+- No edge function for preview (can be added when preview mode is needed)
+- No content model-specific types (will be defined when CMS structure is decided)
 
-1. **`src/components/atoms/NavPill.tsx`** — add `tinted` variant (warm gray bg, no border)
-2. **`src/components/molecules/NavActions.tsx`** — search button → tinted pill; "Banca en Línea" → tinted pill; layout tweaks
-3. **`src/components/organisms/Header.tsx`** — remove bg/border, split into left/right groups, move logo into left group, remove Globe language toggle from header bar
+### Files to create/edit
+- `src/integrations/contentful/client.ts` — Contentful fetch client
+- `src/integrations/contentful/types.ts` — Base types
+- `.env` — Add `VITE_CONTENTFUL_SPACE_ID` and `VITE_CONTENTFUL_ACCESS_TOKEN`
+
+The Preview API token will be stored as a secret (`CONTENTFUL_PREVIEW_TOKEN`) via the secrets tool so it's available for future edge functions but never exposed to the browser.
