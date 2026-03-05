@@ -93,13 +93,21 @@
 }
 
 /* ================================================
-   WIREFRAME HELPERS
+   PRODUCTION COMPONENT STYLES
    ================================================ */
 
 @layer components {
-  /* Wireframe block: generic labelled grey box */
-  .wf-block {
-    background: hsl(0 0% 93%);
+  /* Smooth page transitions */
+  #main-content {
+    animation: fadeIn 0.2s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+}
+
     border: 1.5px dashed hsl(0 0% 70%);
     border-radius: 4px;
     display: flex;
