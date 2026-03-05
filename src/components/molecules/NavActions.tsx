@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Search, Lock, X, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SearchOverlay } from "@/components/organisms/SearchOverlay";
+import { useRef as useSearchRef } from "react";
 
 interface NavActionsProps {
   lang: "es" | "en";
