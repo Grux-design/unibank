@@ -27,100 +27,108 @@ const siteIndex: SiteEntry[] = [
 interface SearchOverlayProps {
   open: boolean;
   onClose: () => void;
+  lang?: "es" | "en";
 }
 
-export function SearchOverlay({ open, onClose }: SearchOverlayProps) {
-  const [query, setQuery] = useState("");
+export function SearchOverlay({ open, onClose, lang = "es" }: SearchOverlayProps) {
+  const [query, setQuery]         = useState("");
   const [navigating, setNavigating] = useState(false);
-  const [visible, setVisible] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const navigate = useNavigate();
+  const [mounted, setMounted]     = useState(false);
+  const [visible, setVisible]     = useState(false);
+  const inputRef  = useRef<HTMLInputElement>(null);
+  const navigate  = useNavigate();
 
-  // Mount animation
+  /* Mount → tick → visible (open) */
   useEffect(() => {
     if (open) {
-      setVisible(true);
-      setTimeout(() => inputRef.current?.focus(), 50);
+      setMounted(true);
+      // small RAF so the initial state renders before we apply visible classes
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => setVisible(true));
+      });
+      setTimeout(() => inputRef.current?.focus(), 80);
     } else {
       setVisible(false);
+      // unmount after transition completes
       setTimeout(() => {
+        setMounted(false);
         setQuery("");
         setNavigating(false);
-      }, 200);
+      }, 300);
     }
   }, [open]);
 
-  // Esc key
+  /* Esc key */
   useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
+    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
     if (open) document.addEventListener("keydown", handler);
     return () => document.removeEventListener("keydown", handler);
   }, [open, onClose]);
 
+  /* Lock body scroll */
+  useEffect(() => {
+    if (open) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "";
+    return () => { document.body.style.overflow = ""; };
+  }, [open]);
+
   const filtered = query.trim()
-    ? siteIndex.filter(
-        (e) =>
-          e.title.toLowerCase().includes(query.toLowerCase()) ||
-          e.subtitle.toLowerCase().includes(query.toLowerCase())
+    ? siteIndex.filter(e =>
+        e.title.toLowerCase().includes(query.toLowerCase()) ||
+        e.subtitle.toLowerCase().includes(query.toLowerCase())
       )
     : siteIndex;
 
-  const handleSelect = useCallback(
-    (href: string) => {
-      setNavigating(true);
-      setTimeout(() => {
-        navigate(href);
-        onClose();
-      }, 800);
-    },
-    [navigate, onClose]
-  );
+  const handleSelect = useCallback((href: string) => {
+    setNavigating(true);
+    setTimeout(() => {
+      navigate(href);
+      onClose();
+    }, 700);
+  }, [navigate, onClose]);
 
-  if (!open && !visible) return null;
+  if (!mounted) return null;
 
   return (
+    /* Backdrop */
     <div
       className={cn(
-        "fixed inset-0 z-[60] flex items-start justify-center px-4 pt-24 transition-opacity duration-200",
-        open && visible ? "opacity-100" : "opacity-0"
+        "fixed inset-0 z-[60] transition-colors duration-300",
+        visible ? "bg-foreground/30 backdrop-blur-[2px]" : "bg-transparent"
       )}
+      onClick={onClose}
     >
-      {/* Backdrop */}
-      <div
-        className="absolute inset-0 bg-foreground/40 backdrop-blur-sm"
-        onClick={onClose}
-      />
-
-      {/* Card */}
+      {/* Card — grows from top-right corner (where the search icon lives) */}
       <div
         className={cn(
-          "relative z-10 w-full max-w-lg overflow-hidden rounded-2xl bg-background shadow-[var(--shadow-lg)]",
-          "transition-all duration-200 ease-out",
-          open && visible
-            ? "opacity-100 scale-100 translate-y-0"
-            : "opacity-0 scale-95 translate-y-2"
+          "absolute right-4 top-4 w-[420px] max-w-[calc(100vw-2rem)] overflow-hidden rounded-2xl",
+          "bg-background border border-border shadow-[0_8px_32px_-4px_hsl(var(--foreground)/0.12)]",
+          "transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] origin-top-right",
+          visible
+            ? "opacity-100 scale-100"
+            : "opacity-0 scale-[0.5]"
         )}
+        onClick={e => e.stopPropagation()}
       >
-        {/* Search input row */}
+
+        {/* Input row */}
         <div className="flex items-center gap-3 px-4 py-3.5">
-          <Search size={17} className="shrink-0 text-muted-foreground" />
+          <Search size={16} className="shrink-0 text-muted-foreground" />
           <input
             ref={inputRef}
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Buscar páginas y recursos…"
+            onChange={e => setQuery(e.target.value)}
+            placeholder={lang === "es" ? "Buscar páginas y recursos…" : "Search pages & resources…"}
             className="flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
           />
-          <kbd className="hidden sm:inline-flex items-center gap-1 rounded-md border border-border bg-muted px-1.5 py-0.5 text-[11px] font-medium text-muted-foreground select-none">
+          <kbd className="hidden sm:inline-flex items-center rounded-md border border-border bg-muted px-1.5 py-0.5 text-[11px] font-medium text-muted-foreground select-none">
             Esc
           </kbd>
           <button
             onClick={onClose}
-            className="ml-1 flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground hover:text-foreground transition-colors sm:hidden"
+            className="flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground hover:text-foreground transition-colors"
           >
-            <X size={15} />
+            <X size={14} />
           </button>
         </div>
 
@@ -128,16 +136,15 @@ export function SearchOverlay({ open, onClose }: SearchOverlayProps) {
         <div className="h-px bg-border" />
 
         {/* Results */}
-        <div className="max-h-[320px] overflow-y-auto py-2">
+        <div className="max-h-[360px] overflow-y-auto py-2 px-2">
           {filtered.length > 0 ? (
-            filtered.map((entry) => {
+            filtered.map(entry => {
               const Icon = entry.icon;
               return (
                 <button
                   key={entry.href}
                   onClick={() => handleSelect(entry.href)}
-                  className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 mx-1 text-left transition-colors hover:bg-muted focus:outline-none focus:bg-muted"
-                  style={{ width: "calc(100% - 8px)" }}
+                  className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors hover:bg-muted focus:outline-none focus:bg-muted"
                 >
                   <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground">
                     <Icon size={15} />
@@ -155,9 +162,10 @@ export function SearchOverlay({ open, onClose }: SearchOverlayProps) {
             })
           ) : (
             <div className="flex flex-col items-center justify-center gap-2 py-10 text-muted-foreground">
-              <SearchX size={28} strokeWidth={1.5} />
-              <p className="text-sm font-medium">Sin resultados para "{query}"</p>
-              <p className="text-xs">Intenta con otro término</p>
+              <SearchX size={26} strokeWidth={1.5} />
+              <p className="text-sm font-medium">
+                {lang === "es" ? `Sin resultados para "${query}"` : `No results for "${query}"`}
+              </p>
             </div>
           )}
         </div>
@@ -173,7 +181,7 @@ export function SearchOverlay({ open, onClose }: SearchOverlayProps) {
           <div className="flex items-center gap-2.5 px-4 py-3">
             <Loader2 size={14} className="animate-spin text-primary shrink-0" />
             <span className="flex-1 text-xs font-medium text-muted-foreground">
-              Navegando…
+              {lang === "es" ? "Navegando…" : "Navigating…"}
             </span>
             <button
               onClick={onClose}
@@ -184,6 +192,7 @@ export function SearchOverlay({ open, onClose }: SearchOverlayProps) {
             </button>
           </div>
         </div>
+
       </div>
     </div>
   );
