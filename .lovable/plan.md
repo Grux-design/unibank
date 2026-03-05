@@ -1,34 +1,49 @@
 
-## Plan: Contentful CMS Connection
+## Plan: Replace Right Header Pill with the new RightHeaderPill component
 
-The user wants to establish a Contentful connection — no pages or components yet, just the integration layer.
+### What's happening
 
-Since the Content Delivery API token is a **public/client-side key** (it's read-only and safe to expose), it can be stored in the codebase via `.env`. However, the Content Preview API token should be kept secret (it exposes unpublished content).
+The user wants to replace the current right group in the header (which renders `NavActions`) with a new self-contained `RightHeaderPill` component built with `motion/react` (Framer Motion). The new component has 4 sub-widgets: LanguageWidget, SearchWidget, BancaEnLineaWidget, and AbreCuentaWidget — all with richer animations and a distinct visual identity.
 
-### What will be done
+### Key decisions
 
-1. **Store tokens securely in `.env`**:
-   - `VITE_CONTENTFUL_SPACE_ID=bsxwchto8q9z` — public, safe for client-side
-   - `VITE_CONTENTFUL_ACCESS_TOKEN=hPb7E44kegBR2V5fG1Hj147ph7zIWTY7EiLQYronG60` — Content Delivery token (read-only, safe to expose)
-   - Store the Preview token as a Lovable Cloud secret (`CONTENTFUL_PREVIEW_TOKEN`) so it's only accessible from edge functions
+1. **`motion` package** — The snippet uses `motion/react` (the modern Framer Motion package). This is NOT in `package.json` yet. It needs to be installed as `motion`.
 
-2. **Create `src/integrations/contentful/client.ts`**:
-   - Export a configured Contentful client using the Delivery API
-   - Use `fetch` directly (no extra SDK needed) or a lightweight wrapper
-   - Exports `CONTENTFUL_SPACE_ID` and `CONTENTFUL_BASE_URL` constants for reuse
+2. **`lang` / `onToggleLang` props** — The current `NavActions` receives these from `Header`. The new `RightHeaderPill` manages its own language state internally. To keep the parent `SiteLayout` in sync (so translated pages still work), we need to thread the `lang` state out. Two options:
+   - **Option A (simple):** Let `RightHeaderPill` manage lang internally and pass `onLangChange` callback up. Header passes it to SiteLayout.
+   - **Option B (simplest, least disruption):** Keep `lang` + `onToggleLang` props on `RightHeaderPill` — the widget accepts an external `lang` + setter and controls its display accordingly. This keeps SiteLayout's language state working.
 
-3. **Create `src/integrations/contentful/types.ts`**:
-   - Define base TypeScript types: `ContentfulEntry<T>`, `ContentfulAsset`, `ContentfulCollection<T>`
-   - These will be extended later as content models are defined in Contentful
+   I'll go with **Option B** — add optional `lang` / `onLangChange` props to `RightHeaderPill` so it integrates cleanly without breaking the rest of the app.
 
-### What will NOT be done
-- No pages, components, or data-fetching hooks yet
-- No edge function for preview (can be added when preview mode is needed)
-- No content model-specific types (will be defined when CMS structure is decided)
+3. **`isMenuOpen` prop** — The component accepts `isMenuOpen` to make its background transparent when the mega menu is open. Wire this from `Header`'s `menuOpen` state.
+
+4. **Search navigation** — The new `SearchWidget` uses `href="#"` placeholders. Swap these for real `react-router-dom` `useNavigate` calls matching the existing `siteIndex` in `SearchOverlay.tsx`.
+
+5. **`BancaEnLineaWidget` links** — Wire the Personas/Empresas options to `/login` (matching current behavior).
+
+6. **`AbreCuentaWidget` links** — Wire to `/cuenta-ahorros` and `/cuenta-juridica`.
+
+7. **Remove `NavActions.tsx`** — It gets fully replaced. The `LangSwitcher`, `SearchOverlay` components remain in the codebase (used elsewhere or kept for now).
+
+8. **Right group wrapper in `Header.tsx`** — Replace the `<div className="flex items-center rounded-2xl bg-background px-3 py-2 shadow-sm">` wrapper and `<NavActions>` with `<RightHeaderPill>` directly. The pill manages its own background/border-radius via `isMenuOpen`.
+
+9. **Header height adjustment** — `RightHeaderPill` has `height: 66px` internally. The current right group uses `py-2` making it ~52px. The outer `h-16` (64px) bar may need to become `h-[74px]` or we remove the fixed height and let content dictate it so the 66px pill fits with room.
 
 ### Files to create/edit
-- `src/integrations/contentful/client.ts` — Contentful fetch client
-- `src/integrations/contentful/types.ts` — Base types
-- `.env` — Add `VITE_CONTENTFUL_SPACE_ID` and `VITE_CONTENTFUL_ACCESS_TOKEN`
 
-The Preview API token will be stored as a secret (`CONTENTFUL_PREVIEW_TOKEN`) via the secrets tool so it's available for future edge functions but never exposed to the browser.
+1. **Install `motion` package** — add to dependencies
+2. **`src/components/molecules/RightHeaderPill.tsx`** — new file with the full snippet, adapted:
+   - Add `lang` / `onLangChange` props (optional) to `LanguageWidget` and root `RightHeaderPill`
+   - Replace `href="#"` with real routes using `useNavigate`
+   - `BancaEnLineaWidget` → links to `/login`
+   - `AbreCuentaWidget` → links to `/cuenta-ahorros` and `/cuenta-juridica`
+3. **`src/components/organisms/Header.tsx`** — replace right group:
+   - Remove `NavActions` import
+   - Import `RightHeaderPill`
+   - Replace the right `<div>` wrapper + `<NavActions>` with `<RightHeaderPill isMenuOpen={menuOpen} lang={lang} onLangChange={onToggleLang} />`
+   - Remove fixed `h-16` from the inner bar or bump it to fit the 66px pill
+4. **`src/components/layout/SiteLayout.tsx`** — no changes needed (Header still accepts `lang`/`onToggleLang` and passes them down)
+
+### Layout note on header height
+
+Current: `<div className="mx-auto flex h-16 ...">` (64px). The pill is 66px. Change `h-16` → remove fixed height (just `flex items-center`) so the bar grows naturally to fit both groups. The `pt-4` on the header wrapper remains, `- mt-20` in `SiteLayout` should stay correct since the visual height is similar.
