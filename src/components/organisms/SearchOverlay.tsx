@@ -94,16 +94,16 @@ export function SearchOverlay({ open, onClose, lang = "es" }: SearchOverlayProps
     <div
       className={cn(
         "fixed inset-0 z-[60] transition-colors duration-300",
-        visible ? "bg-foreground/30 backdrop-blur-[2px]" : "bg-transparent"
+        visible ? "bg-background/40 backdrop-blur-[1px]" : "bg-transparent"
       )}
       onClick={onClose}
     >
       {/* Card — grows from top-right corner (where the search icon lives) */}
       <div
-        className={cn(
-          "absolute right-4 top-4 w-[420px] max-w-[calc(100vw-2rem)] overflow-hidden rounded-2xl",
+      className={cn(
+          "absolute left-4 top-4 w-[420px] max-w-[calc(100vw-2rem)] overflow-hidden rounded-2xl",
           "bg-background border border-border shadow-[0_8px_32px_-4px_hsl(var(--foreground)/0.12)]",
-          "transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] origin-top-right",
+          "transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] origin-top-left",
           visible
             ? "opacity-100 scale-100"
             : "opacity-0 scale-[0.5]"
