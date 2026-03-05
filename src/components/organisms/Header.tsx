@@ -1,8 +1,7 @@
 import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
-import { Logo } from "@/components/atoms/Logo";
-import { NavPill } from "@/components/atoms/NavPill";
+import { LeftHeaderPill } from "@/components/molecules/LeftHeaderPill";
 import { RightHeaderPill } from "@/components/molecules/RightHeaderPill";
 import { MegaMenu } from "@/components/organisms/MegaMenu";
 import type { Lang } from "@/components/layout/SiteLayout";
