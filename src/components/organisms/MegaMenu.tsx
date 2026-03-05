@@ -73,37 +73,13 @@ const empresasColumns = [
 
 const featured = {
   personas: {
-    es: {
-      tag: "Nuevo",
-      headline: "Abre tu cuenta en minutos, desde tu celular",
-      sub: "Sin filas, sin papeleos. 100% digital.",
-      cta: "Comenzar ahora",
-      href: "/cuentas/ahorros",
-    },
-    en: {
-      tag: "New",
-      headline: "Open your account in minutes, from your phone",
-      sub: "No lines, no paperwork. 100% digital.",
-      cta: "Get started",
-      href: "/cuentas/ahorros",
-    },
+    es: { tag: "Nuevo", headline: "Abre tu cuenta en minutos, desde tu celular", sub: "Sin filas, sin papeleos. 100% digital.", cta: "Comenzar ahora", href: "/cuentas/ahorros" },
+    en: { tag: "New", headline: "Open your account in minutes, from your phone", sub: "No lines, no paperwork. 100% digital.", cta: "Get started", href: "/cuentas/ahorros" },
     photo: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&q=80",
   },
   empresas: {
-    es: {
-      tag: "Empresas",
-      headline: "Soluciones financieras que escalan con tu negocio",
-      sub: "Crédito, inversión y banca digital en un solo lugar.",
-      cta: "Ver soluciones",
-      href: "/empresas/credito",
-    },
-    en: {
-      tag: "Business",
-      headline: "Financial solutions that scale with your business",
-      sub: "Credit, investment and digital banking in one place.",
-      cta: "See solutions",
-      href: "/empresas/credito",
-    },
+    es: { tag: "Empresas", headline: "Soluciones financieras que escalan con tu negocio", sub: "Crédito, inversión y banca digital en un solo lugar.", cta: "Ver soluciones", href: "/empresas/credito" },
+    en: { tag: "Business", headline: "Financial solutions that scale with your business", sub: "Credit, investment and digital banking in one place.", cta: "See solutions", href: "/empresas/credito" },
     photo: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80",
   },
 };
@@ -130,16 +106,27 @@ export function MegaMenu({ lang, visible }: MegaMenuProps) {
   const featPhoto = featured[activeTab].photo;
 
   return (
+    /* Floating card anchored top-left, matching the reference screenshot proportions */
     <div
       className={cn(
-        "absolute left-0 right-0 top-full z-40 border-t border-border bg-background/95 backdrop-blur-sm shadow-[0_20px_60px_-12px_hsl(0_0%_0%/0.15)]",
-        "transition-all duration-200 ease-out origin-top",
-        visible ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 -translate-y-2 pointer-events-none"
+        // Positioning: sits below the header bar, anchored to the left edge
+        "absolute left-4 top-[calc(100%+8px)] z-40",
+        // Floating card shape
+        "w-[880px] max-w-[calc(100vw-2rem)] rounded-2xl",
+        // Surface
+        "bg-background border border-border",
+        // Elevation matching the reference (deep, soft shadow)
+        "shadow-[0_8px_40px_-8px_hsl(0_0%_0%/0.18),0_2px_8px_-2px_hsl(0_0%_0%/0.08)]",
+        // Smooth enter/exit
+        "transition-all duration-200 ease-out origin-top-left",
+        visible
+          ? "opacity-100 translate-y-0 scale-100 pointer-events-auto"
+          : "opacity-0 -translate-y-1 scale-[0.98] pointer-events-none"
       )}
       role="navigation"
       aria-label={lang === "es" ? "Menú principal" : "Main menu"}
     >
-      <div className="mx-auto max-w-screen-xl px-6 py-6">
+      <div className="p-5">
         {/* Tab row */}
         <div className="flex items-center gap-1 mb-5">
           {(["personas", "empresas"] as const).map((tab) => (
@@ -163,12 +150,11 @@ export function MegaMenu({ lang, visible }: MegaMenuProps) {
           ))}
         </div>
 
-        {/* Content grid: columns + featured card */}
-        <div className="grid grid-cols-[1fr_1fr_1fr_280px] gap-4">
-          {/* Menu columns */}
+        {/* Content grid: 3 menu columns + featured card */}
+        <div className="grid grid-cols-[1fr_1fr_1fr_220px] gap-3">
           {columns.map((col, i) => (
             <MegaMenuColumn
-              key={i}
+              key={`${activeTab}-${i}`}
               heading={col.heading[lang]}
               items={col.items.map((item) => ({
                 label: item.label[lang],
@@ -180,37 +166,36 @@ export function MegaMenu({ lang, visible }: MegaMenuProps) {
           ))}
 
           {/* Featured card */}
-          <div className="relative overflow-hidden rounded-2xl min-h-[220px]">
+          <div className="relative overflow-hidden rounded-xl min-h-[200px]">
             <img
               src={featPhoto}
               alt=""
               className="absolute inset-0 h-full w-full object-cover"
             />
-            {/* gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[hsl(20_90%_35%/0.92)] via-[hsl(20_80%_45%/0.70)] to-transparent" />
-            <div className="relative flex h-full flex-col justify-end p-5 gap-2">
-              <span className="inline-flex w-fit items-center rounded-full bg-primary-foreground/20 border border-primary-foreground/30 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-widest text-primary-foreground backdrop-blur-sm">
+            <div className="absolute inset-0 bg-gradient-to-t from-[hsl(20_90%_30%/0.94)] via-[hsl(20_80%_42%/0.72)] to-transparent" />
+            <div className="relative flex h-full flex-col justify-end p-4 gap-2">
+              <span className="inline-flex w-fit items-center rounded-full bg-primary-foreground/20 border border-primary-foreground/25 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-primary-foreground backdrop-blur-sm">
                 {feat.tag}
               </span>
-              <p className="text-[15px] font-bold text-primary-foreground leading-snug">
+              <p className="text-[13px] font-bold text-primary-foreground leading-snug">
                 {feat.headline}
               </p>
-              <p className="text-xs text-primary-foreground/80 leading-snug">
+              <p className="text-[11px] text-primary-foreground/80 leading-snug">
                 {feat.sub}
               </p>
               <Link
                 to={feat.href}
-                className="mt-1 inline-flex items-center gap-1.5 self-start rounded-full bg-primary-foreground/15 hover:bg-primary-foreground/25 border border-primary-foreground/30 px-3 py-1.5 text-xs font-semibold text-primary-foreground transition-colors backdrop-blur-sm"
+                className="mt-1 inline-flex items-center gap-1.5 self-start rounded-full bg-primary-foreground/15 hover:bg-primary-foreground/25 border border-primary-foreground/30 px-3 py-1.5 text-[11px] font-semibold text-primary-foreground transition-colors backdrop-blur-sm"
               >
                 {feat.cta}
-                <ArrowRight size={11} />
+                <ArrowRight size={10} />
               </Link>
             </div>
           </div>
         </div>
 
         {/* Footer row */}
-        <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-border pt-4">
+        <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-border pt-4">
           {secondaryLinks[lang].map((link) => (
             <Link
               key={link.href}

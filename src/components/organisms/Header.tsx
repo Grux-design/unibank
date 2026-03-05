@@ -12,6 +12,8 @@ interface HeaderProps {
   onToggleLang: () => void;
 }
 
+const CLOSE_DELAY = 450; // ms — generous so cursor can travel to the panel
+
 export function Header({ lang, onToggleLang }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
@@ -26,21 +28,25 @@ export function Header({ lang, onToggleLang }: HeaderProps) {
     { label: { es: "Contacto", en: "Contact" }, href: "/contact" },
   ];
 
-  const openMenu = () => {
+  const cancelClose = () => {
     if (closeTimer.current) clearTimeout(closeTimer.current);
-    setMenuOpen(true);
-    // small tick so CSS transition triggers
-    requestAnimationFrame(() => setMenuVisible(true));
   };
 
-  const closeMenu = () => {
-    setMenuVisible(false);
-    closeTimer.current = setTimeout(() => setMenuOpen(false), 200);
+  const openMenu = () => {
+    cancelClose();
+    if (!menuOpen) {
+      setMenuOpen(true);
+      requestAnimationFrame(() => setMenuVisible(true));
+    }
   };
 
-  const handleMouseEnter = () => openMenu();
-  const handleMouseLeave = () => closeMenu();
-  const handleClick = () => (menuOpen ? closeMenu() : openMenu());
+  const scheduleClose = () => {
+    closeTimer.current = setTimeout(() => {
+      setMenuVisible(false);
+      // wait for CSS transition to finish before unmounting
+      setTimeout(() => setMenuOpen(false), 200);
+    }, CLOSE_DELAY);
+  };
 
   return (
     <header className="relative sticky top-0 z-50 bg-transparent">
@@ -49,15 +55,15 @@ export function Header({ lang, onToggleLang }: HeaderProps) {
 
         {/* LEFT GROUP */}
         <div className="flex items-center gap-3 rounded-2xl bg-background px-3 py-2 shadow-sm">
-          {/* Desktop menu pill — hover zone wraps pill + mega menu via the outer <header> */}
+          {/* Desktop menu pill — hover zone */}
           <div
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
+            onMouseEnter={openMenu}
+            onMouseLeave={scheduleClose}
             className="hidden sm:block"
           >
             <NavPill
               variant="menu"
-              onClick={handleClick}
+              onClick={() => (menuOpen ? scheduleClose() : openMenu())}
               aria-expanded={menuOpen}
               aria-controls="mega-menu"
             >
@@ -69,7 +75,7 @@ export function Header({ lang, onToggleLang }: HeaderProps) {
           {/* Mobile hamburger */}
           <button
             className="flex h-10 w-10 items-center justify-center rounded-xl bg-[hsl(30_60%_95%)] text-[hsl(20_5%_44%)] sm:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-            onClick={() => { setMobileOpen((o) => !o); closeMenu(); }}
+            onClick={() => { setMobileOpen((o) => !o); scheduleClose(); }}
             aria-label="Toggle mobile menu"
             aria-expanded={mobileOpen}
           >
@@ -92,12 +98,12 @@ export function Header({ lang, onToggleLang }: HeaderProps) {
         </div>
       </div>
 
-      {/* Mega menu overlay — stays in hover zone via parent <header> */}
+      {/* Mega menu — floating card, mouse events continue the hover chain */}
       {menuOpen && (
         <div
           id="mega-menu"
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
+          onMouseEnter={cancelClose}
+          onMouseLeave={scheduleClose}
         >
           <MegaMenu lang={lang} visible={menuVisible} />
         </div>
