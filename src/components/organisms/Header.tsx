@@ -52,43 +52,37 @@ export function Header({ lang, onToggleLang }: HeaderProps) {
       {/* Main bar */}
       <div className="mx-auto flex max-w-screen-xl items-center justify-between px-4 sm:px-6">
 
-        {/* LEFT GROUP */}
-        <div className="flex items-center gap-3 rounded-2xl bg-background px-3 py-2 shadow-sm">
-          {/* Desktop menu pill — hover zone */}
-          <div
-            onMouseEnter={openMenu}
-            onMouseLeave={scheduleClose}
-            className="hidden sm:block"
-          >
-            <NavPill
-              variant="menu"
-              onClick={() => (menuOpen ? scheduleClose() : openMenu())}
-              aria-expanded={menuOpen}
-              aria-controls="mega-menu"
-            >
-              {menuOpen ? <X size={16} /> : <Menu size={16} />}
-              {lang === "es" ? "Menú" : "Menu"}
-            </NavPill>
+        {/* LEFT GROUP — desktop LeftHeaderPill + mobile hamburger */}
+        <div className="flex items-center">
+          {/* Desktop pill */}
+          <div className="hidden sm:block">
+            <LeftHeaderPill
+              menuOpen={menuOpen}
+              lang={lang}
+              onToggle={() => (menuOpen ? scheduleClose() : openMenu())}
+              onMouseEnter={openMenu}
+              onMouseLeave={scheduleClose}
+            />
           </div>
 
-          {/* Mobile hamburger */}
-          <button
-            className="flex h-10 w-10 items-center justify-center rounded-xl bg-[hsl(30_60%_95%)] text-[hsl(20_5%_44%)] sm:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-            onClick={() => { setMobileOpen((o) => !o); scheduleClose(); }}
-            aria-label="Toggle mobile menu"
-            aria-expanded={mobileOpen}
-          >
-            {mobileOpen ? <X size={18} /> : <Menu size={18} />}
-          </button>
-
-          {/* Logo */}
-          <Link
-            to="/"
-            className="flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-sm"
-            aria-label="UniBank – Inicio"
-          >
-            <Logo variant="full-color" height={36} />
-          </Link>
+          {/* Mobile hamburger + logo group */}
+          <div className="flex items-center gap-3 rounded-2xl bg-background px-3 py-2 shadow-sm sm:hidden">
+            <button
+              className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#F7E8E0] text-[#FF8136] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              onClick={() => setMobileOpen((o) => !o)}
+              aria-label="Toggle mobile menu"
+              aria-expanded={mobileOpen}
+            >
+              {mobileOpen ? <X size={18} /> : <Menu size={18} />}
+            </button>
+            <Link
+              to="/"
+              className="flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-sm"
+              aria-label="UniBank – Inicio"
+            >
+              <img src="/favicon.svg" alt="UniBank" style={{ height: 28, width: "auto" }} />
+            </Link>
+          </div>
         </div>
 
         {/* RIGHT GROUP */}
