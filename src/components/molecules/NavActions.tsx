@@ -113,16 +113,16 @@ export function NavActions({ lang }: NavActionsProps) {
         {/* Trigger / Input bar — same "unified shape" pattern as account CTA */}
         <div
           className={cn(
-            "flex items-center bg-muted",
+            "flex items-center bg-background border border-border",
             "transition-[width,border-radius] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]",
-            searchOpen
-              ? "w-72 rounded-tl-[18px] rounded-tr-[18px] rounded-bl-none rounded-br-none px-3 gap-2 h-10"
+            searchVisible
+              ? "w-72 rounded-tl-[18px] rounded-tr-[18px] rounded-bl-none rounded-br-none border-b-0 px-3 gap-2 h-10"
               : "w-10 h-10 rounded-xl justify-center"
           )}
         >
           {/* Search icon — always visible, acts as toggle when closed */}
           <button
-            onClick={() => !searchOpen && setSearchOpen(true)}
+            onClick={() => !searchVisible && openSearch()}
             aria-label={lang === "es" ? "Buscar" : "Search"}
             className={cn(
               "shrink-0 text-foreground/60 focus-visible:outline-none",
