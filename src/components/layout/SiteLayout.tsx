@@ -11,7 +11,7 @@ export function SiteLayout() {
   return (
     <div className="flex min-h-screen flex-col">
       <Header lang={lang} onToggleLang={() => setLang(lang === "es" ? "en" : "es")} />
-      <main id="main-content" className="flex-1 -mt-16">
+      <main id="main-content" className="flex-1 -mt-20">
         <Outlet context={{ lang }} />
       </main>
       <Footer lang={lang} />
