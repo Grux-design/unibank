@@ -73,14 +73,14 @@ export function NavActions({ lang }: NavActionsProps) {
   }, [searchOpen]);
 
   const closeSearch = useCallback(() => {
-    // 1. hide dropdown immediately
+    // 1. fade out dropdown first
     setSearchOpen(false);
     setNavigating(false);
-    // 2. shrink bar after dropdown has faded out
+    // 2. after dropdown has fully faded (200ms transition + small buffer), shrink bar
     setTimeout(() => {
       setSearchVisible(false);
       setQuery("");
-    }, 250);
+    }, 220);
   }, []);
 
   const openSearch = useCallback(() => {
@@ -116,7 +116,7 @@ export function NavActions({ lang }: NavActionsProps) {
             "flex items-center bg-background border border-border",
             "transition-[width,border-radius] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]",
             searchVisible
-              ? "w-72 rounded-tl-[18px] rounded-tr-[18px] rounded-bl-none rounded-br-none border-b-0 px-3 gap-2 h-10"
+              ? `w-72 rounded-tl-[18px] rounded-tr-[18px] rounded-bl-none rounded-br-none px-3 gap-2 h-10 ${searchOpen ? "border-b-0" : ""}`
               : "w-10 h-10 rounded-xl justify-center"
           )}
         >
