@@ -73,14 +73,14 @@ export function NavActions({ lang }: NavActionsProps) {
   }, [searchOpen]);
 
   const closeSearch = useCallback(() => {
-    // 1. hide dropdown immediately
+    // 1. fade out dropdown first
     setSearchOpen(false);
     setNavigating(false);
-    // 2. shrink bar after dropdown has faded out
+    // 2. after dropdown has fully faded (200ms transition + small buffer), shrink bar
     setTimeout(() => {
       setSearchVisible(false);
       setQuery("");
-    }, 250);
+    }, 220);
   }, []);
 
   const openSearch = useCallback(() => {
