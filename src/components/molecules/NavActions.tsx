@@ -31,6 +31,7 @@ const siteIndex: SiteEntry[] = [
 export function NavActions({ lang }: NavActionsProps) {
   const [accountOpen, setAccountOpen] = useState(false);
   const [searchOpen, setSearchOpen]   = useState(false);
+  const [searchVisible, setSearchVisible] = useState(false); // controls bar width (delayed on close)
   const [query, setQuery]             = useState("");
   const [navigating, setNavigating]   = useState(false);
 
@@ -72,9 +73,20 @@ export function NavActions({ lang }: NavActionsProps) {
   }, [searchOpen]);
 
   const closeSearch = useCallback(() => {
+    // 1. hide dropdown immediately
     setSearchOpen(false);
-    setQuery("");
     setNavigating(false);
+    // 2. shrink bar after dropdown has faded out
+    setTimeout(() => {
+      setSearchVisible(false);
+      setQuery("");
+    }, 250);
+  }, []);
+
+  const openSearch = useCallback(() => {
+    setSearchVisible(true);
+    // bar expands first, then dropdown appears (handled via delay in dropdown class)
+    setTimeout(() => setSearchOpen(true), 10);
   }, []);
 
   const handleSelect = useCallback((href: string) => {
@@ -101,16 +113,16 @@ export function NavActions({ lang }: NavActionsProps) {
         {/* Trigger / Input bar — same "unified shape" pattern as account CTA */}
         <div
           className={cn(
-            "flex items-center bg-muted",
+            "flex items-center bg-background border border-border",
             "transition-[width,border-radius] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]",
-            searchOpen
-              ? "w-72 rounded-tl-[18px] rounded-tr-[18px] rounded-bl-none rounded-br-none px-3 gap-2 h-10"
+            searchVisible
+              ? "w-72 rounded-tl-[18px] rounded-tr-[18px] rounded-bl-none rounded-br-none border-b-0 px-3 gap-2 h-10"
               : "w-10 h-10 rounded-xl justify-center"
           )}
         >
           {/* Search icon — always visible, acts as toggle when closed */}
           <button
-            onClick={() => !searchOpen && setSearchOpen(true)}
+            onClick={() => !searchVisible && openSearch()}
             aria-label={lang === "es" ? "Buscar" : "Search"}
             className={cn(
               "shrink-0 text-foreground/60 focus-visible:outline-none",
@@ -129,12 +141,12 @@ export function NavActions({ lang }: NavActionsProps) {
             className={cn(
               "flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none",
               "transition-[opacity,width] duration-300",
-              searchOpen ? "opacity-100 w-full" : "opacity-0 w-0 pointer-events-none"
+              searchVisible ? "opacity-100 w-full" : "opacity-0 w-0 pointer-events-none"
             )}
           />
 
           {/* Close button */}
-          {searchOpen && (
+          {searchVisible && (
             <button
               onClick={closeSearch}
               className="shrink-0 flex h-5 w-5 items-center justify-center rounded-md text-foreground/40 hover:text-foreground transition-colors"
@@ -148,11 +160,11 @@ export function NavActions({ lang }: NavActionsProps) {
         <div
           className={cn(
             "absolute left-0 top-full z-50 w-72 rounded-tl-none rounded-tr-none rounded-bl-[18px] rounded-br-[18px]",
-            "bg-muted overflow-hidden",
-            "transition-[opacity,transform] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]",
+            "bg-background border border-border border-t-0 overflow-hidden",
+            "transition-[opacity,transform] duration-200 ease-[cubic-bezier(0.4,0,0.2,1)]",
             searchOpen
               ? "opacity-100 translate-y-0 pointer-events-auto delay-200"
-              : "opacity-0 -translate-y-2 pointer-events-none delay-0"
+              : "opacity-0 -translate-y-1 pointer-events-none"
           )}
         >
           {/* Results list */}
