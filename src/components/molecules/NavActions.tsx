@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Search, Lock, Plus } from "lucide-react";
-import { NavPill } from "@/components/atoms/NavPill";
+import { Search, Lock, X, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface NavActionsProps {
@@ -41,71 +40,85 @@ export function NavActions({ lang }: NavActionsProps) {
         {lang === "es" ? "Banca en Línea" : "Online Banking"}
       </Link>
 
-      {/* Abre tu cuenta */}
+      {/* Abre tu cuenta — unified orange card */}
       <div
-        className="relative"
         ref={dropdownRef}
         onMouseEnter={() => setAccountOpen(true)}
         onMouseLeave={() => setAccountOpen(false)}
+        className={cn(
+          "relative rounded-[18px] bg-primary shadow-sm transition-shadow duration-200",
+          accountOpen && "shadow-xl"
+        )}
       >
-        <NavPill
-          variant="filled"
+        {/* Trigger row — always visible */}
+        <button
           onClick={() => setAccountOpen((o) => !o)}
           aria-expanded={accountOpen}
           aria-haspopup="true"
+          className="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-semibold text-primary-foreground focus-visible:outline-none"
         >
           {lang === "es" ? "Abre tu cuenta" : "Open Account"}
-          <span className={cn("transition-transform duration-200", accountOpen && "rotate-45")}>
-            <Plus size={15} />
+          <span
+            className={cn(
+              "flex h-6 w-6 items-center justify-center rounded-lg bg-primary-foreground/20 transition-all duration-200",
+              accountOpen ? "bg-primary-foreground/30" : "hover:bg-primary-foreground/25"
+            )}
+          >
+            {accountOpen
+              ? <X size={13} strokeWidth={2.5} />
+              : <Plus size={13} strokeWidth={2.5} />
+            }
           </span>
-        </NavPill>
+        </button>
 
-        {/* Dropdown — always rendered, CSS-animated */}
+        {/* Expandable content */}
         <div
           className={cn(
-            "absolute right-0 top-[calc(100%-12px)] z-40 w-64 origin-top-right rounded-[20px] bg-primary pt-14 pb-2 px-2 shadow-xl transition-all duration-200 ease-out",
-            accountOpen
-              ? "opacity-100 scale-100 pointer-events-auto"
-              : "opacity-0 scale-95 pointer-events-none"
+            "overflow-hidden transition-all duration-200 ease-out",
+            accountOpen ? "max-h-64 opacity-100" : "max-h-0 opacity-0"
           )}
         >
-          {/* Overline label */}
-          <p className="px-3 pt-1 pb-2 text-[10px] font-semibold uppercase tracking-widest text-primary-foreground/50">
-            {lang === "es" ? "Tipo de cuenta" : "Account type"}
-          </p>
+          {/* Thin separator */}
+          <div className="mx-4 h-px bg-primary-foreground/20" />
 
-          <div className="flex flex-col gap-0.5">
-            <Link
-              to="/cuenta-ahorros"
-              onClick={() => setAccountOpen(false)}
-              className="group rounded-xl px-3 py-3 transition-colors hover:bg-primary-foreground/10"
-            >
-              <p className="text-sm font-semibold text-primary-foreground leading-tight">
-                {lang === "es" ? "Cuenta de Ahorros" : "Savings Account"}
-              </p>
-              <p className="mt-0.5 text-xs text-primary-foreground/60 leading-snug">
-                {lang === "es" ? "Para personas naturales" : "For individuals"}
-              </p>
-            </Link>
+          <div className="px-4 pt-3 pb-4">
+            {/* Overline */}
+            <p className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-primary-foreground/50">
+              {lang === "es" ? "Tipo de cuenta" : "Account type"}
+            </p>
 
-            <div className="mx-3 h-px bg-primary-foreground/15" />
+            <div className="flex flex-col">
+              <Link
+                to="/cuenta-ahorros"
+                onClick={() => setAccountOpen(false)}
+                className="rounded-xl px-2 py-2.5 transition-colors hover:bg-primary-foreground/15"
+              >
+                <p className="text-sm font-semibold text-primary-foreground leading-tight">
+                  {lang === "es" ? "Cuenta de Ahorros" : "Savings Account"}
+                </p>
+                <p className="mt-0.5 text-xs text-primary-foreground/60 leading-snug">
+                  {lang === "es" ? "Para personas naturales" : "For individuals"}
+                </p>
+              </Link>
 
-            <Link
-              to="/cuenta-juridica"
-              onClick={() => setAccountOpen(false)}
-              className="group rounded-xl px-3 py-3 transition-colors hover:bg-primary-foreground/10"
-            >
-              <p className="text-sm font-semibold text-primary-foreground leading-tight">
-                {lang === "es" ? "Cuenta Jurídica" : "Business Account"}
-              </p>
-              <p className="mt-0.5 text-xs text-primary-foreground/60 leading-snug">
-                {lang === "es" ? "Para empresas y negocios" : "For companies & businesses"}
-              </p>
-            </Link>
+              <div className="my-1 h-px bg-primary-foreground/15" />
+
+              <Link
+                to="/cuenta-juridica"
+                onClick={() => setAccountOpen(false)}
+                className="rounded-xl px-2 py-2.5 transition-colors hover:bg-primary-foreground/15"
+              >
+                <p className="text-sm font-semibold text-primary-foreground leading-tight">
+                  {lang === "es" ? "Cuenta Jurídica" : "Business Account"}
+                </p>
+                <p className="mt-0.5 text-xs text-primary-foreground/60 leading-snug">
+                  {lang === "es" ? "Para empresas y negocios" : "For companies & businesses"}
+                </p>
+              </Link>
+            </div>
           </div>
         </div>
       </div>
     </div>
   );
 }
-
