@@ -65,7 +65,7 @@ export function Header({ lang, onToggleLang }: HeaderProps) {
 
         {/* RIGHT GROUP: white container */}
         <div className="flex items-center rounded-2xl bg-background px-3 py-2 shadow-sm">
-          <NavActions lang={lang} />
+          <NavActions lang={lang} onToggleLang={onToggleLang} />
         </div>
       </div>
 

@@ -3,12 +3,14 @@ import { Link } from "react-router-dom";
 import { Search, Lock, X, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SearchOverlay } from "@/components/organisms/SearchOverlay";
+import { LangSwitcher } from "@/components/molecules/LangSwitcher";
 
 interface NavActionsProps {
   lang: "es" | "en";
+  onToggleLang: () => void;
 }
 
-export function NavActions({ lang }: NavActionsProps) {
+export function NavActions({ lang, onToggleLang }: NavActionsProps) {
   const [accountOpen, setAccountOpen] = useState(false);
   const [searchOpen, setSearchOpen]   = useState(false);
 
@@ -27,6 +29,9 @@ export function NavActions({ lang }: NavActionsProps) {
 
   return (
     <div className="flex items-center gap-2">
+
+      {/* ── Language switcher ── */}
+      <LangSwitcher lang={lang} onToggleLang={onToggleLang} />
 
       {/* ── Search trigger ── */}
       <button
