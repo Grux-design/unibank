@@ -76,7 +76,7 @@ export function NavActions({ lang }: NavActionsProps) {
         {/* Dropdown — absolutely positioned, top-right corner flat to merge with button */}
         <div
           className={cn(
-            "absolute right-0 top-full z-50 w-64 origin-top-right rounded-bl-[18px] rounded-br-[18px] rounded-tl-[18px] rounded-tr-none bg-primary px-3 pb-3 pt-3 shadow-xl transition-all duration-200 ease-out",
+            "absolute right-0 top-full z-50 w-64 origin-top rounded-tl-none rounded-tr-none rounded-bl-[18px] rounded-br-[18px] bg-primary px-3 pb-3 pt-3 shadow-xl transition-all duration-200 ease-out",
             accountOpen
               ? "opacity-100 scale-100 pointer-events-auto"
               : "opacity-0 scale-95 pointer-events-none"
