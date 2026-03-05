@@ -101,10 +101,10 @@ export function NavActions({ lang }: NavActionsProps) {
         {/* Trigger / Input bar — same "unified shape" pattern as account CTA */}
         <div
           className={cn(
-            "flex items-center bg-[hsl(30_20%_94%)]",
+            "flex items-center bg-muted",
             "transition-[width,border-radius] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]",
             searchOpen
-              ? "w-64 rounded-tl-[18px] rounded-tr-[18px] rounded-bl-none rounded-br-none px-3 gap-2 h-10"
+              ? "w-72 rounded-tl-[18px] rounded-tr-[18px] rounded-bl-none rounded-br-none px-3 gap-2 h-10"
               : "w-10 h-10 rounded-xl justify-center"
           )}
         >
@@ -147,12 +147,12 @@ export function NavActions({ lang }: NavActionsProps) {
         {/* Dropdown results — connected below, same fill as bar */}
         <div
           className={cn(
-            "absolute left-0 top-full z-50 w-64 rounded-tl-none rounded-tr-none rounded-bl-[18px] rounded-br-[18px]",
-            "bg-[hsl(30_20%_94%)] overflow-hidden",
-            "transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]",
+            "absolute left-0 top-full z-50 w-72 rounded-tl-none rounded-tr-none rounded-bl-[18px] rounded-br-[18px]",
+            "bg-muted overflow-hidden",
+            "transition-[opacity,transform] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]",
             searchOpen
-              ? "opacity-100 translate-y-0 pointer-events-auto"
-              : "opacity-0 -translate-y-2 pointer-events-none"
+              ? "opacity-100 translate-y-0 pointer-events-auto delay-200"
+              : "opacity-0 -translate-y-2 pointer-events-none delay-0"
           )}
         >
           {/* Results list */}
@@ -212,7 +212,7 @@ export function NavActions({ lang }: NavActionsProps) {
       {/* ── Banca en Línea ── */}
       <Link
         to="/login"
-        className="hidden md:inline-flex items-center gap-2 rounded-xl bg-[hsl(30_20%_94%)] px-4 py-2.5 text-sm font-medium text-foreground hover:bg-[hsl(30_15%_90%)] transition-colors"
+        className="hidden md:inline-flex items-center gap-2 rounded-xl bg-muted px-4 py-2.5 text-sm font-medium text-foreground hover:bg-muted/80 transition-colors"
       >
         <Lock size={14} />
         {lang === "es" ? "Banca en Línea" : "Online Banking"}
