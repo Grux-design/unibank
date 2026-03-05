@@ -32,12 +32,13 @@ export function NavActions({ lang }: NavActionsProps) {
       </button>
 
       {/* Banca en Línea */}
-      <NavPill variant="tinted" className="hidden md:inline-flex" asChild>
-        <Link to="/login" className="inline-flex items-center gap-2">
-          <Lock size={14} />
-          {lang === "es" ? "Banca en Línea" : "Online Banking"}
-        </Link>
-      </NavPill>
+      <Link
+        to="/login"
+        className="hidden md:inline-flex items-center gap-2 rounded-xl bg-[hsl(30_20%_94%)] px-4 py-2.5 text-sm font-medium text-foreground hover:bg-[hsl(30_15%_90%)] transition-colors"
+      >
+        <Lock size={14} />
+        {lang === "es" ? "Banca en Línea" : "Online Banking"}
+      </Link>
 
       {/* Abre tu cuenta */}
       <div className="relative" ref={dropdownRef}>
