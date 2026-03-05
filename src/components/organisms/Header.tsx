@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { Logo } from "@/components/atoms/Logo";
 import { NavPill } from "@/components/atoms/NavPill";
-import { NavActions } from "@/components/molecules/NavActions";
+import { RightHeaderPill } from "@/components/molecules/RightHeaderPill";
 import { MegaMenu } from "@/components/organisms/MegaMenu";
 import type { Lang } from "@/components/layout/SiteLayout";
 
@@ -51,7 +51,7 @@ export function Header({ lang, onToggleLang }: HeaderProps) {
   return (
     <header className="relative sticky top-0 z-50 bg-transparent pt-4">
       {/* Main bar */}
-      <div className="mx-auto flex h-16 max-w-screen-xl items-center justify-between px-4 sm:px-6">
+      <div className="mx-auto flex max-w-screen-xl items-center justify-between px-4 sm:px-6">
 
         {/* LEFT GROUP */}
         <div className="flex items-center gap-3 rounded-2xl bg-background px-3 py-2 shadow-sm">
@@ -93,9 +93,11 @@ export function Header({ lang, onToggleLang }: HeaderProps) {
         </div>
 
         {/* RIGHT GROUP */}
-        <div className="flex items-center rounded-2xl bg-background px-3 py-2 shadow-sm">
-          <NavActions lang={lang} onToggleLang={onToggleLang} />
-        </div>
+        <RightHeaderPill
+          isMenuOpen={menuOpen}
+          lang={lang}
+          onLangChange={(code) => { if (code !== lang) onToggleLang(); }}
+        />
       </div>
 
       {/* Mega menu — floating card, mouse events continue the hover chain */}
