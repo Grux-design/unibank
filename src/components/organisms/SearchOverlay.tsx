@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, RefObject } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Search, X, Home, Users, Briefcase, FileText, Phone,
@@ -28,28 +28,37 @@ interface SearchOverlayProps {
   open: boolean;
   onClose: () => void;
   lang?: "es" | "en";
+  triggerRef: RefObject<HTMLButtonElement>;
 }
 
-export function SearchOverlay({ open, onClose, lang = "es" }: SearchOverlayProps) {
-  const [query, setQuery]         = useState("");
+export function SearchOverlay({ open, onClose, lang = "es", triggerRef }: SearchOverlayProps) {
+  const [query, setQuery]           = useState("");
   const [navigating, setNavigating] = useState(false);
-  const [mounted, setMounted]     = useState(false);
-  const [visible, setVisible]     = useState(false);
-  const inputRef  = useRef<HTMLInputElement>(null);
-  const navigate  = useNavigate();
+  const [mounted, setMounted]       = useState(false);
+  const [visible, setVisible]       = useState(false);
+  const [pos, setPos]               = useState({ top: 0, left: 0 });
 
-  /* Mount → tick → visible (open) */
+  const inputRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
+
+  /* Capture button position on open */
+  useEffect(() => {
+    if (open && triggerRef.current) {
+      const rect = triggerRef.current.getBoundingClientRect();
+      setPos({ top: rect.bottom + 8, left: rect.left });
+    }
+  }, [open, triggerRef]);
+
+  /* Mount → tick → visible */
   useEffect(() => {
     if (open) {
       setMounted(true);
-      // small RAF so the initial state renders before we apply visible classes
       requestAnimationFrame(() => {
         requestAnimationFrame(() => setVisible(true));
       });
       setTimeout(() => inputRef.current?.focus(), 80);
     } else {
       setVisible(false);
-      // unmount after transition completes
       setTimeout(() => {
         setMounted(false);
         setQuery("");
@@ -64,13 +73,6 @@ export function SearchOverlay({ open, onClose, lang = "es" }: SearchOverlayProps
     if (open) document.addEventListener("keydown", handler);
     return () => document.removeEventListener("keydown", handler);
   }, [open, onClose]);
-
-  /* Lock body scroll */
-  useEffect(() => {
-    if (open) document.body.style.overflow = "hidden";
-    else document.body.style.overflow = "";
-    return () => { document.body.style.overflow = ""; };
-  }, [open]);
 
   const filtered = query.trim()
     ? siteIndex.filter(e =>
@@ -94,23 +96,21 @@ export function SearchOverlay({ open, onClose, lang = "es" }: SearchOverlayProps
     <div
       className={cn(
         "fixed inset-0 z-[60] transition-colors duration-300",
-        visible ? "bg-background/40 backdrop-blur-[1px]" : "bg-transparent"
+        visible ? "bg-background/50" : "bg-transparent"
       )}
       onClick={onClose}
     >
-      {/* Card — grows from top-right corner (where the search icon lives) */}
+      {/* Card — positioned from the button's bounding rect, grows from top-left (origin-top-left) */}
       <div
-      className={cn(
-          "absolute left-4 top-4 w-[420px] max-w-[calc(100vw-2rem)] overflow-hidden rounded-2xl",
+        style={{ top: pos.top, left: pos.left }}
+        className={cn(
+          "absolute w-[420px] max-w-[calc(100vw-2rem)] overflow-hidden rounded-2xl",
           "bg-background border border-border shadow-[0_8px_32px_-4px_hsl(var(--foreground)/0.12)]",
           "transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] origin-top-left",
-          visible
-            ? "opacity-100 scale-100"
-            : "opacity-0 scale-[0.5]"
+          visible ? "opacity-100 scale-100" : "opacity-0 scale-[0.4]"
         )}
         onClick={e => e.stopPropagation()}
       >
-
         {/* Input row */}
         <div className="flex items-center gap-3 px-4 py-3.5">
           <Search size={16} className="shrink-0 text-muted-foreground" />
@@ -192,7 +192,6 @@ export function SearchOverlay({ open, onClose, lang = "es" }: SearchOverlayProps
             </button>
           </div>
         </div>
-
       </div>
     </div>
   );
