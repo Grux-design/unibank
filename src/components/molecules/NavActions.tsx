@@ -63,34 +63,44 @@ export function NavActions({ lang }: NavActionsProps) {
         {/* Dropdown — always rendered, CSS-animated */}
         <div
           className={cn(
-            "absolute right-0 top-[calc(100%+6px)] z-50 w-52 origin-top-right rounded-2xl bg-background shadow-lg ring-1 ring-border/50 transition-all duration-200 ease-out",
+            "absolute right-0 top-[calc(100%-12px)] z-40 w-64 origin-top-right rounded-[20px] bg-primary pt-14 pb-2 px-2 shadow-xl transition-all duration-200 ease-out",
             accountOpen
               ? "opacity-100 scale-100 pointer-events-auto"
               : "opacity-0 scale-95 pointer-events-none"
           )}
         >
           {/* Overline label */}
-          <p className="px-4 pt-3 pb-1 text-[10px] font-semibold uppercase tracking-widest text-foreground/35">
+          <p className="px-3 pt-1 pb-2 text-[10px] font-semibold uppercase tracking-widest text-primary-foreground/50">
             {lang === "es" ? "Tipo de cuenta" : "Account type"}
           </p>
 
-          <div className="px-2 pb-2 flex flex-col">
+          <div className="flex flex-col gap-0.5">
             <Link
               to="/cuenta-ahorros"
               onClick={() => setAccountOpen(false)}
-              className="rounded-xl px-3 py-2.5 text-sm font-medium text-foreground hover:bg-foreground/5 transition-colors"
+              className="group rounded-xl px-3 py-3 transition-colors hover:bg-primary-foreground/10"
             >
-              {lang === "es" ? "Cuenta de Ahorros" : "Savings Account"}
+              <p className="text-sm font-semibold text-primary-foreground leading-tight">
+                {lang === "es" ? "Cuenta de Ahorros" : "Savings Account"}
+              </p>
+              <p className="mt-0.5 text-xs text-primary-foreground/60 leading-snug">
+                {lang === "es" ? "Para personas naturales" : "For individuals"}
+              </p>
             </Link>
 
-            <div className="mx-3 my-0.5 h-px bg-border/60" />
+            <div className="mx-3 h-px bg-primary-foreground/15" />
 
             <Link
               to="/cuenta-juridica"
               onClick={() => setAccountOpen(false)}
-              className="rounded-xl px-3 py-2.5 text-sm font-medium text-foreground hover:bg-foreground/5 transition-colors"
+              className="group rounded-xl px-3 py-3 transition-colors hover:bg-primary-foreground/10"
             >
-              {lang === "es" ? "Cuenta Jurídica" : "Business Account"}
+              <p className="text-sm font-semibold text-primary-foreground leading-tight">
+                {lang === "es" ? "Cuenta Jurídica" : "Business Account"}
+              </p>
+              <p className="mt-0.5 text-xs text-primary-foreground/60 leading-snug">
+                {lang === "es" ? "Para empresas y negocios" : "For companies & businesses"}
+              </p>
             </Link>
           </div>
         </div>
