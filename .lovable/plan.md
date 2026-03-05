@@ -1,34 +1,44 @@
 
-## Plan: Contentful CMS Connection
+## Plan: Redesigned Hover-Triggered Mega Menu
 
-The user wants to establish a Contentful connection — no pages or components yet, just the integration layer.
+### What changes
 
-Since the Content Delivery API token is a **public/client-side key** (it's read-only and safe to expose), it can be stored in the codebase via `.env`. However, the Content Preview API token should be kept secret (it exposes unpublished content).
+**1. Hover trigger on the Menu pill (Header.tsx)**
+- Replace `onClick` toggle with `onMouseEnter` / `onMouseLeave` on a wrapping `<div>` that covers both the pill and the mega menu panel — this prevents the menu from closing when the mouse moves from the button into the panel.
+- Keep a small delay (100ms) before closing so users can move the mouse without the menu flickering shut.
+- Keep click as fallback for keyboard/touch users.
 
-### What will be done
+**2. Full redesign of MegaMenu.tsx**
+Inspired by the reference screenshots (multi-column layout, icon-prefixed rows, a featured visual card on the right, clean section headers):
 
-1. **Store tokens securely in `.env`**:
-   - `VITE_CONTENTFUL_SPACE_ID=bsxwchto8q9z` — public, safe for client-side
-   - `VITE_CONTENTFUL_ACCESS_TOKEN=hPb7E44kegBR2V5fG1Hj147ph7zIWTY7EiLQYronG60` — Content Delivery token (read-only, safe to expose)
-   - Store the Preview token as a Lovable Cloud secret (`CONTENTFUL_PREVIEW_TOKEN`) so it's only accessible from edge functions
+Layout — two-column macro split:
+```text
+┌─────────────────────────────────────────────────────────────┐
+│  [Personas] [Empresas]          tabs (pill switcher)        │
+├───────────────────────────────────────┬─────────────────────┤
+│  Col 1        Col 2        Col 3      │  Featured card      │
+│  Cuentas      Crédito      Tarjetas   │  (Unsplash photo +  │
+│  • item       • item       • item     │   headline + CTA)   │
+│  • item       • item       • item     │                     │
+│               Canales                 │                     │
+│               Digitales               │                     │
+├───────────────────────────────────────┴─────────────────────┤
+│  Footer row: Sobre UniBank · Tarifas · Sucursales · Contacto│
+└─────────────────────────────────────────────────────────────┘
+```
 
-2. **Create `src/integrations/contentful/client.ts`**:
-   - Export a configured Contentful client using the Delivery API
-   - Use `fetch` directly (no extra SDK needed) or a lightweight wrapper
-   - Exports `CONTENTFUL_SPACE_ID` and `CONTENTFUL_BASE_URL` constants for reuse
+Each menu item gets a small Lucide icon beside the label (e.g. `PiggyBank`, `CreditCard`, `Smartphone`, `Building2`, etc.) and a one-line description in muted text beneath.
 
-3. **Create `src/integrations/contentful/types.ts`**:
-   - Define base TypeScript types: `ContentfulEntry<T>`, `ContentfulAsset`, `ContentfulCollection<T>`
-   - These will be extended later as content models are defined in Contentful
+The featured card on the right side will:
+- Use an Unsplash photo (direct URL, no copy needed)
+- Have a branded orange gradient overlay
+- Show a short headline + "Ver más →" link
 
-### What will NOT be done
-- No pages, components, or data-fetching hooks yet
-- No edge function for preview (can be added when preview mode is needed)
-- No content model-specific types (will be defined when CMS structure is decided)
+**3. Animation**
+- Menu fades in + slides down 8px (`opacity-0 translate-y-2` → `opacity-100 translate-y-0`) using CSS transitions.
+- Controlled by a `visible` state (mount first, then trigger transition tick) for smooth enter/exit.
 
-### Files to create/edit
-- `src/integrations/contentful/client.ts` — Contentful fetch client
-- `src/integrations/contentful/types.ts` — Base types
-- `.env` — Add `VITE_CONTENTFUL_SPACE_ID` and `VITE_CONTENTFUL_ACCESS_TOKEN`
-
-The Preview API token will be stored as a secret (`CONTENTFUL_PREVIEW_TOKEN`) via the secrets tool so it's available for future edge functions but never exposed to the browser.
+### Files to edit
+- `src/components/organisms/Header.tsx` — swap click → hover intent logic
+- `src/components/organisms/MegaMenu.tsx` — full visual redesign
+- `src/components/molecules/MegaMenuColumn.tsx` — update to accept icon + description per item
