@@ -63,8 +63,10 @@ export function Header({ lang, onToggleLang }: HeaderProps) {
           </Link>
         </div>
 
-        {/* RIGHT GROUP: search + CTAs */}
-        <NavActions lang={lang} />
+        {/* RIGHT GROUP: white container */}
+        <div className="flex items-center rounded-2xl bg-background px-3 py-2 shadow-sm">
+          <NavActions lang={lang} />
+        </div>
       </div>
 
       {/* Mega menu overlay (desktop) */}
