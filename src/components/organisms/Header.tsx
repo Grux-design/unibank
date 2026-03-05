@@ -29,8 +29,8 @@ export function Header({ lang, onToggleLang }: HeaderProps) {
       {/* Main bar */}
       <div className="mx-auto flex h-16 max-w-screen-xl items-center justify-between px-4 sm:px-6">
 
-        {/* LEFT GROUP: Menu pill + Logo */}
-        <div className="flex items-center gap-3">
+        {/* LEFT GROUP: white container */}
+        <div className="flex items-center gap-3 rounded-2xl bg-background px-3 py-2 shadow-sm">
           {/* Desktop menu pill */}
           <NavPill
             variant="menu"
@@ -63,8 +63,10 @@ export function Header({ lang, onToggleLang }: HeaderProps) {
           </Link>
         </div>
 
-        {/* RIGHT GROUP: search + CTAs */}
-        <NavActions lang={lang} />
+        {/* RIGHT GROUP: white container */}
+        <div className="flex items-center rounded-2xl bg-background px-3 py-2 shadow-sm">
+          <NavActions lang={lang} />
+        </div>
       </div>
 
       {/* Mega menu overlay (desktop) */}
