@@ -11,10 +11,10 @@
 
 @layer base {
   :root {
-    /* Brand Colors */
-    --primary: 22 100% 49%;          /* #F75C00 — Unibank Orange */
+    /* Brand Colors — #ff8136 = hsl(20 100% 60%) */
+    --primary: 20 100% 60%;          /* #ff8136 — Unibank Orange (from brand tokens) */
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 22 100% 42%;
+    --primary-hover: 20 100% 52%;
 
     --secondary: 0 0% 6%;            /* #0F0F0F — Near Black */
     --secondary-foreground: 0 0% 100%;
