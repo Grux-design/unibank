@@ -73,9 +73,20 @@ export function NavActions({ lang }: NavActionsProps) {
   }, [searchOpen]);
 
   const closeSearch = useCallback(() => {
+    // 1. hide dropdown immediately
     setSearchOpen(false);
-    setQuery("");
     setNavigating(false);
+    // 2. shrink bar after dropdown has faded out
+    setTimeout(() => {
+      setSearchVisible(false);
+      setQuery("");
+    }, 250);
+  }, []);
+
+  const openSearch = useCallback(() => {
+    setSearchVisible(true);
+    // bar expands first, then dropdown appears (handled via delay in dropdown class)
+    setTimeout(() => setSearchOpen(true), 10);
   }, []);
 
   const handleSelect = useCallback((href: string) => {
