@@ -212,7 +212,7 @@ export function NavActions({ lang }: NavActionsProps) {
       {/* ── Banca en Línea ── */}
       <Link
         to="/login"
-        className="hidden md:inline-flex items-center gap-2 rounded-xl bg-[hsl(30_20%_94%)] px-4 py-2.5 text-sm font-medium text-foreground hover:bg-[hsl(30_15%_90%)] transition-colors"
+        className="hidden md:inline-flex items-center gap-2 rounded-xl bg-muted px-4 py-2.5 text-sm font-medium text-foreground hover:bg-muted/80 transition-colors"
       >
         <Lock size={14} />
         {lang === "es" ? "Banca en Línea" : "Online Banking"}
