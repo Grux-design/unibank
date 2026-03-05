@@ -1,34 +1,73 @@
 
-## Plan: Contentful CMS Connection
+## Plan: Replace the left header pill with the new LeftHeaderPill component
 
-The user wants to establish a Contentful connection — no pages or components yet, just the integration layer.
+### What's changing
 
-Since the Content Delivery API token is a **public/client-side key** (it's read-only and safe to expose), it can be stored in the codebase via `.env`. However, the Content Preview API token should be kept secret (it exposes unpublished content).
+The left group in `Header.tsx` (the white pill containing the Menu button + Logo) needs to be replaced with the new `LeftHeaderPill` design from the snippet. The key visual differences:
 
-### What will be done
+- **Closed state:** White pill (`#fff`, radius 16), button has `#F7E8E0` background with orange (`#FF8136`) icon/text, hover becomes `#FFDCC8`
+- **Open state:** Transparent pill (radius 0), button becomes solid orange (`#FF8136`) with white icon/text
+- **Animation:** Icon swap (Menu ↔ X) with rotation animation via `AnimatePresence` (±90° rotate + opacity)
+- **Pill transition:** background + border-radius animate smoothly between states
 
-1. **Store tokens securely in `.env`**:
-   - `VITE_CONTENTFUL_SPACE_ID=bsxwchto8q9z` — public, safe for client-side
-   - `VITE_CONTENTFUL_ACCESS_TOKEN=hPb7E44kegBR2V5fG1Hj147ph7zIWTY7EiLQYronG60` — Content Delivery token (read-only, safe to expose)
-   - Store the Preview token as a Lovable Cloud secret (`CONTENTFUL_PREVIEW_TOKEN`) so it's only accessible from edge functions
+### Architecture decision
 
-2. **Create `src/integrations/contentful/client.ts`**:
-   - Export a configured Contentful client using the Delivery API
-   - Use `fetch` directly (no extra SDK needed) or a lightweight wrapper
-   - Exports `CONTENTFUL_SPACE_ID` and `CONTENTFUL_BASE_URL` constants for reuse
+The `LeftHeaderPill` snippet manages its own `menuOpen` state internally. But the current `Header.tsx` owns `menuOpen` to drive:
+1. The `MegaMenu` visibility
+2. The `RightHeaderPill`'s `isMenuOpen` prop (background change)
+3. The hover-delay logic (`openMenu`, `scheduleClose`, `cancelClose`)
 
-3. **Create `src/integrations/contentful/types.ts`**:
-   - Define base TypeScript types: `ContentfulEntry<T>`, `ContentfulAsset`, `ContentfulCollection<T>`
-   - These will be extended later as content models are defined in Contentful
+**Solution:** Extract `LeftHeaderPill` into its own file at `src/components/molecules/LeftHeaderPill.tsx`, but make it accept external `menuOpen` + callbacks as props (like `RightHeaderPill` does), instead of managing state internally. This keeps `Header.tsx` as the single source of truth for menu state.
 
-### What will NOT be done
-- No pages, components, or data-fetching hooks yet
-- No edge function for preview (can be added when preview mode is needed)
-- No content model-specific types (will be defined when CMS structure is decided)
+Props interface:
+```
+interface LeftHeaderPillProps {
+  menuOpen: boolean;
+  lang: Lang;
+  onMenuEnter: () => void;   // openMenu
+  onMenuLeave: () => void;   // scheduleClose
+  onMenuClick: () => void;   // toggle
+  onMenuMouseEnter: () => void; // cancelClose (for pill wrapper)
+}
+```
+
+Actually simpler — pass just what's needed:
+- `menuOpen: boolean` — drives the visual state
+- `onToggle: () => void` — called on button click  
+- `onMouseEnter: () => void` — for hover open (passes `openMenu`)
+- `onMouseLeave: () => void` — for hover leave (passes `scheduleClose`)
+- `lang: Lang` — for "Menú" / "Menu" label
 
 ### Files to create/edit
-- `src/integrations/contentful/client.ts` — Contentful fetch client
-- `src/integrations/contentful/types.ts` — Base types
-- `.env` — Add `VITE_CONTENTFUL_SPACE_ID` and `VITE_CONTENTFUL_ACCESS_TOKEN`
 
-The Preview API token will be stored as a secret (`CONTENTFUL_PREVIEW_TOKEN`) via the secrets tool so it's available for future edge functions but never exposed to the browser.
+1. **`src/components/molecules/LeftHeaderPill.tsx`** — new file with the adapted snippet:
+   - Remove the internal `useState(false)` for menuOpen — receive it as prop
+   - Replace the Logo placeholder SVG with `<Logo variant="full-color" height={36} />` from `@/components/atoms/Logo`
+   - Replace `href="#"` on the logo anchor with `<Link to="/">` from react-router-dom
+   - Keep the `AnimatePresence` icon animation exactly as specified
+   - Keep the pill wrapper style transitions (background + borderRadius)
+   - Remove the `PreviewBothStates`, `ClosedState`, `OpenState` preview functions
+   - Keep the mobile hamburger button from the current Header (needs to remain for `sm:hidden` breakpoint) — OR handle mobile inside LeftHeaderPill with a prop
+
+2. **`src/components/organisms/Header.tsx`** — replace the left group:
+   - Remove `NavPill` import (no longer needed)
+   - Import `LeftHeaderPill`
+   - Replace the entire `{/* LEFT GROUP */}` div (lines 57–93) with `<LeftHeaderPill menuOpen={menuOpen} onToggle={...} onMouseEnter={openMenu} onMouseLeave={scheduleClose} lang={lang} />`
+   - Keep mobile hamburger handling — add it inside LeftHeaderPill or keep it in Header as a separate element hidden on `sm:` and above
+
+### Mobile handling
+
+The current mobile hamburger is inside the left group. Options:
+- **Keep it in Header.tsx** as a sibling to `LeftHeaderPill`, wrapped in `sm:hidden` — cleanest, no prop drilling
+- The `LeftHeaderPill` renders on `hidden sm:flex` (desktop only)
+
+Plan: wrap `<LeftHeaderPill>` in `hidden sm:block` and keep the mobile hamburger group separately. Actually simpler: put both in the left container div, `LeftHeaderPill` for `sm:block hidden` and the mobile button for `sm:hidden`.
+
+### Summary of changes
+
+```
+src/components/molecules/LeftHeaderPill.tsx  ← NEW
+src/components/organisms/Header.tsx          ← EDIT (replace left group, remove NavPill import)
+```
+
+The `NavPill` atom and its file remain (may be used elsewhere), but it won't be referenced from Header anymore.
