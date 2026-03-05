@@ -1,34 +1,8 @@
 
-## Plan: Contentful CMS Connection
+## The Problem
 
-The user wants to establish a Contentful connection — no pages or components yet, just the integration layer.
+The header is `sticky` and takes up space in the document flow. The `<main>` uses `-mt-16` to pull content up behind it. But after adding `pt-4` to the header, the total height of the header grew from 64px (`h-16`) to 64px + 16px = 80px — yet `-mt-16` (−64px) is still being used. This leaves a 16px gap of white space that isn't covered by the hero.
 
-Since the Content Delivery API token is a **public/client-side key** (it's read-only and safe to expose), it can be stored in the codebase via `.env`. However, the Content Preview API token should be kept secret (it exposes unpublished content).
+**Fix:** Change `-mt-16` to `-mt-20` in `SiteLayout.tsx` so the negative margin exactly cancels the full header height (h-16 + pt-4 = 80px = 5rem = `mt-20`).
 
-### What will be done
-
-1. **Store tokens securely in `.env`**:
-   - `VITE_CONTENTFUL_SPACE_ID=bsxwchto8q9z` — public, safe for client-side
-   - `VITE_CONTENTFUL_ACCESS_TOKEN=hPb7E44kegBR2V5fG1Hj147ph7zIWTY7EiLQYronG60` — Content Delivery token (read-only, safe to expose)
-   - Store the Preview token as a Lovable Cloud secret (`CONTENTFUL_PREVIEW_TOKEN`) so it's only accessible from edge functions
-
-2. **Create `src/integrations/contentful/client.ts`**:
-   - Export a configured Contentful client using the Delivery API
-   - Use `fetch` directly (no extra SDK needed) or a lightweight wrapper
-   - Exports `CONTENTFUL_SPACE_ID` and `CONTENTFUL_BASE_URL` constants for reuse
-
-3. **Create `src/integrations/contentful/types.ts`**:
-   - Define base TypeScript types: `ContentfulEntry<T>`, `ContentfulAsset`, `ContentfulCollection<T>`
-   - These will be extended later as content models are defined in Contentful
-
-### What will NOT be done
-- No pages, components, or data-fetching hooks yet
-- No edge function for preview (can be added when preview mode is needed)
-- No content model-specific types (will be defined when CMS structure is decided)
-
-### Files to create/edit
-- `src/integrations/contentful/client.ts` — Contentful fetch client
-- `src/integrations/contentful/types.ts` — Base types
-- `.env` — Add `VITE_CONTENTFUL_SPACE_ID` and `VITE_CONTENTFUL_ACCESS_TOKEN`
-
-The Preview API token will be stored as a secret (`CONTENTFUL_PREVIEW_TOKEN`) via the secrets tool so it's available for future edge functions but never exposed to the browser.
+**Single file change:** `src/components/layout/SiteLayout.tsx` line 14 — change `-mt-16` → `-mt-20`.
