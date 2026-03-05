@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { Logo } from "@/components/atoms/Logo";
@@ -14,7 +14,9 @@ interface HeaderProps {
 
 export function Header({ lang, onToggleLang }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [menuVisible, setMenuVisible] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const navLinks = [
     { label: { es: "Inicio", en: "Home" }, href: "/" },
@@ -24,29 +26,50 @@ export function Header({ lang, onToggleLang }: HeaderProps) {
     { label: { es: "Contacto", en: "Contact" }, href: "/contact" },
   ];
 
+  const openMenu = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    setMenuOpen(true);
+    // small tick so CSS transition triggers
+    requestAnimationFrame(() => setMenuVisible(true));
+  };
+
+  const closeMenu = () => {
+    setMenuVisible(false);
+    closeTimer.current = setTimeout(() => setMenuOpen(false), 200);
+  };
+
+  const handleMouseEnter = () => openMenu();
+  const handleMouseLeave = () => closeMenu();
+  const handleClick = () => (menuOpen ? closeMenu() : openMenu());
+
   return (
     <header className="relative sticky top-0 z-50 bg-transparent">
       {/* Main bar */}
       <div className="mx-auto flex h-16 max-w-screen-xl items-center justify-between px-4 sm:px-6">
 
-        {/* LEFT GROUP: white container */}
+        {/* LEFT GROUP */}
         <div className="flex items-center gap-3 rounded-2xl bg-background px-3 py-2 shadow-sm">
-          {/* Desktop menu pill */}
-          <NavPill
-            variant="menu"
-            onClick={() => { setMenuOpen((o) => !o); setMobileOpen(false); }}
-            aria-expanded={menuOpen}
-            aria-controls="mega-menu"
-            className="hidden sm:inline-flex"
+          {/* Desktop menu pill — hover zone wraps pill + mega menu via the outer <header> */}
+          <div
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            className="hidden sm:block"
           >
-            {menuOpen ? <X size={16} /> : <Menu size={16} />}
-            {lang === "es" ? "Menú" : "Menu"}
-          </NavPill>
+            <NavPill
+              variant="menu"
+              onClick={handleClick}
+              aria-expanded={menuOpen}
+              aria-controls="mega-menu"
+            >
+              {menuOpen ? <X size={16} /> : <Menu size={16} />}
+              {lang === "es" ? "Menú" : "Menu"}
+            </NavPill>
+          </div>
 
           {/* Mobile hamburger */}
           <button
             className="flex h-10 w-10 items-center justify-center rounded-xl bg-[hsl(30_60%_95%)] text-[hsl(20_5%_44%)] sm:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-            onClick={() => { setMobileOpen((o) => !o); setMenuOpen(false); }}
+            onClick={() => { setMobileOpen((o) => !o); closeMenu(); }}
             aria-label="Toggle mobile menu"
             aria-expanded={mobileOpen}
           >
@@ -63,16 +86,20 @@ export function Header({ lang, onToggleLang }: HeaderProps) {
           </Link>
         </div>
 
-        {/* RIGHT GROUP: white container */}
+        {/* RIGHT GROUP */}
         <div className="flex items-center rounded-2xl bg-background px-3 py-2 shadow-sm">
           <NavActions lang={lang} onToggleLang={onToggleLang} />
         </div>
       </div>
 
-      {/* Mega menu overlay (desktop) */}
+      {/* Mega menu overlay — stays in hover zone via parent <header> */}
       {menuOpen && (
-        <div id="mega-menu">
-          <MegaMenu lang={lang} onClose={() => setMenuOpen(false)} />
+        <div
+          id="mega-menu"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
+          <MegaMenu lang={lang} visible={menuVisible} />
         </div>
       )}
 
