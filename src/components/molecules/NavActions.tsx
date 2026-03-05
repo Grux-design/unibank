@@ -12,7 +12,8 @@ export function NavActions({ lang }: NavActionsProps) {
   const [accountOpen, setAccountOpen] = useState(false);
   const [searchOpen, setSearchOpen]   = useState(false);
 
-  const accountRef = useRef<HTMLDivElement>(null);
+  const accountRef   = useRef<HTMLDivElement>(null);
+  const searchBtnRef = useRef<HTMLButtonElement>(null);
 
   /* Close account dropdown on outside click */
   useEffect(() => {
@@ -29,6 +30,7 @@ export function NavActions({ lang }: NavActionsProps) {
 
       {/* ── Search trigger ── */}
       <button
+        ref={searchBtnRef}
         onClick={() => setSearchOpen(true)}
         aria-label={lang === "es" ? "Buscar" : "Search"}
         className="flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-background text-foreground/60 hover:text-foreground transition-colors"
@@ -40,6 +42,7 @@ export function NavActions({ lang }: NavActionsProps) {
         open={searchOpen}
         onClose={() => setSearchOpen(false)}
         lang={lang}
+        triggerRef={searchBtnRef}
       />
 
       {/* ── Banca en Línea ── */}
