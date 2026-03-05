@@ -147,12 +147,12 @@ export function NavActions({ lang }: NavActionsProps) {
         {/* Dropdown results — connected below, same fill as bar */}
         <div
           className={cn(
-            "absolute left-0 top-full z-50 w-64 rounded-tl-none rounded-tr-none rounded-bl-[18px] rounded-br-[18px]",
-            "bg-[hsl(30_20%_94%)] overflow-hidden",
-            "transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]",
+            "absolute left-0 top-full z-50 w-72 rounded-tl-none rounded-tr-none rounded-bl-[18px] rounded-br-[18px]",
+            "bg-muted overflow-hidden",
+            "transition-[opacity,transform] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]",
             searchOpen
-              ? "opacity-100 translate-y-0 pointer-events-auto"
-              : "opacity-0 -translate-y-2 pointer-events-none"
+              ? "opacity-100 translate-y-0 pointer-events-auto delay-200"
+              : "opacity-0 -translate-y-2 pointer-events-none delay-0"
           )}
         >
           {/* Results list */}
