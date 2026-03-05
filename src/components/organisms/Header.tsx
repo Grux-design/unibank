@@ -93,9 +93,11 @@ export function Header({ lang, onToggleLang }: HeaderProps) {
         </div>
 
         {/* RIGHT GROUP */}
-        <div className="flex items-center rounded-2xl bg-background px-3 py-2 shadow-sm">
-          <NavActions lang={lang} onToggleLang={onToggleLang} />
-        </div>
+        <RightHeaderPill
+          isMenuOpen={menuOpen}
+          lang={lang}
+          onLangChange={(code) => { if (code !== lang) onToggleLang(); }}
+        />
       </div>
 
       {/* Mega menu — floating card, mouse events continue the hover chain */}
