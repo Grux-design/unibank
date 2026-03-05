@@ -47,7 +47,7 @@ export function NavActions({ lang }: NavActionsProps) {
         onMouseEnter={() => setAccountOpen(true)}
         onMouseLeave={() => setAccountOpen(false)}
       >
-        {/* Button — bottom corners flatten when open to merge with dropdown */}
+        {/* Button — expands to dropdown width and flattens bottom corners when open */}
         <button
           onClick={() => setAccountOpen((o) => !o)}
           aria-expanded={accountOpen}
@@ -55,7 +55,7 @@ export function NavActions({ lang }: NavActionsProps) {
           className={cn(
             "inline-flex items-center gap-2 bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground transition-all duration-200 focus-visible:outline-none",
             accountOpen
-              ? "rounded-tl-[18px] rounded-tr-[18px] rounded-bl-[18px] rounded-br-none"
+              ? "w-64 justify-between rounded-tl-[18px] rounded-tr-[18px] rounded-bl-none rounded-br-none"
               : "rounded-[18px]"
           )}
         >
@@ -76,7 +76,7 @@ export function NavActions({ lang }: NavActionsProps) {
         {/* Dropdown — absolutely positioned, top-right corner flat to merge with button */}
         <div
           className={cn(
-            "absolute right-0 top-full z-50 w-64 origin-top-right rounded-bl-[18px] rounded-br-[18px] rounded-tl-[18px] rounded-tr-none bg-primary px-3 pb-3 pt-3 shadow-xl transition-all duration-200 ease-out",
+            "absolute right-0 top-full z-50 w-64 origin-top rounded-tl-none rounded-tr-none rounded-bl-[18px] rounded-br-[18px] bg-primary px-3 pb-3 pt-3 shadow-xl transition-all duration-200 ease-out",
             accountOpen
               ? "opacity-100 scale-100 pointer-events-auto"
               : "opacity-0 scale-95 pointer-events-none"
