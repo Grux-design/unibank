@@ -10,7 +10,7 @@ interface NavActionsProps {
   onToggleLang: () => void;
 }
 
-export function NavActions({ lang }: NavActionsProps) {
+export function NavActions({ lang, onToggleLang }: NavActionsProps) {
   const [accountOpen, setAccountOpen] = useState(false);
   const [searchOpen, setSearchOpen]   = useState(false);
 
