@@ -111,7 +111,7 @@ export function Footer() {
         }}>
           {/* Left column — logo + description + badge + social */}
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            <Logo variant="primary" height={36} />
+            <img src={logoFooter} alt="UniBank" style={{ height: 28, width: "auto", display: "block" }} />
 
             <p style={{
               fontFamily: "Inter, sans-serif", fontSize: 14, color: TEXT_MUTED,
