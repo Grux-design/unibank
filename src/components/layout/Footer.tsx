@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Facebook, Instagram, Linkedin, Youtube, MessageCircle, MapPin } from "lucide-react";
-import { Logo } from "@/components/atoms/Logo";
+import logoFooter from "@/assets/logos/logo-footer.svg";
 
 // ─── TOKENS ──────────────────────────────────────────────────
 const BORDER     = "#E7E4E1";
