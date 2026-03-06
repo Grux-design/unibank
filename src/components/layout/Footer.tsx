@@ -110,7 +110,7 @@ export function Footer() {
           position: "relative",
         }}>
           {/* Left column — logo + description + badge + social */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 16, alignItems: "flex-start" }}>
             <img src={logoFooter} alt="UniBank" style={{ height: 28, width: "auto", display: "block" }} />
 
             <p style={{
