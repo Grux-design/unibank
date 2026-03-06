@@ -122,35 +122,6 @@ export function Footer() {
 
             <SBPBadge />
 
-            {/* Social icons */}
-            <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
-              {socialIcons.map(({ icon: Icon, label }) => (
-                <a
-                  key={label}
-                  href="#"
-                  aria-label={label}
-                  style={{
-                    width: 36, height: 36, borderRadius: 9,
-                    background: BG_MAIN, border: `1px solid ${BORDER}`,
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    color: TEXT_LINK, textDecoration: "none",
-                    transition: "background 0.14s, border-color 0.14s, color 0.14s",
-                  }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLAnchorElement).style.background = ORANGE;
-                    (e.currentTarget as HTMLAnchorElement).style.borderColor = ORANGE;
-                    (e.currentTarget as HTMLAnchorElement).style.color = "white";
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLAnchorElement).style.background = BG_MAIN;
-                    (e.currentTarget as HTMLAnchorElement).style.borderColor = BORDER;
-                    (e.currentTarget as HTMLAnchorElement).style.color = TEXT_LINK;
-                  }}
-                >
-                  <Icon size={16} />
-                </a>
-              ))}
-            </div>
           </div>
 
           {/* Right — 4 link columns */}
