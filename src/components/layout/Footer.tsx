@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Facebook, Instagram, Linkedin, Youtube, MessageCircle, MapPin } from "lucide-react";
-import { Logo } from "@/components/atoms/Logo";
+import logoFooter from "@/assets/logos/logo-footer.svg";
 
 // ─── TOKENS ──────────────────────────────────────────────────
 const BORDER     = "#E7E4E1";
@@ -111,7 +111,7 @@ export function Footer() {
         }}>
           {/* Left column — logo + description + badge + social */}
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            <Logo variant="primary" height={36} />
+            <img src={logoFooter} alt="UniBank" style={{ height: 28, width: "auto", display: "block" }} />
 
             <p style={{
               fontFamily: "Inter, sans-serif", fontSize: 14, color: TEXT_MUTED,
