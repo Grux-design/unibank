@@ -14,7 +14,7 @@ export function SiteLayout() {
       <main id="main-content" className="flex-1 -mt-20">
         <Outlet context={{ lang }} />
       </main>
-      <Footer lang={lang} />
+      <Footer />
     </div>
   );
 }
