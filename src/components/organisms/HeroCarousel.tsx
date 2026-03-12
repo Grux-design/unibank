@@ -372,7 +372,7 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
                 }}
               />
 
-              {/* Person photo — 68% wide centered, flush bottom, full height */}
+              {/* Person photo — 68% wide centered, fixed height, consistent across all slides */}
               <AnimatePresence mode="wait">
                 <motion.div
                   key={slide.id + "-img"}
@@ -385,8 +385,8 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
                     bottom:       0,
                     left:         "50%",
                     transform:    "translateX(-50%)",
-                    width:        "68%",
-                    height:       "100%",
+                    width:        "78%",
+                    height:       480,
                     borderRadius: 28,
                     overflow:     "hidden",
                     zIndex:       2,
@@ -395,7 +395,7 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
                   <img
                     src={slide.image}
                     alt={slide.cardTitle}
-                    style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top" }}
+                    style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 15%" }}
                     loading="eager"
                     decoding="async"
                   />
