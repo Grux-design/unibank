@@ -204,7 +204,7 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
             flexDirection: "row",
             alignItems:    "stretch",
             gap:           0,
-            minHeight:     480,
+            minHeight:     540,
           }}
         >
           {/* ── LEFT — copy ── */}
@@ -333,46 +333,43 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
           {/* ── RIGHT — photo + glass card ── */}
           <div
             style={{
-              flex:          "0 0 auto",
-              width:         "clamp(260px, 38%, 440px)",
-              position:      "relative",
-              display:       "flex",
-              alignItems:    "stretch",
-              height:        "100%",
+              flex:     "0 0 auto",
+              width:    "clamp(260px, 38%, 440px)",
+              position: "relative",
             }}
           >
-            <div style={{ position: "relative", width: "100%", height: "100%", minHeight: 540 }}>
-              {/* Secondary accent circle — behind, bottom-right */}
+            <div style={{ position: "relative", width: "100%", height: "100%", minHeight: 540, overflow: "hidden" }}>
+              {/* Secondary accent circle — decorative, clipped by parent overflow:hidden */}
               <div
                 style={{
                   position:     "absolute",
-                  bottom:       -40,
-                  right:        -40,
-                  width:        260,
-                  height:       260,
+                  bottom:       "5%",
+                  right:        "-8%",
+                  width:        "38%",
+                  aspectRatio:  "1",
                   borderRadius: "50%",
                   background:   t.blobAccent,
                   pointerEvents:"none",
+                  zIndex:       0,
                 }}
               />
 
-              {/* Main blob — full-height rounded-top rectangle */}
+              {/* Main blob — fills full column */}
               <div
                 style={{
                   position:     "absolute",
                   top:          0,
+                  left:         0,
+                  right:        0,
                   bottom:       0,
-                  left:         "50%",
-                  transform:    "translateX(-50%)",
-                  width:        "90%",
-                  height:       "100%",
                   borderRadius: "24px 24px 0 0",
                   background:   t.blobFill,
                   pointerEvents:"none",
+                  zIndex:       1,
                 }}
               />
 
-              {/* Person photo */}
+              {/* Person photo — fills full column */}
               <AnimatePresence mode="wait">
                 <motion.div
                   key={slide.id + "-img"}
@@ -383,12 +380,12 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
                   style={{
                     position:     "absolute",
                     top:          0,
-                    left:         "50%",
-                    transform:    "translateX(-50%)",
-                    width:        "88%",
-                    height:       "100%",
+                    left:         0,
+                    right:        0,
+                    bottom:       0,
                     borderRadius: "20px 20px 0 0",
                     overflow:     "hidden",
+                    zIndex:       2,
                   }}
                 >
                   <img
