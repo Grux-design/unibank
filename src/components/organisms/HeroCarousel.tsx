@@ -173,13 +173,15 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
       {/* ── Hero card ──────────────────────────────────── */}
       <div
         style={{
-          background:   t.cardBg,
-          borderRadius: 28,
-          overflow:     "hidden",
-          position:     "relative",
-          maxWidth:     1200,
-          margin:       "0 auto",
-          minHeight:    540,
+          background:    t.cardBg,
+          borderRadius:  28,
+          overflow:      "hidden",
+          position:      "relative",
+          maxWidth:      1200,
+          margin:        "0 auto",
+          minHeight:     540,
+          paddingTop:    32,
+          paddingRight:  48,
         }}
       >
         {/* ── Diagonal line pattern overlay ── */}
@@ -204,14 +206,13 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
             flexDirection: "row",
             alignItems:    "stretch",
             gap:           0,
-            minHeight:     540,
           }}
         >
           {/* ── LEFT — copy ── */}
           <div
             style={{
               flex:          "1 1 0",
-              padding:       "52px 48px 32px 48px",
+              padding:       "20px 48px 32px 48px",
               display:       "flex",
               flexDirection: "column",
               justifyContent:"center",
@@ -338,7 +339,7 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
               position: "relative",
             }}
           >
-            <div style={{ position: "relative", width: "100%", height: "100%", minHeight: 540, overflow: "hidden" }}>
+            <div style={{ position: "relative", width: "100%", height: "100%", overflow: "hidden" }}>
               {/* Secondary accent circle — decorative, clipped by parent overflow:hidden */}
               <div
                 style={{
@@ -354,22 +355,22 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
                 }}
               />
 
-              {/* Main blob — inset from top and right */}
+              {/* Main blob — full-fill, card padding creates the outer gaps */}
               <div
                 style={{
                   position:     "absolute",
-                  top:          12,
+                  top:          0,
                   left:         0,
-                  right:        12,
+                  right:        0,
                   bottom:       0,
-                  borderRadius: "20px 20px 0 0",
+                  borderRadius: 28,
                   background:   t.blobFill,
                   pointerEvents:"none",
                   zIndex:       1,
                 }}
               />
 
-              {/* Person photo — inset: top + right margin, flush bottom-left */}
+              {/* Person photo — 68% wide centered, flush bottom, full height */}
               <AnimatePresence mode="wait">
                 <motion.div
                   key={slide.id + "-img"}
@@ -379,11 +380,12 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
                   transition={{ duration: 0.45, ease: [0.32, 0.72, 0, 1] }}
                   style={{
                     position:     "absolute",
-                    top:          12,
-                    left:         0,
-                    right:        12,
                     bottom:       0,
-                    borderRadius: "20px 20px 0 0",
+                    left:         "50%",
+                    transform:    "translateX(-50%)",
+                    width:        "68%",
+                    height:       "100%",
+                    borderRadius: 28,
                     overflow:     "hidden",
                     zIndex:       2,
                   }}
