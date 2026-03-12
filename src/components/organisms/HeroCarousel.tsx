@@ -372,7 +372,7 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
                 }}
               />
 
-              {/* Person photo — 68% wide centered, fixed height, consistent across all slides */}
+              {/* Person photo — centered via left/right offsets (no transform), consistent across all slides */}
               <AnimatePresence mode="wait">
                 <motion.div
                   key={slide.id + "-img"}
@@ -383,9 +383,8 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
                   style={{
                     position:     "absolute",
                     bottom:       0,
-                    left:         "50%",
-                    transform:    "translateX(-50%)",
-                    width:        "78%",
+                    left:         "11%",
+                    right:        "11%",
                     height:       480,
                     borderRadius: 28,
                     overflow:     "hidden",
