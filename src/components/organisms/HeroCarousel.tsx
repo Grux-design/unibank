@@ -206,6 +206,7 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
             flexDirection: "row",
             alignItems:    "stretch",
             gap:           0,
+            minHeight:     508,
           }}
         >
           {/* ── LEFT — copy ── */}
@@ -337,9 +338,10 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
               flex:     "0 0 auto",
               width:    "clamp(260px, 38%, 440px)",
               position: "relative",
+              height:   "100%",
             }}
           >
-            <div style={{ position: "relative", width: "100%", height: "100%", overflow: "hidden" }}>
+            <div style={{ position: "relative", width: "100%", height: "100%", minHeight: 508, overflow: "hidden" }}>
               {/* Secondary accent circle — decorative, clipped by parent overflow:hidden */}
               <div
                 style={{
@@ -363,14 +365,14 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
                   left:         0,
                   right:        0,
                   bottom:       0,
-                  borderRadius: 28,
+                  borderRadius: 48,
                   background:   t.blobFill,
                   pointerEvents:"none",
                   zIndex:       1,
                 }}
               />
 
-              {/* Person photo — 68% wide centered, flush bottom, full height */}
+              {/* Person photo — 68% wide centered, fixed height, consistent across all slides */}
               <AnimatePresence mode="wait">
                 <motion.div
                   key={slide.id + "-img"}
@@ -383,8 +385,8 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
                     bottom:       0,
                     left:         "50%",
                     transform:    "translateX(-50%)",
-                    width:        "68%",
-                    height:       "100%",
+                    width:        "78%",
+                    height:       480,
                     borderRadius: 28,
                     overflow:     "hidden",
                     zIndex:       2,
@@ -393,7 +395,7 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
                   <img
                     src={slide.image}
                     alt={slide.cardTitle}
-                    style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top" }}
+                    style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 15%" }}
                     loading="eager"
                     decoding="async"
                   />
