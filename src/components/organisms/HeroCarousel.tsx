@@ -338,9 +338,10 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
               flex:     "0 0 auto",
               width:    "clamp(260px, 38%, 440px)",
               position: "relative",
+              height:   "100%",
             }}
           >
-            <div style={{ position: "relative", width: "100%", height: "100%", overflow: "hidden" }}>
+            <div style={{ position: "relative", width: "100%", height: "100%", minHeight: 508, overflow: "hidden" }}>
               {/* Secondary accent circle — decorative, clipped by parent overflow:hidden */}
               <div
                 style={{
@@ -364,7 +365,7 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
                   left:         0,
                   right:        0,
                   bottom:       0,
-                  borderRadius: 28,
+                  borderRadius: 48,
                   background:   t.blobFill,
                   pointerEvents:"none",
                   zIndex:       1,
