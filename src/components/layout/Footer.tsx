@@ -86,21 +86,12 @@ export function Footer() {
     <footer role="contentinfo">
 
       {/* ── SECTION 1: Main ── */}
-      <div style={{
+<div style={{
         background: "white",
         borderTop: `1px solid ${BORDER}`,
         padding: "56px 32px 40px",
         position: "relative", overflow: "hidden",
       }}>
-        {/* Decorative background SVG */}
-        <svg
-          aria-hidden="true"
-          style={{ position: "absolute", bottom: 0, right: 0, opacity: 0.04, pointerEvents: "none" }}
-          width="420" height="320" viewBox="0 0 420 320"
-        >
-          <circle cx="350" cy="280" r="200" fill={ORANGE} />
-          <circle cx="400" cy="100" r="120" fill={TEXT_DARK} />
-        </svg>
 
         <div style={{
           maxWidth: 1200, margin: "0 auto",
