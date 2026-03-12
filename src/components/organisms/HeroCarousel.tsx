@@ -494,7 +494,6 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
             alignItems:     "center",
             justifyContent: "space-between",
             padding:        "16px 48px 24px 48px",
-            borderTop:      `1px solid ${t.borderColor}`,
           }}
         >
           {/* Counter + progress dash + tag */}
