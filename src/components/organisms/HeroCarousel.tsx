@@ -204,7 +204,7 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
             flexDirection: "row",
             alignItems:    "stretch",
             gap:           0,
-            minHeight:     480,
+            minHeight:     540,
           }}
         >
           {/* ── LEFT — copy ── */}
