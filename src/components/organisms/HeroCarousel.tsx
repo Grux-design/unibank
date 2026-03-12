@@ -173,13 +173,15 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
       {/* ── Hero card ──────────────────────────────────── */}
       <div
         style={{
-          background:   t.cardBg,
-          borderRadius: 28,
-          overflow:     "hidden",
-          position:     "relative",
-          maxWidth:     1200,
-          margin:       "0 auto",
-          minHeight:    540,
+          background:    t.cardBg,
+          borderRadius:  28,
+          overflow:      "hidden",
+          position:      "relative",
+          maxWidth:      1200,
+          margin:        "0 auto",
+          minHeight:     540,
+          paddingTop:    32,
+          paddingRight:  48,
         }}
       >
         {/* ── Diagonal line pattern overlay ── */}
@@ -204,14 +206,13 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
             flexDirection: "row",
             alignItems:    "stretch",
             gap:           0,
-            minHeight:     540,
           }}
         >
           {/* ── LEFT — copy ── */}
           <div
             style={{
               flex:          "1 1 0",
-              padding:       "52px 48px 32px 48px",
+              padding:       "20px 48px 32px 48px",
               display:       "flex",
               flexDirection: "column",
               justifyContent:"center",
@@ -338,7 +339,7 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
               position: "relative",
             }}
           >
-            <div style={{ position: "relative", width: "100%", height: "100%", minHeight: 540, overflow: "hidden" }}>
+            <div style={{ position: "relative", width: "100%", height: "100%", overflow: "hidden" }}>
               {/* Secondary accent circle — decorative, clipped by parent overflow:hidden */}
               <div
                 style={{
