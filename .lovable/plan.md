@@ -1,34 +1,56 @@
 
-## Plan: Contentful CMS Connection
+## What needs to change
 
-The user wants to establish a Contentful connection — no pages or components yet, just the integration layer.
+The developer spec is precise. The current implementation diverges from it in two ways:
 
-Since the Content Delivery API token is a **public/client-side key** (it's read-only and safe to expose), it can be stored in the codebase via `.env`. However, the Content Preview API token should be kept secret (it exposes unpublished content).
+### Problem 1 — Card padding controls the gaps, not absolute offsets on the photo
 
-### What will be done
+**Current:** The hero card has no explicit `paddingTop`/`paddingRight`. The two-column flex row has `minHeight: 540`. The right column inner div uses `top: 12, right: 12` insets on the photo/blob to fake the gap.
 
-1. **Store tokens securely in `.env`**:
-   - `VITE_CONTENTFUL_SPACE_ID=bsxwchto8q9z` — public, safe for client-side
-   - `VITE_CONTENTFUL_ACCESS_TOKEN=hPb7E44kegBR2V5fG1Hj147ph7zIWTY7EiLQYronG60` — Content Delivery token (read-only, safe to expose)
-   - Store the Preview token as a Lovable Cloud secret (`CONTENTFUL_PREVIEW_TOKEN`) so it's only accessible from edge functions
+**Required (per spec):**
+- Card `paddingTop: 32` — this pushes the right column down 32px from the card edge, creating the top gap
+- Card `paddingRight: 48` — this pushes the right column 48px from the right card edge
+- Photo uses `left: 50%, translateX(-50%), width: 68%` centered within the right column — the remaining 16% on the right side shows the orange gradient through
+- Photo `bottom: 0, height: 100%` — sits flush at the bottom, full height → top rounded corners are visible
 
-2. **Create `src/integrations/contentful/client.ts`**:
-   - Export a configured Contentful client using the Delivery API
-   - Use `fetch` directly (no extra SDK needed) or a lightweight wrapper
-   - Exports `CONTENTFUL_SPACE_ID` and `CONTENTFUL_BASE_URL` constants for reuse
+**The card's `padding` is the only mechanism for gaps — no `top: 12 / right: 12` on the photo.**
 
-3. **Create `src/integrations/contentful/types.ts`**:
-   - Define base TypeScript types: `ContentfulEntry<T>`, `ContentfulAsset`, `ContentfulCollection<T>`
-   - These will be extended later as content models are defined in Contentful
+### Problem 2 — Bottom border-radius on image not visible
 
-### What will NOT be done
-- No pages, components, or data-fetching hooks yet
-- No edge function for preview (can be added when preview mode is needed)
-- No content model-specific types (will be defined when CMS structure is decided)
+The photo container currently has `borderRadius: "20px 20px 0 0"` — only top corners. But looking at the screenshot, the image has rounded corners on **all four sides** (`borderRadius: 28` all around), visible because there's orange gradient showing around the photo (from the card padding + centering). The bottom-right corner is visible since the card's own `borderRadius: 28` and `overflow: hidden` clip the card edge, but the photo itself is inset from the card edges — so the photo's bottom corners should also be rounded.
 
-### Files to create/edit
-- `src/integrations/contentful/client.ts` — Contentful fetch client
-- `src/integrations/contentful/types.ts` — Base types
-- `.env` — Add `VITE_CONTENTFUL_SPACE_ID` and `VITE_CONTENTFUL_ACCESS_TOKEN`
+### Exact changes to `HeroCarousel.tsx`
 
-The Preview API token will be stored as a secret (`CONTENTFUL_PREVIEW_TOKEN`) via the secrets tool so it's available for future edge functions but never exposed to the browser.
+**1. Hero card div (line 174-184):**
+- Add `paddingTop: 32` and `paddingRight: 48`
+- Keep `overflow: "hidden"`, `borderRadius: 28`, `minHeight: 540`
+
+**2. Two-column row (line 201-208):**
+- Remove `minHeight: 540` — the card's `minHeight: 540` already handles this; the row should just `height: "100%"` or let it be set by the card
+
+**3. Right column outer div (line 334-339):**
+- Keep `flex: "0 0 auto"`, `width: "clamp(260px, 38%, 440px)"`, `position: "relative"`
+- The column now starts 32px below card top (from card paddingTop) and ends 48px before card right (from card paddingRight) — automatically
+
+**4. Inner right div (line 341):**
+- `height: "100%"`, remove `minHeight: 540` (already handled by card)
+- Keep `overflow: "hidden"`, `position: "relative"`, `width: "100%"`
+
+**5. Main blob (lines 358-370):**
+- Change to `left: 0, right: 0, top: 0, bottom: 0` (full-fill, no insets — the card padding handles the outer gaps)
+- `borderRadius: 28` all corners (matches photo)
+
+**6. Photo container (lines 373-399):**
+- `bottom: 0, height: "100%"` — anchored flush at bottom, full height so top corners are visible
+- `left: "50%"`, `transform: "translateX(-50%)"`, `width: "68%"` — centered, 68% wide per spec
+- `borderRadius: 28` — all four corners rounded (currently only top two are rounded, which is why bottom is invisible)
+- `overflow: "hidden"` — keeps the img clipped to the rounded frame
+
+**7. Glass card (line 402-415):**
+- `right: 16, bottom: 24` — already correct, keep as-is
+
+### Why this fixes both issues
+
+- **Top gap:** card `paddingTop: 32` → right column starts 32px below card top → photo frame's `top` is 0 relative to the column (not to the card), so 32px gap is naturally created
+- **Right gap:** card `paddingRight: 48` → right column ends 48px before card right → photo at `width: 68%` centered adds another ~16% of right column width as right breathing room
+- **Bottom border-radius visible:** photo gets `borderRadius: 28` on all corners; since it's inset from card edges (via padding + 68% width), the bottom corners are visible over the orange gradient background
