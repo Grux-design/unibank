@@ -406,7 +406,7 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
                 style={{
                   position:       "absolute",
                   bottom:         24,
-                  right:          -20,
+                  right:          16,
                   zIndex:         10,
                   background:     t.glassBg,
                   backdropFilter: "blur(16px)",
