@@ -336,12 +336,12 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
               flex:          "0 0 auto",
               width:         "clamp(260px, 38%, 440px)",
               position:      "relative",
-              overflow:      "visible",
               display:       "flex",
-              alignItems:    "flex-end",
+              alignItems:    "stretch",
+              height:        "100%",
             }}
           >
-            <div style={{ position: "relative", width: "100%", height: "100%", minHeight: 480 }}>
+            <div style={{ position: "relative", width: "100%", height: "100%", minHeight: 540 }}>
               {/* Secondary accent circle — behind, bottom-right */}
               <div
                 style={{
@@ -356,16 +356,17 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
                 }}
               />
 
-              {/* Main blob — organic rounded rect */}
+              {/* Main blob — full-height rounded-top rectangle */}
               <div
                 style={{
                   position:     "absolute",
+                  top:          0,
                   bottom:       0,
                   left:         "50%",
                   transform:    "translateX(-50%)",
                   width:        "90%",
-                  height:       "92%",
-                  borderRadius: "60% 60% 0 0 / 50% 50% 0 0",
+                  height:       "100%",
+                  borderRadius: "24px 24px 0 0",
                   background:   t.blobFill,
                   pointerEvents:"none",
                 }}
@@ -381,12 +382,12 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
                   transition={{ duration: 0.45, ease: [0.32, 0.72, 0, 1] }}
                   style={{
                     position:     "absolute",
-                    bottom:       0,
+                    top:          0,
                     left:         "50%",
                     transform:    "translateX(-50%)",
                     width:        "88%",
-                    height:       "90%",
-                    borderRadius: "52% 52% 0 0 / 44% 44% 0 0",
+                    height:       "100%",
+                    borderRadius: "20px 20px 0 0",
                     overflow:     "hidden",
                   }}
                 >
@@ -405,7 +406,7 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
                 style={{
                   position:       "absolute",
                   bottom:         24,
-                  right:          -20,
+                  right:          16,
                   zIndex:         10,
                   background:     t.glassBg,
                   backdropFilter: "blur(16px)",
@@ -493,7 +494,6 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
             alignItems:     "center",
             justifyContent: "space-between",
             padding:        "16px 48px 24px 48px",
-            borderTop:      `1px solid ${t.borderColor}`,
           }}
         >
           {/* Counter + progress dash + tag */}
