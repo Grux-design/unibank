@@ -28,7 +28,12 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
   const t         = THEME;
 
   return (
-    <section style={{ background: "#F8F7F6", paddingTop: 80, paddingBottom: 32, paddingLeft: 16, paddingRight: 16, fontFamily: '"Inter", -apple-system, sans-serif' }}>
+    <section style={{
+      background: "#F8F7F6",
+      paddingTop: 80, paddingBottom: 32,
+      paddingLeft: 16, paddingRight: 16,
+      fontFamily: '"Inter", -apple-system, sans-serif',
+    }}>
       <div style={{
         background: t.cardBg, borderRadius: 28, overflow: "hidden",
         position: "relative", maxWidth: 1200, margin: "0 auto",
@@ -50,8 +55,13 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
         <div style={{ display: "flex", flexDirection: "row", alignItems: "stretch", gap: 0, minHeight: 508 }}>
           <HeroSlideContent slide={slide} dir={dir} />
 
-          {/* Right column: photo + glass card stacked */}
-          <div style={{ flex: "0 0 auto", width: "clamp(260px, 38%, 440px)", position: "relative" }}>
+          {/* Right column: photo frame + glass card overlay */}
+          <div style={{
+            flex: "0 0 auto",
+            width: "clamp(260px, 38%, 440px)",
+            position: "relative",
+            height: "100%",
+          }}>
             <HeroPhotoFrame slide={slide} />
             <HeroGlassCard  nextSlide={nextSlide} currentKey={current} />
           </div>
