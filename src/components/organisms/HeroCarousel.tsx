@@ -355,22 +355,22 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
                 }}
               />
 
-              {/* Main blob — inset from top and right */}
+              {/* Main blob — full-fill, card padding creates the outer gaps */}
               <div
                 style={{
                   position:     "absolute",
-                  top:          12,
+                  top:          0,
                   left:         0,
-                  right:        12,
+                  right:        0,
                   bottom:       0,
-                  borderRadius: "20px 20px 0 0",
+                  borderRadius: 28,
                   background:   t.blobFill,
                   pointerEvents:"none",
                   zIndex:       1,
                 }}
               />
 
-              {/* Person photo — inset: top + right margin, flush bottom-left */}
+              {/* Person photo — 68% wide centered, flush bottom, full height */}
               <AnimatePresence mode="wait">
                 <motion.div
                   key={slide.id + "-img"}
@@ -380,11 +380,12 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
                   transition={{ duration: 0.45, ease: [0.32, 0.72, 0, 1] }}
                   style={{
                     position:     "absolute",
-                    top:          12,
-                    left:         0,
-                    right:        12,
                     bottom:       0,
-                    borderRadius: "20px 20px 0 0",
+                    left:         "50%",
+                    transform:    "translateX(-50%)",
+                    width:        "68%",
+                    height:       "100%",
+                    borderRadius: 28,
                     overflow:     "hidden",
                     zIndex:       2,
                   }}
