@@ -1,118 +1,34 @@
 
-## Full Atomic Design Refactor — Header, Hero, Footer
+## Plan: Contentful CMS Connection
 
-### Current state vs. target
+The user wants to establish a Contentful connection — no pages or components yet, just the integration layer.
 
-| File | Current lines | Target lines |
-|---|---|---|
-| `HeroCarousel.tsx` | 590 | ~80 |
-| `RightHeaderPill.tsx` | 561 | ~50 (shell only) |
-| `MegaMenu.tsx` | 453 | ~80 |
-| `Footer.tsx` | 316 | ~70 |
-| `Header.tsx` | 181 | ~80 |
+Since the Content Delivery API token is a **public/client-side key** (it's read-only and safe to expose), it can be stored in the codebase via `.env`. However, the Content Preview API token should be kept secret (it exposes unpublished content).
 
----
+### What will be done
 
-### New files to create
+1. **Store tokens securely in `.env`**:
+   - `VITE_CONTENTFUL_SPACE_ID=bsxwchto8q9z` — public, safe for client-side
+   - `VITE_CONTENTFUL_ACCESS_TOKEN=hPb7E44kegBR2V5fG1Hj147ph7zIWTY7EiLQYronG60` — Content Delivery token (read-only, safe to expose)
+   - Store the Preview token as a Lovable Cloud secret (`CONTENTFUL_PREVIEW_TOKEN`) so it's only accessible from edge functions
 
-```text
-src/
-  data/
-    heroSlides.ts              ← Slide[] types + slides[] array + THEME + SLIDE_DURATION
-    footerData.ts              ← footerColumns[], socialIcons[], legalLinks[]
-    megaMenuData.ts            ← personasData, empresasData, secondaryLinks
+2. **Create `src/integrations/contentful/client.ts`**:
+   - Export a configured Contentful client using the Delivery API
+   - Use `fetch` directly (no extra SDK needed) or a lightweight wrapper
+   - Exports `CONTENTFUL_SPACE_ID` and `CONTENTFUL_BASE_URL` constants for reuse
 
-  components/
-    atoms/
-      HeroEyebrow.tsx          ← frosted pill for slide eyebrow text
-      HeroHeadline.tsx         ← <h1> mapping HeadlinePart[]
-      HeroProgressBar.tsx      ← animated motion progress fill (reused in 2 places)
-      HeroArrowButton.tsx      ← circular prev/next button
-      FooterSBPBadge.tsx       ← SBP regulatory badge
-      FooterSocialIcon.tsx     ← single social icon link
-      FooterStoreButton.tsx    ← App Store / Google Play pill button
+3. **Create `src/integrations/contentful/types.ts`**:
+   - Define base TypeScript types: `ContentfulEntry<T>`, `ContentfulAsset`, `ContentfulCollection<T>`
+   - These will be extended later as content models are defined in Contentful
 
-    molecules/
-      HeroSlideContent.tsx     ← (REPLACE existing) eyebrow + headline + body + CTAs
-      HeroPhotoFrame.tsx       ← accent circle + blob + AnimatePresence photo
-      HeroGlassCard.tsx        ← glass next-slide preview card
-      HeroControls.tsx         ← counter + progress dash + tag + arrows
-      FooterBrandColumn.tsx    ← logo + description + SBPBadge
-      FooterNavColumn.tsx      ← single nav column (title + links)
-      FooterNavGrid.tsx        ← 4 FooterNavColumn instances
-      FooterAppsBar.tsx        ← App Store + Google Play + legal links row
-      FooterCreditsBar.tsx     ← orange gradient bar: copyright + social icons
-      MegaMenuTabBar.tsx       ← Personas/Empresas tab row + "Ver todo" link
-      MegaMenuCategoryGrid.tsx ← product categories grid + footer links
-      MegaMenuFeaturedCard.tsx ← right-side photo/featured card
+### What will NOT be done
+- No pages, components, or data-fetching hooks yet
+- No edge function for preview (can be added when preview mode is needed)
+- No content model-specific types (will be defined when CMS structure is decided)
 
-    organisms/
-      HeroCarousel.tsx         ← REPLACE: state + timer + card shell + columns
-      Header.tsx               ← keep mostly as-is (~181 lines, already clean)
-      MegaMenu.tsx             ← REPLACE: thin shell composing tab + grid + card
-      Footer.tsx               ← REPLACE: thin shell composing 3 sections
+### Files to create/edit
+- `src/integrations/contentful/client.ts` — Contentful fetch client
+- `src/integrations/contentful/types.ts` — Base types
+- `.env` — Add `VITE_CONTENTFUL_SPACE_ID` and `VITE_CONTENTFUL_ACCESS_TOKEN`
 
-  widgets/ (new folder — for RightHeaderPill sub-components)
-    LanguageWidget.tsx         ← extracted from RightHeaderPill
-    SearchWidget.tsx           ← extracted from RightHeaderPill
-    BancaEnLineaWidget.tsx     ← extracted from RightHeaderPill
-    AbreCuentaWidget.tsx       ← extracted from RightHeaderPill
-```
-
-`RightHeaderPill.tsx` becomes a ~35-line shell that imports and renders the 4 widgets.
-
----
-
-### What stays untouched
-
-- `Header.tsx` — already 181 lines, well-structured, no changes needed
-- `LeftHeaderPill.tsx` — 118 lines, already atomic-friendly
-- `Logo.tsx`, `NavPill.tsx`, existing atoms — unchanged
-
----
-
-### Approximate final line counts
-
-| File | ~Lines |
-|---|---|
-| `data/heroSlides.ts` | 65 |
-| `data/footerData.ts` | 35 |
-| `data/megaMenuData.ts` | 80 |
-| `atoms/HeroEyebrow.tsx` | 18 |
-| `atoms/HeroHeadline.tsx` | 22 |
-| `atoms/HeroProgressBar.tsx` | 18 |
-| `atoms/HeroArrowButton.tsx` | 32 |
-| `atoms/FooterSBPBadge.tsx` | 28 |
-| `atoms/FooterSocialIcon.tsx` | 22 |
-| `atoms/FooterStoreButton.tsx` | 30 |
-| `molecules/HeroSlideContent.tsx` | 60 |
-| `molecules/HeroPhotoFrame.tsx` | 55 |
-| `molecules/HeroGlassCard.tsx` | 50 |
-| `molecules/HeroControls.tsx` | 50 |
-| `molecules/FooterBrandColumn.tsx` | 30 |
-| `molecules/FooterNavColumn.tsx` | 35 |
-| `molecules/FooterNavGrid.tsx` | 20 |
-| `molecules/FooterAppsBar.tsx` | 40 |
-| `molecules/FooterCreditsBar.tsx` | 40 |
-| `molecules/MegaMenuTabBar.tsx` | 45 |
-| `molecules/MegaMenuCategoryGrid.tsx` | 80 |
-| `molecules/MegaMenuFeaturedCard.tsx` | 55 |
-| `organisms/HeroCarousel.tsx` | 80 |
-| `organisms/MegaMenu.tsx` | 50 |
-| `organisms/Footer.tsx` (moved from layout/) | 50 |
-| `widgets/LanguageWidget.tsx` | 85 |
-| `widgets/SearchWidget.tsx` | 110 |
-| `widgets/BancaEnLineaWidget.tsx` | 90 |
-| `widgets/AbreCuentaWidget.tsx` | 85 |
-| `molecules/RightHeaderPill.tsx` | 35 |
-
-**Zero visual changes** — pure structural refactor.
-
----
-
-### Technical notes
-
-- `THEME` constant and `SLIDE_DURATION` move to `data/heroSlides.ts` and are imported where needed (by molecules that need individual tokens)
-- `FooterNavColumn` handles both regular links and the special "attention" links (WhatsApp/Sucursales) via an `isAttention` prop — same logic, extracted cleanly
-- `MegaMenu.tsx` tab state (`useState<Tab>`) stays in `MegaMenu.tsx` since it controls which data panel renders — it's truly organism-level state
-- `Footer.tsx` moves from `src/components/layout/` to `src/components/organisms/` for consistency, with the import in `SiteLayout.tsx` updated
+The Preview API token will be stored as a secret (`CONTENTFUL_PREVIEW_TOKEN`) via the secrets tool so it's available for future edge functions but never exposed to the browser.
