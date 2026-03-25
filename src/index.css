@@ -45,6 +45,17 @@
 
     --radius: 0.5rem;
 
+    /* Extended brand tokens */
+    --fun-orange: hsl(20 100% 60%);
+    --uni-dark: hsl(0 0% 12%);
+    --uni-dark-soft: hsl(0 3% 44%);
+    --uni-muted: hsl(0 2% 56%);
+    --uni-border: hsl(30 10% 88%);
+    --btn-height: 52px;
+    --btn-border-radius: 16px;
+    --btn-font-size: 0.9375rem;
+    --btn-font-weight: 600;
+
     /* Gradients */
     --gradient-brand: linear-gradient(135deg, hsl(20 100% 60%), hsl(20 100% 48%));
     --gradient-dark: linear-gradient(135deg, hsl(0 0% 6%), hsl(0 0% 12%));
