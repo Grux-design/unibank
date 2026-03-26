@@ -7,7 +7,7 @@ interface Props {
 }
 
 export function HeroFormSection({ section }: Props) {
-  const { internalName, headline, subheadline, mainImage, showForm } = section;
+  const { title, headline, subheadline, mainImage, showForm } = section;
   const [idValue, setIdValue] = useState("");
 
   const imgSrc = mainImage?.fields?.file?.url;
