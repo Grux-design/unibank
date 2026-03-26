@@ -147,7 +147,7 @@ async function fetchPage(slug: string): Promise<ResolvedPage> {
       if (id) seoEntry = entryMap.get(id);
     }
     if (seoEntry) {
-      const sf = seoEntry.fields as SeoMetadataFields;
+      const sf = seoEntry.fields as unknown as SeoMetadataFields;
       seoMeta = {
         title: sf.title,
         description: sf.description,
