@@ -1,59 +1,41 @@
 import { LayoutGrid } from "lucide-react";
 import type { ResolvedSection } from "@/integrations/contentful/types";
-import { SectionTag } from "@/components/ui/atoms";
 
 interface Props {
   section: ResolvedSection;
 }
 
 export function FeatureStripSection({ section }: Props) {
-  const { internalName, headline, items = [] } = section;
+  const { headline, items = [] } = section;
 
   return (
     <section
       style={{
-        background: "hsl(var(--card))",
-        padding: "clamp(40px, 6vw, 80px) clamp(16px, 3.9vw, 72px)",
-        borderTop: "1px solid hsl(var(--border))",
+        background: "hsl(var(--muted))",
+        padding: "clamp(48px, 7vw, 88px) clamp(16px, 3.9vw, 72px)",
       }}
     >
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         {/* Header */}
-        {(internalName || headline) && (
-          <div
+        {headline && (
+          <h2
             style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: 12,
-              marginBottom: 40,
+              margin: "0 0 40px 0",
+              fontSize: "clamp(22px, 2.5vw, 32px)",
+              fontWeight: 800,
+              letterSpacing: "-0.025em",
+              color: "hsl(var(--foreground))",
               textAlign: "center",
             }}
           >
-            {internalName && <SectionTag>{internalName}</SectionTag>}
-            {headline && (
-              <h2
-                style={{
-                  margin: 0,
-                  fontSize: "clamp(24px, 3vw, 36px)",
-                  fontWeight: 800,
-                  letterSpacing: "-0.025em",
-                  color: "hsl(var(--foreground))",
-                }}
-              >
-                {headline}
-              </h2>
-            )}
-          </div>
+            {headline}
+          </h2>
         )}
 
         {/* Feature grid */}
         <div
-          style={{
-            display: "grid",
-            gap: 16,
-          }}
-          className="grid-cols-2 md:grid-cols-4"
+          className="grid grid-cols-1 md:grid-cols-3"
+          style={{ gap: 20 }}
         >
           {items.map((item) => {
             const iconSrc = item.icon?.fields?.file?.url;
@@ -63,61 +45,38 @@ export function FeatureStripSection({ section }: Props) {
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                  gap: 12,
-                  padding: "24px 20px",
+                  gap: 16,
+                  padding: "32px 28px",
                   background: "hsl(var(--background))",
-                  border: "1px solid hsl(var(--border))",
-                  borderRadius: 20,
-                  transition: "box-shadow 0.22s, transform 0.22s",
-                }}
-                onMouseEnter={(e) => {
-                  const el = e.currentTarget;
-                  el.style.boxShadow =
-                    "0 8px 24px hsl(var(--primary) / 0.12)";
-                  el.style.transform = "translateY(-2px)";
-                }}
-                onMouseLeave={(e) => {
-                  const el = e.currentTarget;
-                  el.style.boxShadow = "none";
-                  el.style.transform = "translateY(0)";
+                  borderRadius: 28,
                 }}
               >
-                {/* Icon */}
-                <div
-                  style={{
-                    width: 48,
-                    height: 48,
-                    borderRadius: 14,
-                    background: "hsl(var(--primary) / 0.10)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    flexShrink: 0,
-                  }}
-                >
+                {/* Icon — bare, no background wrapper */}
+                <div style={{ flexShrink: 0 }}>
                   {iconSrc ? (
                     <img
                       src={iconSrc}
                       alt={item.icon?.fields?.title ?? item.title}
-                      style={{ width: 28, height: 28, objectFit: "contain" }}
+                      style={{ width: 40, height: 40, objectFit: "contain" }}
                     />
                   ) : (
                     <LayoutGrid
-                      size={24}
+                      size={40}
                       style={{ color: "hsl(var(--primary))" }}
                     />
                   )}
                 </div>
 
                 {/* Text */}
-                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                   <p
                     style={{
                       margin: 0,
-                      fontSize: 15,
-                      fontWeight: 700,
+                      fontSize: "clamp(20px, 2vw, 26px)",
+                      fontWeight: 800,
                       color: "hsl(var(--foreground))",
-                      lineHeight: 1.3,
+                      lineHeight: 1.2,
+                      letterSpacing: "-0.02em",
                     }}
                   >
                     {item.title}
@@ -126,7 +85,7 @@ export function FeatureStripSection({ section }: Props) {
                     <p
                       style={{
                         margin: 0,
-                        fontSize: 13,
+                        fontSize: 15,
                         lineHeight: 1.6,
                         color: "hsl(var(--muted-foreground))",
                       }}

@@ -20,15 +20,8 @@ export function HeroFormSection({ section }: Props) {
       }}
     >
       <div
-        style={{
-          maxWidth: 1200,
-          margin: "0 auto",
-          display: "grid",
-          gridTemplateColumns: "1fr",
-          gap: 40,
-          alignItems: "center",
-        }}
-        className="md:grid-cols-2"
+        className="grid md:grid-cols-2 gap-10 items-center"
+        style={{ maxWidth: 1200, margin: "0 auto" }}
       >
         {/* ── Left: Content + optional form ── */}
         <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
@@ -153,11 +146,10 @@ export function HeroFormSection({ section }: Props) {
             style={{
               borderRadius: 28,
               overflow: "hidden",
-              aspectRatio: "4/3",
+              minHeight: 480,
+              height: "100%",
               background: "hsl(var(--muted))",
-              order: -1,
             }}
-            className="md:order-none"
           >
             <img
               src={imgSrc}
@@ -165,6 +157,7 @@ export function HeroFormSection({ section }: Props) {
               style={{
                 width: "100%",
                 height: "100%",
+                minHeight: 480,
                 objectFit: "cover",
                 display: "block",
               }}
