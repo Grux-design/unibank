@@ -1,116 +1,42 @@
 
-## Product Detail Page — Contentful Page Builder at `/personas/cuentas/:slug`
+## Fix Hero Layout (Horizontal) + Redesign Benefits Grid
 
-### Overview
+### What's wrong
 
-Build a dynamic page builder that fetches a `Page` entry from Contentful by slug, iterates over its `sections` array, and renders a component per `type`. Two section renderers: `HeroForm` and `FeatureStrip`. Unrecognized types show a `UnknownSection` fallback. SEO is driven by `seoMetadata`.
+**Hero**: `gridTemplateColumns: "1fr"` is always 1 column. The `md:grid-cols-2` class works but `order: -1` on the image forces it on top on mobile — which is correct — but on desktop the columns are too narrow and the image has a fixed `aspectRatio: "4/3"` instead of filling height. The intent matches the reference (Nubank screenshot): left = tag + large headline + subheadline + form card; right = tall rounded image that fills the row height.
 
----
-
-### Contentful integration note
-
-The project already has `src/integrations/contentful/client.ts` with a `contentfulFetch` function calling the Delivery API directly via `VITE_CONTENTFUL_SPACE_ID` + `VITE_CONTENTFUL_ACCESS_TOKEN`. No connector or edge function needed — client-side fetch is already the pattern. The existing `ContentfulEntry`, `ContentfulCollection`, and `ContentfulAsset` types in `types.ts` will be extended.
+**Feature Strip**: Compact small cards in a 4-column grid. The reference shows large generous cards with just an icon at top-left, a big bold title, and description underneath — more spacious, white background, large border-radius (~24px), 3-col desktop layout.
 
 ---
 
-### New files
+### Changes — 2 files only
 
-```
-src/
-  integrations/contentful/
-    types.ts              ← EXTEND: add PageFields, SectionFields, FeatureItemFields, SeoMetadataFields
+**`src/components/sections/HeroFormSection.tsx`**
 
-  hooks/
-    useContentfulPage.ts  ← react-query hook: fetches Page by slug, resolves includes
+- Remove `order: -1` / `md:order-none` hack
+- Set `gridTemplateColumns` to `"1fr 1fr"` on desktop via a Tailwind class override or inline media-query approach. The cleanest way: keep `className="md:grid-cols-2"` but remove the inline `gridTemplateColumns: "1fr"` override so Tailwind takes over properly
+- Image: remove `aspectRatio: "4/3"`, set `minHeight: 480` so it fills the grid row height, use `objectFit: "cover"` on the full container height
+- On mobile (default): single column, image on top (natural DOM order: image first in JSX, content second — Tailwind reverses for desktop)
+- Move image div **before** content div in JSX (so it's on bottom in mobile, and since `md:grid-cols-2` renders left-to-right, add `md:order-last` to the image)
 
-  pages/
-    ProductDetailPage.tsx ← route component: slug param → hook → PageBuilder → Helmet SEO
+Actually: content left, image right in desktop → keep content first in JSX, image second. On mobile they stack: content then image. That's fine (matches reference where form is visible before scrolling).
 
-  components/
-    organisms/
-      PageBuilder.tsx     ← maps sections[] → component by type, renders fallback
+**`src/components/sections/FeatureStripSection.tsx`**
 
-    sections/             ← NEW folder per atomic design
-      HeroFormSection.tsx ← type = "Hero - Form": internalName + headline + image + optional form
-      FeatureStripSection.tsx ← type = "Feature Strip": horizontal grid of FeatureItem cards
-      UnknownSection.tsx  ← fallback for unrecognized type (dev-only visible block)
-```
+Match the reference (image-38): 
+- Section background: light warm gray `hsl(var(--muted))` or `#F6F4F2` 
+- Section header: large centered `<h2>` only (no `SectionTag` pill needed if no internalName — keep it optional)
+- Cards: white background, `borderRadius: 28px`, `padding: 32px 28px`, `border: none` (just shadow or clean white on gray bg), generous vertical spacing
+- Icon: top-left, rendered as `<img>` if available or Lucide fallback, **no colored background wrapper** — just the bare icon, size `~40px`
+- Title: `fontSize: clamp(20px, 2vw, 26px)`, `fontWeight: 800`, large and prominent
+- Description: `fontSize: 15px`, muted color, `lineHeight: 1.6`
+- Grid: `grid-cols-1 md:grid-cols-3` (3 columns desktop like the reference, wraps naturally to next row for 4+ items)
+- Gap: `20px`
+- Remove hover transform effect — keep it clean and static like the reference
 
----
+### Summary of changes
 
-### File-by-file plan
-
-**`src/integrations/contentful/types.ts`** — add:
-```ts
-SeoMetadataFields { title, description, canonicalUrl? }
-FeatureItemFields  { title, description, icon?: ContentfulAsset }
-SectionFields      { type: string; internalName?: string; headline?: string; mainImage?: { sys: Link }; showForm?: boolean; items?: { sys: Link }[] }
-PageFields         { title: string; slug: string; sections?: { sys: Link }[]; seoMetadata?: { sys: Link } }
-```
-
-**`src/hooks/useContentfulPage.ts`** — `useQuery` that:
-1. Calls `contentfulFetch('/entries', { content_type: 'page', 'fields.slug': slug, include: '3' })`
-2. Resolves linked entries and assets from `includes.Entry[]` and `includes.Asset[]` using a lookup map
-3. Returns `{ page, sections, seoMeta, isLoading, error }`
-
-**`src/components/sections/HeroFormSection.tsx`**:
-- Left column: small eyebrow pill using `SectionTag` with `internalName`, then `<h1>` `headline` using existing `--uni-dark` / `--fun-orange` brand tokens
-- Right column: `mainImage` from Contentful asset (resolves `https:` prefixed URL) in a rounded frame matching the existing card aesthetic (`borderRadius: 28`, `overflow: hidden`)
-- If `showForm === true`: a white card with an ID input + orange "Continuar" button (reuses `BtnPrimary` from `atoms.tsx`), styled with `border: 1px solid var(--uni-border)`
-- Fully responsive: stacks column on mobile (image above content, form below)
-
-**`src/components/sections/FeatureStripSection.tsx`**:
-- Maps over `items[]` (resolved `FeatureItem` entries)
-- Each card: icon image (from Contentful asset) or Lucide fallback, title, description
-- Layout: `grid-cols-2 md:grid-cols-4` with `gap-4`, rounded cards (`borderRadius: 20`) with `border: 1px solid var(--uni-border)` and padding
-- Matches the clean banking aesthetic from the existing `ProductsSection`
-
-**`src/components/sections/UnknownSection.tsx`**:
-- Orange-bordered dashed box, only visible when `import.meta.env.DEV` is true
-- Shows the unrecognized `type` string so devs know what to implement
-
-**`src/components/organisms/PageBuilder.tsx`**:
-```tsx
-const SECTION_MAP: Record<string, React.ComponentType<{section: ResolvedSection}>> = {
-  "Hero - Form":     HeroFormSection,
-  "Feature Strip":   FeatureStripSection,
-};
-
-sections.map(s => {
-  const Comp = SECTION_MAP[s.type] ?? UnknownSection;
-  return <Comp key={s.sys.id} section={s} />;
-})
-```
-
-**`src/pages/ProductDetailPage.tsx`**:
-- `useParams<{ slug: string }>()`
-- Calls `useContentfulPage(slug)`
-- Loading state: skeleton shimmer using existing Tailwind `animate-pulse`
-- Error state: simple centered message + back link
-- `<Helmet>` sets `<title>` and `<meta name="description">` from `seoMeta` fields
-- Renders `<PageBuilder sections={sections} />`
-
-**`src/App.tsx`** — add route inside `<SiteLayout>`:
-```tsx
-<Route path="/personas/cuentas/:slug" element={<ProductDetailPage />} />
-```
-
----
-
-### Responsive behavior
-
-| Element | Mobile | Desktop |
-|---|---|---|
-| Hero: columns | stacked (image top, content bottom) | side-by-side 50/50 |
-| Hero: image | `height: 260px`, full width | `height: 100%`, right half |
-| Feature strip | `grid-cols-2` | `grid-cols-4` |
-| Form card | full width below content | inlined right side |
-
----
-
-### Technical notes
-
-- Asset URL resolution: Contentful returns `//images.ctfassets.net/...` — prefix with `https:` when rendering `<img>` src
-- The `include: '3'` param tells Contentful to include 3 levels of linked entries/assets in `includes`, avoiding N+1 fetches
-- All linked entries/assets are resolved client-side via a `Map<id, entry/asset>` built from `includes`
-- No changes to the existing `contentfulFetch` client or Supabase integration
+| File | Change |
+|---|---|
+| `HeroFormSection.tsx` | Fix layout to true 50/50 horizontal; image fills height, no order hack; mobile stacks content-over-image |
+| `FeatureStripSection.tsx` | New card design: larger, white cards on gray bg, bare icon, bigger title, 3-col grid |
