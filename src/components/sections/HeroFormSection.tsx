@@ -1,6 +1,16 @@
 import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { ChevronRight, Home } from "lucide-react";
 import type { ResolvedSection } from "@/integrations/contentful/types";
-import { SectionTag } from "@/components/ui/atoms";
+
+const SEGMENT_LABELS: Record<string, string> = {
+  personas: "Personas",
+  empresas: "Empresas",
+  cuentas: "Cuentas",
+  tarjetas: "Tarjetas",
+  prestamos: "Préstamos",
+  inversiones: "Inversiones",
+};
 
 interface Props {
   section: ResolvedSection;
@@ -8,6 +18,17 @@ interface Props {
 
 export function HeroFormSection({ section }: Props) {
   const { title, headline, subheadline, mainImage, showForm } = section;
+  const location = useLocation();
+
+  // Build breadcrumb items from pathname segments
+  const segments = location.pathname.split("/").filter(Boolean);
+  const breadcrumbs = [
+    { label: "Inicio", href: "/" },
+    ...segments.map((seg, i) => ({
+      label: SEGMENT_LABELS[seg] ?? (title && i === segments.length - 1 ? title : seg),
+      href: "/" + segments.slice(0, i + 1).join("/"),
+    })),
+  ];
   const [idValue, setIdValue] = useState("");
 
   const imgSrc = mainImage?.fields?.file?.url;
