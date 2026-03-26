@@ -102,6 +102,7 @@ export interface ResolvedFeatureItem {
 export interface ResolvedSection {
   sys: ContentfulSys;
   type: string;
+  title?: string;
   internalName?: string;
   headline?: string;
   subheadline?: string;
