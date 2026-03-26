@@ -74,6 +74,7 @@ export interface FeatureItemFields {
 
 export interface SectionFields {
   type: string;
+  title?: string;
   internalName?: string;
   headline?: string;
   subheadline?: string;
