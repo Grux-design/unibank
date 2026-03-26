@@ -107,6 +107,7 @@ function resolveSection(
   return {
     sys: entry.sys,
     type: (f.type as string) ?? "",
+    title: f.title as string | undefined,
     internalName: f.internalName as string | undefined,
     headline: f.headline as string | undefined,
     subheadline: f.subheadline as string | undefined,

@@ -7,7 +7,7 @@ interface Props {
 }
 
 export function HeroFormSection({ section }: Props) {
-  const { internalName, headline, subheadline, mainImage, showForm } = section;
+  const { title, headline, subheadline, mainImage, showForm } = section;
   const [idValue, setIdValue] = useState("");
 
   const imgSrc = mainImage?.fields?.file?.url;
@@ -25,7 +25,7 @@ export function HeroFormSection({ section }: Props) {
       >
         {/* ── Left: Content + optional form ── */}
         <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-          {internalName && (
+          {title && (
             <p
               style={{
                 margin: 0,
@@ -36,7 +36,7 @@ export function HeroFormSection({ section }: Props) {
                 color: "hsl(var(--primary))",
               }}
             >
-              {internalName}
+              {title}
             </p>
           )}
 
