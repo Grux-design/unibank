@@ -13,6 +13,14 @@ export interface ContentfulSys {
   };
 }
 
+export interface ContentfulLink {
+  sys: {
+    type: "Link";
+    linkType: "Entry" | "Asset";
+    id: string;
+  };
+}
+
 export interface ContentfulAssetFile {
   url: string;
   details: {
@@ -46,5 +54,69 @@ export interface ContentfulCollection<T> {
   includes?: {
     Asset?: ContentfulAsset[];
     Entry?: ContentfulEntry<unknown>[];
+  };
+}
+
+/* ── Domain-specific field types ─────────────────────────── */
+
+export interface SeoMetadataFields {
+  title: string;
+  description: string;
+  canonicalUrl?: string;
+  ogImage?: ContentfulLink;
+}
+
+export interface FeatureItemFields {
+  title: string;
+  description?: string;
+  icon?: ContentfulAsset;
+}
+
+export interface SectionFields {
+  type: string;
+  internalName?: string;
+  headline?: string;
+  subheadline?: string;
+  mainImage?: ContentfulLink | ContentfulAsset;
+  showForm?: boolean;
+  items?: (ContentfulLink | ContentfulEntry<FeatureItemFields>)[];
+}
+
+export interface PageFields {
+  title: string;
+  slug: string;
+  sections?: (ContentfulLink | ContentfulEntry<SectionFields>)[];
+  seoMetadata?: ContentfulLink | ContentfulEntry<SeoMetadataFields>;
+}
+
+/* ── Resolved types (after includes are resolved) ───────── */
+
+export interface ResolvedFeatureItem {
+  sys: ContentfulSys;
+  title: string;
+  description?: string;
+  icon?: ContentfulAsset;
+}
+
+export interface ResolvedSection {
+  sys: ContentfulSys;
+  type: string;
+  internalName?: string;
+  headline?: string;
+  subheadline?: string;
+  mainImage?: ContentfulAsset;
+  showForm?: boolean;
+  items?: ResolvedFeatureItem[];
+}
+
+export interface ResolvedPage {
+  sys: ContentfulSys;
+  title: string;
+  slug: string;
+  sections: ResolvedSection[];
+  seoMeta?: {
+    title: string;
+    description: string;
+    canonicalUrl?: string;
   };
 }
