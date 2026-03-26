@@ -31,6 +31,7 @@ export function HeroFormSection({ section }: Props) {
   ];
   const [idValue, setIdValue] = useState("");
 
+  const [idValue, setIdValue] = useState("");
   const imgSrc = mainImage?.fields?.file?.url;
 
   return (
