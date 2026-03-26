@@ -25,7 +25,7 @@ export function HeroFormSection({ section }: Props) {
       >
         {/* ── Left: Content + optional form ── */}
         <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-          {internalName && (
+          {title && (
             <p
               style={{
                 margin: 0,
@@ -36,7 +36,7 @@ export function HeroFormSection({ section }: Props) {
                 color: "hsl(var(--primary))",
               }}
             >
-              {internalName}
+              {title}
             </p>
           )}
 
