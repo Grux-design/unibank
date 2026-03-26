@@ -25,7 +25,20 @@ export function HeroFormSection({ section }: Props) {
       >
         {/* ── Left: Content + optional form ── */}
         <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-          {internalName && <SectionTag>{internalName}</SectionTag>}
+          {internalName && (
+            <p
+              style={{
+                margin: 0,
+                fontSize: "clamp(13px, 1.2vw, 15px)",
+                fontWeight: 600,
+                letterSpacing: "0.06em",
+                textTransform: "uppercase",
+                color: "hsl(var(--primary))",
+              }}
+            >
+              {internalName}
+            </p>
+          )}
 
           {headline && (
             <h1
