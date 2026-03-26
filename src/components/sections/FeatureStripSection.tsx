@@ -19,13 +19,11 @@ export function FeatureStripSection({ section }: Props) {
         {/* Header */}
         {headline && (
           <h2
+            className="text-center text-3xl my-0 mb-[24px]"
             style={{
-              margin: "0 0 40px 0",
-              fontSize: "clamp(22px, 2.5vw, 32px)",
               fontWeight: 800,
               letterSpacing: "-0.025em",
               color: "hsl(var(--foreground))",
-              textAlign: "center",
             }}
           >
             {headline}
