@@ -37,7 +37,7 @@ export function HeroFormSection({ section }: Props) {
     <section
       style={{
         background: "hsl(var(--background))",
-        padding: "clamp(32px, 6vw, 72px) clamp(16px, 3.9vw, 72px) clamp(48px, 8vw, 96px)",
+        padding: "clamp(96px, 10vw, 120px) clamp(16px, 3.9vw, 72px) clamp(48px, 8vw, 96px)",
       }}
     >
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
