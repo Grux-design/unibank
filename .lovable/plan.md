@@ -1,123 +1,116 @@
 
-
-## Add 3 Home Sections: Audience Toggle + Products/Business + Digital Banking
+## Product Detail Page — Contentful Page Builder at `/personas/cuentas/:slug`
 
 ### Overview
-Three sections sit between the hero and the footer. The code is fully specified in the uploaded file. The main work is:
-1. Creating missing CSS variables and shared UI primitives the sections depend on
-2. Creating the three section components following atomic design structure
-3. Wiring them into `HomePage.tsx`
+
+Build a dynamic page builder that fetches a `Page` entry from Contentful by slug, iterates over its `sections` array, and renders a component per `type`. Two section renderers: `HeroForm` and `FeatureStrip`. Unrecognized types show a `UnknownSection` fallback. SEO is driven by `seoMetadata`.
 
 ---
 
-### What's missing that must be created first
+### Contentful integration note
 
-**CSS variables** (add to `src/index.css` `:root`):
-```
---fun-orange: #ff8136
---uni-dark: #1f1e1e
---uni-dark-soft: #726f6e
---uni-muted: #908e8d
---btn-height: 52px
---btn-border-radius: 16px
---btn-font-size: 0.9375rem
---btn-font-weight: 600
-```
-
-**Shared UI primitives** — referenced via `./ui/atoms` and `./ui/MagicBento` (don't exist yet):
-- `src/components/ui/atoms.tsx` — exports `SectionTag`, `SectionHeading`, `LinkArrow`, `BtnPrimary`
-- `src/components/ui/MagicBento.tsx` — exports `MagicBentoGrid`, `MagicBentoCard`
-
-**Hook alias** — sections import from `../hooks/useIsMobile` (camelCase) but the file is `use-mobile.tsx`. Need to create `src/hooks/useIsMobile.ts` re-exporting from `use-mobile.tsx`.
-
-**Portrait image** — the `FeaturedBanner` uses a `portraitImg` that was a Figma asset. Replace with an Unsplash URL (woman with clipboard, smiling) matching the screenshot.
+The project already has `src/integrations/contentful/client.ts` with a `contentfulFetch` function calling the Delivery API directly via `VITE_CONTENTFUL_SPACE_ID` + `VITE_CONTENTFUL_ACCESS_TOKEN`. No connector or edge function needed — client-side fetch is already the pattern. The existing `ContentfulEntry`, `ContentfulCollection`, and `ContentfulAsset` types in `types.ts` will be extended.
 
 ---
 
-### New files to create
-
-Following atomic design:
+### New files
 
 ```
 src/
+  integrations/contentful/
+    types.ts              ← EXTEND: add PageFields, SectionFields, FeatureItemFields, SeoMetadataFields
+
   hooks/
-    useIsMobile.ts               ← re-export shim for useIsMobile
+    useContentfulPage.ts  ← react-query hook: fetches Page by slug, resolves includes
+
+  pages/
+    ProductDetailPage.tsx ← route component: slug param → hook → PageBuilder → Helmet SEO
 
   components/
-    ui/
-      atoms.tsx                  ← SectionTag, SectionHeading, LinkArrow, BtnPrimary
-      MagicBento.tsx             ← MagicBentoGrid, MagicBentoCard
-
-    atoms/
-      AudienceToggle.tsx         ← Personas/Empresas pill segmented control (Section 1)
-
     organisms/
-      ProductsSection.tsx        ← Bento grid for Personas (Section 2a)
-      BusinessSection.tsx        ← MagicBento grid for Empresas (Section 2b)
-      DigitalBanking.tsx         ← Sticky-scroll + CTA (Section 3)
+      PageBuilder.tsx     ← maps sections[] → component by type, renders fallback
+
+    sections/             ← NEW folder per atomic design
+      HeroFormSection.tsx ← type = "Hero - Form": internalName + headline + image + optional form
+      FeatureStripSection.tsx ← type = "Feature Strip": horizontal grid of FeatureItem cards
+      UnknownSection.tsx  ← fallback for unrecognized type (dev-only visible block)
 ```
 
 ---
 
 ### File-by-file plan
 
-**`src/index.css`** — add 8 CSS custom properties to `:root`
+**`src/integrations/contentful/types.ts`** — add:
+```ts
+SeoMetadataFields { title, description, canonicalUrl? }
+FeatureItemFields  { title, description, icon?: ContentfulAsset }
+SectionFields      { type: string; internalName?: string; headline?: string; mainImage?: { sys: Link }; showForm?: boolean; items?: { sys: Link }[] }
+PageFields         { title: string; slug: string; sections?: { sys: Link }[]; seoMetadata?: { sys: Link } }
+```
 
-**`src/hooks/useIsMobile.ts`** — `export { useIsMobile } from "./use-mobile"`
+**`src/hooks/useContentfulPage.ts`** — `useQuery` that:
+1. Calls `contentfulFetch('/entries', { content_type: 'page', 'fields.slug': slug, include: '3' })`
+2. Resolves linked entries and assets from `includes.Entry[]` and `includes.Asset[]` using a lookup map
+3. Returns `{ page, sections, seoMeta, isLoading, error }`
 
-**`src/components/ui/atoms.tsx`**:
-- `SectionTag` — small orange pill badge with a dot
-- `SectionHeading` — centered tag + large headline + optional body + optional CTA, accepts `px` and `mb` spacing props
-- `LinkArrow` — orange text + arrow, hover shifts right
-- `BtnPrimary` — orange pill anchor/button component (used in DigitalBanking feature rows)
+**`src/components/sections/HeroFormSection.tsx`**:
+- Left column: small eyebrow pill using `SectionTag` with `internalName`, then `<h1>` `headline` using existing `--uni-dark` / `--fun-orange` brand tokens
+- Right column: `mainImage` from Contentful asset (resolves `https:` prefixed URL) in a rounded frame matching the existing card aesthetic (`borderRadius: 28`, `overflow: hidden`)
+- If `showForm === true`: a white card with an ID input + orange "Continuar" button (reuses `BtnPrimary` from `atoms.tsx`), styled with `border: 1px solid var(--uni-border)`
+- Fully responsive: stacks column on mobile (image above content, form below)
 
-**`src/components/ui/MagicBento.tsx`**:
-- `MagicBentoGrid` — CSS grid wrapper with `border-radius: 32px` cards, rounded corners, `1px solid #E7E4E1` borders, gap `8px`, accepts `style` and `children`
-- `MagicBentoCard` — individual grid cell with `border-radius: 32px`, `overflow: hidden`, `border: 1px solid #E7E4E1`, accepts `style`
+**`src/components/sections/FeatureStripSection.tsx`**:
+- Maps over `items[]` (resolved `FeatureItem` entries)
+- Each card: icon image (from Contentful asset) or Lucide fallback, title, description
+- Layout: `grid-cols-2 md:grid-cols-4` with `gap-4`, rounded cards (`borderRadius: 20`) with `border: 1px solid var(--uni-border)` and padding
+- Matches the clean banking aesthetic from the existing `ProductsSection`
 
-**`src/components/atoms/AudienceToggle.tsx`** — exact code from Section 1 of the spec (spring animation pill, `--fun-orange` active fill)
+**`src/components/sections/UnknownSection.tsx`**:
+- Orange-bordered dashed box, only visible when `import.meta.env.DEV` is true
+- Shows the unrecognized `type` string so devs know what to implement
 
-**`src/components/organisms/ProductsSection.tsx`** — exact code from Section 2: Personas:
-- `FeaturedBanner` (orange bento card with SVG pattern + portrait photo + dual CTAs)
-- `MastercardCard` (product image card)
-- `SmallProductCard` (Invertis, Vivienda)
-- `AutoLoanCard` (2-col split)
-- `BentoDesktopGrid` (hover-expand 4-col × 2-row layout)
-- Portrait image: use Unsplash woman-with-folder URL matching the screenshot
-
-**`src/components/organisms/BusinessSection.tsx`** — exact code from Section 2: Empresas:
-- `LargeCard` (full-width split horizontal with image + hover arrow)
-- `SmallCard` (image top + content)
-- Grid: 1 large (full-width) + 2 small
-
-**`src/components/organisms/DigitalBanking.tsx`** — exact code from Section 3:
-- `FeatureRow` (accordion row with icon, title, AnimatePresence expand)
-- `MobileFeatureCarousel` (swipe + dot nav)
-- `StickyScrollFeatures` (scroll-driven active index on desktop)
-- Authority quote block
-- Orange CTA split banner (phone + WhatsApp)
-
-**`src/pages/HomePage.tsx`** — add state + the 3 sections:
+**`src/components/organisms/PageBuilder.tsx`**:
 ```tsx
-const [audience, setAudience] = useState<Audience>("personas");
+const SECTION_MAP: Record<string, React.ComponentType<{section: ResolvedSection}>> = {
+  "Hero - Form":     HeroFormSection,
+  "Feature Strip":   FeatureStripSection,
+};
 
-// After HeroCarousel:
-<AudienceToggle value={audience} onChange={setAudience} />
-<AnimatePresence mode="wait" initial={false}>
-  <motion.div key={audience} ...transition>
-    {audience === "personas" ? <ProductsSection /> : <BusinessSection />}
-  </motion.div>
-</AnimatePresence>
-<motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} ...>
-  <DigitalBanking />
-</motion.div>
+sections.map(s => {
+  const Comp = SECTION_MAP[s.type] ?? UnknownSection;
+  return <Comp key={s.sys.id} section={s} />;
+})
+```
+
+**`src/pages/ProductDetailPage.tsx`**:
+- `useParams<{ slug: string }>()`
+- Calls `useContentfulPage(slug)`
+- Loading state: skeleton shimmer using existing Tailwind `animate-pulse`
+- Error state: simple centered message + back link
+- `<Helmet>` sets `<title>` and `<meta name="description">` from `seoMeta` fields
+- Renders `<PageBuilder sections={sections} />`
+
+**`src/App.tsx`** — add route inside `<SiteLayout>`:
+```tsx
+<Route path="/personas/cuentas/:slug" element={<ProductDetailPage />} />
 ```
 
 ---
 
-### Responsive behavior (as specified)
-- **Products bento**: mobile → vertical stack with `borderRadius: 32`, desktop → 4-col × 2-row with hover-expand `±20px`
-- **Business grid**: mobile → `1fr`, desktop → `1fr 1fr` with large card full-width
-- **Digital Banking features**: mobile → swipeable carousel + dot nav + touch swipe; desktop → sticky-scroll (5× viewport height container)
-- All sections use `isMobile ? "16px" : "clamp(16px, 3.9vw, 72px)"` for horizontal padding
+### Responsive behavior
 
+| Element | Mobile | Desktop |
+|---|---|---|
+| Hero: columns | stacked (image top, content bottom) | side-by-side 50/50 |
+| Hero: image | `height: 260px`, full width | `height: 100%`, right half |
+| Feature strip | `grid-cols-2` | `grid-cols-4` |
+| Form card | full width below content | inlined right side |
+
+---
+
+### Technical notes
+
+- Asset URL resolution: Contentful returns `//images.ctfassets.net/...` — prefix with `https:` when rendering `<img>` src
+- The `include: '3'` param tells Contentful to include 3 levels of linked entries/assets in `includes`, avoiding N+1 fetches
+- All linked entries/assets are resolved client-side via a `Map<id, entry/asset>` built from `includes`
+- No changes to the existing `contentfulFetch` client or Supabase integration
