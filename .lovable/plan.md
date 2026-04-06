@@ -1,24 +1,15 @@
 
 
-## Rediseñar el banner CTA naranja en DigitalBanking
+## Alinear el ancho del hero carousel con el header
 
-### Cambios de layout y estilo (líneas ~622-724 de `DigitalBanking.tsx`)
+El header usa `max-w-screen-xl` (1280px) con padding horizontal `px-4 sm:px-6` (16px / 24px). El hero carousel tiene `maxWidth: 1200` con `paddingLeft/Right: 16px` en la sección exterior.
 
-**Layout**: Cambiar de la estructura actual (content row + bottom info bar) a un layout de 2 columnas:
-- **Columna izquierda**: Eyebrow uppercase pequeño ("¿LISTO PARA TRANSFORMAR TU EXPERIENCIA BANCARIA?") + headline grande y bold ("Contáctanos\nhoy mismo.")
-- **Columna derecha**: Botones de teléfono y WhatsApp (con fondo blanco semi-transparente `rgba(255,255,255,0.15)` en vez de ghost/outline) + texto de horario y sucursales debajo de los botones
+### Cambio
 
-**Eliminar la barra inferior** (info bar con `background: rgba(0,0,0,0.12)`), moviendo su contenido al panel derecho.
+**Archivo: `src/components/organisms/HeroCarousel.tsx`**
 
-**Tipografía**:
-- Eyebrow: ~13px, uppercase, `letterSpacing: 0.08em`, `color: rgba(255,255,255,0.85)`
-- Headline: ~48px (desktop) / ~32px (mobile), `fontWeight: 800`, blanco
-- Info text: ~14px, `color: rgba(255,255,255,0.7)`
+- Cambiar `maxWidth: 1200` del container interno (el card beige) a `maxWidth: 1280` para igualar el `max-w-screen-xl` del header.
+- Ajustar el padding horizontal de la sección exterior para usar los mismos valores que el header: `paddingLeft: 24, paddingRight: 24` (equivalente a `sm:px-6`).
 
-**Botones**: Cambiar `CtaGhostBtn` de border outline a fondo `rgba(255,255,255,0.15)` con `border: none`, `borderRadius: 14px`, padding más generoso.
-
-**Padding general**: Aumentar padding interno a `~56px 64px` (desktop).
-
-### Archivo a editar
-- `src/components/organisms/DigitalBanking.tsx` (líneas 622-724)
+Esto hará que los bordes del card beige del hero se alineen visualmente con los bordes de los pills del header.
 
