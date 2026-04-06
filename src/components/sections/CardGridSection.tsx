@@ -9,13 +9,12 @@ export function CardGridSection({ section }: Props) {
 
   return (
     <section className="w-full bg-muted py-[80px]">
-      {section.headline && (
-        <h2 className="text-center text-3xl md:text-4xl font-bold text-foreground mb-8">
-          {section.headline}
-        </h2>
-      )}
-
-      <div className="max-w-[1080px] mx-auto px-4">
+      <div className="max-w-6xl mx-auto px-4 md:px-8">
+        {(section.title || section.headline) && (
+          <h2 className="text-center text-3xl md:text-4xl font-bold text-foreground mb-8">
+            {section.title || section.headline}
+          </h2>
+        )}
         {items.map((item, index) => {
           const imageUrl = (() => {
             const img = item.image ?? item.icon;
