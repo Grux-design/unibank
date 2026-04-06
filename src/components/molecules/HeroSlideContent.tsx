@@ -54,8 +54,8 @@ export function HeroSlideContent({ slide, dir }: HeroSlideContentProps) {
                 fontSize: 14, fontWeight: 600, cursor: "pointer",
                 transition: "opacity 0.18s", fontFamily: "inherit",
               }}
-              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.opacity = t.primaryBtnHoverOp; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.opacity = "1"; }}
+              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = t.primaryBtnHoverBg; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = t.primaryBtnBg; }}
             >
               {slide.cta}
             </button>
