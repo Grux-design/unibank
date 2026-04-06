@@ -10,7 +10,7 @@ export function FeatureStripSection({ section }: Props) {
 
   return (
     <section
-      className="bg-orange-50"
+      className="bg-orange-50 px-[80px] py-[80px]"
       style={{
         padding: "clamp(48px, 7vw, 88px) clamp(16px, 3.9vw, 72px)",
       }}
@@ -19,7 +19,7 @@ export function FeatureStripSection({ section }: Props) {
         {/* Header */}
         {headline && (
           <h2
-            className="text-center text-3xl my-0 mb-[24px]"
+            className="text-center my-0 mb-[24px] pb-[24px] text-4xl"
             style={{
               fontWeight: 800,
               letterSpacing: "-0.025em",
