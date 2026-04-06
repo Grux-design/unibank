@@ -8,8 +8,8 @@ export function CardGridSection({ section }: Props) {
   const items = section.items ?? [];
 
   return (
-    <section className="w-full bg-muted py-[80px]">
-      <div className="max-w-6xl mx-auto px-4 md:px-8">
+    <section className="w-full bg-muted py-[80px] px-4 md:px-8">
+      <div className="max-w-6xl mx-auto">
         {(section.title || section.headline) && (
           <h2 className="text-center text-3xl md:text-4xl font-bold text-foreground mb-8">
             {section.title || section.headline}
