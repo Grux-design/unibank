@@ -34,7 +34,7 @@ export function BenefitListSection({ section }: Props) {
                 className="bg-background rounded-2xl p-5 flex items-center gap-5"
               >
                 {iconUrl && (
-                  <div className="w-24 h-24 rounded-xl overflow-hidden flex-shrink-0">
+                  <div className="rounded-xl overflow-hidden flex-shrink-0" style={{ width: 164, height: 212 }}>
                     <img
                       src={iconUrl}
                       alt={item.title}
