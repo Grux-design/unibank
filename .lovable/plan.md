@@ -1,46 +1,35 @@
 
 
-## Create Legal Pages (Privacy, Terms, Cookies) with Contentful Content
+## Unify Business Section Cards with Personas Card Styles
 
-### Summary
-Create three legal pages that fetch content from Contentful using existing slugs, add routes, and link the footer legal links to them.
+### Problem
+The Personas tab (`ProductsSection`) and Empresas tab (`BusinessSection`) use completely different card components and layouts:
 
-### What will be built
-- A reusable `LegalPage` component with a clean legal-document aesthetic (narrow prose column, readable typography, proper heading hierarchy)
-- Three routes: `/aviso-de-privacidad`, `/terminos-y-condiciones`, `/politica-de-cookies`
-- Footer links updated to use React Router `Link` instead of `<a href="#">`
+**Personas cards** have:
+- `SmallProductCard`: image top, `CategoryTag` pill, `CtaLink` with animated arrow (`ArrowRight`), subtle fade-in animation
+- `AutoLoanCard`: horizontal split with rate callout box, orange CTA button
+- `FeaturedBanner`: orange gradient with SVG pattern, portrait overlay
+- `MastercardCard`: dark image with gradient overlay
+- Interactive hover-expand width animations on the entire grid
 
-### Contentful Integration
-The pages will reuse the existing `useContentfulPage` hook, fetching by slug. The `content` field from Contentful (likely Rich Text) will be rendered using `@contentful/rich-text-react-renderer`. The `PageFields` type and `fetchPage` function may need to resolve a top-level `content` field (Rich Text) in addition to `sections`.
+**Empresas cards** have:
+- `LargeCard`: horizontal split (image left, white content right), `ArrowUpRight` CTA icon
+- `SmallCard`: vertical image+content, `ArrowUpRight` CTA icon
+- Static `MagicBentoGrid` layout (no hover-expand)
+- Different font sizes, padding values, and CTA styling
+
+### Plan
+Refactor `BusinessSection` to reuse the same card sub-components and visual patterns from `ProductsSection`:
+
+1. **Extract shared card primitives** from `ProductsSection` — specifically `CategoryTag`, `CtaLink`, and `SmallProductCard` — and use them in `BusinessSection` as well.
+
+2. **Restyle `BusinessSection` cards**:
+   - **LargeCard** → adopt the same `CategoryTag` pill (orange bg tint instead of inline icon), use `CtaLink` (with `ArrowRight`) instead of a raw `<a>` with `ArrowUpRight`, match font sizes and padding from ProductsSection's `AutoLoanCard`.
+   - **SmallCard** → replace with the same `SmallProductCard` pattern: same `CategoryTag`, `CtaLink`, identical padding (`20px 20px 24px`), font sizes (title: 16px, body: 13px), and no image hover scale.
+
+3. **Align CTA style**: Both sections use `CtaLink` with `ArrowRight` icon and the same hover translateX animation.
 
 ### Files to change
 
-1. **`src/integrations/contentful/types.ts`** — Add optional `content` field (Rich Text document) to `PageFields` and `ResolvedPage`.
-
-2. **`src/hooks/useContentfulPage.ts`** — Pass through `raw.fields.content` into the resolved page object so legal pages can access it.
-
-3. **`src/pages/LegalPage.tsx`** (new) — Reusable page component:
-   - Takes slug from URL params
-   - Fetches page via `useContentfulPage`
-   - Renders title as `<h1>` and `content` field using `documentToReactComponents`
-   - Legal styling: `max-w-3xl mx-auto`, `prose` classes, clean white background, generous padding
-   - Loading skeleton and error state
-
-4. **`src/App.tsx`** — Add three routes inside the `SiteLayout`:
-   ```
-   /aviso-de-privacidad → LegalPage
-   /terminos-y-condiciones → LegalPage
-   /politica-de-cookies → LegalPage
-   ```
-
-5. **`src/data/footerData.ts`** — Change `legalLinks` from `string[]` to `{ label: string; path: string }[]` with the corresponding routes.
-
-6. **`src/components/molecules/FooterAppsBar.tsx`** — Replace `<a>` tags with React Router `<Link>` components using the new `legalLinks` structure.
-
-### Styling approach
-The legal page will use a minimal, professional document layout:
-- White background, narrow content column (`max-w-3xl`)
-- Tailwind `prose` for automatic typography on Rich Text output
-- Top padding to clear the fixed header
-- Page title in bold, large heading
+- **`src/components/organisms/BusinessSection.tsx`** — Rewrite `LargeCard` and `SmallCard` to match the visual style of their Personas counterparts (same tag pill, CTA link component, typography, spacing). Import and reuse `ArrowRight` instead of `ArrowUpRight`.
 
