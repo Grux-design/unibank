@@ -1,14 +1,16 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useLayoutEffect } from "react";
 import React from "react";
 import { motion, useInView } from "motion/react";
 import { Building2, Users, BarChart3, ArrowRight } from "lucide-react";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { SectionHeading, LinkArrow } from "@/components/ui/atoms";
-import { MagicBentoGrid, MagicBentoCard } from "@/components/ui/MagicBento";
 
 const OR = "var(--fun-orange)";
 const DARK = "var(--uni-dark)";
 const SOFT = "var(--uni-dark-soft)";
+const G = 8;
+const DELTA = 20;
+const CARD_H = 380;
 
 /* ── Images ────────────────────────────────────────────── */
 const IMG_LOANS =
@@ -108,10 +110,9 @@ function LargeCard({ service, isMobile }: { service: typeof services[0]; isMobil
       style={{
         display: "flex",
         flexDirection: isMobile ? "column" : "row",
-        height: isMobile ? "auto" : 380,
+        height: isMobile ? "auto" : "100%",
         width: "100%",
         overflow: "hidden",
-        borderRadius: 32,
       }}
     >
       {/* Image */}
@@ -179,7 +180,6 @@ function SmallCard({ service, index }: { service: typeof services[0]; index: num
         background: "#fff",
         position: "relative",
         overflow: "hidden",
-        borderRadius: 32,
       }}
     >
       {/* Image */}
@@ -200,6 +200,91 @@ function SmallCard({ service, index }: { service: typeof services[0]; index: num
         <CtaLink>{service.cta}</CtaLink>
       </div>
     </motion.div>
+  );
+}
+
+/* ── Desktop Grid (with hover-expand like Personas) ───── */
+function BentoDesktopGrid() {
+  const [hovered, setHovered] = useState<string | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [cw, setCw] = useState(0);
+
+  useLayoutEffect(() => {
+    if (!containerRef.current) return;
+    const ro = new ResizeObserver((entries) => setCw(entries[0].contentRect.width));
+    ro.observe(containerRef.current);
+    setCw(containerRef.current.clientWidth);
+    return () => ro.disconnect();
+  }, []);
+
+  const T = "width 0.42s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s ease";
+
+  /* Row 1: full-width large card */
+  const wLarge = cw;
+
+  /* Row 2: two equal cards with hover expand */
+  const halfBase = cw > 0 ? (cw - G) / 2 : 0;
+  const wPlanilla = halfBase + (hovered === "planilla" ? DELTA : hovered === "valores" ? -DELTA : 0);
+  const wValores = halfBase + (hovered === "valores" ? DELTA : hovered === "planilla" ? -DELTA : 0);
+
+  const card = (id: string, w: number, children: React.ReactNode) => (
+    <div
+      key={id}
+      onMouseEnter={() => setHovered(id)}
+      onMouseLeave={() => setHovered(null)}
+      style={{
+        flexShrink: 0,
+        width: w,
+        height: CARD_H,
+        borderRadius: 32,
+        overflow: "hidden",
+        border: `1px solid ${hovered === id ? "var(--fun-orange)" : "#E7E4E1"}`,
+        cursor: "pointer",
+        transition: T,
+      }}
+    >
+      {children}
+    </div>
+  );
+
+  return (
+    <div ref={containerRef} style={{ display: "flex", flexDirection: "column", gap: G }}>
+      <div
+        onMouseEnter={() => setHovered("prestamos")}
+        onMouseLeave={() => setHovered(null)}
+        style={{
+          width: wLarge,
+          height: CARD_H,
+          borderRadius: 32,
+          overflow: "hidden",
+          border: `1px solid ${hovered === "prestamos" ? "var(--fun-orange)" : "#E7E4E1"}`,
+          cursor: "pointer",
+          transition: "border-color 0.3s ease",
+        }}
+      >
+        <LargeCard service={services[0]} isMobile={false} />
+      </div>
+      <div style={{ display: "flex", gap: G }}>
+        {card("planilla", wPlanilla, <SmallCard service={services[1]} index={1} />)}
+        {card("valores", wValores, <SmallCard service={services[2]} index={2} />)}
+      </div>
+    </div>
+  );
+}
+
+/* ── Mobile Stack ───────────────────────────────────────── */
+function BentoMobileStack() {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: G }}>
+      <div style={{ borderRadius: 32, overflow: "hidden", border: "1px solid #E7E4E1" }}>
+        <LargeCard service={services[0]} isMobile />
+      </div>
+      {services.slice(1).map((s, i) => (
+        <div key={s.id} style={{ borderRadius: 32, overflow: "hidden", border: "1px solid #E7E4E1" }}>
+          <SmallCard service={s} index={i + 1} />
+        </div>
+      ))}
+    </div>
   );
 }
 
@@ -228,16 +313,7 @@ export function BusinessSection() {
           />
         </motion.div>
 
-        <MagicBentoGrid style={{ gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr" }}>
-          <MagicBentoCard style={{ gridColumn: isMobile ? undefined : "1 / -1" }}>
-            <LargeCard service={services[0]} isMobile={isMobile} />
-          </MagicBentoCard>
-          {services.slice(1).map((s, i) => (
-            <MagicBentoCard key={s.id}>
-              <SmallCard service={s} index={i + 1} />
-            </MagicBentoCard>
-          ))}
-        </MagicBentoGrid>
+        {isMobile ? <BentoMobileStack /> : <BentoDesktopGrid />}
       </div>
     </section>
   );
