@@ -1,8 +1,13 @@
 import { Facebook, Instagram, Linkedin, Youtube, type LucideIcon } from "lucide-react";
 
+export interface FooterLink {
+  label: string;
+  href?: string;
+}
+
 export interface FooterColumn {
   title:       string;
-  links:       string[];
+  links:       FooterLink[];
   isAttention?: boolean;
 }
 
@@ -16,26 +21,30 @@ export const footerColumns: FooterColumn[] = [
   {
     title: "Conócenos",
     links: [
-      "Junta Directiva", "UniLíderes", "Sostenibilidad",
-      "Estados Financieros", "Gestión de Riesgo Operativo",
-      "Cumplimiento Normativo", "Manual de Gobierno Corporativo",
-      "RSE – Responsabilidad Social",
+      { label: "Junta Directiva" }, { label: "UniLíderes" }, { label: "Sostenibilidad" },
+      { label: "Estados Financieros" }, { label: "Gestión de Riesgo Operativo" },
+      { label: "Cumplimiento Normativo" }, { label: "Manual de Gobierno Corporativo" },
+      { label: "RSE – Responsabilidad Social" },
     ],
   },
   {
     title: "Grupo UniBank",
-    links: ["UniConnect", "UniTrust", "Univivir", "UniLeasing", "Grupo Invertis"],
+    links: [
+      { label: "UniConnect" }, { label: "UniTrust" }, { label: "Univivir" },
+      { label: "UniLeasing" }, { label: "Grupo Invertis" },
+    ],
   },
   {
     title: "Enlaces de Interés",
     links: [
-      "Cajilla de Seguridad", "Tarifario", "Trabaja con nosotros",
-      "Portal Inmobiliario", "Noticias", "Blog", "Canal de denuncias",
+      { label: "Cajilla de Seguridad" }, { label: "Tarifario" }, { label: "Trabaja con nosotros" },
+      { label: "Portal Inmobiliario", href: "https://bienesenventa.unibank.com.pa/" },
+      { label: "Noticias" }, { label: "Blog" }, { label: "Canal de denuncias" },
     ],
   },
   {
     title: "Canales de Atención",
-    links: ["whatsapp", "sucursales"],
+    links: [{ label: "whatsapp" }, { label: "sucursales" }],
     isAttention: true,
   },
 ];
