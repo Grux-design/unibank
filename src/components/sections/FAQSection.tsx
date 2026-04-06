@@ -67,7 +67,7 @@ export function FAQSection({ section }: Props) {
                   value={itemValue}
                   className="bg-background rounded-2xl border-0 px-6"
                 >
-                  <AccordionTrigger className="text-left text-base font-semibold text-foreground hover:no-underline py-5 [&>svg]:hidden">
+                  <AccordionTrigger className="text-left text-base font-semibold text-foreground hover:no-underline py-[32px] [&>svg]:hidden">
                     <span className="flex-1">{questionText}</span>
                     <span className="ml-4 flex-shrink-0">
                       {isOpen ? <X className="h-5 w-5" /> : <Plus className="h-5 w-5" />}
