@@ -1,6 +1,7 @@
 import type { ResolvedSection } from "@/integrations/contentful/types";
 import { Button } from "@/components/ui/button";
 import { Plus, X } from "lucide-react";
+import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import {
   Accordion,
   AccordionContent,
