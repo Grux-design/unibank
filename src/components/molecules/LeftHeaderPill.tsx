@@ -31,7 +31,8 @@ export function LeftHeaderPill({
         height: 66,
         padding: "0 20px 0 8px",
         gap: 20,
-        transition: "background 0.2s ease, border-radius 0.2s ease",
+        border: menuOpen ? "none" : "0.5px solid #E7E4E1",
+        transition: "background 0.2s ease, border-radius 0.2s ease, border 0.2s ease",
       }}
     >
       {/* Hamburger button */}

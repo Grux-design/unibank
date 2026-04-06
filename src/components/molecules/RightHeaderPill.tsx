@@ -16,7 +16,8 @@ export function RightHeaderPill({ isMenuOpen = false, lang, onLangChange }: Righ
       background: isMenuOpen ? "transparent" : "#fff",
       borderRadius: isMenuOpen ? 0 : 16,
       height: 66, padding: "0 10px", gap: 4,
-      transition: "background 0.2s ease, border-radius 0.2s ease",
+      border: isMenuOpen ? "none" : "0.5px solid #E7E4E1",
+      transition: "background 0.2s ease, border-radius 0.2s ease, border 0.2s ease",
     }}>
       <LanguageWidget    lang={lang} onLangChange={onLangChange} />
       <SearchWidget />
