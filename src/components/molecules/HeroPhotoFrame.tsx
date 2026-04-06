@@ -21,7 +21,7 @@ export function HeroPhotoFrame({ slide }: HeroPhotoFrameProps) {
       {/* Main blob */}
       <div style={{
         position: "absolute", top: 0, left: 0, right: 0, bottom: 0,
-        borderRadius: 48, background: t.blobFill,
+        borderRadius: 48, background: "transparent",
         pointerEvents: "none", zIndex: 1,
       }} />
 
