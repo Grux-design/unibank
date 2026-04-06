@@ -1,23 +1,25 @@
 
 
-## Fix: Benefit List images not loading
+## Fix Feature Banner: Missing "Copy" Field and Broken Image
 
 ### Problem
-The Contentful "Feature Item" content type has a field labeled **"Image"** (API key: `image`), but the code maps `f.icon` — a field that doesn't exist in Contentful. The resolver returns `undefined` for the icon, so no image renders.
+1. **Copy field not showing**: Contentful's "Feature Banner" section has a `copy` field (visible in the CMS screenshot), but the codebase never reads it — it's missing from `SectionFields`, `ResolvedSection`, and the resolver in `useContentfulPage.ts`. The component currently displays `section.headline` as the description, but the actual text lives in the `copy` field.
+2. **Main Image not showing**: The `resolveAsset` function in `useContentfulPage.ts` already normalizes URLs by prepending `https:`. Then `FeatureBannerSection` prepends `https:` again, resulting in `https:https://images.ctfassets...` — a broken URL.
 
-### Solution
-Add `image` as an alternative asset field in both the types and the resolver, and use it in the component. This is a simple 3-file change:
+### Plan
 
-1. **`src/integrations/contentful/types.ts`** — Add `image?: ContentfulAsset` to `FeatureItemFields` and `ResolvedFeatureItem`
+**Step 1 — Add `copy` to Contentful types**
+- In `src/integrations/contentful/types.ts`: add `copy?: string` to both `SectionFields` and `ResolvedSection`.
 
-2. **`src/hooks/useContentfulPage.ts`** — In `resolveFeatureItem`, resolve `image` field as an asset: `image: resolveAsset(f.image, assetMap)`. Keep `icon` resolution too for backward compat.
+**Step 2 — Resolve `copy` in the hook**
+- In `src/hooks/useContentfulPage.ts`, inside `resolveSection`, read `f.copy` and pass it through to the resolved section object.
 
-3. **`src/components/sections/BenefitListSection.tsx`** — Use `item.image` (falling back to `item.icon`) as the image source. Based on screenshot reference (image-52), the benefit cards should NOT show images — they only show title + description in a clean white card. Remove the image block entirely from this component to match the design.
+**Step 3 — Fix FeatureBannerSection**
+- Remove the redundant `https:` prefix on line 10 — use `section.mainImage.fields.file.url` directly since it's already normalized.
+- Display `section.copy` (falling back to `section.headline`) as the description paragraph below the title.
 
-Wait — looking at the screenshots again: image-52 shows benefit cards with NO images, just title + description. But the user says "tengo una imagen para cada item" and wants them shown. So I'll keep the image rendering but fix the data source.
-
-### Files
+### Files Changed
 - `src/integrations/contentful/types.ts`
 - `src/hooks/useContentfulPage.ts`
-- `src/components/sections/BenefitListSection.tsx`
+- `src/components/sections/FeatureBannerSection.tsx`
 
