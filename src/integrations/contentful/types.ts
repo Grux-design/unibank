@@ -70,6 +70,7 @@ export interface FeatureItemFields {
   title: string;
   description?: string;
   icon?: ContentfulAsset;
+  image?: ContentfulAsset | ContentfulLink;
   question?: string;
   answer?: string;
   link?: string;
@@ -101,6 +102,7 @@ export interface ResolvedFeatureItem {
   title: string;
   description?: string;
   icon?: ContentfulAsset;
+  image?: ContentfulAsset;
   question?: string;
   answer?: string;
   link?: string;
