@@ -1,4 +1,3 @@
-import { ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import type { MenuSection } from "@/data/megaMenuData";
 import { secondaryLinks } from "@/data/megaMenuData";
@@ -11,61 +10,40 @@ interface MegaMenuCategoryGridProps {
 
 export function MegaMenuCategoryGrid({ data, isPersonas, onClose }: MegaMenuCategoryGridProps) {
   const segment = isPersonas ? "personas" : "empresas";
+  const categoryColor = isPersonas ? "#FF8136" : "#726F6E";
 
   return (
     <div style={{ flex: 1, minWidth: 0 }}>
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
-        gap: "24px 16px",
-      }}>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px 48px" }}>
         {data.categories.map((cat) => (
           <div key={cat.name}>
             <p style={{
-              fontFamily: "Inter, sans-serif", fontSize: 11, fontWeight: 600,
-              letterSpacing: "0.07em", textTransform: "uppercase",
-              color: "#908E8D", margin: "0 0 8px 0",
+              fontFamily: "Inter, sans-serif", fontSize: 11, fontWeight: 700,
+              letterSpacing: "0.08em", textTransform: "uppercase",
+              color: categoryColor, margin: "0 0 10px 0",
             }}>
               {cat.name}
             </p>
-            <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
               {cat.items.map((item) => (
                 <Link
                   key={item.label}
                   to={`/${segment}/${cat.categorySlug}/${item.slug}`}
                   onClick={onClose}
                   style={{
-                    display: "flex", alignItems: "center", justifyContent: "space-between",
-                    padding: "7px 8px", borderRadius: 9, textDecoration: "none",
-                    background: "transparent", transition: "background 0.12s",
+                    display: "block",
+                    padding: "7px 0",
+                    textDecoration: "none",
+                    fontFamily: "Inter, sans-serif",
+                    fontSize: 14,
+                    fontWeight: 400,
+                    color: "#1C1917",
+                    transition: "color 0.12s",
                   }}
-                  onMouseEnter={e => {
-                    e.currentTarget.style.background = isPersonas ? "#FFF3EC" : "#F2EFED";
-                    const arrow = e.currentTarget.querySelector(".arr") as HTMLElement | null;
-                    if (arrow) arrow.style.opacity = "1";
-                  }}
-                  onMouseLeave={e => {
-                    e.currentTarget.style.background = "transparent";
-                    const arrow = e.currentTarget.querySelector(".arr") as HTMLElement | null;
-                    if (arrow) arrow.style.opacity = "0";
-                  }}
+                  onMouseEnter={e => { e.currentTarget.style.color = "#FF8136"; }}
+                  onMouseLeave={e => { e.currentTarget.style.color = "#1C1917"; }}
                 >
-                  <span>
-                    <span style={{ display: "block", fontFamily: "Inter, sans-serif", fontSize: 13, fontWeight: 500, color: "#1C1917", lineHeight: 1.3 }}>
-                      {item.label}
-                    </span>
-                    {item.tag && (
-                      <span style={{
-                        display: "inline-block", marginTop: 2, padding: "1px 6px",
-                        borderRadius: 99, background: "#FFF3EC", color: "#FF8136",
-                        fontSize: 10, fontWeight: 600, fontFamily: "Inter, sans-serif",
-                      }}>
-                        {item.tag}
-                      </span>
-                    )}
-                  </span>
-                  <ChevronRight className="arr" size={13} color="#FF8136"
-                    style={{ opacity: 0, transition: "opacity 0.12s", flexShrink: 0 }} />
+                  {item.label}
                 </Link>
               ))}
             </div>

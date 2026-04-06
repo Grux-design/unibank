@@ -30,6 +30,8 @@ export function MegaMenu({ onClose }: MegaMenuProps) {
       <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 24px" }}>
         <MegaMenuTabBar activeTab={activeTab} onTabChange={setActiveTab} />
 
+        <div style={{ borderTop: "1px solid #E8E4E0" }} />
+
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
@@ -40,6 +42,10 @@ export function MegaMenu({ onClose }: MegaMenuProps) {
             style={{ display: "flex", gap: 0, padding: "24px 0" }}
           >
             <MegaMenuCategoryGrid data={data} isPersonas={isPersonas} onClose={onClose} />
+
+            {/* Vertical divider */}
+            <div style={{ width: 1, background: "#E8E4E0", flexShrink: 0, marginLeft: 24, marginRight: 24 }} />
+
             <MegaMenuFeaturedCard data={data} isPersonas={isPersonas} onClose={onClose} />
           </motion.div>
         </AnimatePresence>
