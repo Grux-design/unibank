@@ -89,18 +89,26 @@ export default function LegalPage() {
         )}
       </Helmet>
 
-      <article className="bg-background min-h-screen">
-        <div className="max-w-3xl mx-auto px-6 py-24">
-          <h1 className="text-4xl font-extrabold tracking-tight mb-8 text-foreground">
-            {page.title}
-          </h1>
-
-          {content && (
-            <div className="prose prose-neutral max-w-none">
-              {documentToReactComponents(content, richTextOptions)}
-            </div>
-          )}
+      <article className="min-h-screen">
+        {/* Title hero section */}
+        <div className="bg-muted/30 border-b border-border">
+          <div className="max-w-4xl mx-auto px-6 py-20 text-center">
+            <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-foreground">
+              {page.title}
+            </h1>
+          </div>
         </div>
+
+        {/* Content section */}
+        {content && (
+          <div className="bg-background">
+            <div className="max-w-3xl mx-auto px-6 py-16">
+              <div className="prose prose-neutral max-w-none">
+                {documentToReactComponents(content, richTextOptions)}
+              </div>
+            </div>
+          </div>
+        )}
       </article>
     </>
   );
