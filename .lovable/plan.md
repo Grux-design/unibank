@@ -1,21 +1,25 @@
 
 
-## 3 cambios en el Mega Menu
+## Rediseñar FeaturedBanner (Cuenta Naranja+ Digital) con nuevo layout
 
-### 1. Alinear toggle a la izquierda
-En `MegaMenuTabBar.tsx`, cambiar `justifyContent: "center"` a `justifyContent: "flex-start"` en el contenedor exterior.
+### Resumen
+Reemplazar el layout actual del `FeaturedBanner` en `ProductsSection.tsx` con el diseño de 3 columnas proporcionado: panel izquierdo (badge + título grande), imagen central anclada al fondo con overflow, y panel derecho (subtítulo + body + CTAs con botones cream/transparent).
 
-### 2. Eliminar white spaces excesivos
-Los screenshots muestran espacios vacíos debajo de categorías con pocos items (ej. "Crédito" solo tiene 2 items, "Cuentas" en Empresas solo tiene 1). El problema es el gap vertical de `24px` entre filas del grid y que las categorías se distribuyen en un grid 2x2 con filas de altura uniforme.
+### Cambios en `src/components/organisms/ProductsSection.tsx`
 
-Cambios en `MegaMenuCategoryGrid.tsx`:
-- Reducir el gap vertical del grid de `24px` a `16px`
-- Cambiar de `grid` a un layout de 2 columnas con `flex` o `columns`, donde cada columna apila sus categorías sin forzar alturas iguales entre filas. Concretamente: usar CSS `column-count: 2` o dividir manualmente las categorías en 2 columnas (izquierda: categorías 0,2; derecha: categorías 1,3) para que cada columna fluya independientemente sin gaps forzados.
+**1. Reescribir `FeaturedBanner`** con el nuevo layout:
+- **Background**: Reemplazar los SVG de gradientes lineales por 3 blobs circulares (`circle` + `ellipse`) con opacidades para profundidad
+- **Layout**: Cambiar de 2 columnas (content + image absoluta) a 3 columnas flex:
+  - Col izquierda (`flex: 1`, padding 48px): badge pill con borde blanco semi-transparente + título grande (48px, bold, blanco, con line breaks)
+  - Col central (300px fijo): imagen portrait posicionada `absolute bottom:0` con `height: 110%` para overflow hacia arriba
+  - Col derecha (`flex: 1`, padding 48px): subtítulo (24px), body text, y 2 CTAs
+- **CTAs**: Botón primario cream (`#F7E8E0`, texto naranja, con icono Plus) y botón secundario transparente con borde `rgba(247,232,224,0.7)` y hover a blanco
+- **Height**: Fijo a 480px (desktop), auto en mobile
 
-### 3. Color de section labels en Empresas
-En `MegaMenuCategoryGrid.tsx`, cambiar `categoryColor` para que sea siempre `#FF8136` en ambos segmentos, eliminando la condición que lo pone gris para Empresas.
+**2. Adaptar versión mobile**: En mobile, cambiar a layout vertical (1 columna) con imagen centrada y contenido apilado.
 
-### Archivos a editar
-- `src/components/molecules/MegaMenuTabBar.tsx` (cambio 1)
-- `src/components/molecules/MegaMenuCategoryGrid.tsx` (cambios 2 y 3)
+**3. Eliminar `OrangeHoverOverlay`** si ya no se usa en ningún otro lugar (verificar primero).
+
+### Archivo a editar
+- `src/components/organisms/ProductsSection.tsx`
 
