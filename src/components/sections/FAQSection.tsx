@@ -73,7 +73,7 @@ export function FAQSection({ section }: Props) {
                       {isOpen ? <X className="h-5 w-5" /> : <Plus className="h-5 w-5" />}
                     </span>
                   </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground text-sm leading-relaxed">
+                  <AccordionContent className="text-muted-foreground text-lg leading-relaxed">
                     {renderAnswer()}
                   </AccordionContent>
                 </AccordionItem>
