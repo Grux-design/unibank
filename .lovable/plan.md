@@ -1,76 +1,61 @@
 
 
-## Plan: Build 4 new section components
+## Plan: Fix all 4 section components
 
-### Overview
+### Root issues
+1. **Shadows** need removal from all 4 sections
+2. **Feature Banner**: uses `headline`/`subheadline` but should use `title` (headline) and `headline` (copy); missing `secondaryCta` field in types/resolver
+3. **Card Grid**: needs white bg without shadow, layout mismatch vs reference, glitch from `will-change`/`transform-style` in CSS; missing `link` field on items
+4. **Benefit List**: uses `headline` but should use `title`; icon images not showing (already coded but may be data issue); needs `py-[80px]`
+5. **FAQ**: uses `headline` as title but should use `title` as title and `headline` as description; FAQ items use `question`/`answer` fields in Contentful (not `title`/`description`) so resolver doesn't pick them up
 
-Create `FeatureBannerSection`, `CardGridSection`, `BenefitListSection`, and `FAQSection` components, register them in `PageBuilder`, and install the `lenis` dependency for the Card Grid scroll-stack effect.
+### Changes
 
-All sections consume the existing `ResolvedSection` type — no Contentful schema or resolver changes needed. Each section reads `headline`, `subheadline`, `mainImage`, and `items[]` (each item has `title`, `description`, `icon`).
+**1. `src/integrations/contentful/types.ts`**
+- Add `secondaryCta?: string` to `SectionFields` and `ResolvedSection`
+- Add `question?: string`, `answer?: string`, `link?: string` to `FeatureItemFields` and `ResolvedFeatureItem`
 
----
+**2. `src/hooks/useContentfulPage.ts`**
+- In `resolveFeatureItem`: map `question`, `answer`, and `link` from entry fields
+- In `resolveSection`: map `secondaryCta` from section fields
 
-### 1. Install dependency
+**3. `src/components/sections/FeatureBannerSection.tsx`**
+- Remove `shadow-lg`
+- Show `section.title` as the heading, `section.headline` as the body copy
+- Use `section.secondaryCta` as button label (fallback "Conocer más")
+- Padding `py-[80px]`
 
-```
-npm install lenis
-```
+**4. `src/components/sections/CardGridSection.tsx`**
+- Match reference: title above image, image left, description + link CTA right
+- Remove shadow from cards
+- Use `item.link` for the CTA text/href
+- Padding `py-[80px]`
 
-Required for the ScrollStack (Card Grid) smooth-scroll pinning effect.
+**5. `src/components/ui/ScrollStack.css`**
+- Remove `box-shadow` from `.scroll-stack-card`
+- Remove `transform-style: preserve-3d` (causes flicker)
+- Remove redundant `will-change` and `transform` from CSS (JS handles it)
 
-### 2. Create ScrollStack utility component
+**6. `src/components/sections/BenefitListSection.tsx`**
+- Use `section.title` as the section heading (not `headline`)
+- Remove `shadow-sm` from cards
+- Padding `py-[80px]`
+- Icon images already coded — should work once `icon` is resolved (no code change needed for that)
 
-**`src/components/ui/ScrollStack.tsx`** + **`src/components/ui/ScrollStack.css`**
-
-Port the ScrollStack + ScrollStackItem code from the reactbits library provided. This is a reusable scroll-pinning card stack with Lenis smooth scrolling.
-
-### 3. Create section components
-
-**`src/components/sections/FeatureBannerSection.tsx`**
-- Full-width light gray background section
-- Rounded card container with 50/50 image-left / text-right layout
-- Renders `mainImage` on the left, `headline` + `subheadline` on the right
-- CTA button "Conocer más" (non-functional placeholder)
-- Based on reference image: rounded corners, shadow, clean typography
-
-**`src/components/sections/CardGridSection.tsx`**
-- Uses `ScrollStack` + `ScrollStackItem` with `useWindowScroll={true}`
-- Section headline at top center
-- Each `item` becomes a `ScrollStackItem` card containing: image (from `item.icon`), title, description, and a "Más información >" link
-- Cards stack on scroll with pinning effect per the reactbits component
-
-**`src/components/sections/BenefitListSection.tsx`**
-- Light gray background, two-column layout on desktop
-- Left column: large `headline` text
-- Right column: vertical stack of white rounded cards, each with `item.icon` image on left and `title` + `description` text on right
-- Clean card style matching the reference image
-
-**`src/components/sections/FAQSection.tsx`**
-- Light gray background, two-column layout
-- Left column: `headline` + `subheadline` + optional CTA button
-- Right column: accordion using existing shadcn `Accordion` component
-- Each `item` becomes an accordion item: `item.title` = question, `item.description` = answer
-- Expand/collapse with + / x icon
-
-### 4. Register in PageBuilder
-
-**`src/components/organisms/PageBuilder.tsx`**
-
-Add 4 new entries to `SECTION_MAP`:
-```
-"Feature Banner": FeatureBannerSection
-"Card Grid": CardGridSection
-"Benefit List": BenefitListSection
-"FAQ": FAQSection
-```
+**7. `src/components/sections/FAQSection.tsx`**
+- Use `section.title` as heading, `section.headline` as description text
+- Remove `shadow-sm` from accordion items
+- Render `item.question` as accordion trigger (fallback to `item.title`)
+- Render `item.answer` as accordion content (fallback to `item.description`)
+- Ensure accordion trigger shows `+` icon on the right
+- Padding `py-[80px]`
 
 ### Files touched
-- `package.json` (add `lenis`)
-- `src/components/ui/ScrollStack.tsx` (new)
-- `src/components/ui/ScrollStack.css` (new)
-- `src/components/sections/FeatureBannerSection.tsx` (new)
-- `src/components/sections/CardGridSection.tsx` (new)
-- `src/components/sections/BenefitListSection.tsx` (new)
-- `src/components/sections/FAQSection.tsx` (new)
-- `src/components/organisms/PageBuilder.tsx` (edit)
+- `src/integrations/contentful/types.ts`
+- `src/hooks/useContentfulPage.ts`
+- `src/components/ui/ScrollStack.css`
+- `src/components/sections/FeatureBannerSection.tsx`
+- `src/components/sections/CardGridSection.tsx`
+- `src/components/sections/BenefitListSection.tsx`
+- `src/components/sections/FAQSection.tsx`
 
