@@ -1,25 +1,38 @@
 
 
-## Fix Feature Banner: Missing "Copy" Field and Broken Image
+## Revamp Card Grid: Custom Scroll-Stacking Cards
 
-### Problem
-1. **Copy field not showing**: Contentful's "Feature Banner" section has a `copy` field (visible in the CMS screenshot), but the codebase never reads it — it's missing from `SectionFields`, `ResolvedSection`, and the resolver in `useContentfulPage.ts`. The component currently displays `section.headline` as the description, but the actual text lives in the `copy` field.
-2. **Main Image not showing**: The `resolveAsset` function in `useContentfulPage.ts` already normalizes URLs by prepending `https:`. Then `FeatureBannerSection` prepends `https:` again, resulting in `https:https://images.ctfassets...` — a broken URL.
+### What We're Building
+Replace the current Lenis-based ScrollStack with a custom, from-scratch scroll-driven stacking card component. Based on the reference screenshots, the interaction is:
 
-### Plan
+1. Cards are white rounded containers on a gray background, stacked vertically with **no gap**
+2. Each card has a **title at the top**, then a **50/50 image + description** layout below
+3. As you scroll, each card "pins" at the top and the next card slides up and overlaps it — creating a stacking effect
+4. The image field to use is `item.image` (not `item.icon`) based on the Contentful "Feature Item" content type screenshot
 
-**Step 1 — Add `copy` to Contentful types**
-- In `src/integrations/contentful/types.ts`: add `copy?: string` to both `SectionFields` and `ResolvedSection`.
+### Technical Plan
 
-**Step 2 — Resolve `copy` in the hook**
-- In `src/hooks/useContentfulPage.ts`, inside `resolveSection`, read `f.copy` and pass it through to the resolved section object.
+**Step 1 — Delete ScrollStack files**
+- Remove `src/components/ui/ScrollStack.tsx` and `src/components/ui/ScrollStack.css`
+- Remove `lenis` from `package.json`
 
-**Step 3 — Fix FeatureBannerSection**
-- Remove the redundant `https:` prefix on line 10 — use `section.mainImage.fields.file.url` directly since it's already normalized.
-- Display `section.copy` (falling back to `section.headline`) as the description paragraph below the title.
+**Step 2 — Build new `CardGridSection.tsx` with inline scroll-stack logic**
+- Use `position: sticky` for the stacking effect — each card gets `sticky top` with a small incremental offset so cards stack behind the next one
+- No external library needed; pure CSS `position: sticky` + a small offset per card
+- Layout per card (matching reference):
+  - White rounded card (`rounded-[20px]`) with ~40px padding
+  - Bold title (`text-2xl font-bold`) at the top
+  - Below: flex row with image on the left (~55% width, `rounded-xl`, `object-cover`) and description + "Mas informacion" link on the right
+- No vertical gap between cards (no margin between them)
+- Use `item.image` for the photo (falling back to `item.icon`) — the Contentful screenshot shows an "Image" field on Feature Items
+- Section headline rendered above the stack
+
+**Step 3 — Ensure image URL handling is correct**
+- The resolver already normalizes URLs with `https:` prefix — do not double-prefix
 
 ### Files Changed
-- `src/integrations/contentful/types.ts`
-- `src/hooks/useContentfulPage.ts`
-- `src/components/sections/FeatureBannerSection.tsx`
+- `src/components/ui/ScrollStack.tsx` — deleted
+- `src/components/ui/ScrollStack.css` — deleted
+- `src/components/sections/CardGridSection.tsx` — rewritten with sticky-card layout
+- `package.json` — remove `lenis` dependency
 
