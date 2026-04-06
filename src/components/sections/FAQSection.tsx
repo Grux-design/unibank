@@ -1,6 +1,7 @@
 import type { ResolvedSection } from "@/integrations/contentful/types";
 import { Button } from "@/components/ui/button";
 import { Plus, X } from "lucide-react";
+import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import {
   Accordion,
   AccordionContent,
@@ -48,9 +49,17 @@ export function FAQSection({ section }: Props) {
           >
             {items.map((item, index) => {
               const questionText = item.question || item.title;
-              const answerText = item.answer || item.description;
+              const rawAnswer: unknown = item.answer || item.description;
               const itemValue = `faq-${index}`;
               const isOpen = openValue === itemValue;
+
+              const renderAnswer = () => {
+                if (!rawAnswer) return null;
+                if (typeof rawAnswer === 'object' && 'nodeType' in (rawAnswer as any)) {
+                  return documentToReactComponents(rawAnswer as any);
+                }
+                return String(rawAnswer);
+              };
 
               return (
                 <AccordionItem
@@ -65,7 +74,7 @@ export function FAQSection({ section }: Props) {
                     </span>
                   </AccordionTrigger>
                   <AccordionContent className="text-muted-foreground text-sm leading-relaxed">
-                    {answerText}
+                    {renderAnswer()}
                   </AccordionContent>
                 </AccordionItem>
               );
