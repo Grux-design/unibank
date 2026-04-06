@@ -31,7 +31,7 @@ export function BenefitListSection({ section }: Props) {
             return (
               <div
                 key={item.sys.id}
-                className="bg-background rounded-2xl p-5 flex items-center gap-5"
+                className="bg-background rounded-2xl p-5 gap-5 flex items-start justify-start"
               >
                 {iconUrl && (
                   <div className="rounded-xl overflow-hidden flex-shrink-0" style={{ width: 164, height: 212 }}>
@@ -44,11 +44,11 @@ export function BenefitListSection({ section }: Props) {
                   </div>
                 )}
                 <div>
-                  <h3 className="text-lg font-bold text-foreground mb-1">
+                  <h3 className="font-bold text-foreground mb-1 text-2xl">
                     {item.title}
                   </h3>
                   {item.description && (
-                    <p className="text-muted-foreground text-sm">
+                    <p className="text-muted-foreground text-lg">
                       {item.description}
                     </p>
                   )}
