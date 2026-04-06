@@ -47,8 +47,8 @@ export const socialIcons: SocialIconEntry[] = [
   { icon: Youtube,   label: "YouTube",   href: "#" },
 ];
 
-export const legalLinks: string[] = [
-  "Aviso de Privacidad",
-  "Términos y Condiciones",
-  "Política de Cookies",
+export const legalLinks = [
+  { label: "Aviso de Privacidad",    path: "/aviso-de-privacidad" },
+  { label: "Términos y Condiciones", path: "/terminos-y-condiciones" },
+  { label: "Política de Cookies",    path: "/politica-de-cookies" },
 ];

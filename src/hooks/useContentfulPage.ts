@@ -167,6 +167,7 @@ async function fetchPage(slug: string): Promise<ResolvedPage> {
     sys: raw.sys,
     title: f.title,
     slug: f.slug,
+    content: f.content,
     sections,
     seoMeta,
   };

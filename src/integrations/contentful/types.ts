@@ -92,6 +92,7 @@ export interface SectionFields {
 export interface PageFields {
   title: string;
   slug: string;
+  content?: unknown;
   sections?: (ContentfulLink | ContentfulEntry<SectionFields>)[];
   seoMetadata?: ContentfulLink | ContentfulEntry<SeoMetadataFields>;
 }
@@ -127,6 +128,7 @@ export interface ResolvedPage {
   sys: ContentfulSys;
   title: string;
   slug: string;
+  content?: unknown;
   sections: ResolvedSection[];
   seoMeta?: {
     title: string;
