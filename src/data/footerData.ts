@@ -30,8 +30,8 @@ export const footerColumns: FooterColumn[] = [
   {
     title: "Grupo UniBank",
     links: [
-      { label: "UniConnect" }, { label: "UniTrust" }, { label: "Univivir" },
-      { label: "UniLeasing" }, { label: "Grupo Invertis" },
+      { label: "UniConnect" }, { label: "UniTrust" }, { label: "Univivir", href: "https://www.univivir.com.pa/" },
+      { label: "UniLeasing" }, { label: "Grupo Invertis", href: "https://www.invertissecurities.com/" },
     ],
   },
   {
@@ -44,7 +44,7 @@ export const footerColumns: FooterColumn[] = [
   },
   {
     title: "Canales de Atención",
-    links: [{ label: "whatsapp" }, { label: "sucursales" }],
+    links: [{ label: "whatsapp", href: "https://api.whatsapp.com/send?phone=50763280229&text=%C2%A1Hola!,%20Tengo%20una%20Consulta" }, { label: "sucursales" }],
     isAttention: true,
   },
 ];
