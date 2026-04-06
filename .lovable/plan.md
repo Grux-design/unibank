@@ -1,25 +1,24 @@
 
 
-## Rediseñar FeaturedBanner (Cuenta Naranja+ Digital) con nuevo layout
+## Rediseñar el banner CTA naranja en DigitalBanking
 
-### Resumen
-Reemplazar el layout actual del `FeaturedBanner` en `ProductsSection.tsx` con el diseño de 3 columnas proporcionado: panel izquierdo (badge + título grande), imagen central anclada al fondo con overflow, y panel derecho (subtítulo + body + CTAs con botones cream/transparent).
+### Cambios de layout y estilo (líneas ~622-724 de `DigitalBanking.tsx`)
 
-### Cambios en `src/components/organisms/ProductsSection.tsx`
+**Layout**: Cambiar de la estructura actual (content row + bottom info bar) a un layout de 2 columnas:
+- **Columna izquierda**: Eyebrow uppercase pequeño ("¿LISTO PARA TRANSFORMAR TU EXPERIENCIA BANCARIA?") + headline grande y bold ("Contáctanos\nhoy mismo.")
+- **Columna derecha**: Botones de teléfono y WhatsApp (con fondo blanco semi-transparente `rgba(255,255,255,0.15)` en vez de ghost/outline) + texto de horario y sucursales debajo de los botones
 
-**1. Reescribir `FeaturedBanner`** con el nuevo layout:
-- **Background**: Reemplazar los SVG de gradientes lineales por 3 blobs circulares (`circle` + `ellipse`) con opacidades para profundidad
-- **Layout**: Cambiar de 2 columnas (content + image absoluta) a 3 columnas flex:
-  - Col izquierda (`flex: 1`, padding 48px): badge pill con borde blanco semi-transparente + título grande (48px, bold, blanco, con line breaks)
-  - Col central (300px fijo): imagen portrait posicionada `absolute bottom:0` con `height: 110%` para overflow hacia arriba
-  - Col derecha (`flex: 1`, padding 48px): subtítulo (24px), body text, y 2 CTAs
-- **CTAs**: Botón primario cream (`#F7E8E0`, texto naranja, con icono Plus) y botón secundario transparente con borde `rgba(247,232,224,0.7)` y hover a blanco
-- **Height**: Fijo a 480px (desktop), auto en mobile
+**Eliminar la barra inferior** (info bar con `background: rgba(0,0,0,0.12)`), moviendo su contenido al panel derecho.
 
-**2. Adaptar versión mobile**: En mobile, cambiar a layout vertical (1 columna) con imagen centrada y contenido apilado.
+**Tipografía**:
+- Eyebrow: ~13px, uppercase, `letterSpacing: 0.08em`, `color: rgba(255,255,255,0.85)`
+- Headline: ~48px (desktop) / ~32px (mobile), `fontWeight: 800`, blanco
+- Info text: ~14px, `color: rgba(255,255,255,0.7)`
 
-**3. Eliminar `OrangeHoverOverlay`** si ya no se usa en ningún otro lugar (verificar primero).
+**Botones**: Cambiar `CtaGhostBtn` de border outline a fondo `rgba(255,255,255,0.15)` con `border: none`, `borderRadius: 14px`, padding más generoso.
+
+**Padding general**: Aumentar padding interno a `~56px 64px` (desktop).
 
 ### Archivo a editar
-- `src/components/organisms/ProductsSection.tsx`
+- `src/components/organisms/DigitalBanking.tsx` (líneas 622-724)
 
