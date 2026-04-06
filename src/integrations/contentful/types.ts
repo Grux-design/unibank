@@ -70,6 +70,9 @@ export interface FeatureItemFields {
   title: string;
   description?: string;
   icon?: ContentfulAsset;
+  question?: string;
+  answer?: string;
+  link?: string;
 }
 
 export interface SectionFields {
@@ -80,6 +83,7 @@ export interface SectionFields {
   subheadline?: string;
   mainImage?: ContentfulLink | ContentfulAsset;
   showForm?: boolean;
+  secondaryCta?: string;
   items?: (ContentfulLink | ContentfulEntry<FeatureItemFields>)[];
 }
 
@@ -97,6 +101,9 @@ export interface ResolvedFeatureItem {
   title: string;
   description?: string;
   icon?: ContentfulAsset;
+  question?: string;
+  answer?: string;
+  link?: string;
 }
 
 export interface ResolvedSection {
@@ -108,6 +115,7 @@ export interface ResolvedSection {
   subheadline?: string;
   mainImage?: ContentfulAsset;
   showForm?: boolean;
+  secondaryCta?: string;
   items?: ResolvedFeatureItem[];
 }
 
