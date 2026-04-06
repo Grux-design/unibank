@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import React from "react";
 import { motion, useInView } from "motion/react";
-import { Building2, Users, BarChart3, ArrowUpRight } from "lucide-react";
+import { Building2, Users, BarChart3, ArrowRight } from "lucide-react";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { SectionHeading, LinkArrow } from "@/components/ui/atoms";
 import { MagicBentoGrid, MagicBentoCard } from "@/components/ui/MagicBento";
@@ -49,47 +49,67 @@ const services = [
   },
 ];
 
-/* ── Shared badge ───────────────────────────────────────── */
-function IconBadge({ icon: Icon, label }: { icon: React.ElementType; label: string }) {
+/* ── Shared sub-components (matching Personas style) ──── */
+function CategoryTag({ icon: Icon, label }: { icon: React.ElementType; label: string }) {
   return (
     <span
       style={{
         display: "inline-flex",
         alignItems: "center",
-        gap: 6,
-        padding: "4px 12px",
+        gap: 5,
+        padding: "3px 10px",
         borderRadius: 99,
-        background: "rgba(255,255,255,0.14)",
-        border: "1px solid rgba(255,255,255,0.22)",
-        color: "#fff",
+        background: "rgba(255,129,54,0.10)",
+        color: OR,
         fontSize: 11,
         fontWeight: 700,
         letterSpacing: "0.06em",
         textTransform: "uppercase",
       }}
     >
-      <Icon size={12} strokeWidth={2} />
+      <Icon size={13} color={OR} strokeWidth={2} />
       {label}
+    </span>
+  );
+}
+
+function CtaLink({ children }: { children: React.ReactNode }) {
+  const [hov, setHov] = useState(false);
+  return (
+    <span
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 6,
+        color: OR,
+        fontSize: 13,
+        fontWeight: 600,
+        cursor: "pointer",
+        transform: hov ? "translateX(4px)" : "translateX(0)",
+        transition: "transform 0.22s ease",
+        userSelect: "none",
+      }}
+    >
+      {children}
+      <ArrowRight size={13} strokeWidth={2.5} />
     </span>
   );
 }
 
 /* ── LargeCard ──────────────────────────────────────────── */
 function LargeCard({ service, isMobile }: { service: typeof services[0]; isMobile: boolean }) {
-  const [hov, setHov] = useState(false);
-  const [ctaHov, setCtaHov] = useState(false);
-  const Icon = service.icon;
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "0px 0px -80px 0px" });
 
   return (
     <div
-      onMouseEnter={() => setHov(true)}
-      onMouseLeave={() => setHov(false)}
       style={{
         display: "flex",
         flexDirection: isMobile ? "column" : "row",
         height: isMobile ? "auto" : 380,
         width: "100%",
-        position: "relative",
         overflow: "hidden",
         borderRadius: 32,
       }}
@@ -99,53 +119,32 @@ function LargeCard({ service, isMobile }: { service: typeof services[0]; isMobil
         <img
           src={service.image}
           alt={service.title}
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            transform: hov ? "scale(1.04)" : "scale(1)",
-            transition: "transform 0.45s ease",
-            display: "block",
-          }}
+          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
         />
       </div>
 
       {/* Content */}
-      <div
+      <motion.div
+        ref={ref}
+        initial={{ opacity: 0, y: 20 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.5, ease: "easeOut" }}
         style={{
           flex: isMobile ? undefined : "1 1 45%",
           background: "#fff",
-          padding: isMobile ? "24px 20px" : "36px 40px",
+          padding: isMobile ? "24px 20px 20px" : "32px 28px",
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
           gap: 16,
         }}
       >
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-          <span
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 6,
-              padding: "4px 12px",
-              borderRadius: 99,
-              background: "rgba(255,129,54,0.10)",
-              color: OR,
-              fontSize: 11,
-              fontWeight: 700,
-              letterSpacing: "0.06em",
-              textTransform: "uppercase",
-              width: "fit-content",
-            }}
-          >
-            <Icon size={12} strokeWidth={2} color={OR} />
-            {service.label}
-          </span>
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          <CategoryTag icon={service.icon} label={service.label} />
           <h3
             style={{
               margin: 0,
-              fontSize: "clamp(20px, 2.5vw, 32px)",
+              fontSize: "clamp(18px, 2vw, 24px)",
               fontWeight: 800,
               color: DARK,
               letterSpacing: "-0.02em",
@@ -154,30 +153,10 @@ function LargeCard({ service, isMobile }: { service: typeof services[0]; isMobil
           >
             {service.title}
           </h3>
-          <p style={{ margin: 0, fontSize: 14, color: SOFT, lineHeight: 1.65 }}>{service.body}</p>
+          <p style={{ margin: 0, fontSize: 13, color: SOFT, lineHeight: 1.6 }}>{service.body}</p>
         </div>
-        <a
-          href="#"
-          onMouseEnter={() => setCtaHov(true)}
-          onMouseLeave={() => setCtaHov(false)}
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 6,
-            color: OR,
-            fontSize: 14,
-            fontWeight: 700,
-            textDecoration: "none",
-            alignSelf: "flex-start",
-            cursor: "pointer",
-            transform: ctaHov ? "translateX(4px)" : "translateX(0)",
-            transition: "transform 0.22s ease",
-          }}
-        >
-          {service.cta}
-          <ArrowUpRight size={14} />
-        </a>
-      </div>
+        <CtaLink>{service.cta}</CtaLink>
+      </motion.div>
     </div>
   );
 }
@@ -185,105 +164,40 @@ function LargeCard({ service, isMobile }: { service: typeof services[0]; isMobil
 /* ── SmallCard ──────────────────────────────────────────── */
 function SmallCard({ service, index }: { service: typeof services[0]; index: number }) {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "0px 0px -60px 0px" });
-  const [hov, setHov] = useState(false);
-  const [ctaHov, setCtaHov] = useState(false);
-  const Icon = service.icon;
+  const inView = useInView(ref, { once: true, margin: "0px 0px -80px 0px" });
 
   return (
     <motion.div
       ref={ref}
-      onMouseEnter={() => setHov(true)}
-      onMouseLeave={() => setHov(false)}
-      initial={{ opacity: 0, y: 24 }}
+      initial={{ opacity: 0, y: 20 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.55, delay: index * 0.1, ease: "easeOut" }}
+      transition={{ duration: 0.5, delay: index * 0.08, ease: "easeOut" }}
       style={{
         display: "flex",
         flexDirection: "column",
         height: "100%",
-        minHeight: 340,
+        background: "#fff",
+        position: "relative",
         overflow: "hidden",
         borderRadius: 32,
       }}
     >
       {/* Image */}
-      <div style={{ flex: "1 1 auto", overflow: "hidden", minHeight: 180 }}>
+      <div style={{ flex: "1 1 auto", overflow: "hidden", minHeight: 160 }}>
         <img
           src={service.image}
           alt={service.title}
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            transform: hov ? "scale(1.05)" : "scale(1)",
-            transition: "transform 0.45s ease",
-            display: "block",
-          }}
+          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
         />
       </div>
       {/* Content */}
-      <div
-        style={{
-          background: "#fff",
-          padding: "20px 20px 24px",
-          display: "flex",
-          flexDirection: "column",
-          gap: 10,
-        }}
-      >
-        <span
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 6,
-            padding: "3px 10px",
-            borderRadius: 99,
-            background: "rgba(255,129,54,0.10)",
-            color: OR,
-            fontSize: 11,
-            fontWeight: 700,
-            letterSpacing: "0.06em",
-            textTransform: "uppercase",
-            width: "fit-content",
-          }}
-        >
-          <Icon size={12} strokeWidth={2} color={OR} />
-          {service.label}
-        </span>
-        <h4
-          style={{
-            margin: 0,
-            fontSize: 18,
-            fontWeight: 700,
-            color: DARK,
-            letterSpacing: "-0.01em",
-            lineHeight: 1.3,
-          }}
-        >
+      <div style={{ padding: "20px 20px 24px", display: "flex", flexDirection: "column", gap: 10, flex: "0 0 auto" }}>
+        <CategoryTag icon={service.icon} label={service.label} />
+        <h4 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: DARK, letterSpacing: "-0.01em", lineHeight: 1.3 }}>
           {service.title}
         </h4>
         <p style={{ margin: 0, fontSize: 13, color: SOFT, lineHeight: 1.6 }}>{service.body}</p>
-        <a
-          href="#"
-          onMouseEnter={() => setCtaHov(true)}
-          onMouseLeave={() => setCtaHov(false)}
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 6,
-            color: OR,
-            fontSize: 14,
-            fontWeight: 600,
-            textDecoration: "none",
-            cursor: "pointer",
-            transform: ctaHov ? "translateX(4px)" : "translateX(0)",
-            transition: "transform 0.22s ease",
-          }}
-        >
-          {service.cta}
-          <ArrowUpRight size={14} />
-        </a>
+        <CtaLink>{service.cta}</CtaLink>
       </div>
     </motion.div>
   );
