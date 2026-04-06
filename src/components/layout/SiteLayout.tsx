@@ -16,6 +16,7 @@ export function SiteLayout() {
         <Outlet context={{ lang }} />
       </main>
       <Footer />
+      <CookieBanner />
     </div>
   );
 }
