@@ -21,8 +21,11 @@ export function FooterNavColumn({ column }: FooterNavColumnProps) {
       </h3>
       <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: 8 }}>
         {column.links.map((link) => {
-          if (column.isAttention && link === "whatsapp") return (
-            <li key={link}>
+          const href = link.href ?? "#";
+          const isExternal = link.href && link.href.startsWith("http");
+
+          if (column.isAttention && link.label === "whatsapp") return (
+            <li key={link.label}>
               <a href="#" style={{ display: "flex", alignItems: "center", gap: 7, fontFamily: "Inter, sans-serif", fontSize: 14, color: TEXT_LINK, textDecoration: "none", transition: "color 0.13s" }}
                 onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = ORANGE; }}
                 onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = TEXT_LINK; }}
@@ -31,8 +34,8 @@ export function FooterNavColumn({ column }: FooterNavColumnProps) {
               </a>
             </li>
           );
-          if (column.isAttention && link === "sucursales") return (
-            <li key={link}>
+          if (column.isAttention && link.label === "sucursales") return (
+            <li key={link.label}>
               <a href="#" style={{ display: "flex", alignItems: "center", gap: 7, fontFamily: "Inter, sans-serif", fontSize: 14, color: TEXT_LINK, textDecoration: "none", transition: "color 0.13s" }}
                 onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = ORANGE; }}
                 onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = TEXT_LINK; }}
@@ -42,12 +45,15 @@ export function FooterNavColumn({ column }: FooterNavColumnProps) {
             </li>
           );
           return (
-            <li key={link}>
-              <a href="#" style={{ fontFamily: "Inter, sans-serif", fontSize: 14, color: TEXT_LINK, textDecoration: "none", transition: "color 0.13s" }}
+            <li key={link.label}>
+              <a
+                href={href}
+                {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                style={{ fontFamily: "Inter, sans-serif", fontSize: 14, color: TEXT_LINK, textDecoration: "none", transition: "color 0.13s" }}
                 onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = ORANGE; }}
                 onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = TEXT_LINK; }}
               >
-                {link}
+                {link.label}
               </a>
             </li>
           );
