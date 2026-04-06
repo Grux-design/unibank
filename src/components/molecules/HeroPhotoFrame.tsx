@@ -10,7 +10,7 @@ export function HeroPhotoFrame({ slide }: HeroPhotoFrameProps) {
   const t = THEME;
 
   return (
-    <div style={{ position: "relative", width: "100%", height: "100%", minHeight: 508, overflow: "hidden" }}>
+    <div style={{ position: "relative", width: "100%", height: "100%", minHeight: 508, overflow: "hidden", background: "transparent" }}>
       {/* Accent circle */}
       <div style={{
         position: "absolute", bottom: "5%", right: "-8%",
