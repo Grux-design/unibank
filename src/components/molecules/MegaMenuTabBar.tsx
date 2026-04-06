@@ -14,7 +14,7 @@ const TABS: { value: Tab; label: string }[] = [
 
 export function MegaMenuTabBar({ activeTab, onTabChange }: MegaMenuTabBarProps) {
   return (
-    <div style={{ display: "flex", justifyContent: "center", padding: "24px 0 20px" }}>
+    <div style={{ display: "flex", justifyContent: "flex-start", padding: "24px 0 20px" }}>
       <div
         style={{
           display: "inline-flex",
