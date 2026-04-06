@@ -53,7 +53,7 @@ export function CardGridSection({ section }: Props) {
                     </div>
                   )}
 
-                  <div className="flex-1 flex flex-col justify-center">
+                  <div className="flex-1 flex-col flex items-start justify-start">
                     {item.description && (
                       <p className="text-foreground text-lg md:text-xl font-medium mb-4">
                         {item.description}
