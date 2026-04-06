@@ -29,7 +29,7 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
 
   return (
     <section style={{
-      background: "#F8F7F6",
+      background: "#FFFFFF",
       paddingTop: 80, paddingBottom: 32,
       paddingLeft: 16, paddingRight: 16,
       fontFamily: '"Inter", -apple-system, sans-serif',
@@ -39,15 +39,12 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
         position: "relative", maxWidth: 1200, margin: "0 auto",
         minHeight: 540, paddingTop: 32, paddingRight: 48,
       }}>
-        {/* Diagonal line pattern */}
+        {/* Decorative concentric circles */}
         {t.hasPattern && (
-          <svg aria-hidden="true" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", opacity: 0.18, pointerEvents: "none" }}>
-            <defs>
-              <pattern id="diag" patternUnits="userSpaceOnUse" width="16" height="16" patternTransform="rotate(45)">
-                <line x1="0" y1="0" x2="0" y2="16" stroke="white" strokeWidth="1" />
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#diag)" />
+          <svg aria-hidden="true" style={{ position: "absolute", top: "50%", right: "-5%", transform: "translateY(-50%)", width: 500, height: 500, opacity: 1, pointerEvents: "none" }}>
+            {[200, 160, 120, 80, 40].map((r, i) => (
+              <circle key={i} cx="250" cy="250" r={r} fill="none" stroke="rgba(255,129,54,0.10)" strokeWidth="1" />
+            ))}
           </svg>
         )}
 
