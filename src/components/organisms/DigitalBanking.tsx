@@ -623,32 +623,11 @@ export function DigitalBanking() {
           style={{
             margin: "32px 0 64px",
             borderRadius: 28,
-            background: `linear-gradient(135deg, hsl(20 100% 52%) 0%, hsl(28 100% 58%) 100%)`,
+            background: "#FF8136",
             overflow: "hidden",
             position: "relative",
           }}
         >
-          {/* SVG pattern */}
-          <svg
-            aria-hidden
-            style={{
-              position: "absolute",
-              inset: 0,
-              width: "100%",
-              height: "100%",
-              pointerEvents: "none",
-              opacity: 0.15,
-            }}
-            viewBox="0 0 800 200"
-            preserveAspectRatio="xMidYMid slice"
-          >
-            <defs>
-              <pattern id="dots" patternUnits="userSpaceOnUse" width="24" height="24">
-                <circle cx="3" cy="3" r="2" fill="white" />
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#dots)" />
-          </svg>
 
           <div
             style={{
