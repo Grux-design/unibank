@@ -346,63 +346,51 @@ function FeaturedBanner({ isMobile }: { isMobile: boolean }) {
 }
 
 /* ── MastercardCard ─────────────────────────────────────── */
+const mastercardData = {
+  icon: Plus,
+  tag: "Tarjetas",
+  title: "Tarjeta Mastercard Black Débito",
+  body: "Exclusividad y control en tus manos. Beneficios premium globales.",
+  cta: "Solicitar tarjeta",
+  image: IMG_MASTERCARD,
+};
+
 function MastercardCard() {
-  const [hov, setHov] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "0px 0px -80px 0px" });
   return (
-    <div
-      onMouseEnter={() => setHov(true)}
-      onMouseLeave={() => setHov(false)}
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 20 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.5, delay: 0.08, ease: "easeOut" }}
       style={{
-        width: "100%",
-        height: "100%",
-        position: "relative",
-        overflow: "hidden",
-        background: "#1a1a2e",
         display: "flex",
         flexDirection: "column",
-        justifyContent: "flex-end",
-        padding: "28px 24px",
+        height: "100%",
+        background: "#fff",
+        position: "relative",
+        overflow: "hidden",
       }}
     >
-      <img
-        src={IMG_MASTERCARD}
-        alt="Mastercard"
-        style={{
-          position: "absolute",
-          inset: 0,
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          transform: hov ? "scale(1.04)" : "scale(1)",
-          transition: "transform 0.45s ease",
-          display: "block",
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          background: "linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%)",
-        }}
-      />
-      <div style={{ position: "relative", zIndex: 1 }}>
-        <h4
-          style={{
-            margin: "0 0 4px",
-            fontSize: 18,
-            fontWeight: 700,
-            color: "#fff",
-            letterSpacing: "-0.01em",
-          }}
-        >
-          Tarjeta Mastercard Black Débito
-        </h4>
-        <p style={{ margin: "0 0 12px", fontSize: 12, color: "rgba(255,255,255,0.7)", lineHeight: 1.5 }}>
-          Exclusividad y control en tus manos. Beneficios premium globales.
-        </p>
-        <CtaLink>Solicitar tarjeta</CtaLink>
+      {/* Image */}
+      <div style={{ flex: "1 1 auto", overflow: "hidden", minHeight: 160 }}>
+        <img
+          src={mastercardData.image}
+          alt={mastercardData.title}
+          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+        />
       </div>
-    </div>
+      {/* Content */}
+      <div style={{ padding: "20px 20px 24px", display: "flex", flexDirection: "column", gap: 10, flex: "0 0 auto" }}>
+        <CategoryTag icon={mastercardData.icon} label={mastercardData.tag} />
+        <h4 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: DARK, letterSpacing: "-0.01em", lineHeight: 1.3 }}>
+          {mastercardData.title}
+        </h4>
+        <p style={{ margin: 0, fontSize: 13, color: SOFT, lineHeight: 1.6 }}>{mastercardData.body}</p>
+        <CtaLink>{mastercardData.cta}</CtaLink>
+      </div>
+    </motion.div>
   );
 }
 
