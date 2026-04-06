@@ -6,9 +6,7 @@ interface Props {
 }
 
 export function FeatureBannerSection({ section }: Props) {
-  const imageUrl = section.mainImage?.fields?.file?.url
-    ? `https:${section.mainImage.fields.file.url}`
-    : null;
+  const imageUrl = section.mainImage?.fields?.file?.url || null;
 
   return (
     <section className="w-full bg-muted py-[80px] px-4 md:px-8">
@@ -33,9 +31,9 @@ export function FeatureBannerSection({ section }: Props) {
                 {section.title}
               </h2>
             )}
-            {section.headline && (
+            {(section.copy || section.headline) && (
               <p className="text-muted-foreground text-lg mb-8">
-                {section.headline}
+                {section.copy || section.headline}
               </p>
             )}
             <div>
