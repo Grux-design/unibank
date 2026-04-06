@@ -31,12 +31,12 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
     <section style={{
       background: "#FFFFFF",
       paddingTop: 80, paddingBottom: 32,
-      paddingLeft: 16, paddingRight: 16,
+      paddingLeft: 24, paddingRight: 24,
       fontFamily: '"Inter", -apple-system, sans-serif',
     }}>
       <div style={{
         background: t.cardBg, borderRadius: 28, overflow: "hidden",
-        position: "relative", maxWidth: 1200, margin: "0 auto",
+        position: "relative", maxWidth: 1280, margin: "0 auto",
         minHeight: 540, paddingTop: 32, paddingRight: 48,
       }}>
         {/* Decorative concentric circles */}
