@@ -10,8 +10,8 @@ export function FeatureStripSection({ section }: Props) {
 
   return (
     <section
+      className="bg-orange-50"
       style={{
-        background: "hsl(var(--muted))",
         padding: "clamp(48px, 7vw, 88px) clamp(16px, 3.9vw, 72px)",
       }}
     >
