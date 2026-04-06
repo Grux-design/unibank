@@ -91,12 +91,11 @@ function CtaGhostBtn({
         display: "inline-flex",
         alignItems: "center",
         gap: 9,
-        padding: "0 28px",
-        height: "var(--btn-height)",
-        borderRadius: "var(--btn-border-radius)",
-        background: hov ? "rgba(255,255,255,0.18)" : "rgba(255,255,255,0.1)",
+        padding: "14px 28px",
+        borderRadius: 14,
+        background: hov ? "rgba(255,255,255,0.22)" : "rgba(255,255,255,0.15)",
         color: "#fff",
-        border: "1px solid rgba(255,255,255,0.3)",
+        border: "none",
         textDecoration: "none",
         fontSize: "var(--btn-font-size)",
         fontWeight: "var(--btn-font-weight)",
@@ -658,69 +657,69 @@ export function DigitalBanking() {
               flexDirection: isMobile ? "column" : "row",
               alignItems: isMobile ? "flex-start" : "center",
               justifyContent: "space-between",
-              gap: 24,
-              padding: isMobile ? "32px 20px" : "36px 56px",
+              gap: isMobile ? 32 : 48,
+              padding: isMobile ? "36px 20px" : "56px 64px",
             }}
           >
-            <div>
+            {/* Left column */}
+            <div style={{ flex: 1 }}>
+              <p
+                style={{
+                  margin: "0 0 12px",
+                  fontSize: 13,
+                  fontWeight: 600,
+                  color: "rgba(255,255,255,0.85)",
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase" as const,
+                }}
+              >
+                ¿Listo para transformar tu experiencia bancaria?
+              </p>
               <h3
                 style={{
-                  margin: "0 0 8px",
-                  fontSize: isMobile ? 22 : 28,
+                  margin: 0,
+                  fontSize: isMobile ? 32 : 48,
                   fontWeight: 800,
                   color: "#fff",
                   letterSpacing: "-0.02em",
-                  lineHeight: 1.15,
+                  lineHeight: 1.1,
                 }}
               >
-                ¿Listo para transformar<br />tu experiencia bancaria?
+                Contáctanos{"\n"}hoy mismo.
               </h3>
-              <p style={{ margin: 0, fontSize: 14, color: "rgba(255,255,255,0.85)" }}>
-                Contáctanos hoy mismo.
-              </p>
             </div>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: isMobile ? "column" : "row",
-                gap: 12,
-                flexShrink: 0,
-              }}
-            >
-              <CtaGhostBtn
-                href="tel:+50722976000"
-                icon={<Phone size={16} />}
-              >
-                297-6000
-              </CtaGhostBtn>
-              <CtaGhostBtn
-                href="https://wa.me/50763280229"
-                icon={<MessageCircle size={16} />}
-              >
-                WhatsApp 6328-0229
-              </CtaGhostBtn>
-            </div>
-          </div>
 
-          {/* Info bar */}
-          <div
-            style={{
-              position: "relative",
-              background: "rgba(0,0,0,0.12)",
-              padding: isMobile ? "12px 20px" : "12px 56px",
-              display: "flex",
-              flexDirection: isMobile ? "column" : "row",
-              gap: 8,
-              alignItems: isMobile ? "flex-start" : "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <span style={{ fontSize: 12, color: "rgba(255,255,255,0.8)" }}>
-              Lunes a Viernes 8:00 am – 5:00 pm
-            </span>
-            <span style={{ fontSize: 12, color: "rgba(255,255,255,0.8)" }}>
-              Sucursales en toda la República de Panamá
-            </span>
+            {/* Right column */}
+            <div style={{ flexShrink: 0, display: "flex", flexDirection: "column", gap: 16 }}>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: isMobile ? "column" : "row",
+                  gap: 12,
+                }}
+              >
+                <CtaGhostBtn
+                  href="tel:+50722976000"
+                  icon={<Phone size={16} />}
+                >
+                  297-6000
+                </CtaGhostBtn>
+                <CtaGhostBtn
+                  href="https://wa.me/50763280229"
+                  icon={<MessageCircle size={16} />}
+                >
+                  WhatsApp 6328-0229
+                </CtaGhostBtn>
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                <span style={{ fontSize: 14, color: "rgba(255,255,255,0.7)" }}>
+                  Lunes a Viernes 8:00 am – 5:00 pm
+                </span>
+                <span style={{ fontSize: 14, color: "rgba(255,255,255,0.7)" }}>
+                  Sucursales en toda la República de Panamá
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
