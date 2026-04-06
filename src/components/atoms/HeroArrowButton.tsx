@@ -13,8 +13,8 @@ export function HeroArrowButton({ label, onClick, path }: HeroArrowButtonProps) 
       aria-label={label}
       onClick={onClick}
       style={{
-        width:         40,
-        height:        40,
+        width:         48,
+        height:        48,
         borderRadius:  "50%",
         background:    THEME.arrowBtnBg,
         border:        `1px solid ${THEME.arrowBtnBorder}`,
