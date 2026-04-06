@@ -1,4 +1,5 @@
 import { ChevronRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import type { MenuSection } from "@/data/megaMenuData";
 import { secondaryLinks } from "@/data/megaMenuData";
 
@@ -9,6 +10,8 @@ interface MegaMenuCategoryGridProps {
 }
 
 export function MegaMenuCategoryGrid({ data, isPersonas, onClose }: MegaMenuCategoryGridProps) {
+  const segment = isPersonas ? "personas" : "empresas";
+
   return (
     <div style={{ flex: 1, minWidth: 0 }}>
       <div style={{
@@ -27,9 +30,9 @@ export function MegaMenuCategoryGrid({ data, isPersonas, onClose }: MegaMenuCate
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
               {cat.items.map((item) => (
-                <a
+                <Link
                   key={item.label}
-                  href="#"
+                  to={`/${segment}/${cat.categorySlug}/${item.slug}`}
                   onClick={onClose}
                   style={{
                     display: "flex", alignItems: "center", justifyContent: "space-between",
@@ -63,14 +66,13 @@ export function MegaMenuCategoryGrid({ data, isPersonas, onClose }: MegaMenuCate
                   </span>
                   <ChevronRight className="arr" size={13} color="#FF8136"
                     style={{ opacity: 0, transition: "opacity 0.12s", flexShrink: 0 }} />
-                </a>
+                </Link>
               ))}
             </div>
           </div>
         ))}
       </div>
 
-      {/* Footer links */}
       <div style={{ display: "flex", gap: 4, marginTop: 20, paddingTop: 16, borderTop: "1px solid #E8E4E0" }}>
         {secondaryLinks.map((link) => (
           <a
