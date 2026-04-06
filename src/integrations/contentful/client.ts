@@ -1,21 +1,31 @@
-const SPACE_ID = import.meta.env.VITE_CONTENTFUL_SPACE_ID as string;
-const ACCESS_TOKEN = import.meta.env.VITE_CONTENTFUL_ACCESS_TOKEN as string;
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string;
+const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string;
 
-export const CONTENTFUL_SPACE_ID = SPACE_ID;
-export const CONTENTFUL_BASE_URL = `https://cdn.contentful.com/spaces/${SPACE_ID}/environments/master`;
+const PROXY_URL = `${SUPABASE_URL}/functions/v1/contentful-proxy`;
 
 export async function contentfulFetch<T>(
-  path: string,
+  _path: string,
   params: Record<string, string> = {}
 ): Promise<T> {
-  const url = new URL(`${CONTENTFUL_BASE_URL}${path}`);
-  url.searchParams.set("access_token", ACCESS_TOKEN);
-  Object.entries(params).forEach(([key, value]) => url.searchParams.set(key, value));
+  const url = new URL(PROXY_URL);
 
-  const response = await fetch(url.toString());
+  Object.entries(params).forEach(([key, value]) => {
+    if (key === "fields.slug") {
+      url.searchParams.set("slug", value);
+    } else {
+      url.searchParams.set(key, value);
+    }
+  });
+
+  const response = await fetch(url.toString(), {
+    headers: {
+      "Content-Type": "application/json",
+      "apikey": SUPABASE_KEY,
+    },
+  });
 
   if (!response.ok) {
-    throw new Error(`Contentful API error: ${response.status} ${response.statusText}`);
+    throw new Error(`Contentful proxy error: ${response.status} ${response.statusText}`);
   }
 
   return response.json() as Promise<T>;
