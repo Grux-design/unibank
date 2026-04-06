@@ -66,7 +66,9 @@ export function FAQSection({ section }: Props) {
                     </span>
                   </AccordionTrigger>
                   <AccordionContent className="text-muted-foreground text-sm leading-relaxed">
-                    {answerText}
+                    {typeof answerText === 'object' && answerText !== null && 'nodeType' in answerText
+                      ? documentToReactComponents(answerText as any)
+                      : answerText}
                   </AccordionContent>
                 </AccordionItem>
               );
