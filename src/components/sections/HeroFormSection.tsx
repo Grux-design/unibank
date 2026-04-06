@@ -10,6 +10,11 @@ const SEGMENT_LABELS: Record<string, string> = {
   tarjetas: "Tarjetas",
   prestamos: "Préstamos",
   inversiones: "Inversiones",
+  credito: "Crédito",
+  financiamiento: "Financiamiento",
+  "mercado-de-capitales": "Mercado de Capitales",
+  gestion: "Gestión",
+  "canales-digitales": "Canales Digitales",
 };
 
 interface Props {

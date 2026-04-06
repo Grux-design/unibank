@@ -1,12 +1,17 @@
 import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import type { MenuSection } from "@/data/megaMenuData";
 
 interface MegaMenuFeaturedCardProps {
-  data:    MenuSection;
-  onClose: () => void;
+  data:       MenuSection;
+  isPersonas: boolean;
+  onClose:    () => void;
 }
 
-export function MegaMenuFeaturedCard({ data, onClose }: MegaMenuFeaturedCardProps) {
+export function MegaMenuFeaturedCard({ data, isPersonas, onClose }: MegaMenuFeaturedCardProps) {
+  const segment = isPersonas ? "personas" : "empresas";
+  const featuredHref = `/${segment}/${data.featured.categorySlug}/${data.featured.slug}`;
+
   return (
     <div style={{
       width: 240, flexShrink: 0, marginLeft: 24,
@@ -37,8 +42,8 @@ export function MegaMenuFeaturedCard({ data, onClose }: MegaMenuFeaturedCardProp
         <p style={{ fontFamily: "Inter, sans-serif", fontSize: 12, color: "rgba(255,255,255,0.8)", lineHeight: 1.45, margin: 0 }}>
           {data.featured.desc}
         </p>
-        <a
-          href="#"
+        <Link
+          to={featuredHref}
           onClick={onClose}
           style={{
             marginTop: 4, display: "inline-flex", alignItems: "center", gap: 6,
@@ -52,7 +57,7 @@ export function MegaMenuFeaturedCard({ data, onClose }: MegaMenuFeaturedCardProp
           onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.15)"; }}
         >
           Conocer más <ArrowRight size={11} />
-        </a>
+        </Link>
       </div>
     </div>
   );
