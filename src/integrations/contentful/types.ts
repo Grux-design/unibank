@@ -84,6 +84,7 @@ export interface SectionFields {
   subheadline?: string;
   mainImage?: ContentfulLink | ContentfulAsset;
   showForm?: boolean;
+  copy?: string;
   secondaryCta?: string;
   items?: (ContentfulLink | ContentfulEntry<FeatureItemFields>)[];
 }
@@ -117,6 +118,7 @@ export interface ResolvedSection {
   subheadline?: string;
   mainImage?: ContentfulAsset;
   showForm?: boolean;
+  copy?: string;
   secondaryCta?: string;
   items?: ResolvedFeatureItem[];
 }

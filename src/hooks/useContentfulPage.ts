@@ -117,6 +117,7 @@ function resolveSection(
     subheadline: f.subheadline as string | undefined,
     mainImage: resolveAsset(f.mainImage, assetMap),
     showForm: f.showForm as boolean | undefined,
+    copy: f.copy as string | undefined,
     secondaryCta: f.secondaryCta as string | undefined,
     items: items?.length ? items : undefined,
   };
