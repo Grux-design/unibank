@@ -31,7 +31,7 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
     <section style={{
       background: "#FFFFFF",
       paddingTop: 80, paddingBottom: 32,
-      paddingLeft: 16, paddingRight: 16,
+      paddingLeft: 24, paddingRight: 24,
       fontFamily: '"Inter", -apple-system, sans-serif',
     }}>
       <div style={{
