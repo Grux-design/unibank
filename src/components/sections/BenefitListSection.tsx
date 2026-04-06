@@ -22,8 +22,10 @@ export function BenefitListSection({ section }: Props) {
         {/* Right: Benefit cards */}
         <div className="md:w-3/5 flex flex-col gap-4">
           {items.map((item) => {
-            const iconUrl = item.icon?.fields?.file?.url
-              ? `https:${item.icon.fields.file.url}`
+            const asset = item.image || item.icon;
+            const rawUrl = asset?.fields?.file?.url;
+            const iconUrl = rawUrl
+              ? (rawUrl.startsWith("//") ? `https:${rawUrl}` : rawUrl)
               : null;
 
             return (
