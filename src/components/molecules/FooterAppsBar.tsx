@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { FooterStoreButton } from "@/components/atoms/FooterStoreButton";
 import { legalLinks } from "@/data/footerData";
 
@@ -31,15 +32,15 @@ export function FooterAppsBar() {
 
       <div style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
         {legalLinks.map((link) => (
-          <a key={link} href="#" style={{
+          <Link key={link.path} to={link.path} style={{
             fontFamily: "Inter, sans-serif", fontSize: 13,
             color: TEXT_LINK, textDecoration: "none", transition: "color 0.13s",
           }}
-            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = ORANGE; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = TEXT_LINK; }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = ORANGE; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = TEXT_LINK; }}
           >
-            {link}
-          </a>
+            {link.label}
+          </Link>
         ))}
       </div>
     </div>
