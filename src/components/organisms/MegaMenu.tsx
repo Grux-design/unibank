@@ -40,7 +40,7 @@ export function MegaMenu({ onClose }: MegaMenuProps) {
             style={{ display: "flex", gap: 0, padding: "24px 0" }}
           >
             <MegaMenuCategoryGrid data={data} isPersonas={isPersonas} onClose={onClose} />
-            <MegaMenuFeaturedCard data={data} onClose={onClose} />
+            <MegaMenuFeaturedCard data={data} isPersonas={isPersonas} onClose={onClose} />
           </motion.div>
         </AnimatePresence>
       </div>
