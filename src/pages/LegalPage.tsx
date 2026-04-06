@@ -35,16 +35,19 @@ const richTextOptions = {
     [BLOCKS.LIST_ITEM]: (_node: unknown, children: React.ReactNode) => (
       <li>{children}</li>
     ),
-    [INLINES.HYPERLINK]: (node: { data: { uri: string } }, children: React.ReactNode) => (
-      <a
-        href={node.data.uri}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-primary underline hover:text-primary/80"
-      >
-        {children}
-      </a>
-    ),
+    [INLINES.HYPERLINK]: (node: unknown, children: React.ReactNode) => {
+      const uri = (node as { data: { uri: string } }).data.uri;
+      return (
+        <a
+          href={uri}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-primary underline hover:text-primary/80"
+        >
+          {children}
+        </a>
+      );
+    },
   },
 };
 
