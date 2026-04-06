@@ -1,11 +1,13 @@
 import type { ResolvedSection } from "@/integrations/contentful/types";
 import { Button } from "@/components/ui/button";
+import { Plus, X } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { useState } from "react";
 
 interface Props {
   section: ResolvedSection;
@@ -13,20 +15,21 @@ interface Props {
 
 export function FAQSection({ section }: Props) {
   const items = section.items ?? [];
+  const [openValue, setOpenValue] = useState<string | undefined>(undefined);
 
   return (
-    <section className="w-full bg-muted py-12 md:py-20 px-4 md:px-8">
+    <section className="w-full bg-muted py-[80px] px-4 md:px-8">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-10 md:gap-16">
         {/* Left column */}
         <div className="md:w-2/5">
-          {section.headline && (
+          {section.title && (
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 leading-tight">
-              {section.headline}
+              {section.title}
             </h2>
           )}
-          {section.subheadline && (
+          {section.headline && (
             <p className="text-muted-foreground text-base mb-8">
-              {section.subheadline}
+              {section.headline}
             </p>
           )}
           <Button size="lg" className="rounded-full px-8">
@@ -36,21 +39,37 @@ export function FAQSection({ section }: Props) {
 
         {/* Right column: Accordion */}
         <div className="md:w-3/5">
-          <Accordion type="single" collapsible className="space-y-3">
-            {items.map((item, index) => (
-              <AccordionItem
-                key={item.sys.id}
-                value={`faq-${index}`}
-                className="bg-background rounded-2xl border-0 px-6 shadow-sm"
-              >
-                <AccordionTrigger className="text-left text-base font-semibold text-foreground hover:no-underline py-5">
-                  {item.title}
-                </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground text-sm leading-relaxed">
-                  {item.description}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
+          <Accordion
+            type="single"
+            collapsible
+            className="space-y-3"
+            value={openValue}
+            onValueChange={setOpenValue}
+          >
+            {items.map((item, index) => {
+              const questionText = item.question || item.title;
+              const answerText = item.answer || item.description;
+              const itemValue = `faq-${index}`;
+              const isOpen = openValue === itemValue;
+
+              return (
+                <AccordionItem
+                  key={item.sys.id}
+                  value={itemValue}
+                  className="bg-background rounded-2xl border-0 px-6"
+                >
+                  <AccordionTrigger className="text-left text-base font-semibold text-foreground hover:no-underline py-5 [&>svg]:hidden">
+                    <span className="flex-1">{questionText}</span>
+                    <span className="ml-4 flex-shrink-0">
+                      {isOpen ? <X className="h-5 w-5" /> : <Plus className="h-5 w-5" />}
+                    </span>
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground text-sm leading-relaxed">
+                    {answerText}
+                  </AccordionContent>
+                </AccordionItem>
+              );
+            })}
           </Accordion>
         </div>
       </div>
