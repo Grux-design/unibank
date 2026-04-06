@@ -21,7 +21,6 @@ export function FeatureStripSection({ section }: Props) {
           <h2
             className="text-center my-0 mb-[24px] pb-[24px] text-4xl"
             style={{
-            style={{
               fontWeight: 800,
               letterSpacing: "-0.025em",
               color: "hsl(var(--foreground))",
