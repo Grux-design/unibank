@@ -74,6 +74,54 @@ function OrangeButton({ children, fullWidth }: { children: React.ReactNode; full
   );
 }
 
+function CtaLink({ children }: { children: React.ReactNode }) {
+  const [hov, setHov] = useState(false);
+  return (
+    <span
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 6,
+        color: OR,
+        fontSize: 13,
+        fontWeight: 600,
+        cursor: "pointer",
+        transform: hov ? "translateX(4px)" : "translateX(0)",
+        transition: "transform 0.22s ease",
+        userSelect: "none",
+      }}
+    >
+      {children}
+      <ArrowRight size={13} strokeWidth={2.5} />
+    </span>
+  );
+}
+
+function CategoryTag({ icon: Icon, label }: { icon: React.ElementType; label: string }) {
+  return (
+    <span
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 5,
+        padding: "3px 10px",
+        borderRadius: 99,
+        background: "rgba(255,129,54,0.10)",
+        color: OR,
+        fontSize: 11,
+        fontWeight: 700,
+        letterSpacing: "0.06em",
+        textTransform: "uppercase",
+      }}
+    >
+      <Icon size={13} color={OR} strokeWidth={2} />
+      {label}
+    </span>
+  );
+}
+
 /* ── FeaturedBanner ─────────────────────────────────────── */
 function FeaturedBanner({ isMobile }: { isMobile: boolean }) {
   return (
