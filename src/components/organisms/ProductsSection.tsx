@@ -212,135 +212,218 @@ function FeaturedBanner({ isMobile }: { isMobile: boolean }) {
   return (
     <div
       style={{
-        width: "100%",
-        height: isMobile ? "auto" : "100%",
-        background: OR,
-        borderRadius: isMobile ? 32 : 0,
         position: "relative",
         overflow: "hidden",
+        borderRadius: isMobile ? 32 : 0,
+        background: "#FF8136",
         display: "flex",
         flexDirection: isMobile ? "column" : "row",
-        alignItems: isMobile ? "flex-start" : "stretch",
+        alignItems: "stretch",
+        height: isMobile ? "auto" : "100%",
+        width: "100%",
         minHeight: isMobile ? 360 : undefined,
       }}
     >
-      {/* SVG pattern */}
+      {/* ── Blob SVG background ── */}
       <svg
         aria-hidden
-        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none", zIndex: 0 }}
+        style={{
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+          pointerEvents: "none",
+          zIndex: 0,
+        }}
         viewBox="0 0 1336 460"
         preserveAspectRatio="xMidYMid slice"
         fill="none"
       >
-        <path d="M0 0H800C900 0 950 460 1336 460H0V0Z" fill="url(#bp0)" />
-        <path d="M400 0H1336V300C1200 400 900 460 400 460H0L0 0Z" fill="url(#bp1)" opacity="0.45" />
-        <path d="M600 -100 Q900 200 1200 100 T1600 300" stroke="url(#bp2)" strokeWidth="120" fill="none" opacity="0.2" />
-        <defs>
-          <linearGradient id="bp0" x1="256.854" y1="-37.47" x2="778.356" y2="399.288" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#EF5721" />
-            <stop offset="1" stopColor="#FF9E47" />
-          </linearGradient>
-          <linearGradient id="bp1" x1="681.477" y1="480.808" x2="1061.65" y2="-334.008" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#FF8136" />
-            <stop offset="1" stopColor="#FFBA5C" />
-          </linearGradient>
-          <linearGradient id="bp2" x1="777.539" y1="1.555" x2="777.539" y2="-379" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#FF8136" />
-            <stop offset="1" stopColor="#FF8136" stopOpacity="0" />
-          </linearGradient>
-        </defs>
+        <circle cx="1060" cy="230" r="340" fill="#FF9A52" fillOpacity="0.55" />
+        <circle cx="1180" cy="140" r="220" fill="#FFB273" fillOpacity="0.35" />
+        <ellipse cx="120" cy="480" rx="260" ry="200" fill="#E8721F" fillOpacity="0.35" />
       </svg>
 
-      {/* Content */}
+      {/* ── Left panel: badge + title ── */}
       <div
         style={{
-          position: "relative",
-          zIndex: 1,
-          flex: "1 1 auto",
+          flex: 1,
+          padding: isMobile ? "32px 24px 20px" : 48,
           display: "flex",
           flexDirection: "column",
-          justifyContent: "center",
-          gap: 12,
-          padding: isMobile ? "32px 24px 20px" : "36px 36px 28px",
+          justifyContent: "flex-start",
+          alignItems: "flex-start",
+          position: "relative",
+          zIndex: 1,
+          gap: 16,
         }}
       >
-        <span
+        {/* Badge */}
+        <div
           style={{
+            border: "1px solid rgba(255,255,255,0.45)",
+            borderRadius: 9999,
+            padding: "5px 14px",
             display: "inline-flex",
-            alignItems: "center",
-            gap: 6,
-            padding: "3px 10px",
-            borderRadius: 99,
-            background: "rgba(255,255,255,0.18)",
-            border: "1px solid rgba(255,255,255,0.25)",
-            color: "#fff",
-            fontSize: 10,
-            fontWeight: 700,
-            letterSpacing: "0.1em",
-            textTransform: "uppercase",
-            width: "fit-content",
           }}
         >
-          100% Digital
-        </span>
-        <h3
-          style={{
-            margin: 0,
-            fontSize: isMobile ? 24 : "clamp(22px, 2.5vw, 36px)",
-            fontWeight: 800,
-            lineHeight: 1.1,
-            color: "#fff",
-            letterSpacing: "-0.02em",
-          }}
-        >
-          Cuenta Naranja<br />+ Digital
-        </h3>
+          <span
+            style={{
+              fontSize: 11,
+              fontWeight: 700,
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+              color: "rgba(255,255,255,0.9)",
+            }}
+          >
+            100% Digital
+          </span>
+        </div>
+
+        {/* Title */}
         <p
           style={{
             margin: 0,
-            fontSize: 13,
-            lineHeight: 1.6,
-            color: "rgba(255,255,255,0.85)",
-            maxWidth: 280,
+            color: "#fff",
+            fontSize: isMobile ? 32 : 48,
+            fontWeight: 700,
+            lineHeight: isMobile ? "40px" : "58px",
           }}
         >
-          Aprobación en minutos! Abre tu cuenta 100% digital sin filas ni papeleos. Accede a todos los servicios de UniBank desde donde estés.
+          Cuenta<br />Naranja +<br />Digital
         </p>
-        <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 8 }}>
-          <OrangeButton>
-            Abrir mi cuenta ahora <Plus size={14} strokeWidth={2.5} />
-          </OrangeButton>
-          <CreamButton>Saber más...</CreamButton>
+      </div>
+
+      {/* ── Center: portrait image (desktop only) ── */}
+      {!isMobile && (
+        <div
+          style={{
+            width: 300,
+            flexShrink: 0,
+            position: "relative",
+            zIndex: 1,
+            alignSelf: "stretch",
+            overflow: "visible",
+          }}
+        >
+          <img
+            src={IMG_PORTRAIT}
+            alt="Cuenta Naranja + Digital"
+            style={{
+              position: "absolute",
+              bottom: 0,
+              left: "50%",
+              transform: "translateX(-50%)",
+              height: "110%",
+              width: "auto",
+              objectFit: "contain",
+              objectPosition: "bottom center",
+              maxWidth: "none",
+            }}
+          />
+        </div>
+      )}
+
+      {/* ── Right panel: subtitle + body + CTAs ── */}
+      <div
+        style={{
+          flex: 1,
+          padding: isMobile ? "0 24px 32px" : 48,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "flex-start",
+          position: "relative",
+          zIndex: 1,
+          gap: 12,
+        }}
+      >
+        <p
+          style={{
+            margin: 0,
+            color: "#fff",
+            fontSize: isMobile ? 20 : 24,
+            fontWeight: 600,
+            lineHeight: "32px",
+          }}
+        >
+          Aprobación en minutos!
+        </p>
+        <p
+          style={{
+            margin: 0,
+            color: "rgba(255,255,255,0.85)",
+            fontSize: 15,
+            fontWeight: 400,
+            lineHeight: "22px",
+          }}
+        >
+          Abre tu cuenta 100% digital sin filas ni
+          papeleos. Accede a todos los servicios
+          de UniBank desde donde estés.
+        </p>
+
+        {/* CTAs */}
+        <div
+          style={{
+            paddingTop: 20,
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
+            gap: 10,
+          }}
+        >
+          <button
+            style={{
+              width: "100%",
+              height: 52,
+              background: "#F7E8E0",
+              border: "none",
+              borderRadius: 16,
+              color: "#FF8136",
+              fontSize: 14,
+              fontWeight: 600,
+              cursor: "pointer",
+              letterSpacing: "0.004em",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 8,
+            }}
+          >
+            Abrir mi cuenta ahora <Plus size={16} strokeWidth={2.5} />
+          </button>
+          <button
+            style={{
+              width: "100%",
+              height: 52,
+              background: "transparent",
+              border: "2px solid rgba(247,232,224,0.7)",
+              borderRadius: 16,
+              color: "#F7E8E0",
+              fontSize: 14,
+              fontWeight: 600,
+              cursor: "pointer",
+              letterSpacing: "0.004em",
+            }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = "#fff"; }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(247,232,224,0.7)"; }}
+          >
+            Saber más...
+          </button>
         </div>
       </div>
 
-      {/* Portrait image */}
-      <div
-        style={{
-          position: isMobile ? "relative" : "absolute",
-          right: 0,
-          bottom: 0,
-          top: isMobile ? undefined : 0,
-          width: isMobile ? "100%" : "42%",
-          height: isMobile ? 200 : "100%",
-          overflow: "hidden",
-          flexShrink: 0,
-        }}
-      >
-        <img
-          src={IMG_PORTRAIT}
-          alt="Persona abriendo cuenta digital"
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            objectPosition: "center top",
-            display: "block",
-            mixBlendMode: "multiply",
-            filter: "saturate(0.85)",
-          }}
-        />
-      </div>
+      {/* ── Mobile image ── */}
+      {isMobile && (
+        <div style={{ width: "100%", height: 200, overflow: "hidden", position: "relative", zIndex: 1 }}>
+          <img
+            src={IMG_PORTRAIT}
+            alt="Cuenta Naranja + Digital"
+            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top", display: "block" }}
+          />
+        </div>
+      )}
     </div>
   );
 }
