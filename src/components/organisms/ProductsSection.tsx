@@ -13,8 +13,7 @@ const G = 8;
 const DELTA = 20;
 
 /* ── Images ────────────────────────────────────────────── */
-const IMG_PORTRAIT =
-  "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800";
+const IMG_PORTRAIT = "/5ca273f3-86ff-4e66-a9f7-ae25d492fce4.png";
 const IMG_MASTERCARD =
   "https://images.unsplash.com/photo-1556742044-3c52d6e88c62?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800";
 const IMG_INVERTIS =
