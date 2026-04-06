@@ -1,12 +1,25 @@
 import type { ResolvedSection } from "@/integrations/contentful/types";
 import { Button } from "@/components/ui/button";
+import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
+import type { Document } from "@contentful/rich-text-types";
 
 interface Props {
   section: ResolvedSection;
 }
 
+function isRichText(val: unknown): val is Document {
+  return !!val && typeof val === "object" && (val as any).nodeType === "document";
+}
+
 export function FeatureBannerSection({ section }: Props) {
   const imageUrl = section.mainImage?.fields?.file?.url || null;
+
+  const copyContent = (() => {
+    if (isRichText(section.copy)) return documentToReactComponents(section.copy);
+    if (typeof section.copy === "string") return section.copy;
+    if (section.headline) return section.headline;
+    return null;
+  })();
 
   return (
     <section className="w-full bg-muted py-[80px] px-4 md:px-8">
@@ -31,10 +44,10 @@ export function FeatureBannerSection({ section }: Props) {
                 {section.title}
               </h2>
             )}
-            {(section.copy || section.headline) && (
-              <p className="text-muted-foreground text-lg mb-8">
-                {section.copy || section.headline}
-              </p>
+            {copyContent && (
+              <div className="text-muted-foreground text-lg mb-8">
+                {copyContent}
+              </div>
             )}
             <div>
               <Button size="lg" className="rounded-full px-8">
