@@ -78,6 +78,9 @@ function resolveFeatureItem(
     title: (f.title as string) ?? "",
     description: f.description as string | undefined,
     icon: resolveAsset(f.icon, assetMap),
+    question: f.question as string | undefined,
+    answer: f.answer as string | undefined,
+    link: f.link as string | undefined,
   };
 }
 
@@ -113,6 +116,7 @@ function resolveSection(
     subheadline: f.subheadline as string | undefined,
     mainImage: resolveAsset(f.mainImage, assetMap),
     showForm: f.showForm as boolean | undefined,
+    secondaryCta: f.secondaryCta as string | undefined,
     items: items?.length ? items : undefined,
   };
 }

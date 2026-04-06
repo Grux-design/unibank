@@ -8,13 +8,13 @@ export function BenefitListSection({ section }: Props) {
   const items = section.items ?? [];
 
   return (
-    <section className="w-full bg-muted py-12 md:py-20 px-4 md:px-8">
+    <section className="w-full bg-muted py-[80px] px-4 md:px-8">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-10 md:gap-16">
-        {/* Left: Headline */}
+        {/* Left: Title */}
         <div className="md:w-2/5 flex items-start pt-4">
-          {section.headline && (
+          {section.title && (
             <h2 className="text-3xl md:text-4xl font-bold text-foreground leading-tight">
-              {section.headline}
+              {section.title}
             </h2>
           )}
         </div>
@@ -29,7 +29,7 @@ export function BenefitListSection({ section }: Props) {
             return (
               <div
                 key={item.sys.id}
-                className="bg-background rounded-2xl p-5 flex items-center gap-5 shadow-sm"
+                className="bg-background rounded-2xl p-5 flex items-center gap-5"
               >
                 {iconUrl && (
                   <div className="w-24 h-24 rounded-xl overflow-hidden flex-shrink-0">
