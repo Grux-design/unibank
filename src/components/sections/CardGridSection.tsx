@@ -43,11 +43,11 @@ export function CardGridSection({ section }: Props) {
                 {/* Expanded content: image + description */}
                 <div className="flex flex-col md:flex-row gap-8 mt-8">
                   {imageUrl && (
-                    <div className="md:w-[55%] flex-shrink-0 rounded-xl overflow-hidden">
+                    <div className="flex-shrink-0 rounded-xl overflow-hidden" style={{ width: 424, height: 212 }}>
                       <img
                         src={imageUrl}
                         alt={item.title}
-                        className="w-full h-full object-cover aspect-[4/3]"
+                        className="w-full h-full object-cover"
                         loading="lazy"
                       />
                     </div>
