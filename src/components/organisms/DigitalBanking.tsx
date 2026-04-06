@@ -586,35 +586,38 @@ export function DigitalBanking() {
         <div
           style={{
             margin: "64px 0 0",
-            padding: isMobile ? "24px 20px" : "40px 48px",
-            background: CARD_BG,
+            padding: isMobile ? "40px 24px" : "56px 80px",
+            background: "#f5f0ec",
             borderRadius: 24,
-            borderLeft: `4px solid ${OR}`,
+            textAlign: "center",
           }}
         >
           <p
             style={{
-              margin: "0 0 12px",
-              fontSize: isMobile ? 14 : 16,
-              lineHeight: 1.75,
-              color: DARK,
+              margin: "0 0 20px",
+              fontSize: 12,
+              fontWeight: 700,
+              color: OR,
+              letterSpacing: "0.1em",
+              textTransform: "uppercase" as const,
             }}
           >
-            Somos una entidad enfocada en la innovación y la sostenibilidad – incluyendo la emisión de{" "}
-            <strong>Bonos Verdes</strong> – regulada y supervisada por la{" "}
-            <strong>Superintendencia de Bancos de Panamá</strong>.
+            Liderazgo y ética comprobada
           </p>
           <p
             style={{
               margin: 0,
-              fontSize: 12,
-              fontWeight: 700,
-              color: SOFT,
-              letterSpacing: "0.06em",
-              textTransform: "uppercase",
+              fontSize: isMobile ? 18 : 22,
+              lineHeight: 1.7,
+              color: "#726f6e",
+              fontWeight: 400,
             }}
           >
-            Liderazgo y ética comprobada
+            Somos una entidad enfocada en la{" "}
+            <strong style={{ color: "#1f1e1e" }}>innovación y la sostenibilidad</strong> —
+            incluyendo la emisión de{" "}
+            <strong style={{ color: "#1f1e1e" }}>Bonos Verdes</strong> — regulada y supervisada por
+            la <strong style={{ color: "#1f1e1e" }}>Superintendencia de Bancos de Panamá</strong>.
           </p>
         </div>
 
