@@ -1,6 +1,7 @@
 export interface MenuItem {
   label: string;
   slug:  string;
+  href?: string;
 }
 
 export interface MenuCategory {
