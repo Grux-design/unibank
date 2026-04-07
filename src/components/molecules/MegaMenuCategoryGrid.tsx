@@ -23,27 +23,35 @@ export function MegaMenuCategoryGrid({ data, isPersonas, onClose }: MegaMenuCate
         {cat.name}
       </p>
       <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-        {cat.items.map((item) => (
-          <Link
-            key={item.label}
-            to={`/${segment}/${cat.categorySlug}/${item.slug}`}
-            onClick={onClose}
-            style={{
-              display: "block",
-              padding: "5px 0",
-              textDecoration: "none",
-              fontFamily: "Inter, sans-serif",
-              fontSize: 14,
-              fontWeight: 400,
-              color: "#1C1917",
-              transition: "color 0.12s",
-            }}
-            onMouseEnter={e => { e.currentTarget.style.color = "#FF8136"; }}
-            onMouseLeave={e => { e.currentTarget.style.color = "#1C1917"; }}
-          >
-            {item.label}
-          </Link>
-        ))}
+        {cat.items.map((item) => {
+          const linkStyle: React.CSSProperties = {
+            display: "block",
+            padding: "5px 0",
+            textDecoration: "none",
+            fontFamily: "Inter, sans-serif",
+            fontSize: 14,
+            fontWeight: 400,
+            color: "#1C1917",
+            transition: "color 0.12s",
+          };
+          const onEnter = (e: React.MouseEvent<HTMLAnchorElement>) => { e.currentTarget.style.color = "#FF8136"; };
+          const onLeave = (e: React.MouseEvent<HTMLAnchorElement>) => { e.currentTarget.style.color = "#1C1917"; };
+
+          if (item.href) {
+            return (
+              <a key={item.label} href={item.href} target="_blank" rel="noopener noreferrer"
+                onClick={onClose} style={linkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>
+                {item.label}
+              </a>
+            );
+          }
+          return (
+            <Link key={item.label} to={`/${segment}/${cat.categorySlug}/${item.slug}`}
+              onClick={onClose} style={linkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>
+              {item.label}
+            </Link>
+          );
+        })}
       </div>
     </div>
   );
