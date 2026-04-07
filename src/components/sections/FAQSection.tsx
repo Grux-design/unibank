@@ -33,9 +33,6 @@ export function FAQSection({ section }: Props) {
               {section.headline}
             </p>
           )}
-          <Button size="lg" className="rounded-full px-8">
-            Ver preguntas frecuentes
-          </Button>
         </div>
 
         {/* Right column: Accordion */}
