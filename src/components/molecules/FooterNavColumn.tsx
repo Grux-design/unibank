@@ -37,12 +37,12 @@ export function FooterNavColumn({ column }: FooterNavColumnProps) {
           );
           if (column.isAttention && link.label === "sucursales") return (
             <li key={link.label}>
-              <a href="#" style={{ display: "flex", alignItems: "center", gap: 7, fontFamily: "Inter, sans-serif", fontSize: 14, color: TEXT_LINK, textDecoration: "none", transition: "color 0.13s" }}
+              <Link to={link.href ?? "/sucursales"} style={{ display: "flex", alignItems: "center", gap: 7, fontFamily: "Inter, sans-serif", fontSize: 14, color: TEXT_LINK, textDecoration: "none", transition: "color 0.13s" }}
                 onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = ORANGE; }}
                 onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = TEXT_LINK; }}
               >
                 <MapPin size={15} /> Sucursales
-              </a>
+              </Link>
             </li>
           );
 
