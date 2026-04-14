@@ -45,6 +45,22 @@ export function FooterNavColumn({ column }: FooterNavColumnProps) {
               </a>
             </li>
           );
+
+          if (isInternal) {
+            return (
+              <li key={link.label}>
+                <Link
+                  to={href}
+                  style={{ fontFamily: "Inter, sans-serif", fontSize: 14, color: TEXT_LINK, textDecoration: "none", transition: "color 0.13s" }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = ORANGE; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = TEXT_LINK; }}
+                >
+                  {link.label}
+                </Link>
+              </li>
+            );
+          }
+
           return (
             <li key={link.label}>
               <a
