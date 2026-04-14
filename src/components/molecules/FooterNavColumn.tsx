@@ -23,8 +23,8 @@ export function FooterNavColumn({ column }: FooterNavColumnProps) {
       <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: 8 }}>
         {column.links.map((link) => {
           const href = link.href ?? "#";
-          const isExternal = link.href && link.href.startsWith("http");
-
+          const isExternal = href.startsWith("http");
+          const isInternal = href.startsWith("/");
           if (column.isAttention && link.label === "whatsapp") return (
             <li key={link.label}>
               <a href={link.href ?? "#"} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: 7, fontFamily: "Inter, sans-serif", fontSize: 14, color: TEXT_LINK, textDecoration: "none", transition: "color 0.13s" }}
