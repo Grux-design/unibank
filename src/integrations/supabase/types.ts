@@ -14,7 +14,90 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      complaints: {
+        Row: {
+          accepted_terms: boolean
+          company: string | null
+          created_at: string
+          description: string | null
+          email: string | null
+          file_url: string | null
+          id: string
+          incident_date: string | null
+          incident_time: string | null
+          is_anonymous: boolean | null
+          location: string | null
+          name: string | null
+          phone: string | null
+          reason: string | null
+          relationship: string | null
+        }
+        Insert: {
+          accepted_terms?: boolean
+          company?: string | null
+          created_at?: string
+          description?: string | null
+          email?: string | null
+          file_url?: string | null
+          id?: string
+          incident_date?: string | null
+          incident_time?: string | null
+          is_anonymous?: boolean | null
+          location?: string | null
+          name?: string | null
+          phone?: string | null
+          reason?: string | null
+          relationship?: string | null
+        }
+        Update: {
+          accepted_terms?: boolean
+          company?: string | null
+          created_at?: string
+          description?: string | null
+          email?: string | null
+          file_url?: string | null
+          id?: string
+          incident_date?: string | null
+          incident_time?: string | null
+          is_anonymous?: boolean | null
+          location?: string | null
+          name?: string | null
+          phone?: string | null
+          reason?: string | null
+          relationship?: string | null
+        }
+        Relationships: []
+      }
+      job_applications: {
+        Row: {
+          created_at: string
+          cv_url: string | null
+          email: string
+          id: string
+          message: string | null
+          name: string
+          phone: string | null
+        }
+        Insert: {
+          created_at?: string
+          cv_url?: string | null
+          email: string
+          id?: string
+          message?: string | null
+          name: string
+          phone?: string | null
+        }
+        Update: {
+          created_at?: string
+          cv_url?: string | null
+          email?: string
+          id?: string
+          message?: string | null
+          name?: string
+          phone?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

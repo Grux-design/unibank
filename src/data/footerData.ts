@@ -41,14 +41,18 @@ export const footerColumns: FooterColumn[] = [
   {
     title: "Enlaces de Interés",
     links: [
-      { label: "Cajilla de Seguridad" }, { label: "Tarifario" }, { label: "Trabaja con nosotros" },
+      { label: "Cajilla de Seguridad" },
+      { label: "Tarifario", href: "/tarifario" },
+      { label: "Trabaja con nosotros", href: "/trabaja-con-nosotros" },
       { label: "Portal Inmobiliario", href: "https://bienesenventa.unibank.com.pa/" },
-      { label: "Noticias" }, { label: "Blog" }, { label: "Canal de denuncias" },
+      { label: "Noticias", href: "/blog" },
+      { label: "Blog", href: "/blog" },
+      { label: "Canal de denuncias", href: "/canal-de-denuncias" },
     ],
   },
   {
     title: "Canales de Atención",
-    links: [{ label: "whatsapp", href: "https://api.whatsapp.com/send?phone=50763280229&text=%C2%A1Hola!,%20Tengo%20una%20Consulta" }, { label: "sucursales" }],
+    links: [{ label: "whatsapp", href: "https://api.whatsapp.com/send?phone=50763280229&text=%C2%A1Hola!,%20Tengo%20una%20Consulta" }, { label: "sucursales", href: "/sucursales" }],
     isAttention: true,
   },
 ];
