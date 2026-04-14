@@ -21,9 +21,13 @@ export const footerColumns: FooterColumn[] = [
   {
     title: "Conócenos",
     links: [
-      { label: "Junta Directiva" }, { label: "UniLíderes" }, { label: "Sostenibilidad" },
-      { label: "Estados Financieros" }, { label: "Gestión de Riesgo Operativo" },
-      { label: "Cumplimiento Normativo" }, { label: "Manual de Gobierno Corporativo" },
+      { label: "Junta Directiva", href: "/institucional/junta-directiva" },
+      { label: "UniLíderes", href: "/institucional/unilideres" },
+      { label: "Sostenibilidad", href: "/institucional/sostenibilidad" },
+      { label: "Estados Financieros" },
+      { label: "Gestión de Riesgo Operativo", href: "/institucional/gestion-de-riesgo-operativo" },
+      { label: "Cumplimiento Normativo", href: "/institucional/cumplimiento-normativo" },
+      { label: "Manual de Gobierno Corporativo", href: "/institucional/manual-de-gobierno-corporativo" },
       { label: "RSE – Responsabilidad Social" },
     ],
   },
