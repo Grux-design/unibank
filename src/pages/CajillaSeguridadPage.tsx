@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import {
@@ -17,12 +16,7 @@ import {
   Eye,
   Sparkles,
 } from "lucide-react";
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { supabase } from "@/integrations/supabase/client";
 
 const HERO_IMAGE =
   "https://images.unsplash.com/photo-1601597111158-2fceff292cdc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1400";
@@ -70,37 +64,6 @@ const sizes = [
 ];
 
 export default function CajillaSeguridadPage() {
-  const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
-  const [submitting, setSubmitting] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!form.name.trim() || !form.email.trim()) {
-      toast.error("Por favor completa tu nombre y correo.");
-      return;
-    }
-    setSubmitting(true);
-    try {
-      const { error } = await supabase.functions.invoke("send-email", {
-        body: {
-          name: form.name,
-          email: form.email,
-          subject: "Solicitud — Cajilla de Seguridad",
-          message: `Teléfono: ${form.phone || "No proporcionado"}\n\nMensaje:\n${form.message || "(El cliente no incluyó mensaje)"}\n\nServicio de interés: Cajilla de Seguridad`,
-          lang: "es",
-        },
-      });
-      if (error) throw error;
-      toast.success("¡Solicitud enviada! Te contactaremos pronto.");
-      setForm({ name: "", email: "", phone: "", message: "" });
-    } catch (err) {
-      console.error(err);
-      toast.error("No pudimos enviar tu solicitud. Intenta nuevamente.");
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
   return (
     <>
       <Helmet>
@@ -508,103 +471,6 @@ export default function CajillaSeguridadPage() {
         </div>
       </section>
 
-      {/* ── CTA / Form ──────────────────────────────────────── */}
-      <section
-        id="contacto"
-        style={{
-          padding: "clamp(64px, 9vw, 112px) clamp(16px, 3.9vw, 72px)",
-          background: "hsl(var(--background))",
-        }}
-      >
-        <div className="max-w-5xl mx-auto">
-          <div
-            className="rounded-[32px] overflow-hidden grid md:grid-cols-2"
-            style={{ background: "hsl(var(--primary))" }}
-          >
-            <div className="p-10 md:p-14 text-primary-foreground">
-              <h2
-                className="text-3xl md:text-4xl font-extrabold leading-tight"
-                style={{ letterSpacing: "-0.025em" }}
-              >
-                ¿Interesado en este servicio?
-              </h2>
-              <p className="mt-5 text-lg opacity-90 leading-relaxed">
-                Déjanos tus datos y uno de nuestros asesores se pondrá en contacto contigo para
-                brindarte más información sobre nuestras Cajillas de Seguridad.
-              </p>
-              <ul className="mt-8 space-y-3">
-                {["Atención personalizada", "Respuesta en menos de 24 horas", "Sin compromiso"].map((b) => (
-                  <li key={b} className="flex items-center gap-3 text-base">
-                    <Check size={18} strokeWidth={3} className="opacity-90" />
-                    <span className="opacity-95">{b}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <form
-              onSubmit={handleSubmit}
-              className="bg-background p-8 md:p-10 flex flex-col gap-4"
-            >
-              <div>
-                <Label htmlFor="cs-name" className="text-foreground font-semibold">Nombre completo</Label>
-                <Input
-                  id="cs-name"
-                  required
-                  maxLength={100}
-                  value={form.name}
-                  onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  className="mt-2 h-11"
-                  placeholder="Tu nombre"
-                />
-              </div>
-              <div>
-                <Label htmlFor="cs-email" className="text-foreground font-semibold">Correo electrónico</Label>
-                <Input
-                  id="cs-email"
-                  type="email"
-                  required
-                  maxLength={255}
-                  value={form.email}
-                  onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  className="mt-2 h-11"
-                  placeholder="tucorreo@ejemplo.com"
-                />
-              </div>
-              <div>
-                <Label htmlFor="cs-phone" className="text-foreground font-semibold">Teléfono</Label>
-                <Input
-                  id="cs-phone"
-                  type="tel"
-                  maxLength={30}
-                  value={form.phone}
-                  onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                  className="mt-2 h-11"
-                  placeholder="+507 0000-0000"
-                />
-              </div>
-              <div>
-                <Label htmlFor="cs-message" className="text-foreground font-semibold">Mensaje (opcional)</Label>
-                <Textarea
-                  id="cs-message"
-                  maxLength={1000}
-                  value={form.message}
-                  onChange={(e) => setForm({ ...form, message: e.target.value })}
-                  className="mt-2 min-h-[96px]"
-                  placeholder="Cuéntanos brevemente qué necesitas"
-                />
-              </div>
-              <Button
-                type="submit"
-                disabled={submitting}
-                size="lg"
-                className="mt-2 h-12 rounded-full text-base font-semibold"
-              >
-                {submitting ? "Enviando..." : "Enviar solicitud"}
-              </Button>
-            </form>
-          </div>
-        </div>
-      </section>
     </>
   );
 }
