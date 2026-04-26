@@ -71,21 +71,4 @@ export const institutionalPages: Record<string, InstitutionalPageData> = {
       },
     ],
   },
-  "manual-de-gobierno-corporativo": {
-    title: "Manual de Gobierno Corporativo",
-    metaDescription: "Accede al Manual de Gobierno Corporativo de UniBank y conoce nuestros principios de transparencia y buena gobernanza.",
-    sections: [
-      {
-        body: "El Manual de Gobierno Corporativo de UniBank establece los principios, políticas y procedimientos que rigen la administración y dirección de nuestra institución.",
-      },
-      {
-        heading: "Principios Fundamentales",
-        body: "Nuestro gobierno corporativo se basa en los principios de transparencia, equidad, responsabilidad y rendición de cuentas, asegurando que todas las decisiones se tomen en beneficio de nuestros stakeholders.",
-      },
-      {
-        heading: "Estructura de Gobierno",
-        body: "El manual detalla la estructura organizacional, las funciones de los órganos de gobierno, los comités de apoyo y los mecanismos de control interno que garantizan una gestión eficiente y ética.",
-      },
-    ],
-  },
 };
