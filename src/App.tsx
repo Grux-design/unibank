@@ -23,6 +23,7 @@ import TrabajaConNosotrosPage from "./pages/TrabajaConNosotrosPage";
 import TarifarioPage from "./pages/TarifarioPage";
 import UniTrustPage from "./pages/UniTrustPage";
 import UniLeasingPage from "./pages/UniLeasingPage";
+import CajillaSeguridadPage from "./pages/CajillaSeguridadPage";
 
 const queryClient = new QueryClient();
 
@@ -46,6 +47,7 @@ const App = () => (
               <Route path="/tarifario" element={<TarifarioPage />} />
               <Route path="/grupo/unitrust" element={<UniTrustPage />} />
               <Route path="/grupo/unileasing" element={<UniLeasingPage />} />
+              <Route path="/personas/otros-servicios/cajilla-de-seguridad" element={<CajillaSeguridadPage />} />
               <Route path="/personas/:category/:slug" element={<ProductDetailPage />} />
               <Route path="/empresas/:category/:slug" element={<ProductDetailPage />} />
               <Route path="/contact" element={<ContactPage />} />
