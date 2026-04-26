@@ -283,7 +283,7 @@ export default function BlogPage() {
                         </span>
                         <span className="flex items-center gap-1">
                           <Clock className="w-3.5 h-3.5" />
-                          {estimateReadTime(heroFeatured.content)}
+                          {estimateReadTime(heroFeatured.body)}
                         </span>
                       </div>
                       <span className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-primary group-hover:gap-2 transition-all">
@@ -331,7 +331,7 @@ export default function BlogPage() {
                             </span>
                             <span className="flex items-center gap-1">
                               <Clock className="w-3 h-3" />
-                              {estimateReadTime(p.content)}
+                              {estimateReadTime(p.body)}
                             </span>
                           </div>
                         </CardContent>
@@ -498,7 +498,7 @@ export default function BlogPage() {
                               </div>
                               <span className="flex items-center gap-1 text-[11px] text-muted-foreground shrink-0">
                                 <Clock className="w-3 h-3" />
-                                {estimateReadTime(post.content)}
+                                {estimateReadTime(post.body)}
                               </span>
                             </div>
                           </CardContent>

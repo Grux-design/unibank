@@ -175,7 +175,7 @@ export default function BlogPostPage() {
 
   const { post, assetMap } = data;
   const heroUrl = post.thumbnail?.fields?.file?.url;
-  const readTime = estimateReadTime(post.content);
+  const readTime = estimateReadTime(post.body);
   const dateStr = formatDate(post.publishedDate || post.sys.createdAt);
   const options = buildRichTextOptions(assetMap);
 
@@ -252,8 +252,8 @@ export default function BlogPostPage() {
         {/* Body */}
         <div className="max-w-2xl mx-auto px-6 py-16 md:py-20">
           <div className="article-body">
-            {post.content
-              ? documentToReactComponents(post.content as Document, options)
+            {post.body
+              ? documentToReactComponents(post.body as Document, options)
               : (
                 <p className="text-lg text-muted-foreground">
                   Este artículo aún no tiene contenido.
