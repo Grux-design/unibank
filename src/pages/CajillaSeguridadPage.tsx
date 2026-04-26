@@ -1,0 +1,514 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
+import {
+  ChevronRight,
+  ShieldCheck,
+  Lock,
+  DoorOpen,
+  UserCheck,
+  Landmark,
+  Check,
+  Briefcase,
+  Building2,
+  Box,
+  ArrowRight,
+} from "lucide-react";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { supabase } from "@/integrations/supabase/client";
+
+const HERO_IMAGE =
+  "https://images.unsplash.com/photo-1601597111158-2fceff292cdc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1400";
+const VAULT_IMAGE =
+  "https://images.unsplash.com/photo-1565514020179-026b92b84bb6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200";
+
+const breadcrumbs = [
+  { label: "Inicio", href: "/" },
+  { label: "Personas", href: "/personas" },
+  { label: "Otros Servicios", href: "/personas" },
+  { label: "Cajilla de Seguridad", href: "" },
+];
+
+const benefits = [
+  {
+    icon: ShieldCheck,
+    title: "Máxima seguridad",
+    desc: "Bóveda protegida mediante monitoreo permanente con cámaras especializadas.",
+  },
+  {
+    icon: Lock,
+    title: "Confidencialidad total",
+    desc: "Acceso privado y controlado en cada visita a tu cajilla.",
+  },
+  {
+    icon: DoorOpen,
+    title: "Sala exclusiva",
+    desc: "Espacio diseñado para que accedas a tu cajilla con comodidad y discreción.",
+  },
+  {
+    icon: UserCheck,
+    title: "Atención personalizada",
+    desc: "Acompañamiento de personal capacitado durante el uso del servicio.",
+  },
+  {
+    icon: Landmark,
+    title: "Respaldo bancario",
+    desc: "Tus pertenencias resguardadas por una institución sólida y confiable.",
+  },
+];
+
+const sizes = [
+  { dims: "5\" × 10\" × 24\"", label: "Tamaño estándar", desc: "Ideal para documentos importantes, escrituras, joyería esencial y artículos de valor compactos." },
+  { dims: "10\" × 10\" × 24\"", label: "Tamaño amplio", desc: "Mayor capacidad para colecciones, documentos voluminosos y objetos de valor de mayor tamaño." },
+];
+
+export default function CajillaSeguridadPage() {
+  const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.name.trim() || !form.email.trim()) {
+      toast.error("Por favor completa tu nombre y correo.");
+      return;
+    }
+    setSubmitting(true);
+    try {
+      const { error } = await supabase.functions.invoke("send-email", {
+        body: {
+          name: form.name,
+          email: form.email,
+          subject: "Solicitud — Cajilla de Seguridad",
+          message: `Teléfono: ${form.phone || "No proporcionado"}\n\nMensaje:\n${form.message || "(El cliente no incluyó mensaje)"}\n\nServicio de interés: Cajilla de Seguridad`,
+          lang: "es",
+        },
+      });
+      if (error) throw error;
+      toast.success("¡Solicitud enviada! Te contactaremos pronto.");
+      setForm({ name: "", email: "", phone: "", message: "" });
+    } catch (err) {
+      console.error(err);
+      toast.error("No pudimos enviar tu solicitud. Intenta nuevamente.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <>
+      <Helmet>
+        <title>Cajilla de Seguridad | Unibank</title>
+        <meta
+          name="description"
+          content="Resguarda tus documentos, joyas y objetos de valor en las Cajillas de Seguridad de UniBank. Bóveda protegida, sala exclusiva y atención personalizada."
+        />
+        <meta property="og:title" content="Cajilla de Seguridad | Unibank" />
+        <meta
+          property="og:description"
+          content="Protege lo que más valoras con el servicio de Cajillas de Seguridad de UniBank."
+        />
+        <meta property="og:type" content="website" />
+      </Helmet>
+
+      {/* ── Hero ────────────────────────────────────────────── */}
+      <section
+        style={{
+          background: "hsl(var(--background))",
+          padding: "clamp(96px, 10vw, 120px) clamp(16px, 3.9vw, 72px) clamp(48px, 8vw, 96px)",
+        }}
+      >
+        <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+          {/* Breadcrumbs */}
+          <nav aria-label="Breadcrumb" className="mb-8">
+            <ol className="flex flex-wrap items-center gap-1 text-sm">
+              {breadcrumbs.map((crumb, i) => {
+                const isLast = i === breadcrumbs.length - 1;
+                return (
+                  <li key={i} className="flex items-center gap-1">
+                    {i > 0 && (
+                      <ChevronRight size={14} className="text-muted-foreground/50 flex-shrink-0" />
+                    )}
+                    {isLast ? (
+                      <span className="font-semibold text-foreground">{crumb.label}</span>
+                    ) : (
+                      <Link to={crumb.href} className="text-muted-foreground hover:text-primary transition-colors">
+                        {crumb.label}
+                      </Link>
+                    )}
+                  </li>
+                );
+              })}
+            </ol>
+          </nav>
+
+          <div className="grid gap-12 md:grid-cols-2 md:items-center">
+            <div>
+              <span
+                className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide"
+                style={{ background: "hsl(var(--primary) / 0.1)", color: "hsl(var(--primary))" }}
+              >
+                <ShieldCheck size={14} />
+                Servicio exclusivo
+              </span>
+              <h1
+                className="mt-5 text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-foreground"
+                style={{ letterSpacing: "-0.025em", lineHeight: 1.05 }}
+              >
+                Cajillas de Seguridad
+              </h1>
+              <p className="mt-5 text-2xl md:text-3xl font-semibold text-primary" style={{ letterSpacing: "-0.015em" }}>
+                Protege lo que más valoras
+              </p>
+              <p className="mt-6 text-lg text-muted-foreground leading-relaxed">
+                En UniBank entendemos que tus pertenencias más valiosas merecen el más alto nivel de
+                protección. Por eso, ponemos a tu disposición nuestro servicio de Cajillas de Seguridad,
+                diseñado para resguardar documentos importantes, joyas y objetos de valor con total
+                confidencialidad y seguridad.
+              </p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <a href="#contacto">
+                  <Button size="lg" className="rounded-full px-7 h-12 text-base font-semibold">
+                    Solicitar información
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </a>
+              </div>
+            </div>
+            <div className="relative">
+              <div
+                className="overflow-hidden rounded-[28px] shadow-xl"
+                style={{ aspectRatio: "4 / 3" }}
+              >
+                <img
+                  src={HERO_IMAGE}
+                  alt="Bóveda de seguridad bancaria UniBank"
+                  className="h-full w-full object-cover"
+                  loading="eager"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── ¿Qué es? ────────────────────────────────────────── */}
+      <section
+        style={{
+          padding: "clamp(48px, 7vw, 88px) clamp(16px, 3.9vw, 72px)",
+          background: "hsl(var(--background))",
+        }}
+      >
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-foreground" style={{ letterSpacing: "-0.025em" }}>
+            ¿Qué es una Cajilla de Seguridad?
+          </h2>
+          <p className="mt-6 text-lg text-muted-foreground leading-relaxed">
+            Es un servicio de arrendamiento que te permite guardar tus bienes más preciados dentro de una
+            bóveda bancaria altamente protegida, con acceso exclusivo y controlado para tu tranquilidad.
+          </p>
+        </div>
+      </section>
+
+      {/* ── Beneficios (feature strip) ──────────────────────── */}
+      <section
+        className="bg-orange-50"
+        style={{ padding: "clamp(48px, 7vw, 88px) clamp(16px, 3.9vw, 72px)" }}
+      >
+        <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+          <div className="text-center mb-12">
+            <h2
+              className="text-3xl md:text-4xl font-extrabold text-foreground"
+              style={{ letterSpacing: "-0.025em" }}
+            >
+              Beneficios del servicio
+            </h2>
+            <p className="mt-3 text-base text-muted-foreground max-w-2xl mx-auto">
+              Diseñado para brindarte tranquilidad absoluta sobre tus bienes más importantes.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {benefits.map(({ icon: Icon, title, desc }) => (
+              <div
+                key={title}
+                className="flex flex-col gap-4 p-8 bg-background rounded-[28px] hover:shadow-lg transition-shadow"
+              >
+                <div
+                  className="flex items-center justify-center rounded-2xl"
+                  style={{
+                    width: 56,
+                    height: 56,
+                    background: "hsl(var(--primary) / 0.1)",
+                    color: "hsl(var(--primary))",
+                  }}
+                >
+                  <Icon size={28} strokeWidth={2} />
+                </div>
+                <h3 className="text-xl font-bold text-foreground">{title}</h3>
+                <p className="text-muted-foreground leading-relaxed">{desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Tamaños disponibles (split layout) ──────────────── */}
+      <section
+        className="bg-muted"
+        style={{ padding: "clamp(48px, 7vw, 88px) clamp(16px, 3.9vw, 72px)" }}
+      >
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-10 md:gap-16 items-start">
+          <div className="md:w-2/5 md:sticky md:top-28">
+            <h2
+              className="text-3xl md:text-4xl font-extrabold text-foreground leading-tight"
+              style={{ letterSpacing: "-0.025em" }}
+            >
+              Tamaños disponibles
+            </h2>
+            <p className="mt-4 text-muted-foreground text-lg">
+              UniBank ofrece diferentes tamaños de cajillas para adaptarse a tus necesidades.
+            </p>
+            <div className="mt-8 overflow-hidden rounded-[24px] shadow-md hidden md:block">
+              <img
+                src={VAULT_IMAGE}
+                alt="Cajillas de seguridad UniBank"
+                className="w-full h-auto object-cover"
+                loading="lazy"
+              />
+            </div>
+          </div>
+          <div className="md:w-3/5 flex flex-col gap-5 w-full">
+            {sizes.map((s) => (
+              <div
+                key={s.dims}
+                className="bg-background rounded-2xl p-7 flex items-start gap-5 w-full"
+              >
+                <div
+                  className="flex items-center justify-center rounded-xl flex-shrink-0"
+                  style={{
+                    width: 72,
+                    height: 72,
+                    background: "hsl(var(--primary) / 0.08)",
+                    color: "hsl(var(--primary))",
+                  }}
+                >
+                  <Box size={32} strokeWidth={1.75} />
+                </div>
+                <div>
+                  <p className="text-xs uppercase tracking-wider font-semibold text-primary mb-1">
+                    {s.label}
+                  </p>
+                  <h3 className="text-2xl font-bold text-foreground mb-2">{s.dims}</h3>
+                  <p className="text-muted-foreground">{s.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Requisitos ──────────────────────────────────────── */}
+      <section
+        style={{
+          padding: "clamp(48px, 7vw, 88px) clamp(16px, 3.9vw, 72px)",
+          background: "hsl(var(--background))",
+        }}
+      >
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-10">
+            <h2
+              className="text-3xl md:text-4xl font-extrabold text-foreground"
+              style={{ letterSpacing: "-0.025em" }}
+            >
+              Requisitos
+            </h2>
+          </div>
+          <div className="grid gap-4 md:grid-cols-2">
+            {[
+              "Mantener al menos una (1) cuenta activa en UniBank.",
+              "El arrendamiento de la cajilla es a título personal.",
+            ].map((req) => (
+              <div
+                key={req}
+                className="flex items-start gap-4 p-6 rounded-2xl border border-border bg-background"
+              >
+                <div
+                  className="flex items-center justify-center rounded-full flex-shrink-0"
+                  style={{
+                    width: 36,
+                    height: 36,
+                    background: "hsl(var(--primary))",
+                    color: "hsl(var(--primary-foreground))",
+                  }}
+                >
+                  <Check size={18} strokeWidth={3} />
+                </div>
+                <p className="text-foreground text-base font-medium leading-relaxed pt-1">{req}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── ¿Dónde adquirir? ────────────────────────────────── */}
+      <section
+        className="bg-orange-50"
+        style={{ padding: "clamp(48px, 7vw, 88px) clamp(16px, 3.9vw, 72px)" }}
+      >
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <div className="text-center mb-12">
+            <h2
+              className="text-3xl md:text-4xl font-extrabold text-foreground"
+              style={{ letterSpacing: "-0.025em" }}
+            >
+              ¿Dónde puedes adquirir el servicio?
+            </h2>
+            <p className="mt-3 text-base text-muted-foreground">
+              Solicita este exclusivo servicio a través de cualquiera de nuestros canales.
+            </p>
+          </div>
+          <div className="grid gap-6 md:grid-cols-2">
+            <div className="bg-background rounded-[24px] p-8 flex flex-col items-start gap-4">
+              <div
+                className="flex items-center justify-center rounded-2xl"
+                style={{
+                  width: 64,
+                  height: 64,
+                  background: "hsl(var(--primary) / 0.1)",
+                  color: "hsl(var(--primary))",
+                }}
+              >
+                <Briefcase size={30} />
+              </div>
+              <h3 className="text-2xl font-bold text-foreground">Tu Gerente de Relación</h3>
+              <p className="text-muted-foreground leading-relaxed">
+                Contacta directamente a tu Gerente de Relación de UniBank, quien te guiará
+                personalmente durante todo el proceso de solicitud.
+              </p>
+            </div>
+            <div className="bg-background rounded-[24px] p-8 flex flex-col items-start gap-4">
+              <div
+                className="flex items-center justify-center rounded-2xl"
+                style={{
+                  width: 64,
+                  height: 64,
+                  background: "hsl(var(--primary) / 0.1)",
+                  color: "hsl(var(--primary))",
+                }}
+              >
+                <Building2 size={30} />
+              </div>
+              <h3 className="text-2xl font-bold text-foreground">Casa Matriz</h3>
+              <p className="text-muted-foreground leading-relaxed">
+                Visítanos en Avenida Balboa, planta baja del edificio Grand Bay Tower. Nuestro equipo
+                te atenderá con la confidencialidad que mereces.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── CTA / Form ──────────────────────────────────────── */}
+      <section
+        id="contacto"
+        style={{
+          padding: "clamp(64px, 9vw, 112px) clamp(16px, 3.9vw, 72px)",
+          background: "hsl(var(--background))",
+        }}
+      >
+        <div className="max-w-5xl mx-auto">
+          <div
+            className="rounded-[32px] overflow-hidden grid md:grid-cols-2"
+            style={{ background: "hsl(var(--primary))" }}
+          >
+            <div className="p-10 md:p-14 text-primary-foreground">
+              <h2
+                className="text-3xl md:text-4xl font-extrabold leading-tight"
+                style={{ letterSpacing: "-0.025em" }}
+              >
+                ¿Interesado en este servicio?
+              </h2>
+              <p className="mt-5 text-lg opacity-90 leading-relaxed">
+                Déjanos tus datos y uno de nuestros asesores se pondrá en contacto contigo para
+                brindarte más información sobre nuestras Cajillas de Seguridad.
+              </p>
+              <ul className="mt-8 space-y-3">
+                {["Atención personalizada", "Respuesta en menos de 24 horas", "Sin compromiso"].map((b) => (
+                  <li key={b} className="flex items-center gap-3 text-base">
+                    <Check size={18} strokeWidth={3} className="opacity-90" />
+                    <span className="opacity-95">{b}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <form
+              onSubmit={handleSubmit}
+              className="bg-background p-8 md:p-10 flex flex-col gap-4"
+            >
+              <div>
+                <Label htmlFor="cs-name" className="text-foreground font-semibold">Nombre completo</Label>
+                <Input
+                  id="cs-name"
+                  required
+                  maxLength={100}
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  className="mt-2 h-11"
+                  placeholder="Tu nombre"
+                />
+              </div>
+              <div>
+                <Label htmlFor="cs-email" className="text-foreground font-semibold">Correo electrónico</Label>
+                <Input
+                  id="cs-email"
+                  type="email"
+                  required
+                  maxLength={255}
+                  value={form.email}
+                  onChange={(e) => setForm({ ...form, email: e.target.value })}
+                  className="mt-2 h-11"
+                  placeholder="tucorreo@ejemplo.com"
+                />
+              </div>
+              <div>
+                <Label htmlFor="cs-phone" className="text-foreground font-semibold">Teléfono</Label>
+                <Input
+                  id="cs-phone"
+                  type="tel"
+                  maxLength={30}
+                  value={form.phone}
+                  onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                  className="mt-2 h-11"
+                  placeholder="+507 0000-0000"
+                />
+              </div>
+              <div>
+                <Label htmlFor="cs-message" className="text-foreground font-semibold">Mensaje (opcional)</Label>
+                <Textarea
+                  id="cs-message"
+                  maxLength={1000}
+                  value={form.message}
+                  onChange={(e) => setForm({ ...form, message: e.target.value })}
+                  className="mt-2 min-h-[96px]"
+                  placeholder="Cuéntanos brevemente qué necesitas"
+                />
+              </div>
+              <Button
+                type="submit"
+                disabled={submitting}
+                size="lg"
+                className="mt-2 h-12 rounded-full text-base font-semibold"
+              >
+                {submitting ? "Enviando..." : "Enviar solicitud"}
+              </Button>
+            </form>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
