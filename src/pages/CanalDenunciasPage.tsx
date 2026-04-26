@@ -376,53 +376,59 @@ export default function CanalDenunciasPage() {
                 </Section>
 
                 {/* ── Step 4: Cuándo y soportes ── */}
-                <Section step={4} title="¿Cuándo ocurrió? y soportes" icon={Calculator} active={step3Done} done={step4Done}>
-                  <div className="space-y-2">
-                    <FormLabel>Fecha del incidente *</FormLabel>
-                    <div className="grid grid-cols-3 gap-3">
-                      <FormField control={form.control} name="month" render={({ field }) => (
-                        <Select onValueChange={field.onChange} value={field.value}>
-                          <SelectTrigger><SelectValue placeholder="Mes" /></SelectTrigger>
-                          <SelectContent>{months.map((m) => <SelectItem key={m} value={m}>{m}</SelectItem>)}</SelectContent>
-                        </Select>
-                      )} />
-                      <FormField control={form.control} name="day" render={({ field }) => (
-                        <Select onValueChange={field.onChange} value={field.value}>
-                          <SelectTrigger><SelectValue placeholder="Día" /></SelectTrigger>
-                          <SelectContent>{days.map((d) => <SelectItem key={d} value={d.toString()}>{d}</SelectItem>)}</SelectContent>
-                        </Select>
-                      )} />
-                      <FormField control={form.control} name="year" render={({ field }) => (
-                        <Select onValueChange={field.onChange} value={field.value}>
-                          <SelectTrigger><SelectValue placeholder="Año" /></SelectTrigger>
-                          <SelectContent>{years.map((y) => <SelectItem key={y} value={y.toString()}>{y}</SelectItem>)}</SelectContent>
-                        </Select>
-                      )} />
-                    </div>
-                  </div>
+                <Section step={4} title="¿Cuándo ocurrió? y soportes" icon={CalendarIcon} active={step3Done} done={step4Done}>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <FormField control={form.control} name="incident_date" render={({ field }) => (
+                      <FormItem className="flex flex-col">
+                        <FormLabel>Fecha del incidente *</FormLabel>
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <FormControl>
+                              <Button
+                                type="button"
+                                variant="outline"
+                                className={cn(
+                                  "w-full justify-start text-left font-normal h-10",
+                                  !field.value && "text-muted-foreground"
+                                )}
+                              >
+                                <CalendarIcon className="mr-2 h-4 w-4 opacity-60" />
+                                {field.value ? format(field.value, "PPP", { locale: es }) : <span>Seleccionar fecha</span>}
+                              </Button>
+                            </FormControl>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0" align="start">
+                            <Calendar
+                              mode="single"
+                              selected={field.value}
+                              onSelect={field.onChange}
+                              disabled={(date) => date > new Date() || date < new Date("2020-01-01")}
+                              initialFocus
+                              locale={es}
+                              className={cn("p-3 pointer-events-auto")}
+                            />
+                          </PopoverContent>
+                        </Popover>
+                        <FormMessage />
+                      </FormItem>
+                    )} />
 
-                  <div className="space-y-2">
-                    <FormLabel>Hora del incidente *</FormLabel>
-                    <div className="grid grid-cols-3 gap-3">
-                      <FormField control={form.control} name="hour" render={({ field }) => (
-                        <Select onValueChange={field.onChange} value={field.value}>
-                          <SelectTrigger><SelectValue placeholder="Hora" /></SelectTrigger>
-                          <SelectContent>{hours12.map((h) => <SelectItem key={h} value={h.toString()}>{h}</SelectItem>)}</SelectContent>
-                        </Select>
-                      )} />
-                      <FormField control={form.control} name="minute" render={({ field }) => (
-                        <Select onValueChange={field.onChange} value={field.value}>
-                          <SelectTrigger><SelectValue placeholder="Min" /></SelectTrigger>
-                          <SelectContent className="max-h-60">{minutes.map((m) => <SelectItem key={m} value={m}>{m}</SelectItem>)}</SelectContent>
-                        </Select>
-                      )} />
-                      <FormField control={form.control} name="period" render={({ field }) => (
-                        <Select onValueChange={field.onChange} value={field.value}>
-                          <SelectTrigger><SelectValue /></SelectTrigger>
-                          <SelectContent><SelectItem value="AM">AM</SelectItem><SelectItem value="PM">PM</SelectItem></SelectContent>
-                        </Select>
-                      )} />
-                    </div>
+                    <FormField control={form.control} name="incident_time" render={({ field }) => (
+                      <FormItem className="flex flex-col">
+                        <FormLabel>Hora del incidente *</FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <Clock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                            <Input
+                              type="time"
+                              className="pl-9 h-10"
+                              {...field}
+                            />
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )} />
                   </div>
 
                   {/* File upload */}
