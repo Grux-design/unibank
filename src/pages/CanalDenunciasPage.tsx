@@ -512,11 +512,11 @@ export default function CanalDenunciasPage() {
                   )} />
 
                   <FormField control={form.control} name="accepted_terms" render={({ field }) => (
-                    <FormItem className="flex items-start gap-3 p-4 rounded-lg bg-muted/30 border border-border/60">
+                    <FormItem className="flex items-start gap-3 p-4 rounded-lg bg-muted/30 border border-border/60 space-y-0">
                       <FormControl>
-                        <Checkbox checked={field.value} onCheckedChange={field.onChange} className="mt-1" />
+                        <Checkbox checked={field.value} onCheckedChange={field.onChange} className="mt-0.5 shrink-0" />
                       </FormControl>
-                      <div className="space-y-1">
+                      <div className="space-y-1 flex-1 min-w-0">
                         <p className="text-xs text-muted-foreground leading-relaxed">
                           Por este medio yo(nosotros) DECLARO(AMOS) que la información proporcionada al banco por mi (nosotros) es veraz, correcta, verdadera y por tanto válida. Certifico que he(mos) leído y entendido a cabalidad todas las condiciones estipuladas en el Acuerdo de Servicio y Políticas de Privacidad del grupo financiero que están disponibles al público en la página web del banco:{" "}
                           <a
