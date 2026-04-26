@@ -181,14 +181,8 @@ export default function CanalDenunciasPage() {
         file_url = urlData.publicUrl;
       }
 
-      const monthIdx = (months.indexOf(values.month) + 1).toString().padStart(2, "0");
-      const dayStr = values.day.padStart(2, "0");
-      const incident_date = `${values.year}-${monthIdx}-${dayStr}`;
-
-      let h = parseInt(values.hour, 10);
-      if (values.period === "PM" && h !== 12) h += 12;
-      if (values.period === "AM" && h === 12) h = 0;
-      const incident_time = `${h.toString().padStart(2, "0")}:${values.minute}`;
+      const incident_date = format(values.incident_date, "yyyy-MM-dd");
+      const incident_time = values.incident_time;
 
       const { error } = await supabase.from("complaints").insert({
         relationship: values.relationship,
