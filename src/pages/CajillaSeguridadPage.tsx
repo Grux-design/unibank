@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import {
@@ -17,12 +16,7 @@ import {
   Eye,
   Sparkles,
 } from "lucide-react";
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { supabase } from "@/integrations/supabase/client";
 
 const HERO_IMAGE =
   "https://images.unsplash.com/photo-1601597111158-2fceff292cdc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1400";
@@ -70,37 +64,6 @@ const sizes = [
 ];
 
 export default function CajillaSeguridadPage() {
-  const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
-  const [submitting, setSubmitting] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!form.name.trim() || !form.email.trim()) {
-      toast.error("Por favor completa tu nombre y correo.");
-      return;
-    }
-    setSubmitting(true);
-    try {
-      const { error } = await supabase.functions.invoke("send-email", {
-        body: {
-          name: form.name,
-          email: form.email,
-          subject: "Solicitud — Cajilla de Seguridad",
-          message: `Teléfono: ${form.phone || "No proporcionado"}\n\nMensaje:\n${form.message || "(El cliente no incluyó mensaje)"}\n\nServicio de interés: Cajilla de Seguridad`,
-          lang: "es",
-        },
-      });
-      if (error) throw error;
-      toast.success("¡Solicitud enviada! Te contactaremos pronto.");
-      setForm({ name: "", email: "", phone: "", message: "" });
-    } catch (err) {
-      console.error(err);
-      toast.error("No pudimos enviar tu solicitud. Intenta nuevamente.");
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
   return (
     <>
       <Helmet>
