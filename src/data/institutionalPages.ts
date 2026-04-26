@@ -56,23 +56,6 @@ export const institutionalPages: Record<string, InstitutionalPageData> = {
       },
     ],
   },
-  "gestion-de-riesgo-operativo": {
-    title: "Gestión de Riesgo Operativo",
-    metaDescription: "Descubre cómo UniBank gestiona el riesgo operativo para garantizar la seguridad y continuidad de nuestros servicios financieros.",
-    sections: [
-      {
-        body: "La gestión de riesgo operativo en UniBank es un proceso integral que busca identificar, medir, controlar y mitigar los riesgos asociados a nuestras operaciones diarias.",
-      },
-      {
-        heading: "Marco de Gestión",
-        body: "Contamos con un marco robusto de gestión de riesgos alineado con las mejores prácticas internacionales y los estándares regulatorios de la Superintendencia de Bancos de Panamá.",
-      },
-      {
-        heading: "Continuidad del Negocio",
-        body: "Nuestros planes de continuidad del negocio garantizan que los servicios críticos estén disponibles en todo momento, protegiendo los intereses de nuestros clientes y la estabilidad de la institución.",
-      },
-    ],
-  },
   "cumplimiento-normativo": {
     title: "Cumplimiento Normativo",
     metaDescription: "Conoce el compromiso de UniBank con el cumplimiento normativo y la prevención del lavado de activos.",
