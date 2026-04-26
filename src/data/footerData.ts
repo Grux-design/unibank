@@ -41,7 +41,7 @@ export const footerColumns: FooterColumn[] = [
   {
     title: "Enlaces de Interés",
     links: [
-      { label: "Cajilla de Seguridad" },
+      
       { label: "Tarifario", href: "/tarifario" },
       { label: "Trabaja con nosotros", href: "/trabaja-con-nosotros" },
       { label: "Portal Inmobiliario", href: "https://bienesenventa.unibank.com.pa/" },
