@@ -56,7 +56,7 @@ function entryToBlog(
     slug: f.slug,
     excerpt: f.excerpt,
     thumbnail: resolveAssetRef(f.thumbnail, assetMap),
-    content: f.content,
+    body: f.body,
     category: f.category,
     author: f.author,
     publishedDate: f.publishedDate,

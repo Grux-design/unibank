@@ -144,7 +144,7 @@ export interface BlogFields {
   slug: string;
   excerpt?: string;
   thumbnail?: ContentfulLink | ContentfulAsset;
-  content?: unknown;
+  body?: unknown;
   category?: string;
   author?: string;
   publishedDate?: string;
@@ -156,7 +156,7 @@ export interface ResolvedBlog {
   slug: string;
   excerpt?: string;
   thumbnail?: ContentfulAsset;
-  content?: unknown;
+  body?: unknown;
   category?: string;
   author?: string;
   publishedDate?: string;
