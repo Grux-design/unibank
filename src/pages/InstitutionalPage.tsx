@@ -32,9 +32,10 @@ export default function InstitutionalPage() {
                   {s.heading}
                 </h2>
               )}
-              <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
-                {s.body}
-              </p>
+              <p
+                className="text-base md:text-lg text-muted-foreground leading-relaxed [&_strong]:font-semibold [&_strong]:text-foreground"
+                dangerouslySetInnerHTML={{ __html: s.body }}
+              />
             </div>
           ))}
         </div>
