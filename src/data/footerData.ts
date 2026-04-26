@@ -25,7 +25,7 @@ export const footerColumns: FooterColumn[] = [
       { label: "UniLíderes", href: "/institucional/unilideres" },
       { label: "Sostenibilidad", href: "/institucional/sostenibilidad" },
       { label: "Estados Financieros" },
-      { label: "Gestión de Riesgo Operativo", href: "/institucional/gestion-de-riesgo-operativo" },
+      { label: "Gestión de Riesgo Operativo", href: "/documents/gestion-de-riesgo-operativo.pdf" },
       { label: "Cumplimiento Normativo", href: "/institucional/cumplimiento-normativo" },
       { label: "Manual de Gobierno Corporativo", href: "/institucional/manual-de-gobierno-corporativo" },
       { label: "RSE – Responsabilidad Social" },
