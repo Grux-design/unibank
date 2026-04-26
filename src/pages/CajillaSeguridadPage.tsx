@@ -8,13 +8,12 @@ import {
   UserCheck,
   Landmark,
   Check,
-  Briefcase,
-  Building2,
   Box,
   ArrowRight,
   KeyRound,
   Eye,
   Sparkles,
+  Mail,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -413,78 +412,32 @@ export default function CajillaSeguridadPage() {
         </div>
       </section>
 
-      {/* ── ¿Dónde adquirir? ────────────────────────────────── */}
-      <section
-        className="bg-orange-50"
-        style={{ padding: "clamp(48px, 7vw, 88px) clamp(16px, 3.9vw, 72px)" }}
-      >
-        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <div className="text-center mb-12">
-            <h2
-              className="text-3xl md:text-4xl font-extrabold text-foreground"
-              style={{ letterSpacing: "-0.025em" }}
-            >
-              ¿Dónde puedes adquirir el servicio?
-            </h2>
-            <p className="mt-3 text-base text-muted-foreground">
-              Solicita este exclusivo servicio a través de cualquiera de nuestros canales.
-            </p>
-          </div>
-          <div className="grid gap-6 md:grid-cols-2">
-            <div className="bg-background rounded-[24px] p-8 flex flex-col items-start gap-4">
-              <div
-                className="flex items-center justify-center rounded-2xl"
-                style={{
-                  width: 64,
-                  height: 64,
-                  background: "hsl(var(--primary) / 0.1)",
-                  color: "hsl(var(--primary))",
-                }}
-              >
-                <Briefcase size={30} />
-              </div>
-              <h3 className="text-2xl font-bold text-foreground">Tu Gerente de Relación</h3>
-              <p className="text-muted-foreground leading-relaxed">
-                Contacta directamente a tu Gerente de Relación de UniBank, quien te guiará
-                personalmente durante todo el proceso de solicitud.
-              </p>
-            </div>
-            <div className="bg-background rounded-[24px] p-8 flex flex-col items-start gap-4">
-              <div
-                className="flex items-center justify-center rounded-2xl"
-                style={{
-                  width: 64,
-                  height: 64,
-                  background: "hsl(var(--primary) / 0.1)",
-                  color: "hsl(var(--primary))",
-                }}
-              >
-                <Building2 size={30} />
-              </div>
-              <h3 className="text-2xl font-bold text-foreground">Casa Matriz</h3>
-              <p className="text-muted-foreground leading-relaxed">
-                Visítanos en Avenida Balboa, planta baja del edificio Grand Bay Tower. Nuestro equipo
-                te atenderá con la confidencialidad que mereces.
-              </p>
-            </div>
-          </div>
-
-          {/* CTA */}
-          <div className="mt-12 flex flex-col items-center text-center gap-4">
-            <p className="text-base md:text-lg text-foreground/80 max-w-xl">
-              ¿Quieres conocer más sobre nuestras Cajillas de Seguridad?
-            </p>
+      {/* ── CTA final (estilo UniTrust) ─────────────────────── */}
+      <section className="border-t border-border bg-gradient-to-br from-primary/10 via-primary/5 to-background">
+        <div className="mx-auto max-w-5xl px-6 py-20 text-center">
+          <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary">
+            <Mail className="h-3.5 w-3.5" />
+            Hablemos
+          </span>
+          <h2 className="mt-5 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
+            ¿Listo para resguardar lo que más valoras?
+          </h2>
+          <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
+            Solicita este exclusivo servicio a través de tu Gerente de Relación o visitando
+            nuestra Casa Matriz en Avenida Balboa, planta baja del edificio Grand Bay Tower.
+          </p>
+          <div className="mt-8 flex justify-center">
             <a
               href={`mailto:cajillasdeseguridad@unibank.com.pa?subject=${encodeURIComponent(
                 "Solicitud de información — Cajilla de Seguridad",
               )}&body=${encodeURIComponent(
                 `Hola,\n\nMe interesa recibir más información sobre el servicio de Cajillas de Seguridad de UniBank.\n\nDatos de contacto:\nNombre:\nTeléfono:\nCorreo:\n\nGracias.`,
               )}`}
+              className="group inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg"
             >
-              <Button size="lg" className="rounded-full px-8 h-12 text-base font-semibold">
-                Solicitar información
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
+              <Mail className="h-4 w-4" />
+              Solicitar información
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </a>
           </div>
         </div>
