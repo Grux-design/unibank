@@ -46,7 +46,6 @@ export const footerColumns: FooterColumn[] = [
       { label: "Trabaja con nosotros", href: "/trabaja-con-nosotros" },
       { label: "Portal Inmobiliario", href: "https://bienesenventa.unibank.com.pa/" },
       { label: "Noticias", href: "/blog" },
-      { label: "Blog", href: "/blog" },
       { label: "Canal de denuncias", href: "/canal-de-denuncias" },
     ],
   },
