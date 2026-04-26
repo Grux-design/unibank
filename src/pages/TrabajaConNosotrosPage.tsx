@@ -264,14 +264,10 @@ export default function TrabajaConNosotrosPage() {
               </div>
 
               {/* Stats */}
-              <div className="mt-14 grid max-w-xl grid-cols-2 gap-8 border-t border-white/10 pt-8">
+              <div className="mt-14 max-w-xl border-t border-white/10 pt-8">
                 <div>
                   <div className="text-3xl font-bold tracking-tight">+30 años</div>
                   <div className="mt-1 text-sm text-white/60">creando oportunidades en Panamá</div>
-                </div>
-                <div>
-                  <div className="text-3xl font-bold tracking-tight">Avenida Balboa</div>
-                  <div className="mt-1 text-sm text-white/60">Casa Matriz, Grand Bay Tower</div>
                 </div>
               </div>
             </div>
