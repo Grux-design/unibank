@@ -132,7 +132,7 @@ export default function SostenibilidadPage() {
 
               {/* Decorative stat card */}
               <div className="relative">
-                <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-emerald-500/20 via-primary/10 to-transparent blur-2xl" />
+                <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary/20 via-primary/10 to-transparent blur-2xl" />
                 <div className="relative overflow-hidden rounded-3xl border border-border bg-card p-10">
                   <div className="flex items-center gap-3">
                     <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
