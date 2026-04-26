@@ -70,7 +70,6 @@ export default function BlogPage() {
   const segment = location.pathname.startsWith("/empresas") ? "empresas" : "personas";
 
   const [query, setQuery] = useState("");
-  const [category, setCategory] = useState<string>(ALL);
   const [sort, setSort] = useState<"recent" | "old" | "az">("recent");
   const [page, setPage] = useState(1);
 
@@ -166,17 +165,6 @@ export default function BlogPage() {
                     <strong className="text-foreground">{posts.length}</strong>{" "}
                     {posts.length === 1 ? "artículo" : "artículos"}
                   </span>
-                  {categories.length > 1 && (
-                    <>
-                      <span className="hidden sm:inline">·</span>
-                      <span>
-                        <strong className="text-foreground">
-                          {categories.length - 1}
-                        </strong>{" "}
-                        categorías
-                      </span>
-                    </>
-                  )}
                   {lastUpdated && (
                     <>
                       <span className="hidden sm:inline">·</span>
