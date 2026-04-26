@@ -27,7 +27,7 @@ export const footerColumns: FooterColumn[] = [
       { label: "Estados Financieros" },
       { label: "Gestión de Riesgo Operativo", href: "/documents/gestion-de-riesgo-operativo.pdf" },
       { label: "Cumplimiento Normativo", href: "/institucional/cumplimiento-normativo" },
-      { label: "Manual de Gobierno Corporativo", href: "/institucional/manual-de-gobierno-corporativo" },
+      { label: "Manual de Gobierno Corporativo", href: "/documents/manual-de-gobierno-corporativo.pdf" },
       { label: "RSE – Responsabilidad Social" },
     ],
   },
