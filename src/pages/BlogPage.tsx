@@ -425,41 +425,39 @@ export default function BlogPage() {
                   </CardContent>
                 </Card>
 
-                {/* Side featured */}
-                <div className="lg:col-span-2 flex flex-col gap-6">
+                {/* Side featured — stacked, image-on-top so full image is visible */}
+                <div className="lg:col-span-2 grid grid-cols-1 gap-6">
                   {sideFeatured.map((p) => (
                     <Card
                       key={p.id}
-                      className="group border border-border/60 hover:border-primary/40 transition-all duration-300 overflow-hidden cursor-pointer flex-1"
+                      className="group border border-border/60 hover:border-primary/40 transition-all duration-300 overflow-hidden cursor-pointer flex flex-col"
                     >
-                      <div className="flex h-full">
-                        <div className="w-1/3 min-w-[120px] overflow-hidden bg-muted">
-                          <img
-                            src={p.image}
-                            alt={p.title}
-                            loading="lazy"
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                          />
-                        </div>
-                        <CardContent className="flex-1 p-5">
-                          <Badge className="bg-primary/10 text-primary hover:bg-primary/15 border-0 uppercase tracking-wider text-[10px]">
-                            {p.category}
-                          </Badge>
-                          <h3 className="mt-2 text-base md:text-lg font-bold text-foreground leading-snug line-clamp-2 group-hover:text-primary transition-colors">
-                            {p.title}
-                          </h3>
-                          <div className="mt-3 flex items-center gap-3 text-[11px] text-muted-foreground">
-                            <span className="flex items-center gap-1">
-                              <CalendarDays className="w-3 h-3" />
-                              {formatDate(p.date)}
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <Clock className="w-3 h-3" />
-                              {p.readTime}
-                            </span>
-                          </div>
-                        </CardContent>
+                      <div className="aspect-[16/9] overflow-hidden bg-muted">
+                        <img
+                          src={p.image}
+                          alt={p.title}
+                          loading="lazy"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
                       </div>
+                      <CardContent className="p-5 flex flex-col flex-1">
+                        <Badge className="bg-primary/10 text-primary hover:bg-primary/15 border-0 uppercase tracking-wider text-[10px] w-fit">
+                          {p.category}
+                        </Badge>
+                        <h3 className="mt-3 text-base md:text-lg font-bold text-foreground leading-snug line-clamp-2 group-hover:text-primary transition-colors">
+                          {p.title}
+                        </h3>
+                        <div className="mt-auto pt-3 flex items-center gap-3 text-[11px] text-muted-foreground">
+                          <span className="flex items-center gap-1">
+                            <CalendarDays className="w-3 h-3" />
+                            {formatDate(p.date)}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Clock className="w-3 h-3" />
+                            {p.readTime}
+                          </span>
+                        </div>
+                      </CardContent>
                     </Card>
                   ))}
                 </div>
