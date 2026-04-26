@@ -468,6 +468,25 @@ export default function CajillaSeguridadPage() {
               </p>
             </div>
           </div>
+
+          {/* CTA */}
+          <div className="mt-12 flex flex-col items-center text-center gap-4">
+            <p className="text-base md:text-lg text-foreground/80 max-w-xl">
+              ¿Quieres conocer más sobre nuestras Cajillas de Seguridad?
+            </p>
+            <a
+              href={`mailto:cajillasdeseguridad@unibank.com.pa?subject=${encodeURIComponent(
+                "Solicitud de información — Cajilla de Seguridad",
+              )}&body=${encodeURIComponent(
+                `Hola,\n\nMe interesa recibir más información sobre el servicio de Cajillas de Seguridad de UniBank.\n\nDatos de contacto:\nNombre:\nTeléfono:\nCorreo:\n\nGracias.`,
+              )}`}
+            >
+              <Button size="lg" className="rounded-full px-8 h-12 text-base font-semibold">
+                Solicitar información
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </a>
+          </div>
         </div>
       </section>
 
