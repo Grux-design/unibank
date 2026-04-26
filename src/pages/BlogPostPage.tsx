@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { documentToReactComponents, type Options } from "@contentful/rich-text-react-renderer";
 import { BLOCKS, INLINES, MARKS, type Document } from "@contentful/rich-text-types";
@@ -111,12 +111,13 @@ function buildRichTextOptions(assetMap: Map<string, ContentfulAsset>): Options {
 }
 
 export default function BlogPostPage() {
-  const { slug, segment } = useParams<{ slug: string; segment: string }>();
+  const { slug } = useParams<{ slug: string }>();
+  const location = useLocation();
   const { data, isLoading, isError } = useContentfulBlogPost(slug);
   const [copied, setCopied] = useState(false);
 
   const backHref = `/blog`;
-  const currentSegment = segment || "personas";
+  const currentSegment = location.pathname.startsWith("/empresas") ? "empresas" : "personas";
 
   const handleShare = async () => {
     if (typeof navigator === "undefined") return;
