@@ -46,7 +46,9 @@ export function FooterNavColumn({ column }: FooterNavColumnProps) {
             </li>
           );
 
-          if (isInternal) {
+          const isPdf = href.toLowerCase().endsWith(".pdf");
+
+          if (isInternal && !isPdf) {
             return (
               <li key={link.label}>
                 <Link
@@ -65,7 +67,7 @@ export function FooterNavColumn({ column }: FooterNavColumnProps) {
             <li key={link.label}>
               <a
                 href={href}
-                {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                {...(isExternal || isPdf ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                 style={{ fontFamily: "Inter, sans-serif", fontSize: 14, color: TEXT_LINK, textDecoration: "none", transition: "color 0.13s" }}
                 onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = ORANGE; }}
                 onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = TEXT_LINK; }}
