@@ -12,8 +12,12 @@ import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Upload, ShieldCheck, FileText, User, MessageSquare, Calculator, X, CheckCircle2 } from "lucide-react";
+import { Upload, ShieldCheck, FileText, User, MessageSquare, CalendarIcon, Clock, X, CheckCircle2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
 
 const MAX_FILE_MB = 20;
 const ACCEPT = ".jpg,.jpeg,.png,.pdf,.doc,.docx,.ppt,.pptx,.mov,.mp3,.zip,.m4a,.mp4";
