@@ -1,62 +1,66 @@
-
-
-## Construir 5 nuevas páginas y enlazarlas desde el footer
+## Crear la página "UniTrust" y enlazarla desde el footer
 
 ### Resumen
+Se creará una nueva página dedicada `/grupo/unitrust` con un diseño top-notch siguiendo el mismo lenguaje visual de la página de Junta Directiva (hero con gradiente, eyebrow pill, badges de iconos, cards con hover, brand naranja `#FF8136`, Inter). Se actualizará el item "UniTrust" del footer en la columna "Grupo UniBank" para que apunte a esta nueva ruta.
 
-Se crearán 5 páginas nuevas, cada una con un diseño diferente según su naturaleza, todas siguiendo el branding de UniBank (naranja #FF8136, Inter, estilo moderno y limpio). Se actualizarán los links del footer para apuntar a cada una.
+### Archivos a crear/editar
 
-### Páginas a crear
+#### 1. `src/pages/UniTrustPage.tsx` (NUEVO)
 
-#### 1. Sucursales (`/sucursales`)
-Página con tarjetas de oficinas en un grid moderno. Cada tarjeta incluye nombre, dirección, teléfono, horario, y botones de acción (Llamar, Ver Mapa). Datos hardcoded de las oficinas reales (Avenida Balboa, Costa del Este, etc. - se extraerán del sitio actual). Diseño: hero con título + grid de cards con iconografía (MapPin, Phone, Clock).
+Estructura visual:
 
-**Archivo:** `src/pages/SucursalesPage.tsx`
+- **Helmet (SEO)**: Título "UniTrust | Grupo UniBank" y descripción sobre socio estratégico fiduciario.
 
-#### 2. Canal de Denuncias (`/canal-de-denuncias`)
-Formulario extenso similar al de la imagen de referencia. Campos: Relación, Lugar, Empresa, Anonimato (Sí/No), Nombre, Teléfono, Email, Motivo, Descripción, Fecha, Hora, Archivo adjunto, Aceptación legal. Usará `react-hook-form` + `zod` como el ContactPage existente. El envío se guardará en una tabla de Lovable Cloud.
+- **Hero section** (mismo patrón de JuntaDirectivaPage):
+  - Fondo `bg-gradient-to-br from-muted/40 via-background to-background` con dos blurs decorativos en primary.
+  - Eyebrow pill: "Grupo UniBank · Fiduciaria".
+  - H1: **"UniTrust"** en grande.
+  - Subtítulo: *"Socio estratégico para la gestión y planificación de su patrimonio personal y empresarial."*
+  - **CTA principal mejorado** (copywriting refinado): **"Solicite su asesoría fiduciaria"** (alternativas: "Hablemos de su patrimonio", "Inicie su asesoría personalizada"). Usaremos **"Solicite su asesoría fiduciaria"**.
+    - El botón usa `<a href="mailto:...">` con:
+      - `to`: `unitrust@unibank.com.pa`
+      - `subject`: `Solicitud de asesoría — UniTrust`
+      - `body` pre-llenado: *"Hola equipo de UniTrust,\n\nMe interesa recibir asesoría sobre los servicios fiduciarios que ofrecen. Por favor contáctenme para conversar sobre las siguientes necesidades:\n\n[Describa brevemente su caso]\n\nDatos de contacto:\nNombre:\nTeléfono:\nCorreo:\n\nGracias."*
+    - Botón estilizado con `bg-primary text-primary-foreground`, ícono `Mail` o `ArrowRight` de lucide.
 
-**Archivo:** `src/pages/CanalDenunciasPage.tsx`
-**Base de datos:** Tabla `complaints` para almacenar las denuncias.
+- **Sección "¿Qué es UniTrust?"**:
+  - Layout de 2 columnas (texto + card visual con icono `ShieldCheck` o `Landmark`).
+  - Eyebrow pill + heading + párrafo descriptivo del contenido provisto.
 
-#### 3. Noticias/Blog (`/blog`)
-Reemplazar el stub actual de BlogPage con una página de listado de artículos con diseño de cards en grid. Por ahora con contenido placeholder (6-8 artículos ficticios). Hero con título "Noticias y Blog", grid de cards con imagen, fecha, título, extracto, y botón "Leer más".
+- **Sección "Nuestro Compromiso"**:
+  - Eyebrow + título.
+  - Grid de 4 cards (sm:grid-cols-2 lg:grid-cols-4) con iconos de lucide, una por cada compromiso:
+    1. *Confianza e imparcialidad* — `Handshake`
+    2. *Estructuras a la medida* — `Wrench` o `Settings2`
+    3. *Eficiencia operativa* — `Zap`
+    4. *Atención y confidencialidad* — `Lock`
+  - Cada card con border, hover lift, icono en bg-primary/10.
 
-**Archivo:** `src/pages/BlogPage.tsx` (reescribir)
+- **Sección "Productos UniTrust"** (con fondo `bg-muted/30` para separar):
+  - Eyebrow "Productos" + título "Soluciones para salvaguardar su patrimonio".
+  - Grid de 6 productos (sm:grid-cols-2 lg:grid-cols-3), cada uno como card con icono y nombre:
+    1. Fideicomiso de Garantía — `Shield`
+    2. Fideicomiso de Administración — `Briefcase`
+    3. Fideicomiso de Inversión — `TrendingUp`
+    4. Fideicomiso de Desarrollo Inmobiliario — `Building2`
+    5. Fideicomiso Protección Patrimonial — `ShieldCheck`
+    6. Escrow — `KeyRound`
+  - Cada card con hover (lift + border primary), icono en círculo bg-primary/10.
 
-#### 4. Trabaja con Nosotros (`/trabaja-con-nosotros`)
-Formulario de aplicación de empleo. Campos: Nombre, Teléfono, Email, Mensaje/Carta de presentación, Archivo adjunto (CV). Similar a la imagen de referencia pero con diseño moderno. Se guardará en tabla de Lovable Cloud.
+- **CTA final (banner)**:
+  - Sección con fondo `bg-primary/5` o gradiente sutil.
+  - Título: "¿Listo para proteger y planificar su patrimonio?"
+  - Botón mailto duplicado con el mismo `mailto:` enriquecido.
 
-**Archivo:** `src/pages/TrabajaConNosotrosPage.tsx`
-**Base de datos:** Tabla `job_applications` para almacenar las aplicaciones.
+#### 2. `src/App.tsx`
+- Importar `UniTrustPage`.
+- Agregar ruta `<Route path="/grupo/unitrust" element={<UniTrustPage />} />` antes de las rutas dinámicas `/:slug`.
 
-#### 5. Tarifario (`/tarifario`)
-Página simple que embebe el PDF del tarifario en un iframe/viewer, con un botón prominente de descarga directa al PDF. No requiere formulario ni base de datos.
-
-**Archivo:** `src/pages/TarifarioPage.tsx`
-
-### Cambios en archivos existentes
-
-**`src/App.tsx`** - Agregar 4 nuevas rutas (`/sucursales`, `/canal-de-denuncias`, `/trabaja-con-nosotros`, `/tarifario`) antes de `/:slug`. La ruta `/blog` ya existe.
-
-**`src/data/footerData.ts`** - Actualizar hrefs:
-- "sucursales" → `/sucursales`
-- "Canal de denuncias" → `/canal-de-denuncias`
-- "Noticias" y "Blog" → `/blog`
-- "Trabaja con nosotros" → `/trabaja-con-nosotros`
-- "Tarifario" → `/tarifario`
-
-### Base de datos (migraciones)
-
-Se crearán dos tablas con RLS:
-- **`complaints`**: campos para todos los datos del formulario de denuncias, con RLS que permite insert anónimo (público) y select solo para admins.
-- **`job_applications`**: nombre, teléfono, email, mensaje, archivo CV, con RLS similar.
-
-Se usará Lovable Cloud Storage para los archivos adjuntos de ambos formularios.
+#### 3. `src/data/footerData.ts`
+- En la columna "Grupo UniBank", actualizar el item `{ label: "UniTrust" }` para que sea `{ label: "UniTrust", href: "/grupo/unitrust" }`.
 
 ### Notas de diseño
-- Todas las páginas usan el hero con fondo `bg-muted/30` y título grande, consistente con las institucionales.
-- Formularios usan los componentes shadcn/ui existentes (Form, Input, Textarea, Button, Select).
-- Cards de sucursales y blog usan bordes redondeados, sombras suaves, hover con transición naranja.
-- Tipografía Inter, color primario naranja #FF8136 para CTAs y acentos.
-
+- Reutilizar exactamente el patrón visual de `JuntaDirectivaPage` (hero con blurs, eyebrow pills, section headers, cards redondeadas con hover lift).
+- 100% Tailwind con tokens semánticos (`primary`, `muted`, `border`, `card`, `foreground`).
+- Sin nuevas dependencias — solo iconos de `lucide-react` ya disponibles.
+- El `mailto` se construirá con `encodeURIComponent` para subject y body para preservar saltos de línea.
