@@ -421,7 +421,11 @@ export default function CanalDenunciasPage() {
                             <Clock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
                             <Input
                               type="time"
-                              className="pl-9 h-10"
+                              className="pl-9 h-10 cursor-pointer [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+                              onClick={(e) => {
+                                const el = e.currentTarget as HTMLInputElement & { showPicker?: () => void };
+                                el.showPicker?.();
+                              }}
                               {...field}
                             />
                           </div>
