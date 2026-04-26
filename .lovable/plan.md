@@ -1,91 +1,119 @@
 ## Goal
 
-Transform `/blog` from a static 6-card grid into an editorial, interactive news hub that feels alive and on-brand (Unibank orange `#ff8136`, near-black, Inter, full-width minimalist).
+Replace the hardcoded blog data with live Contentful content, and add a Medium-style detail page at `/:segment/blog/:slug` with a hero banner, Rich Text rendering (including embedded images), and SEO derived from the post itself.
 
 ---
 
-## 1. Expand the dataset (`src/pages/BlogPage.tsx`)
+## 1. Extend Contentful types & hook
 
-Grow the `BlogPost` mock array from 6 → ~14 posts so filters/sort/pagination feel meaningful. Each post gains:
-- `author` (name + role, e.g. *"María Pérez · Editora Financiera"*)
-- `readTime` (e.g. `"4 min lectura"`)
-- `featured: boolean` (1 hero post + 2 secondary featured)
-- `tags: string[]` (for richer filtering beyond the single category)
+**File: `src/integrations/contentful/types.ts`**
 
-Categories used: **Productos, Educación Financiera, Noticias, Empresas, Inversiones, Sostenibilidad**.
+Add Blog field types and resolved type:
 
----
+```ts
+export interface BlogFields {
+  title: string;
+  slug: string;
+  excerpt?: string;
+  thumbnail?: ContentfulLink | ContentfulAsset;
+  content?: unknown; // Rich Text document
+  category?: string;
+  author?: string;
+  publishedDate?: string;
+}
 
-## 2. New page structure
+export interface ResolvedBlog {
+  sys: ContentfulSys;
+  title: string;
+  slug: string;
+  excerpt?: string;
+  thumbnail?: ContentfulAsset;
+  content?: unknown;
+  category?: string;
+  author?: string;
+  publishedDate?: string;
+}
+```
 
-### a) Hero band (replaces current plain title block)
-- Keep the existing `bg-muted/30` band but add a small orange eyebrow chip ("Sala de Prensa · Blog Unibank"), the headline, and a one-line subhead.
-- Below the heading, a horizontal **stat strip**: `{posts.length} artículos · {categories.length} categorías · Actualizado {fecha más reciente}`.
+**New file: `src/hooks/useContentfulBlog.ts`**
 
-### b) Featured section (new)
-A 2-column editorial layout right under the hero:
-- **Left (60%)**: large featured post card — full image, category chip, title (text-3xl), excerpt, author + date + read time row.
-- **Right (40%)**: stack of 2 secondary featured posts in a horizontal mini-card style (image left, text right).
+Two hooks built on the existing `contentfulFetch` proxy (which already supports `content_type` and `slug` params):
 
-### c) Sticky filter/search toolbar
-A `sticky top-20 z-30` toolbar with backdrop blur:
-- **Search input** (left, with `Search` icon from lucide) — filters by title/excerpt live.
-- **Category pills** (center, horizontally scrollable on mobile) — "Todos" + each category. Active pill uses `bg-primary text-primary-foreground`. Built with shadcn `Button` (variant ghost/default).
-- **Sort `Select`** (right, shadcn): "Más recientes", "Más antiguos", "A–Z".
-- **Result count** small text under the bar: `"Mostrando X de Y artículos"`.
+- `useContentfulBlogList()` → fetches `content_type=blog`, resolves thumbnail assets via `includes.Asset`, returns `ResolvedBlog[]` sorted by `publishedDate` desc.
+- `useContentfulBlogPost(slug)` → fetches a single entry by slug with `include=4` so embedded asset references inside the Rich Text `content` are resolved. Returns `{ post, assetMap, entryMap }` so the Rich Text renderer can look up embedded images.
 
-### d) Main grid
-- Same `Card` primitive but 3 columns on `lg`, 2 on `md`, 1 on mobile.
-- Add **author row** (small avatar circle with initial + name) and **read time** badge to each card.
-- Hover: lift (`-translate-y-1`), stronger border, image zoom (already exists).
-- **Empty state** when filters yield 0 results: centered icon + "No encontramos artículos…" + "Limpiar filtros" button.
-
-### e) Pagination
-- 6 posts per page using shadcn `Pagination` component (already in the project).
-- Resets to page 1 whenever search/category/sort changes.
-- Smooth scroll back to top of grid on page change.
-
-### f) Newsletter CTA strip (bottom, before footer)
-A full-width `bg-primary/5` band with: headline "Recibe nuestras novedades", short copy, email input + "Suscribirme" button (UI-only, no backend wiring — visual completeness only).
+Both use React Query with a 5-min `staleTime`, mirroring `useContentfulPage`.
 
 ---
 
-## 3. State & logic (all client-side, no backend changes)
+## 2. Rewrite `/blog` index page
 
-Inside `BlogPage.tsx` with `useState` + `useMemo`:
-- `query: string`, `category: string` (default `"Todos"`), `sort: "recent" | "old" | "az"`, `page: number`.
-- Memoized `filtered` → search match (case-insensitive on title + excerpt) → category filter → sort.
-- Memoized `paginated` → slice for current page (`PAGE_SIZE = 6`).
-- `useEffect` to reset `page` to 1 whenever `query`, `category`, or `sort` changes.
+**File: `src/pages/BlogPage.tsx`** (full refactor)
 
----
-
-## 4. Components reused (no new files needed)
-
-- `@/components/ui/card` — already used.
-- `@/components/ui/button` — pills, clear filters, newsletter submit.
-- `@/components/ui/input` — search + newsletter email.
-- `@/components/ui/select` — sort dropdown.
-- `@/components/ui/badge` — category chip + read-time badge.
-- `@/components/ui/pagination` — page navigation.
-- `lucide-react` icons: `Search`, `CalendarDays`, `Clock`, `User`, `ArrowRight`, `Newspaper`, `X`.
-
-No new dependencies. Single file edited: **`src/pages/BlogPage.tsx`**.
+- Drop the hardcoded `posts` array.
+- Use `useContentfulBlogList()`; show skeleton placeholders while loading; show a friendly empty state if nothing returns.
+- Keep the existing hero header design (title, subtitle, stats), but compute counts from live data.
+- **Destacados section**: show the 3 most recent posts as the editorial layout (1 large + 2 stacked side cards). Use the post's `thumbnail` URL as the card image and `excerpt` for the summary text.
+- Each card becomes a `<Link to={\`/${segment}/blog/${post.slug}\`}>` wrapping the full card area.
+- **Segment resolution**: derive `segment` from the current URL via `useLocation()` — if the user navigated from `/empresas/...` use `empresas`, otherwise default to `personas`. (Header context isn't passed via URL on `/blog` itself, so default = `personas`.)
+- **Conditional sections**: if `posts.length < 4`, render only the hero + Destacados — hide the search bar, sort dropdown, category pills, paginated grid, and the "Más artículos" section. Newsletter CTA stays at the bottom either way.
+- When `posts.length >= 4`, keep all the existing filter/sort/pagination logic, but rewire it to operate on the Contentful data.
 
 ---
 
-## 5. Visual & accessibility polish
+## 3. New blog detail page
 
-- All interactive elements get focus-visible rings (inherits from existing button/input primitives).
-- Sticky toolbar uses `bg-background/80 backdrop-blur` so it stays legible above the grid.
-- Featured card uses an `aspect-[16/10]` image; secondary featured uses `aspect-square` thumbnails (96px).
-- `loading="lazy"` on all non-featured images; featured hero image preloaded (`loading="eager"`).
-- Helmet title/description updated to reflect richer content; canonical unchanged.
+**New file: `src/pages/BlogPostPage.tsx`**
+
+Medium-inspired reading layout:
+
+- **Hero banner**: full-bleed `thumbnail` image (16:9, ~520px tall on desktop) with a subtle dark gradient overlay, title and meta (category badge, author, date, read time estimate) overlaid at the bottom on a contained max-width.
+- **Article body**: centered `max-w-2xl` (~720px) for comfortable reading. Generous vertical rhythm, large serif-friendly typography via Tailwind `prose`-style classes (using existing `text-foreground` / `text-muted-foreground` tokens — no new colors).
+- **Rich Text rendering**: use `@contentful/rich-text-react-renderer` (already installed) with a custom `options` object:
+  - Headings (`H2`, `H3`) → styled `<h2>/<h3>` with proper margin and weight.
+  - Paragraphs → `text-lg leading-relaxed text-foreground/90 mb-6`.
+  - Lists, blockquotes, hr, hyperlinks → tasteful styled variants.
+  - **`BLOCKS.EMBEDDED_ASSET`**: look up the asset id in the `assetMap` from the hook, resolve the URL (handle `//` prefix), and render a responsive `<figure><img/><figcaption/></figure>` with the asset's title/description as caption.
+  - **`INLINES.HYPERLINK`** → underlined primary-colored links.
+- **Footer of article**: back-to-blog link + a small "Compartir" row (visual only, native `navigator.share` if available, else copy-link fallback — no backend).
+- **Loading state**: skeleton hero + skeleton paragraphs.
+- **Not-found state**: friendly message with a button back to `/blog`.
+
+**SEO**: `<Helmet>` with `<title>{post.title} – UniBank</title>`, `<meta name="description" content={post.excerpt}/>`, canonical `/${segment}/blog/${slug}`, plus `og:title`, `og:description`, `og:image` (thumbnail).
 
 ---
 
-## Out of scope (can follow in a later step)
+## 4. Routing
 
-- Real article detail pages (`/blog/:slug`) — cards stay non-navigating but visually clickable, matching current behavior.
-- Wiring the blog to Contentful — keeping mock data so this iteration ships immediately.
-- Newsletter form submission backend.
+**File: `src/App.tsx`**
+
+Add two routes (so both segments work):
+
+```tsx
+<Route path="/personas/blog/:slug" element={<BlogPostPage />} />
+<Route path="/empresas/blog/:slug" element={<BlogPostPage />} />
+```
+
+(Using explicit segments rather than `/:segment/blog/:slug` to avoid clashing with the existing catch-all `/:slug` legal-page route.)
+
+---
+
+## 5. No backend changes needed
+
+The existing `contentful-proxy` edge function already accepts `content_type` and `slug` query params and supports `include` depth, so it covers both the list and detail fetches. No edge-function or DB migration work required.
+
+---
+
+## Files touched
+
+- ✏️ `src/integrations/contentful/types.ts` — add Blog types
+- ➕ `src/hooks/useContentfulBlog.ts` — new list + detail hooks
+- ✏️ `src/pages/BlogPage.tsx` — full refactor, conditional UI when < 4 posts
+- ➕ `src/pages/BlogPostPage.tsx` — new Medium-style detail page
+- ✏️ `src/App.tsx` — register the two new routes
+
+## Out of scope
+
+- Pagination from Contentful (we'll fetch all blog entries client-side; can be added later if the volume grows).
+- Multi-language switching for blog content (uses Contentful's default locale).
+- Comments, likes, or any persistence — purely read-only.

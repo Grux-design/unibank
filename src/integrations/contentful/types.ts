@@ -136,3 +136,28 @@ export interface ResolvedPage {
     canonicalUrl?: string;
   };
 }
+
+/* ── Blog types ─────────────────────────────────────────── */
+
+export interface BlogFields {
+  title: string;
+  slug: string;
+  excerpt?: string;
+  thumbnail?: ContentfulLink | ContentfulAsset;
+  content?: unknown;
+  category?: string;
+  author?: string;
+  publishedDate?: string;
+}
+
+export interface ResolvedBlog {
+  sys: ContentfulSys;
+  title: string;
+  slug: string;
+  excerpt?: string;
+  thumbnail?: ContentfulAsset;
+  content?: unknown;
+  category?: string;
+  author?: string;
+  publishedDate?: string;
+}
