@@ -364,7 +364,7 @@ export default function BlogPage() {
                   <div className="flex items-center justify-between sm:justify-end gap-3 sm:ml-auto">
                     <span className="text-xs text-muted-foreground hidden md:inline">
                       <strong className="text-foreground">{filtered.length}</strong>{" "}
-                      de {posts.length} artículos
+                      de {gridPool.length} artículos
                     </span>
                     <Select value={sort} onValueChange={(v) => setSort(v as typeof sort)}>
                       <SelectTrigger className="w-[170px] h-11 rounded-full" aria-label="Ordenar">
@@ -379,47 +379,15 @@ export default function BlogPage() {
                   </div>
                 </div>
 
-                {categories.length > 1 && (
-                  <div className="flex items-center gap-3">
-                    <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground hidden md:inline shrink-0">
-                      Categorías
-                    </span>
-                    <div className="relative flex-1 min-w-0">
-                      <div className="no-scrollbar overflow-x-auto">
-                        <div className="flex items-center gap-2 min-w-max py-1">
-                          {categories.map((c) => {
-                            const active = c === category;
-                            return (
-                              <button
-                                key={c}
-                                type="button"
-                                onClick={() => setCategory(c)}
-                                className={
-                                  "shrink-0 inline-flex items-center h-8 px-4 rounded-full text-xs font-medium transition-colors border " +
-                                  (active
-                                    ? "bg-primary text-primary-foreground border-primary"
-                                    : "bg-background text-muted-foreground border-border hover:text-foreground hover:border-foreground/30")
-                                }
-                              >
-                                {c}
-                              </button>
-                            );
-                          })}
-                        </div>
-                      </div>
-                      <div className="pointer-events-none absolute inset-y-0 left-0 w-6 bg-gradient-to-r from-background to-transparent" />
-                      <div className="pointer-events-none absolute inset-y-0 right-0 w-6 bg-gradient-to-l from-background to-transparent" />
-                    </div>
-
-                    {hasActiveFilters && (
-                      <button
-                        type="button"
-                        onClick={clearFilters}
-                        className="shrink-0 inline-flex items-center gap-1 text-xs text-primary hover:underline"
-                      >
-                        <X className="w-3 h-3" /> Limpiar
-                      </button>
-                    )}
+                {hasActiveFilters && (
+                  <div className="flex justify-end">
+                    <button
+                      type="button"
+                      onClick={clearFilters}
+                      className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
+                    >
+                      <X className="w-3 h-3" /> Limpiar filtros
+                    </button>
                   </div>
                 )}
               </div>
