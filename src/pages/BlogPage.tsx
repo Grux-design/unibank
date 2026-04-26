@@ -469,24 +469,24 @@ export default function BlogPage() {
         )}
 
         {/* ── Sticky toolbar ── */}
-        <div className="sticky top-20 z-30 bg-background/85 backdrop-blur-md border-y border-border mt-12">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4">
-            <div className="flex flex-col lg:flex-row lg:items-center gap-4">
-              {/* Search */}
-              <div className="relative lg:w-72">
+        <div className="sticky top-20 z-30 bg-background/90 backdrop-blur-md border-y border-border mt-12">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 space-y-3">
+            {/* Row 1 — Search (left) + Sort & result count (right) */}
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+              <div className="relative flex-1 sm:max-w-md">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Buscar artículos..."
-                  className="pl-9 pr-9"
+                  placeholder="Buscar artículos, temas o autores..."
+                  className="pl-9 pr-9 h-11 rounded-full bg-muted/40 border-transparent focus-visible:bg-background focus-visible:border-input"
                   aria-label="Buscar artículos"
                 />
                 {query && (
                   <button
                     type="button"
                     onClick={() => setQuery("")}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted"
                     aria-label="Limpiar búsqueda"
                   >
                     <X className="w-3.5 h-3.5" />
@@ -494,37 +494,19 @@ export default function BlogPage() {
                 )}
               </div>
 
-              {/* Category pills */}
-              <div className="flex-1 -mx-1 overflow-x-auto">
-                <div className="flex items-center gap-2 px-1 min-w-max">
-                  {categories.map((c) => {
-                    const active = c === category;
-                    return (
-                      <Button
-                        key={c}
-                        size="sm"
-                        variant={active ? "default" : "ghost"}
-                        onClick={() => setCategory(c)}
-                        className={
-                          active
-                            ? "rounded-full"
-                            : "rounded-full text-muted-foreground hover:text-foreground"
-                        }
-                      >
-                        {c}
-                      </Button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Sort */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center justify-between sm:justify-end gap-3 sm:ml-auto">
+                <span className="text-xs text-muted-foreground hidden md:inline">
+                  <strong className="text-foreground">{filtered.length}</strong>{" "}
+                  de {posts.length} artículos
+                </span>
                 <Select
                   value={sort}
                   onValueChange={(v) => setSort(v as typeof sort)}
                 >
-                  <SelectTrigger className="w-[180px]" aria-label="Ordenar">
+                  <SelectTrigger
+                    className="w-[170px] h-11 rounded-full"
+                    aria-label="Ordenar"
+                  >
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -536,23 +518,55 @@ export default function BlogPage() {
               </div>
             </div>
 
-            <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground">
-              <span>
-                Mostrando{" "}
-                <strong className="text-foreground">{filtered.length}</strong>{" "}
-                de <strong className="text-foreground">{posts.length}</strong>{" "}
-                artículos
+            {/* Row 2 — Category pills with fade edges, hidden scrollbar */}
+            <div className="flex items-center gap-3">
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground hidden md:inline shrink-0">
+                Categorías
               </span>
+              <div className="relative flex-1 min-w-0">
+                <div className="no-scrollbar overflow-x-auto">
+                  <div className="flex items-center gap-2 min-w-max py-1">
+                    {categories.map((c) => {
+                      const active = c === category;
+                      return (
+                        <button
+                          key={c}
+                          type="button"
+                          onClick={() => setCategory(c)}
+                          className={
+                            "shrink-0 inline-flex items-center h-8 px-4 rounded-full text-xs font-medium transition-colors border " +
+                            (active
+                              ? "bg-primary text-primary-foreground border-primary"
+                              : "bg-background text-muted-foreground border-border hover:text-foreground hover:border-foreground/30")
+                          }
+                        >
+                          {c}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+                {/* Fade edges */}
+                <div className="pointer-events-none absolute inset-y-0 left-0 w-6 bg-gradient-to-r from-background to-transparent" />
+                <div className="pointer-events-none absolute inset-y-0 right-0 w-6 bg-gradient-to-l from-background to-transparent" />
+              </div>
+
               {hasActiveFilters && (
                 <button
                   type="button"
                   onClick={clearFilters}
-                  className="inline-flex items-center gap-1 text-primary hover:underline"
+                  className="shrink-0 inline-flex items-center gap-1 text-xs text-primary hover:underline"
                 >
-                  <X className="w-3 h-3" /> Limpiar filtros
+                  <X className="w-3 h-3" /> Limpiar
                 </button>
               )}
             </div>
+
+            {/* Mobile-only result count */}
+            <p className="text-xs text-muted-foreground md:hidden">
+              <strong className="text-foreground">{filtered.length}</strong> de{" "}
+              {posts.length} artículos
+            </p>
           </div>
         </div>
 
