@@ -573,7 +573,7 @@ export default function BlogPage() {
 
         {/* ── Newsletter CTA ── */}
         {!isLoading && posts.length > 0 && (
-          <section className="bg-primary/5 border-t border-border">
+          <section className="bg-primary/5 border-t border-border mt-16 md:mt-24">
             <div className="max-w-5xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-5 gap-8 items-center">
               <div className="md:col-span-3">
                 <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
