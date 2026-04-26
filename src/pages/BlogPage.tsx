@@ -70,33 +70,35 @@ export default function BlogPage() {
   const segment = location.pathname.startsWith("/empresas") ? "empresas" : "personas";
 
   const [query, setQuery] = useState("");
-  const [category, setCategory] = useState<string>(ALL);
   const [sort, setSort] = useState<"recent" | "old" | "az">("recent");
   const [page, setPage] = useState(1);
-
-  const categories = useMemo(() => {
-    const set = new Set(posts.map((p) => p.category).filter(Boolean) as string[]);
-    return [ALL, ...Array.from(set)];
-  }, [posts]);
 
   const featured = useMemo(() => posts.slice(0, 3), [posts]);
   const heroFeatured = featured[0];
   const sideFeatured = featured.slice(1, 3);
+  const featuredIds = useMemo(() => new Set(featured.map((p) => p.sys.id)), [featured]);
 
   const lastUpdated = useMemo(() => {
     if (!posts.length) return "";
     return formatDate(getPostDate(posts[0]));
   }, [posts]);
 
+  // Posts available for the searchable/sortable grid (exclude the 3 featured)
+  const gridPool = useMemo(
+    () => posts.filter((p) => !featuredIds.has(p.sys.id)),
+    [posts, featuredIds],
+  );
+
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    let list = posts.filter((p) => {
-      const matchesQ =
-        !q ||
+    let list = gridPool.filter((p) => {
+      if (!q) return true;
+      return (
         p.title.toLowerCase().includes(q) ||
-        (p.excerpt?.toLowerCase().includes(q) ?? false);
-      const matchesCat = category === ALL || p.category === category;
-      return matchesQ && matchesCat;
+        (p.excerpt?.toLowerCase().includes(q) ?? false) ||
+        (p.author?.toLowerCase().includes(q) ?? false) ||
+        (p.category?.toLowerCase().includes(q) ?? false)
+      );
     });
     list = [...list].sort((a, b) => {
       if (sort === "az") return a.title.localeCompare(b.title);
@@ -105,11 +107,11 @@ export default function BlogPage() {
       return sort === "recent" ? bd - ad : ad - bd;
     });
     return list;
-  }, [posts, query, category, sort]);
+  }, [gridPool, query, sort]);
 
   useEffect(() => {
     setPage(1);
-  }, [query, category, sort]);
+  }, [query, sort]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
@@ -123,11 +125,10 @@ export default function BlogPage() {
 
   const clearFilters = () => {
     setQuery("");
-    setCategory(ALL);
     setSort("recent");
   };
 
-  const hasActiveFilters = query !== "" || category !== ALL || sort !== "recent";
+  const hasActiveFilters = query !== "" || sort !== "recent";
   const showAdvancedSections = posts.length >= 4;
   const postHref = (slug: string) => `/${segment}/blog/${slug}`;
 
@@ -164,17 +165,6 @@ export default function BlogPage() {
                     <strong className="text-foreground">{posts.length}</strong>{" "}
                     {posts.length === 1 ? "artículo" : "artículos"}
                   </span>
-                  {categories.length > 1 && (
-                    <>
-                      <span className="hidden sm:inline">·</span>
-                      <span>
-                        <strong className="text-foreground">
-                          {categories.length - 1}
-                        </strong>{" "}
-                        categorías
-                      </span>
-                    </>
-                  )}
                   {lastUpdated && (
                     <>
                       <span className="hidden sm:inline">·</span>
@@ -374,7 +364,7 @@ export default function BlogPage() {
                   <div className="flex items-center justify-between sm:justify-end gap-3 sm:ml-auto">
                     <span className="text-xs text-muted-foreground hidden md:inline">
                       <strong className="text-foreground">{filtered.length}</strong>{" "}
-                      de {posts.length} artículos
+                      de {gridPool.length} artículos
                     </span>
                     <Select value={sort} onValueChange={(v) => setSort(v as typeof sort)}>
                       <SelectTrigger className="w-[170px] h-11 rounded-full" aria-label="Ordenar">
@@ -389,47 +379,15 @@ export default function BlogPage() {
                   </div>
                 </div>
 
-                {categories.length > 1 && (
-                  <div className="flex items-center gap-3">
-                    <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground hidden md:inline shrink-0">
-                      Categorías
-                    </span>
-                    <div className="relative flex-1 min-w-0">
-                      <div className="no-scrollbar overflow-x-auto">
-                        <div className="flex items-center gap-2 min-w-max py-1">
-                          {categories.map((c) => {
-                            const active = c === category;
-                            return (
-                              <button
-                                key={c}
-                                type="button"
-                                onClick={() => setCategory(c)}
-                                className={
-                                  "shrink-0 inline-flex items-center h-8 px-4 rounded-full text-xs font-medium transition-colors border " +
-                                  (active
-                                    ? "bg-primary text-primary-foreground border-primary"
-                                    : "bg-background text-muted-foreground border-border hover:text-foreground hover:border-foreground/30")
-                                }
-                              >
-                                {c}
-                              </button>
-                            );
-                          })}
-                        </div>
-                      </div>
-                      <div className="pointer-events-none absolute inset-y-0 left-0 w-6 bg-gradient-to-r from-background to-transparent" />
-                      <div className="pointer-events-none absolute inset-y-0 right-0 w-6 bg-gradient-to-l from-background to-transparent" />
-                    </div>
-
-                    {hasActiveFilters && (
-                      <button
-                        type="button"
-                        onClick={clearFilters}
-                        className="shrink-0 inline-flex items-center gap-1 text-xs text-primary hover:underline"
-                      >
-                        <X className="w-3 h-3" /> Limpiar
-                      </button>
-                    )}
+                {hasActiveFilters && (
+                  <div className="flex justify-end">
+                    <button
+                      type="button"
+                      onClick={clearFilters}
+                      className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
+                    >
+                      <X className="w-3 h-3" /> Limpiar filtros
+                    </button>
                   </div>
                 )}
               </div>
