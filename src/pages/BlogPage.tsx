@@ -74,29 +74,32 @@ export default function BlogPage() {
   const [sort, setSort] = useState<"recent" | "old" | "az">("recent");
   const [page, setPage] = useState(1);
 
-  const categories = useMemo(() => {
-    const set = new Set(posts.map((p) => p.category).filter(Boolean) as string[]);
-    return [ALL, ...Array.from(set)];
-  }, [posts]);
-
   const featured = useMemo(() => posts.slice(0, 3), [posts]);
   const heroFeatured = featured[0];
   const sideFeatured = featured.slice(1, 3);
+  const featuredIds = useMemo(() => new Set(featured.map((p) => p.sys.id)), [featured]);
 
   const lastUpdated = useMemo(() => {
     if (!posts.length) return "";
     return formatDate(getPostDate(posts[0]));
   }, [posts]);
 
+  // Posts available for the searchable/sortable grid (exclude the 3 featured)
+  const gridPool = useMemo(
+    () => posts.filter((p) => !featuredIds.has(p.sys.id)),
+    [posts, featuredIds],
+  );
+
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    let list = posts.filter((p) => {
-      const matchesQ =
-        !q ||
+    let list = gridPool.filter((p) => {
+      if (!q) return true;
+      return (
         p.title.toLowerCase().includes(q) ||
-        (p.excerpt?.toLowerCase().includes(q) ?? false);
-      const matchesCat = category === ALL || p.category === category;
-      return matchesQ && matchesCat;
+        (p.excerpt?.toLowerCase().includes(q) ?? false) ||
+        (p.author?.toLowerCase().includes(q) ?? false) ||
+        (p.category?.toLowerCase().includes(q) ?? false)
+      );
     });
     list = [...list].sort((a, b) => {
       if (sort === "az") return a.title.localeCompare(b.title);
@@ -105,11 +108,11 @@ export default function BlogPage() {
       return sort === "recent" ? bd - ad : ad - bd;
     });
     return list;
-  }, [posts, query, category, sort]);
+  }, [gridPool, query, sort]);
 
   useEffect(() => {
     setPage(1);
-  }, [query, category, sort]);
+  }, [query, sort]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
@@ -123,11 +126,10 @@ export default function BlogPage() {
 
   const clearFilters = () => {
     setQuery("");
-    setCategory(ALL);
     setSort("recent");
   };
 
-  const hasActiveFilters = query !== "" || category !== ALL || sort !== "recent";
+  const hasActiveFilters = query !== "" || sort !== "recent";
   const showAdvancedSections = posts.length >= 4;
   const postHref = (slug: string) => `/${segment}/blog/${slug}`;
 
