@@ -20,6 +20,7 @@ import SucursalesPage from "./pages/SucursalesPage";
 import CanalDenunciasPage from "./pages/CanalDenunciasPage";
 import TrabajaConNosotrosPage from "./pages/TrabajaConNosotrosPage";
 import TarifarioPage from "./pages/TarifarioPage";
+import UniTrustPage from "./pages/UniTrustPage";
 
 const queryClient = new QueryClient();
 
@@ -40,6 +41,7 @@ const App = () => (
               <Route path="/canal-de-denuncias" element={<CanalDenunciasPage />} />
               <Route path="/trabaja-con-nosotros" element={<TrabajaConNosotrosPage />} />
               <Route path="/tarifario" element={<TarifarioPage />} />
+              <Route path="/grupo/unitrust" element={<UniTrustPage />} />
               <Route path="/personas/:category/:slug" element={<ProductDetailPage />} />
               <Route path="/empresas/:category/:slug" element={<ProductDetailPage />} />
               <Route path="/contact" element={<ContactPage />} />
