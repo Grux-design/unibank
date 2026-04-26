@@ -136,12 +136,8 @@ export default function CanalDenunciasPage() {
       reason: "",
       knowledge_source: "",
       description: "",
-      month: "",
-      day: "",
-      year: "",
-      hour: "",
-      minute: "",
-      period: "AM",
+      incident_date: undefined as unknown as Date,
+      incident_time: "",
       captcha_answer: "",
       accepted_terms: false,
     },
@@ -153,7 +149,7 @@ export default function CanalDenunciasPage() {
   const step1Done = !!(v.relationship && v.location && v.company);
   const step2Done = !!v.is_anonymous;
   const step3Done = !!(v.reason && v.knowledge_source && v.description && v.description.length >= 10);
-  const step4Done = !!(v.month && v.day && v.year && v.hour && v.minute && v.period);
+  const step4Done = !!(v.incident_date && v.incident_time);
 
   const handleFile = (f: File | null) => {
     if (!f) return setFile(null);
