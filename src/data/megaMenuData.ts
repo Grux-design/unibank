@@ -54,11 +54,12 @@ export const personasData: MenuSection = {
       ],
     },
     {
-      name: "Inversiones y Tarjetas",
-      categorySlug: "inversiones",
+      name: "Otros Servicios",
+      categorySlug: "otros-servicios",
       items: [
         { label: "Invertis Global Income Fund", slug: "invertis-global-income-fund", href: "https://www.invertissecurities.com/es/invertis-global-income-fund" },
         { label: "Mastercard Black Débito",     slug: "mastercard-black-debito" },
+        { label: "Cajilla de Seguridad",        slug: "cajilla-de-seguridad" },
       ],
     },
   ],
