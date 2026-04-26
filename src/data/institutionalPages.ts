@@ -58,18 +58,16 @@ export const institutionalPages: Record<string, InstitutionalPageData> = {
   },
   "cumplimiento-normativo": {
     title: "Cumplimiento Normativo",
-    metaDescription: "Conoce el compromiso de UniBank con el cumplimiento normativo y la prevención del lavado de activos.",
+    metaDescription: "Conoce el compromiso de UniBank con el cumplimiento normativo y la prevención del blanqueo de capitales y financiamiento del terrorismo.",
     sections: [
       {
-        body: "UniBank mantiene un firme compromiso con el cumplimiento de todas las normativas y regulaciones aplicables al sector bancario panameño e internacional.",
+        body: "En <strong>Unibank, S.A. y Subsidiarias</strong> nos aseguramos de cumplir y regirnos acorde a las regulaciones locales y en apego a las mejores prácticas y estándares internacionales, creadas en materia de prevención del blanqueo de capitales y contra el financiamiento del terrorismo. Por tal motivo, hemos estructurado programas para proteger a nuestros clientes y servicios sobre del uso indebido de los mismos y así evitar que sean utilizados para cometer actividades ilícitas.",
       },
       {
-        heading: "Prevención de Lavado de Activos",
-        body: "Contamos con políticas y procedimientos robustos para la prevención del blanqueo de capitales y el financiamiento del terrorismo, en cumplimiento con la legislación panameña y los estándares del GAFI.",
+        body: "Los valores que mantenemos en <strong>Unibank, S.A. y Subsidiarias</strong> como la integridad, honestidad, confidencialidad, y profesionalismo son los cimientos de las políticas de nuestra organización, constituyéndose los elementos antes mencionados en la base de nuestras actuaciones.",
       },
       {
-        heading: "Cultura de Cumplimiento",
-        body: "Fomentamos una cultura de integridad y cumplimiento en todos los niveles de la organización, con programas de capacitación continua y canales de denuncia confidenciales.",
+        body: "Conocer a nuestros clientes es uno de los principales objetivos que tenemos como parte de nuestra cultura de organización y para asegurar el cumplimiento de ese compromiso, en <strong>Unibank, S.A. y Subsidiarias</strong> nos aseguramos de cumplir con las Políticas de Debida Diligencia y de Conocimiento del Cliente.",
       },
     ],
   },
