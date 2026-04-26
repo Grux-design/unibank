@@ -45,12 +45,6 @@ const reasons = [
 ];
 const knowledgeSources = ["Me sucedió a mí", "Lo he visto", "Lo he escuchado", "Me lo han dicho", "Vi un documento", "Otro"];
 
-const months = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
-const days = Array.from({ length: 31 }, (_, i) => i + 1);
-const years = [2024, 2025, 2026, 2027, 2028];
-const hours12 = Array.from({ length: 12 }, (_, i) => i + 1);
-const minutes = Array.from({ length: 60 }, (_, i) => i.toString().padStart(2, "0"));
-
 const schema = z.object({
   relationship: z.string().min(1, "Seleccione una opción"),
   location: z.string().min(1, "Seleccione una opción"),
@@ -62,12 +56,8 @@ const schema = z.object({
   reason: z.string().min(1, "Seleccione un motivo"),
   knowledge_source: z.string().min(1, "Seleccione una opción"),
   description: z.string().trim().min(10, "Mínimo 10 caracteres").max(5000),
-  month: z.string().min(1, "Mes"),
-  day: z.string().min(1, "Día"),
-  year: z.string().min(1, "Año"),
-  hour: z.string().min(1, "Hora"),
-  minute: z.string().min(1, "Min"),
-  period: z.enum(["AM", "PM"]),
+  incident_date: z.date({ required_error: "Seleccione una fecha" }),
+  incident_time: z.string().regex(/^\d{2}:\d{2}$/, "Hora requerida"),
   captcha_answer: z.string().min(1, "Responda la operación"),
   accepted_terms: z.boolean().refine((v) => v, "Debe aceptar los términos"),
 });
