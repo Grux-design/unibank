@@ -1,58 +1,58 @@
 ## Goal
+Transform `/trabaja-con-nosotros` from the current basic layout into a top-notch, modern careers landing page inspired by leading HR platforms (Greenhouse, Lever, Notion Careers, Linear). The footer link already points here — no routing changes needed.
 
-Create a high-quality static **Cajilla de Seguridad** page that visually matches existing Personas product pages (Contentful-driven), and wire it to the menu link under **Personas → Otros Servicios → Cajilla de Seguridad** (URL: `/personas/otros-servicios/cajilla-de-seguridad`).
+## Design direction
+Editorial, generous whitespace, brand orange `#ff8136` accents on near-black `#000000F5`, Inter typography. Dark hero with a soft gradient + subtle grid texture, then a bright, focused application form section.
 
-Since other Personas products render through `ProductDetailPage` (Contentful), this slug has no CMS entry. Instead of asking the editor to create one, we'll add a **static override route** that renders before the dynamic `/personas/:category/:slug` pattern, mimicking the same look & feel (breadcrumbs, hero with image, feature strip, benefit cards, requirements, contact form CTA).
+### Page structure
 
-## Implementation
+1. **Hero (dark, full-bleed)**
+   - Eyebrow pill: "Carreras en UniBank"
+   - Large headline: "Construye el futuro de la banca con nosotros"
+   - Subheadline (the user's intro copy about joining the team / RR.HH. database)
+   - Two trust stats (e.g. "+30 años creando oportunidades", "Sede principal en Avenida Balboa")
+   - Floating glass-card decoration (reuse `HeroGlassCard` style language)
+   - Anchor button "Aplicar ahora" → smooth-scroll to `#aplicar`
 
-### 1. New page: `src/pages/CajillaSeguridadPage.tsx`
+2. **Why UniBank strip** (3 perks, refined)
+   - Keep `Briefcase / Users / TrendingUp` perks, restyled as bordered cards with hover lift, icon in tinted square (rounded-2xl), small uppercase label.
 
-A self-contained page reproducing the same visual rhythm used by Contentful sections (`HeroFormSection`, `FeatureStripSection`, `BenefitListSection`):
+3. **Process steps** (new, 3 columns)
+   - "01 Aplica" → "02 Conversamos" → "03 Te integras"
+   - Numbered, minimal, hairline divider between cards on desktop.
 
-- **Helmet SEO**: title, description, OG tags.
-- **Breadcrumbs**: Inicio › Personas › Otros Servicios › Cajilla de Seguridad (matching `HeroFormSection` style).
-- **Hero (2-col grid)**:
-  - Left: eyebrow pill ("Servicio exclusivo"), big headline *"Cajillas de Seguridad"*, subheadline *"Protege lo que más valoras"*, intro paragraph, primary CTA button ("Solicitar información") that scrolls to the form section.
-  - Right: large rounded image (Unsplash vault/safe-deposit imagery, e.g. `photo-1633158829585-23ba8f7c8caf` or similar high-quality bank-vault photo).
-- **"¿Qué es una Cajilla de Seguridad?"** intro section (centered text block on light background).
-- **Beneficios — Feature strip** (orange-50 bg, mirrors `FeatureStripSection`): 5 cards using Lucide icons:
-  - `ShieldCheck` — Máxima seguridad
-  - `Lock` — Confidencialidad total
-  - `DoorOpen` — Sala exclusiva
-  - `UserCheck` — Atención personalizada
-  - `Landmark` — Tranquilidad y respaldo bancario
-- **Tamaños disponibles** (split image + cards layout, mirrors `BenefitListSection`): two size cards (5"x10"x24" and 10"x10"x24") with subtle illustrations or icons.
-- **Requisitos** (muted background, simple bullet list with check icons): "Mantener al menos una cuenta activa en UniBank" and "El arrendamiento es a título personal".
-- **¿Dónde adquirir el servicio?**: two icon cards — Gerente de Relación / Casa Matriz Avenida Balboa.
-- **CTA / Contact form section** (id `contacto`):
-  - Headline *"¿Interesado en este servicio?"* + supporting copy.
-  - Lightweight form (Nombre, Email, Teléfono, Mensaje opcional) using existing `Input`, `Textarea`, `Button` UI primitives.
-  - On submit: calls the existing `send-email` Supabase Edge Function (already wired in the project per memory) with subject `"Solicitud — Cajilla de Seguridad"`. Shows toast on success/error via `sonner`.
+4. **Application form section `#aplicar`** (hero of the page)
+   - Two-column layout on desktop:
+     - **Left (5 cols):** Sticky promotional column with headline "Cuéntanos sobre ti", supporting copy, contact email, and a small list of what happens next.
+     - **Right (7 cols):** The form inside a soft card (`rounded-2xl`, `border-border/60`, subtle shadow).
+   - Fields (per spec, all required):
+     - Nombre *
+     - Teléfono *
+     - Email *
+     - Mensaje * (Textarea)
+     - **Archivos Adjuntos *** — drag-and-drop dropzone with hint text: *"Adjunta tu Hoja de vida, Portafolio o Carta de presentación. Formatos: PDF, DOC, DOCX, PNG, JPG. Máximo 5 MB."* Show file chip with name + size + remove (×) button after selection.
+     - **Captcha** — lightweight math captcha ("¿Cuánto es 4 + 3?") with a refresh icon. Validated client-side via zod refinement. (No third-party key required; can upgrade to hCaptcha/Turnstile later if desired.)
+   - Submit button full-width on mobile, auto on desktop, with loading state.
 
-All spacing, radii, and color tokens match existing sections (`hsl(var(--background))`, `bg-orange-50`, `bg-muted`, `rounded-[28px]`, `clamp()` paddings).
+5. **Closing band**
+   - Small reassurance line: "Tus datos se almacenan de forma segura y serán usados únicamente para procesos de selección."
 
-### 2. Routing: `src/App.tsx`
+### Technical changes
 
-Add a static route **before** the dynamic Personas route so it takes precedence:
+- **`src/pages/TrabajaConNosotrosPage.tsx`** (rewrite):
+  - Update zod schema to require **all four text fields**, require a file (size ≤ 5 MB, allowed mime types), and require captcha answer to equal expected value.
+  - Switch upload to support the new mime list (`pdf, doc, docx, png, jpg, jpeg`); keep using existing `cv-files` Supabase storage bucket and `job_applications` table (no DB migration needed — `cv_url` already stores the file).
+  - Implement dropzone (native drag events, no new dependency) with visual states (idle / hover / file-selected / error).
+  - Implement math captcha as local React state (`useMemo` to seed two integers, regenerate on refresh).
+  - Add smooth scroll behavior for hero CTA → `#aplicar`.
+  - Update Helmet copy.
 
-```tsx
-<Route
-  path="/personas/otros-servicios/cajilla-de-seguridad"
-  element={<CajillaSeguridadPage />}
-/>
-<Route path="/personas/:category/:slug" element={<ProductDetailPage />} />
-```
+- **No changes needed** to:
+  - `src/App.tsx` (route already registered)
+  - `src/data/footerData.ts` (already links to `/trabaja-con-nosotros`)
+  - Supabase schema / storage (existing `job_applications` table + `cv-files` bucket cover requirements)
 
-Import the new page at the top.
-
-### 3. Menu wiring (no change required)
-
-`src/data/megaMenuData.ts` already contains `{ label: "Cajilla de Seguridad", slug: "cajilla-de-seguridad" }` under the `otros-servicios` category in `personasData`. The mega menu builds the URL as `/personas/otros-servicios/cajilla-de-seguridad`, which now resolves to the new static page.
-
-### 4. Files touched
-
-- **Created**: `src/pages/CajillaSeguridadPage.tsx`
-- **Edited**: `src/App.tsx` (import + new route above dynamic one)
-
-No DB changes, no Contentful changes, no edge function changes (reuse existing `send-email`).
+### Out of scope
+- No real third-party captcha (hCaptcha/Cloudflare Turnstile) — using a math captcha to keep it dependency-free. Can be upgraded later if desired.
+- No new perks/translations beyond what's listed.
+- English version not added (page stays in Spanish, matching existing tone).
