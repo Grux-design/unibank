@@ -13,6 +13,9 @@ import {
   Building2,
   Box,
   ArrowRight,
+  KeyRound,
+  Eye,
+  Sparkles,
 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -198,20 +201,113 @@ export default function CajillaSeguridadPage() {
       {/* ── ¿Qué es? ────────────────────────────────────────── */}
       <section
         style={{
-          padding: "clamp(48px, 7vw, 88px) clamp(16px, 3.9vw, 72px)",
+          padding: "clamp(64px, 9vw, 112px) clamp(16px, 3.9vw, 72px)",
           background: "hsl(var(--background))",
         }}
       >
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-extrabold text-foreground" style={{ letterSpacing: "-0.025em" }}>
-            ¿Qué es una Cajilla de Seguridad?
-          </h2>
-          <p className="mt-6 text-lg text-muted-foreground leading-relaxed">
-            Es un servicio de arrendamiento que te permite guardar tus bienes más preciados dentro de una
-            bóveda bancaria altamente protegida, con acceso exclusivo y controlado para tu tranquilidad.
-          </p>
+        <div className="max-w-6xl mx-auto grid gap-12 md:gap-16 md:grid-cols-12 items-center">
+          {/* Left: large editorial image with floating badge */}
+          <div className="md:col-span-5 relative">
+            <div
+              className="absolute -top-6 -left-6 w-32 h-32 rounded-full hidden md:block"
+              style={{ background: "hsl(var(--primary) / 0.08)" }}
+              aria-hidden
+            />
+            <div
+              className="absolute -bottom-8 -right-4 w-24 h-24 rounded-3xl rotate-12 hidden md:block"
+              style={{ background: "hsl(var(--primary) / 0.12)" }}
+              aria-hidden
+            />
+            <div
+              className="relative overflow-hidden rounded-[28px] shadow-xl"
+              style={{ aspectRatio: "4 / 5" }}
+            >
+              <img
+                src="https://images.unsplash.com/photo-1633158829585-23ba8f7c8caf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=900"
+                alt="Llave dorada de cajilla de seguridad bancaria"
+                className="h-full w-full object-cover"
+                loading="lazy"
+              />
+              <div
+                className="absolute inset-0"
+                style={{
+                  background:
+                    "linear-gradient(180deg, transparent 55%, hsl(var(--foreground) / 0.55) 100%)",
+                }}
+                aria-hidden
+              />
+              {/* Floating badge */}
+              <div className="absolute bottom-6 left-6 right-6 flex items-center gap-3 bg-background/95 backdrop-blur rounded-2xl p-4 shadow-lg">
+                <div
+                  className="flex items-center justify-center rounded-xl flex-shrink-0"
+                  style={{
+                    width: 44,
+                    height: 44,
+                    background: "hsl(var(--primary))",
+                    color: "hsl(var(--primary-foreground))",
+                  }}
+                >
+                  <KeyRound size={22} />
+                </div>
+                <div>
+                  <p className="text-xs uppercase tracking-wider font-semibold text-primary">
+                    Acceso exclusivo
+                  </p>
+                  <p className="text-sm font-semibold text-foreground leading-tight">
+                    Solo tú y tu llave
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right: editorial copy */}
+          <div className="md:col-span-7">
+            <span
+              className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
+              style={{ background: "hsl(var(--primary) / 0.1)", color: "hsl(var(--primary))" }}
+            >
+              <Sparkles size={14} />
+              El servicio
+            </span>
+            <h2
+              className="mt-5 text-4xl md:text-5xl font-extrabold text-foreground leading-[1.05]"
+              style={{ letterSpacing: "-0.03em" }}
+            >
+              ¿Qué es una <span className="text-primary">Cajilla de Seguridad</span>?
+            </h2>
+            <p className="mt-6 text-lg md:text-xl text-muted-foreground leading-relaxed">
+              Un servicio de arrendamiento que te permite guardar tus bienes más preciados dentro de una
+              bóveda bancaria altamente protegida, con acceso{" "}
+              <span className="font-semibold text-foreground">exclusivo y controlado</span> para tu
+              tranquilidad.
+            </p>
+
+            {/* At-a-glance stats */}
+            <div className="mt-10 grid grid-cols-3 gap-4 md:gap-6">
+              {[
+                { icon: ShieldCheck, label: "Bóveda blindada", value: "24/7" },
+                { icon: Eye, label: "Monitoreo permanente", value: "100%" },
+                { icon: Lock, label: "Acceso privado", value: "Solo tú" },
+              ].map(({ icon: Icon, label, value }) => (
+                <div
+                  key={label}
+                  className="rounded-2xl border border-border bg-background p-4 md:p-5 hover:border-primary/40 transition-colors"
+                >
+                  <Icon size={22} className="text-primary mb-3" strokeWidth={2} />
+                  <p className="text-2xl md:text-3xl font-extrabold text-foreground leading-none" style={{ letterSpacing: "-0.02em" }}>
+                    {value}
+                  </p>
+                  <p className="mt-2 text-xs md:text-sm text-muted-foreground leading-snug">
+                    {label}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
+
 
       {/* ── Beneficios (feature strip) ──────────────────────── */}
       <section
