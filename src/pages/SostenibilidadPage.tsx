@@ -21,7 +21,7 @@ export default function SostenibilidadPage() {
           />
           <div
             aria-hidden
-            className="pointer-events-none absolute -bottom-40 -left-32 h-96 w-96 rounded-full bg-emerald-500/10 blur-3xl"
+            className="pointer-events-none absolute -bottom-40 -left-32 h-96 w-96 rounded-full bg-primary/10 blur-3xl"
           />
           <div className="relative mx-auto max-w-6xl px-6 py-24 md:py-32">
             <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary">
@@ -97,7 +97,7 @@ export default function SostenibilidadPage() {
           <div className="mx-auto max-w-6xl px-6 py-20">
             <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
               <div>
-                <span className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
+                <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary">
                   <BadgeCheck className="h-3.5 w-3.5" />
                   Hito histórico
                 </span>
@@ -135,7 +135,7 @@ export default function SostenibilidadPage() {
                 <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-emerald-500/20 via-primary/10 to-transparent blur-2xl" />
                 <div className="relative overflow-hidden rounded-3xl border border-border bg-card p-10">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
                       <Leaf className="h-6 w-6" />
                     </div>
                     <div className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
