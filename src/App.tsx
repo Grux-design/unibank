@@ -15,6 +15,7 @@ import ProductDetailPage from "./pages/ProductDetailPage";
 import LegalPage from "./pages/LegalPage";
 import InstitutionalPage from "./pages/InstitutionalPage";
 import JuntaDirectivaPage from "./pages/JuntaDirectivaPage";
+import SostenibilidadPage from "./pages/SostenibilidadPage";
 import SucursalesPage from "./pages/SucursalesPage";
 import CanalDenunciasPage from "./pages/CanalDenunciasPage";
 import TrabajaConNosotrosPage from "./pages/TrabajaConNosotrosPage";
@@ -43,6 +44,7 @@ const App = () => (
               <Route path="/empresas/:category/:slug" element={<ProductDetailPage />} />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/institucional/junta-directiva" element={<JuntaDirectivaPage />} />
+              <Route path="/institucional/sostenibilidad" element={<SostenibilidadPage />} />
               <Route path="/institucional/:slug" element={<InstitutionalPage />} />
               <Route path="/:slug" element={<LegalPage />} />
             </Route>
