@@ -19,6 +19,8 @@ export function FooterStoreButton({ label, icon, variant, href = "#" }: FooterSt
   return (
     <a
       href={href}
+      target="_blank"
+      rel="noopener noreferrer"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
