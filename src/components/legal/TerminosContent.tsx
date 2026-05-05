@@ -16,7 +16,7 @@ function Section({ title, children }: SectionProps) {
 
 function Bullets({ items }: { items: React.ReactNode[] }) {
   return (
-    <ul className="list-disc pl-6 space-y-2 marker:text-primary">
+    <ul className="list-disc pl-6 space-y-2 marker:text-foreground">
       {items.map((item, i) => (
         <li key={i}>{item}</li>
       ))}
