@@ -26,8 +26,8 @@ export function FooterAppsBar() {
       justifyContent: "space-between", flexWrap: "wrap", gap: 16,
     }}>
       <div style={{ display: "flex", gap: 10 }}>
-        <FooterStoreButton label="App Store"   icon={appleIcon} variant="dark" />
-        <FooterStoreButton label="Google Play" icon={playIcon}  variant="light" />
+        <FooterStoreButton label="App Store"   icon={appleIcon} variant="dark"  href="https://apps.apple.com/us/app/unibank-panam%C3%A1/id6738843747" />
+        <FooterStoreButton label="Google Play" icon={playIcon}  variant="light" href="https://play.google.com/store/apps/details?id=com.newtech.unibank&pcampaignid=web_share" />
       </div>
 
       <div style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
