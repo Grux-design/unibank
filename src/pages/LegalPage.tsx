@@ -5,6 +5,7 @@ import { BLOCKS, INLINES } from "@contentful/rich-text-types";
 import type { Document } from "@contentful/rich-text-types";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Helmet } from "react-helmet-async";
+import { TerminosContent } from "@/components/legal/TerminosContent";
 
 const SLUG_MAP: Record<string, string> = {
   "aviso-de-privacidad": "aviso-de-privacidad-unibank",
@@ -107,6 +108,12 @@ export default function LegalPage() {
                 {documentToReactComponents(content, richTextOptions)}
               </div>
             </div>
+          </div>
+        )}
+
+        {slug === "terminos-y-condiciones" && (
+          <div className="bg-background">
+            <TerminosContent />
           </div>
         )}
       </article>
