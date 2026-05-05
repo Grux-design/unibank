@@ -1,21 +1,14 @@
 import { Link } from "react-router-dom";
-import { ShieldCheck, Lock, Fingerprint, Activity, CreditCard, Banknote, Globe2, KeyRound, FileLock2 } from "lucide-react";
 
 interface SectionProps {
-  icon: React.ReactNode;
   title: string;
   children: React.ReactNode;
 }
 
-function Section({ icon, title, children }: SectionProps) {
+function Section({ title, children }: SectionProps) {
   return (
     <section className="mt-12 first:mt-0">
-      <div className="flex items-center gap-3 mb-4">
-        <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
-          {icon}
-        </span>
-        <h2 className="text-2xl font-bold tracking-tight text-foreground">{title}</h2>
-      </div>
+      <h2 className="text-2xl font-bold tracking-tight text-foreground mb-4">{title}</h2>
       <div className="space-y-4 text-muted-foreground leading-relaxed">{children}</div>
     </section>
   );
@@ -34,7 +27,7 @@ function Bullets({ items }: { items: React.ReactNode[] }) {
 export function TerminosContent() {
   return (
     <div className="max-w-3xl mx-auto px-6 py-16">
-      <Section icon={<ShieldCheck size={20} />} title="Aviso">
+      <Section title="Aviso">
         <p>
           En <strong className="text-foreground">Grupo UniBank</strong> hemos tomado todas las precauciones
           necesarias para que su información sea transmitida con toda seguridad y confianza. Algunas de
@@ -42,7 +35,7 @@ export function TerminosContent() {
         </p>
       </Section>
 
-      <Section icon={<Lock size={20} />} title="Encriptación">
+      <Section title="Encriptación">
         <p>
           Al utilizar <strong className="text-foreground">Banca en Línea</strong> y{" "}
           <strong className="text-foreground">Banca Móvil</strong>, la información se transmite de forma
@@ -53,7 +46,7 @@ export function TerminosContent() {
         </p>
       </Section>
 
-      <Section icon={<FileLock2 size={20} />} title="Certificación">
+      <Section title="Certificación">
         <p>
           Contamos con <strong className="text-foreground">certificados digitales de seguridad</strong> de
           nuestro sitio en Internet emitido por una compañía certificadora importante, líder en la provisión
@@ -63,7 +56,7 @@ export function TerminosContent() {
         </p>
       </Section>
 
-      <Section icon={<Fingerprint size={20} />} title="Autenticación">
+      <Section title="Autenticación">
         <p>
           Cada vez que usted ingrese a Banca en Línea y Banca Móvil, una serie de medidas le permitirán al
           banco identificarle efectivamente como nuestro cliente, además de indicarle a usted que se
@@ -92,7 +85,7 @@ export function TerminosContent() {
         />
       </Section>
 
-      <Section icon={<Activity size={20} />} title="Monitoreo">
+      <Section title="Monitoreo">
         <p>
           Realizamos seguimiento y monitoreo de las transacciones que realizan nuestros clientes a través de
           sus canales electrónicos, con el objetivo de{" "}
@@ -100,7 +93,7 @@ export function TerminosContent() {
         </p>
       </Section>
 
-      <Section icon={<ShieldCheck size={20} />} title="Recomendaciones generales de seguridad">
+      <Section title="Recomendaciones generales de seguridad">
         <Bullets
           items={[
             <>No comparta nunca su <strong className="text-foreground">USER-ID</strong> o Usuario de acceso al sistema de Banca en Línea y Banca Móvil.</>,
@@ -118,7 +111,7 @@ export function TerminosContent() {
         />
       </Section>
 
-      <Section icon={<KeyRound size={20} />} title="Recomendaciones para el manejo del Token físico">
+      <Section title="Recomendaciones para el manejo del Token físico">
         <p>
           El token le permite una <strong className="text-foreground">doble autenticación</strong> del
           usuario al realizar una transacción. La clave dinámica que genera no puede ser copiada ni clonada.
@@ -133,7 +126,7 @@ export function TerminosContent() {
         />
       </Section>
 
-      <Section icon={<Banknote size={20} />} title="Cajeros Automáticos">
+      <Section title="Cajeros Automáticos">
         <Bullets
           items={[
             <>Asegúrate de utilizar cajeros automáticos iluminados y que estén ubicados en lugares seguros.</>,
@@ -149,7 +142,7 @@ export function TerminosContent() {
         />
       </Section>
 
-      <Section icon={<Globe2 size={20} />} title="Transferencias Internacionales">
+      <Section title="Transferencias Internacionales">
         <p>
           Para utilizar este servicio, se requiere que el usuario proporcione información personal tal como
           su nombre, dirección, correo electrónico, número de teléfono o de fax.
@@ -164,7 +157,7 @@ export function TerminosContent() {
         </p>
       </Section>
 
-      <Section icon={<CreditCard size={20} />} title="Tarjetas Débito Clave | Mastercard">
+      <Section title="Tarjetas Débito Clave | Mastercard">
         <Bullets
           items={[
             <>No exponga su tarjeta a altas temperaturas (frío o calor).</>,
@@ -177,7 +170,7 @@ export function TerminosContent() {
         />
       </Section>
 
-      <Section icon={<FileLock2 size={20} />} title="Protección de Datos">
+      <Section title="Protección de Datos">
         <p>
           Por este medio yo (nosotros) <strong className="text-foreground">DECLARO(AMOS)</strong> que la
           información proporcionada al banco por mí (nosotros) es veraz, correcta, verdadera y por tanto
