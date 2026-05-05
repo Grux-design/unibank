@@ -80,11 +80,13 @@ export default function LegalPage() {
   }
 
   const content = page.content as Document | undefined;
+  const isTerminos = slug === "terminos-y-condiciones";
+  const displayTitle = isTerminos ? "Políticas de Privacidad y Seguridad" : page.title;
 
   return (
     <>
       <Helmet>
-        <title>{page.seoMeta?.title ?? page.title} | UniBank</title>
+        <title>{isTerminos ? displayTitle : (page.seoMeta?.title ?? page.title)} | UniBank</title>
         {page.seoMeta?.description && (
           <meta name="description" content={page.seoMeta.description} />
         )}
@@ -95,13 +97,13 @@ export default function LegalPage() {
         <div className="bg-muted/30 border-b border-border">
           <div className="max-w-4xl mx-auto px-6 py-20 text-center">
             <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-foreground">
-              {page.title}
+              {displayTitle}
             </h1>
           </div>
         </div>
 
         {/* Content section */}
-        {content && (
+        {content && !isTerminos && (
           <div className="bg-background">
             <div className="max-w-3xl mx-auto px-6 py-16">
               <div className="prose prose-neutral max-w-none">
@@ -111,7 +113,7 @@ export default function LegalPage() {
           </div>
         )}
 
-        {slug === "terminos-y-condiciones" && (
+        {isTerminos && (
           <div className="bg-background">
             <TerminosContent />
           </div>
