@@ -65,6 +65,6 @@ export const socialIcons: SocialIconEntry[] = [
 
 export const legalLinks = [
   { label: "Aviso de Privacidad",    path: "/aviso-de-privacidad" },
-  { label: "Términos y Condiciones", path: "/terminos-y-condiciones" },
+  { label: "Políticas de Privacidad y Seguridad", path: "/terminos-y-condiciones" },
   { label: "Política de Cookies",    path: "/politica-de-cookies" },
 ];
