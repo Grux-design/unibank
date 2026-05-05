@@ -110,6 +110,12 @@ export default function LegalPage() {
             </div>
           </div>
         )}
+
+        {slug === "terminos-y-condiciones" && (
+          <div className="bg-background">
+            <TerminosContent />
+          </div>
+        )}
       </article>
     </>
   );
