@@ -35,7 +35,7 @@ export const footerColumns: FooterColumn[] = [
     title: "Grupo UniBank",
     links: [
       { label: "UniTrust", href: "/grupo/unitrust" }, { label: "Univivir", href: "https://www.univivir.com.pa/" },
-      { label: "UniLeasing", href: "/grupo/unileasing" }, { label: "Grupo Invertis", href: "https://www.invertissecurities.com/" },
+      { label: "UniLeasing", href: "/grupo/unileasing" },
     ],
   },
   {
