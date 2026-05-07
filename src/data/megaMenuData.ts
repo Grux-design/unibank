@@ -20,9 +20,9 @@ export const personasData: MenuSection = {
   image: "https://images.unsplash.com/photo-1704088030734-96769c4593a2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800",
   featured: {
     tag:          "Lo más popular",
-    label:        "Cuenta Naranja+ Digital",
+    label:        "Cuenta de Ahorros",
     desc:         "Sin mantenimiento, sin comisiones. La cuenta que trabaja para ti.",
-    slug:         "cuenta-naranja-plus-digital",
+    slug:         "cuenta-de-ahorros",
     categorySlug: "cuentas",
     ctaLabel:     "Abrir cuenta",
   },
@@ -31,8 +31,7 @@ export const personasData: MenuSection = {
       name: "Cuentas",
       categorySlug: "cuentas",
       items: [
-        { label: "Cuenta Naranja+ Digital", slug: "cuenta-naranja-plus-digital" },
-        { label: "Cuenta de Ahorro",        slug: "cuenta-de-ahorro" },
+        { label: "Cuenta de Ahorros",       slug: "cuenta-de-ahorros" },
         { label: "Cuenta Corriente",        slug: "cuenta-corriente" },
         { label: "Depósito a Plazo Fijo",   slug: "deposito-a-plazo-fijo" },
       ],

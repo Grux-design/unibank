@@ -204,7 +204,7 @@ function FeaturedBanner({ isMobile }: { isMobile: boolean }) {
             lineHeight: isMobile ? "40px" : "58px",
           }}
         >
-          Cuenta<br />Naranja +<br />Digital
+          Cuenta<br />de<br />Ahorros
         </p>
       </div>
 
@@ -222,7 +222,7 @@ function FeaturedBanner({ isMobile }: { isMobile: boolean }) {
         >
           <img
             src={IMG_PORTRAIT}
-            alt="Cuenta Naranja + Digital"
+            alt="Cuenta de Ahorros"
             style={{
               position: "absolute",
               bottom: 0,
@@ -333,7 +333,7 @@ function FeaturedBanner({ isMobile }: { isMobile: boolean }) {
         <div style={{ width: "100%", height: 200, overflow: "hidden", position: "relative", zIndex: 1 }}>
           <img
             src={IMG_PORTRAIT}
-            alt="Cuenta Naranja + Digital"
+            alt="Cuenta de Ahorros"
             style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top", display: "block" }}
           />
         </div>

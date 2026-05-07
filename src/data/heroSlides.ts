@@ -75,7 +75,7 @@ export const slides: Slide[] = [
     cta:       "Abre tu cuenta",
     ctaAlt:    "Ver condiciones",
     image:     "https://images.unsplash.com/photo-1770871820934-daf713c304af?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080",
-    cardTitle: "Cuenta Naranja+",
+    cardTitle: "Cuenta de Ahorros",
     cardSub:   "4.5% TEA anual",
   },
   {
