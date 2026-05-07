@@ -222,7 +222,7 @@ function FeaturedBanner({ isMobile }: { isMobile: boolean }) {
         >
           <img
             src={IMG_PORTRAIT}
-            alt="Cuenta Naranja + Digital"
+            alt="Cuenta de Ahorros"
             style={{
               position: "absolute",
               bottom: 0,
