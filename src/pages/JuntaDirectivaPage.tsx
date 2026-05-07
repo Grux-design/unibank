@@ -173,7 +173,7 @@ export default function JuntaDirectivaPage() {
         {/* Directores Suplentes */}
         <section>
           <div className="mx-auto max-w-6xl px-6 py-20">
-            <SectionHeader icon={Users2} eyebrow="Directores Suplentes" title="Suplencias" />
+            <SectionHeader icon={Users2} eyebrow="Directores Suplentes" title="Suplentes" />
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {suplentes.map((p) => (
                 <PersonCard key={p.name} person={p} />
