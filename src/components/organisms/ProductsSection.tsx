@@ -204,7 +204,7 @@ function FeaturedBanner({ isMobile }: { isMobile: boolean }) {
             lineHeight: isMobile ? "40px" : "58px",
           }}
         >
-          Cuenta<br />Naranja +<br />Digital
+          Cuenta<br />de<br />Ahorros
         </p>
       </div>
 
