@@ -21,7 +21,7 @@ export const footerColumns: FooterColumn[] = [
   {
     title: "Conócenos",
     links: [
-      { label: "Junta Directiva", href: "/institucional/junta-directiva" },
+      { label: "Nuestro Equipo", href: "/institucional/junta-directiva" },
       { label: "Sostenibilidad", href: "/institucional/sostenibilidad" },
       { label: "Estados Financieros" },
       { label: "Gestión de Riesgo Operativo", href: "/documents/gestion-de-riesgo-operativo.pdf" },
