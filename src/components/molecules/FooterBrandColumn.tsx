@@ -1,5 +1,6 @@
 import logoFooter from "@/assets/logos/logo-footer.svg";
 import { FooterSBPBadge } from "@/components/atoms/FooterSBPBadge";
+import { FooterInvertisBadge } from "@/components/atoms/FooterInvertisBadge";
 
 const TEXT_MUTED = "#908E8D";
 
