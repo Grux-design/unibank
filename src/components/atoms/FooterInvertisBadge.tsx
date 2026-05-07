@@ -1,4 +1,5 @@
-const PURPLE = "#801FFF";
+import invertisLogo from "@/assets/logos/invertis-securities.png";
+
 const BORDER = "#E7E4E1";
 const MUTED  = "#908E8D";
 
@@ -14,14 +15,15 @@ export function FooterInvertisBadge() {
       }}
     >
       <div style={{
-        width: 40, height: 40, borderRadius: 8,
+        height: 40, padding: "6px 10px", borderRadius: 8,
         background: "white", border: `1px solid ${BORDER}`,
         display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
       }}>
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <rect x="3" y="3" width="18" height="18" rx="3" fill={PURPLE} opacity="0.15" />
-          <text x="12" y="15" textAnchor="middle" fontSize="7" fontWeight="700" fill={PURPLE}>IS</text>
-        </svg>
+        <img
+          src={invertisLogo}
+          alt="Invertis Securities"
+          style={{ height: 24, width: "auto", display: "block" }}
+        />
       </div>
       <p style={{
         fontFamily: "Inter, sans-serif", fontSize: 11, color: MUTED,
