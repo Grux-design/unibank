@@ -15,6 +15,7 @@ export function FooterBrandColumn() {
         Tu banco moderno en Panamá. Combinamos solidez financiera con agilidad digital para acompañarte en cada etapa de tu vida.
       </p>
       <FooterSBPBadge />
+      <FooterInvertisBadge />
     </div>
   );
 }
