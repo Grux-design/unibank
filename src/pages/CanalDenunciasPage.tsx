@@ -60,7 +60,7 @@ const schema = z.object({
   description: z.string().trim().min(10, "Mínimo 10 caracteres").max(5000),
   incident_date: z.date({ required_error: "Seleccione una fecha" }),
   incident_time: z.string().regex(/^\d{2}:\d{2}$/, "Hora requerida"),
-  captcha_answer: z.string().min(1, "Responda la operación"),
+  accepted_terms: z.boolean().refine((v) => v, "Debe aceptar los términos"),
   accepted_terms: z.boolean().refine((v) => v, "Debe aceptar los términos"),
 });
 
