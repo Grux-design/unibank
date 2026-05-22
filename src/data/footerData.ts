@@ -50,7 +50,11 @@ export const footerColumns: FooterColumn[] = [
   },
   {
     title: "Canales de Atención",
-    links: [{ label: "whatsapp", href: "https://api.whatsapp.com/send?phone=50763280229&text=%C2%A1Hola!,%20Tengo%20una%20Consulta" }, { label: "sucursales", href: "/sucursales" }],
+    links: [
+      { label: "whatsapp", href: "https://api.whatsapp.com/send?phone=50763280229&text=%C2%A1Hola!,%20Tengo%20una%20Consulta" },
+      { label: "sucursales", href: "/sucursales" },
+      { label: "contacto", href: "/contact" },
+    ],
     isAttention: true,
   },
 ];
