@@ -541,40 +541,13 @@ export default function TrabajaConNosotrosPage() {
                       )}
                     </div>
 
-                    {/* Captcha */}
-                    <FormField
-                      control={form.control}
-                      name="captcha"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Verificación de seguridad *</FormLabel>
-                          <div className="flex items-center gap-3">
-                            <div className="flex h-10 select-none items-center gap-2 rounded-md border border-border bg-muted px-4 font-mono text-sm font-semibold text-foreground">
-                              <span>
-                                {captcha.a} + {captcha.b} =
-                              </span>
-                            </div>
-                            <FormControl>
-                              <Input
-                                inputMode="numeric"
-                                placeholder="?"
-                                className="w-24"
-                                {...field}
-                              />
-                            </FormControl>
-                            <button
-                              type="button"
-                              onClick={refreshCaptcha}
-                              className="flex h-10 w-10 items-center justify-center rounded-md border border-border text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                              aria-label="Generar nuevo captcha"
-                            >
-                              <RefreshCw className="h-4 w-4" />
-                            </button>
-                          </div>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                    <p className="text-xs text-muted-foreground">
+                      Este sitio está protegido por reCAPTCHA y se aplican la{" "}
+                      <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="underline">Política de Privacidad</a>{" "}
+                      y los{" "}
+                      <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" className="underline">Términos de Servicio</a> de Google.
+                    </p>
+
 
                     <div className="flex flex-col items-start gap-4 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between">
                       <p className="text-xs text-muted-foreground">
