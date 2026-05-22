@@ -514,7 +514,9 @@ export default function CanalDenunciasPage() {
                     </FormItem>
                   )} />
 
-                  <Button type="submit" disabled={sending} size="lg" className="w-full">
+                  <ReCaptcha ref={recaptchaRef} onChange={setRecaptchaToken} />
+
+                  <Button type="submit" disabled={sending || !recaptchaToken} size="lg" className="w-full">
                     {sending ? "Enviando…" : "Enviar denuncia"}
                   </Button>
                 </Section>

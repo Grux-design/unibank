@@ -97,6 +97,8 @@ export default function TrabajaConNosotrosPage() {
   const [file, setFile] = useState<File | null>(null);
   const [fileError, setFileError] = useState<string | null>(null);
   const [dragActive, setDragActive] = useState(false);
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+  const recaptchaRef = useRef<ReCaptchaHandle>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const form = useForm<FormValues>({
@@ -134,15 +136,20 @@ export default function TrabajaConNosotrosPage() {
       setFileError("Adjunta al menos un archivo.");
       return;
     }
+    if (!recaptchaToken) {
+      toast({ title: "Verificación requerida", description: "Por favor completa el reCAPTCHA.", variant: "destructive" });
+      return;
+    }
     setSending(true);
     try {
       // reCAPTCHA verification
-      const recaptchaToken = await getRecaptchaToken("job_application");
       const { data: verifyData, error: verifyError } = await supabase.functions.invoke("verify-recaptcha", {
-        body: { token: recaptchaToken, action: "job_application" },
+        body: { token: recaptchaToken },
       });
       if (verifyError || !verifyData?.success) {
         toast({ title: "Verificación fallida", description: "No se pudo validar reCAPTCHA. Intenta de nuevo.", variant: "destructive" });
+        recaptchaRef.current?.reset();
+        setRecaptchaToken(null);
         setSending(false);
         return;
       }
