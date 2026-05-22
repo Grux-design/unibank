@@ -60,8 +60,9 @@ export default function ContactPage() {
   const onSubmit = async (values: FormValues) => {
     setSending(true);
     try {
+      const recaptchaToken = await getRecaptchaToken("contact");
       const { error } = await supabase.functions.invoke("send-email", {
-        body: { ...values, lang },
+        body: { ...values, lang, recaptchaToken },
       });
       if (error) throw error;
       toast({ title: t.successTitle, description: t.successDesc });
@@ -72,6 +73,7 @@ export default function ContactPage() {
       setSending(false);
     }
   };
+
 
   return (
     <>
