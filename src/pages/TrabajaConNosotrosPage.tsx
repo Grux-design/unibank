@@ -99,28 +99,10 @@ export default function TrabajaConNosotrosPage() {
   const [dragActive, setDragActive] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
-  // Captcha state
-  const [captchaSeed, setCaptchaSeed] = useState(0);
-  const captcha = useMemo(() => {
-    // captchaSeed forces re-roll
-    void captchaSeed;
-    const a = Math.floor(Math.random() * 8) + 1;
-    const b = Math.floor(Math.random() * 8) + 1;
-    return { a, b, answer: a + b };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [captchaSeed]);
-
-  const schema = useMemo(() => buildSchema(captcha.answer), [captcha.answer]);
-
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
-    defaultValues: { name: "", phone: "", email: "", message: "", captcha: "" },
+    defaultValues: { name: "", phone: "", email: "", message: "" },
   });
-
-  const refreshCaptcha = () => {
-    setCaptchaSeed((s) => s + 1);
-    form.setValue("captcha", "");
-  };
 
   const validateAndSetFile = useCallback((f: File | null) => {
     setFileError(null);
@@ -154,6 +136,17 @@ export default function TrabajaConNosotrosPage() {
     }
     setSending(true);
     try {
+      // reCAPTCHA verification
+      const recaptchaToken = await getRecaptchaToken("job_application");
+      const { data: verifyData, error: verifyError } = await supabase.functions.invoke("verify-recaptcha", {
+        body: { token: recaptchaToken, action: "job_application" },
+      });
+      if (verifyError || !verifyData?.success) {
+        toast({ title: "Verificación fallida", description: "No se pudo validar reCAPTCHA. Intenta de nuevo.", variant: "destructive" });
+        setSending(false);
+        return;
+      }
+
       const ext = file.name.split(".").pop();
       const path = `${crypto.randomUUID()}.${ext}`;
       const { error: uploadErr } = await supabase.storage
@@ -179,7 +172,6 @@ export default function TrabajaConNosotrosPage() {
       form.reset();
       setFile(null);
       setFileError(null);
-      refreshCaptcha();
       if (fileRef.current) fileRef.current.value = "";
     } catch {
       toast({
@@ -191,6 +183,7 @@ export default function TrabajaConNosotrosPage() {
       setSending(false);
     }
   };
+
 
   return (
     <>
