@@ -61,7 +61,7 @@ const schema = z.object({
   incident_date: z.date({ required_error: "Seleccione una fecha" }),
   incident_time: z.string().regex(/^\d{2}:\d{2}$/, "Hora requerida"),
   accepted_terms: z.boolean().refine((v) => v, "Debe aceptar los términos"),
-  accepted_terms: z.boolean().refine((v) => v, "Debe aceptar los términos"),
+
 });
 
 type FormValues = z.infer<typeof schema>;
