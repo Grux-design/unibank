@@ -69,26 +69,20 @@ const steps = [
 
 /* ─── Schema ───────────────────────────────────────────────── */
 
-const buildSchema = (captchaAnswer: number) =>
-  z.object({
-    name: z.string().trim().min(1, "Nombre requerido").max(100),
-    phone: z.string().trim().min(1, "Teléfono requerido").max(30),
-    email: z.string().trim().email("Correo inválido").max(255),
-    message: z.string().trim().min(1, "Mensaje requerido").max(5000),
-    captcha: z
-      .string()
-      .trim()
-      .min(1, "Resuelve el captcha")
-      .refine((v) => Number(v) === captchaAnswer, "Respuesta incorrecta"),
-  });
+const schema = z.object({
+  name: z.string().trim().min(1, "Nombre requerido").max(100),
+  phone: z.string().trim().min(1, "Teléfono requerido").max(30),
+  email: z.string().trim().email("Correo inválido").max(255),
+  message: z.string().trim().min(1, "Mensaje requerido").max(5000),
+});
 
 type FormValues = {
   name: string;
   phone: string;
   email: string;
   message: string;
-  captcha: string;
 };
+
 
 const formatBytes = (b: number) => {
   if (b < 1024) return `${b} B`;
