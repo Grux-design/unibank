@@ -115,15 +115,6 @@ export default function CanalDenunciasPage() {
   const [file, setFile] = useState<File | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
-  // Math captcha
-  const [captcha, setCaptcha] = useState(() => {
-    const a = Math.floor(Math.random() * 9) + 1;
-    const b = Math.floor(Math.random() * 9) + 1;
-    return { a, b };
-  });
-  const refreshCaptcha = () =>
-    setCaptcha({ a: Math.floor(Math.random() * 9) + 1, b: Math.floor(Math.random() * 9) + 1 });
-
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
     mode: "onChange",
@@ -140,7 +131,6 @@ export default function CanalDenunciasPage() {
       description: "",
       incident_date: undefined as unknown as Date,
       incident_time: "",
-      captcha_answer: "",
       accepted_terms: false,
     },
   });
@@ -163,16 +153,19 @@ export default function CanalDenunciasPage() {
   };
 
   const onSubmit = async (values: FormValues) => {
-    // Captcha check
-    if (parseInt(values.captcha_answer, 10) !== captcha.a + captcha.b) {
-      toast({ title: "Verificación incorrecta", description: "Resuelva la operación matemática.", variant: "destructive" });
-      refreshCaptcha();
-      form.setValue("captcha_answer", "");
-      return;
-    }
-
     setSending(true);
     try {
+      // reCAPTCHA verification
+      const recaptchaToken = await getRecaptchaToken("complaint");
+      const { data: verifyData, error: verifyError } = await supabase.functions.invoke("verify-recaptcha", {
+        body: { token: recaptchaToken, action: "complaint" },
+      });
+      if (verifyError || !verifyData?.success) {
+        toast({ title: "Verificación fallida", description: "No se pudo validar reCAPTCHA. Intente de nuevo.", variant: "destructive" });
+        setSending(false);
+        return;
+      }
+
       let file_url: string | null = null;
       if (file) {
         const ext = file.name.split(".").pop();
