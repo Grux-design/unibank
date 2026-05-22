@@ -199,8 +199,8 @@ export default function CanalDenunciasPage() {
       toast({ title: "Denuncia enviada", description: "Su denuncia ha sido recibida. Gracias por contribuir a la ética y transparencia." });
       form.reset();
       setFile(null);
-      refreshCaptcha();
       if (fileRef.current) fileRef.current.value = "";
+
     } catch {
       toast({ title: "Error", description: "No se pudo enviar la denuncia. Intente de nuevo.", variant: "destructive" });
     } finally {
