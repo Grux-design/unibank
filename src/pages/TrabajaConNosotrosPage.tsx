@@ -18,7 +18,7 @@ import {
   TrendingUp,
   ArrowRight,
   Sparkles,
-  RefreshCw,
+  
   X,
   FileText,
   Mail,
