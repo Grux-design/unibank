@@ -559,6 +559,7 @@ export default function TrabajaConNosotrosPage() {
                       <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" className="underline">Términos de Servicio</a> de Google.
                     </p>
 
+                    <ReCaptcha ref={recaptchaRef} onChange={setRecaptchaToken} />
 
                     <div className="flex flex-col items-start gap-4 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between">
                       <p className="text-xs text-muted-foreground">
@@ -568,7 +569,7 @@ export default function TrabajaConNosotrosPage() {
                       <Button
                         type="submit"
                         size="lg"
-                        disabled={sending}
+                        disabled={sending || !recaptchaToken}
                         className="w-full rounded-full px-8 sm:w-auto"
                       >
                         {sending ? "Enviando…" : "Enviar aplicación"}
