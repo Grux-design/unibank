@@ -3,10 +3,10 @@ import { useOutletContext } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
-import { getRecaptchaToken } from "@/lib/recaptcha";
+import ReCaptcha, { type ReCaptchaHandle } from "@/components/atoms/ReCaptcha";
 import type { Lang } from "@/components/layout/SiteLayout";
 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -52,23 +52,37 @@ export default function ContactPage() {
       : "There was a problem sending your message. Please try again.",
   };
 
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+  const recaptchaRef = useRef<ReCaptchaHandle>(null);
+
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: { name: "", email: "", subject: "", message: "" },
   });
 
   const onSubmit = async (values: FormValues) => {
+    if (!recaptchaToken) {
+      toast({
+        title: isEs ? "Verificación requerida" : "Verification required",
+        description: isEs ? "Por favor completa el reCAPTCHA." : "Please complete the reCAPTCHA.",
+        variant: "destructive",
+      });
+      return;
+    }
     setSending(true);
     try {
-      const recaptchaToken = await getRecaptchaToken("contact");
       const { error } = await supabase.functions.invoke("send-email", {
         body: { ...values, lang, recaptchaToken },
       });
       if (error) throw error;
       toast({ title: t.successTitle, description: t.successDesc });
       form.reset();
+      recaptchaRef.current?.reset();
+      setRecaptchaToken(null);
     } catch {
       toast({ title: t.errorTitle, description: t.errorDesc, variant: "destructive" });
+      recaptchaRef.current?.reset();
+      setRecaptchaToken(null);
     } finally {
       setSending(false);
     }
@@ -141,7 +155,9 @@ export default function ContactPage() {
                 )}
               />
 
-              <Button type="submit" disabled={sending} className="w-full sm:w-auto">
+              <ReCaptcha ref={recaptchaRef} onChange={setRecaptchaToken} />
+
+              <Button type="submit" disabled={sending || !recaptchaToken} className="w-full sm:w-auto">
                 {sending ? t.sending : t.send}
               </Button>
             </form>

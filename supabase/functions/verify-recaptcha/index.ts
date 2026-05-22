@@ -6,9 +6,7 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const SCORE_THRESHOLD = 0.5;
-
-export async function verifyRecaptchaToken(token: string, expectedAction?: string) {
+export async function verifyRecaptchaToken(token: string) {
   const secret = Deno.env.get("RECAPTCHA_SECRET_KEY");
   if (!secret) throw new Error("RECAPTCHA_SECRET_KEY not configured");
   if (!token) return { success: false, reason: "missing_token" as const };
@@ -22,26 +20,21 @@ export async function verifyRecaptchaToken(token: string, expectedAction?: strin
   const data = await res.json();
 
   if (!data.success) return { success: false, reason: "verification_failed" as const, data };
-  if (typeof data.score === "number" && data.score < SCORE_THRESHOLD)
-    return { success: false, reason: "low_score" as const, data };
-  if (expectedAction && data.action && data.action !== expectedAction)
-    return { success: false, reason: "action_mismatch" as const, data };
-
-  return { success: true as const, score: data.score, action: data.action };
+  return { success: true as const };
 }
 
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const { token, action } = await req.json();
+    const { token } = await req.json();
     if (!token || typeof token !== "string") {
       return new Response(JSON.stringify({ success: false, error: "Missing token" }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
-    const result = await verifyRecaptchaToken(token, typeof action === "string" ? action : undefined);
+    const result = await verifyRecaptchaToken(token);
     return new Response(JSON.stringify(result), {
       status: result.success ? 200 : 403,
       headers: { ...corsHeaders, "Content-Type": "application/json" },

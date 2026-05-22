@@ -34,7 +34,7 @@ serve(async (req) => {
       body: new URLSearchParams({ secret: recaptchaSecret, response: recaptchaToken }).toString(),
     });
     const verifyData = await verifyRes.json();
-    if (!verifyData.success || (typeof verifyData.score === "number" && verifyData.score < 0.5)) {
+    if (!verifyData.success) {
       return new Response(JSON.stringify({ error: "reCAPTCHA verification failed" }), {
         status: 403,
         headers: { ...corsHeaders, "Content-Type": "application/json" },

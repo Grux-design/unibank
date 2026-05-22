@@ -5,7 +5,7 @@ import { z } from "zod";
 import { useState, useRef, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
-import { getRecaptchaToken } from "@/lib/recaptcha";
+import ReCaptcha, { type ReCaptchaHandle } from "@/components/atoms/ReCaptcha";
 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -97,6 +97,8 @@ export default function TrabajaConNosotrosPage() {
   const [file, setFile] = useState<File | null>(null);
   const [fileError, setFileError] = useState<string | null>(null);
   const [dragActive, setDragActive] = useState(false);
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+  const recaptchaRef = useRef<ReCaptchaHandle>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const form = useForm<FormValues>({
@@ -134,15 +136,20 @@ export default function TrabajaConNosotrosPage() {
       setFileError("Adjunta al menos un archivo.");
       return;
     }
+    if (!recaptchaToken) {
+      toast({ title: "Verificación requerida", description: "Por favor completa el reCAPTCHA.", variant: "destructive" });
+      return;
+    }
     setSending(true);
     try {
       // reCAPTCHA verification
-      const recaptchaToken = await getRecaptchaToken("job_application");
       const { data: verifyData, error: verifyError } = await supabase.functions.invoke("verify-recaptcha", {
-        body: { token: recaptchaToken, action: "job_application" },
+        body: { token: recaptchaToken },
       });
       if (verifyError || !verifyData?.success) {
         toast({ title: "Verificación fallida", description: "No se pudo validar reCAPTCHA. Intenta de nuevo.", variant: "destructive" });
+        recaptchaRef.current?.reset();
+        setRecaptchaToken(null);
         setSending(false);
         return;
       }
@@ -173,12 +180,16 @@ export default function TrabajaConNosotrosPage() {
       setFile(null);
       setFileError(null);
       if (fileRef.current) fileRef.current.value = "";
+      recaptchaRef.current?.reset();
+      setRecaptchaToken(null);
     } catch {
       toast({
         title: "Error",
         description: "No se pudo enviar tu aplicación. Intenta de nuevo.",
         variant: "destructive",
       });
+      recaptchaRef.current?.reset();
+      setRecaptchaToken(null);
     } finally {
       setSending(false);
     }
@@ -548,6 +559,7 @@ export default function TrabajaConNosotrosPage() {
                       <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" className="underline">Términos de Servicio</a> de Google.
                     </p>
 
+                    <ReCaptcha ref={recaptchaRef} onChange={setRecaptchaToken} />
 
                     <div className="flex flex-col items-start gap-4 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between">
                       <p className="text-xs text-muted-foreground">
@@ -557,7 +569,7 @@ export default function TrabajaConNosotrosPage() {
                       <Button
                         type="submit"
                         size="lg"
-                        disabled={sending}
+                        disabled={sending || !recaptchaToken}
                         className="w-full rounded-full px-8 sm:w-auto"
                       >
                         {sending ? "Enviando…" : "Enviar aplicación"}
