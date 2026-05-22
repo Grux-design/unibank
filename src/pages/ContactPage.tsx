@@ -155,7 +155,9 @@ export default function ContactPage() {
                 )}
               />
 
-              <Button type="submit" disabled={sending} className="w-full sm:w-auto">
+              <ReCaptcha ref={recaptchaRef} onChange={setRecaptchaToken} />
+
+              <Button type="submit" disabled={sending || !recaptchaToken} className="w-full sm:w-auto">
                 {sending ? t.sending : t.send}
               </Button>
             </form>
