@@ -1,4 +1,4 @@
-import { MessageCircle, MapPin } from "lucide-react";
+import { MessageCircle, MapPin, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
 import type { FooterColumn } from "@/data/footerData";
 
