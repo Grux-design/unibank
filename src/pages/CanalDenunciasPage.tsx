@@ -113,6 +113,8 @@ function Section({
 export default function CanalDenunciasPage() {
   const [sending, setSending] = useState(false);
   const [file, setFile] = useState<File | null>(null);
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+  const recaptchaRef = useRef<ReCaptchaHandle>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const form = useForm<FormValues>({
@@ -153,15 +155,20 @@ export default function CanalDenunciasPage() {
   };
 
   const onSubmit = async (values: FormValues) => {
+    if (!recaptchaToken) {
+      toast({ title: "Verificación requerida", description: "Por favor completa el reCAPTCHA.", variant: "destructive" });
+      return;
+    }
     setSending(true);
     try {
       // reCAPTCHA verification
-      const recaptchaToken = await getRecaptchaToken("complaint");
       const { data: verifyData, error: verifyError } = await supabase.functions.invoke("verify-recaptcha", {
-        body: { token: recaptchaToken, action: "complaint" },
+        body: { token: recaptchaToken },
       });
       if (verifyError || !verifyData?.success) {
         toast({ title: "Verificación fallida", description: "No se pudo validar reCAPTCHA. Intente de nuevo.", variant: "destructive" });
+        recaptchaRef.current?.reset();
+        setRecaptchaToken(null);
         setSending(false);
         return;
       }
@@ -200,9 +207,13 @@ export default function CanalDenunciasPage() {
       form.reset();
       setFile(null);
       if (fileRef.current) fileRef.current.value = "";
+      recaptchaRef.current?.reset();
+      setRecaptchaToken(null);
 
     } catch {
       toast({ title: "Error", description: "No se pudo enviar la denuncia. Intente de nuevo.", variant: "destructive" });
+      recaptchaRef.current?.reset();
+      setRecaptchaToken(null);
     } finally {
       setSending(false);
     }
