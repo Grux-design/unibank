@@ -180,12 +180,16 @@ export default function TrabajaConNosotrosPage() {
       setFile(null);
       setFileError(null);
       if (fileRef.current) fileRef.current.value = "";
+      recaptchaRef.current?.reset();
+      setRecaptchaToken(null);
     } catch {
       toast({
         title: "Error",
         description: "No se pudo enviar tu aplicación. Intenta de nuevo.",
         variant: "destructive",
       });
+      recaptchaRef.current?.reset();
+      setRecaptchaToken(null);
     } finally {
       setSending(false);
     }
