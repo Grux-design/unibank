@@ -27,14 +27,14 @@ serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const { token, action } = await req.json();
+    const { token } = await req.json();
     if (!token || typeof token !== "string") {
       return new Response(JSON.stringify({ success: false, error: "Missing token" }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
-    const result = await verifyRecaptchaToken(token, typeof action === "string" ? action : undefined);
+    const result = await verifyRecaptchaToken(token);
     return new Response(JSON.stringify(result), {
       status: result.success ? 200 : 403,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
