@@ -6,7 +6,9 @@ import { z } from "zod";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import { getRecaptchaToken } from "@/lib/recaptcha";
 import type { Lang } from "@/components/layout/SiteLayout";
+
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
