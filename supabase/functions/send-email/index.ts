@@ -17,7 +17,31 @@ serve(async (req) => {
     }
 
     const body = await req.json();
-    const { name, email, subject, message, lang } = body;
+    const { name, email, subject, message, lang, recaptchaToken } = body;
+
+    // Verify reCAPTCHA
+    const recaptchaSecret = Deno.env.get("RECAPTCHA_SECRET_KEY");
+    if (!recaptchaSecret) throw new Error("RECAPTCHA_SECRET_KEY not configured");
+    if (!recaptchaToken) {
+      return new Response(JSON.stringify({ error: "Missing reCAPTCHA token" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    const verifyRes = await fetch("https://www.google.com/recaptcha/api/siteverify", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({ secret: recaptchaSecret, response: recaptchaToken }).toString(),
+    });
+    const verifyData = await verifyRes.json();
+    if (!verifyData.success || (typeof verifyData.score === "number" && verifyData.score < 0.5)) {
+      return new Response(JSON.stringify({ error: "reCAPTCHA verification failed" }), {
+        status: 403,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+
 
     // Basic validation
     if (!name || !email || !subject || !message) {

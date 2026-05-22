@@ -5,6 +5,8 @@ import { z } from "zod";
 import { useState, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import { getRecaptchaToken } from "@/lib/recaptcha";
+
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -58,8 +60,8 @@ const schema = z.object({
   description: z.string().trim().min(10, "Mínimo 10 caracteres").max(5000),
   incident_date: z.date({ required_error: "Seleccione una fecha" }),
   incident_time: z.string().regex(/^\d{2}:\d{2}$/, "Hora requerida"),
-  captcha_answer: z.string().min(1, "Responda la operación"),
   accepted_terms: z.boolean().refine((v) => v, "Debe aceptar los términos"),
+
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -113,15 +115,6 @@ export default function CanalDenunciasPage() {
   const [file, setFile] = useState<File | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
-  // Math captcha
-  const [captcha, setCaptcha] = useState(() => {
-    const a = Math.floor(Math.random() * 9) + 1;
-    const b = Math.floor(Math.random() * 9) + 1;
-    return { a, b };
-  });
-  const refreshCaptcha = () =>
-    setCaptcha({ a: Math.floor(Math.random() * 9) + 1, b: Math.floor(Math.random() * 9) + 1 });
-
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
     mode: "onChange",
@@ -138,7 +131,6 @@ export default function CanalDenunciasPage() {
       description: "",
       incident_date: undefined as unknown as Date,
       incident_time: "",
-      captcha_answer: "",
       accepted_terms: false,
     },
   });
@@ -161,16 +153,19 @@ export default function CanalDenunciasPage() {
   };
 
   const onSubmit = async (values: FormValues) => {
-    // Captcha check
-    if (parseInt(values.captcha_answer, 10) !== captcha.a + captcha.b) {
-      toast({ title: "Verificación incorrecta", description: "Resuelva la operación matemática.", variant: "destructive" });
-      refreshCaptcha();
-      form.setValue("captcha_answer", "");
-      return;
-    }
-
     setSending(true);
     try {
+      // reCAPTCHA verification
+      const recaptchaToken = await getRecaptchaToken("complaint");
+      const { data: verifyData, error: verifyError } = await supabase.functions.invoke("verify-recaptcha", {
+        body: { token: recaptchaToken, action: "complaint" },
+      });
+      if (verifyError || !verifyData?.success) {
+        toast({ title: "Verificación fallida", description: "No se pudo validar reCAPTCHA. Intente de nuevo.", variant: "destructive" });
+        setSending(false);
+        return;
+      }
+
       let file_url: string | null = null;
       if (file) {
         const ext = file.name.split(".").pop();
@@ -204,8 +199,8 @@ export default function CanalDenunciasPage() {
       toast({ title: "Denuncia enviada", description: "Su denuncia ha sido recibida. Gracias por contribuir a la ética y transparencia." });
       form.reset();
       setFile(null);
-      refreshCaptcha();
       if (fileRef.current) fileRef.current.value = "";
+
     } catch {
       toast({ title: "Error", description: "No se pudo enviar la denuncia. Intente de nuevo.", variant: "destructive" });
     } finally {
@@ -476,30 +471,14 @@ export default function CanalDenunciasPage() {
 
                 {/* ── Step 5: Verificación y envío ── */}
                 <Section step={5} title="Verificación y envío" icon={ShieldCheck} active={step4Done} done={false}>
-                  {/* Math captcha */}
-                  <FormField control={form.control} name="captcha_answer" render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Verificación de seguridad *</FormLabel>
-                      <div className="flex items-center gap-3">
-                        <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-muted border border-border font-mono text-base">
-                          <span>{captcha.a}</span><span>+</span><span>{captcha.b}</span><span>=</span>
-                        </div>
-                        <FormControl>
-                          <Input
-                            type="number"
-                            inputMode="numeric"
-                            placeholder="?"
-                            className="w-24 text-center font-mono"
-                            {...field}
-                          />
-                        </FormControl>
-                        <Button type="button" variant="ghost" size="sm" onClick={() => { refreshCaptcha(); form.setValue("captcha_answer", ""); }}>
-                          Otra
-                        </Button>
-                      </div>
-                      <FormMessage />
-                    </FormItem>
-                  )} />
+                  <p className="text-xs text-muted-foreground">
+                    Este sitio está protegido por reCAPTCHA y se aplican la{" "}
+                    <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="underline">Política de Privacidad</a>{" "}
+                    y los{" "}
+                    <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" className="underline">Términos de Servicio</a> de Google.
+                  </p>
+
+
 
                   <FormField control={form.control} name="accepted_terms" render={({ field }) => (
                     <FormItem className="flex items-start gap-3 p-4 rounded-lg bg-muted/30 border border-border/60 space-y-0">

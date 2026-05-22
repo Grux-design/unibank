@@ -2,9 +2,11 @@ import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useState, useRef, useMemo, useCallback } from "react";
+import { useState, useRef, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import { getRecaptchaToken } from "@/lib/recaptcha";
+
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -16,7 +18,7 @@ import {
   TrendingUp,
   ArrowRight,
   Sparkles,
-  RefreshCw,
+  
   X,
   FileText,
   Mail,
@@ -67,26 +69,20 @@ const steps = [
 
 /* ─── Schema ───────────────────────────────────────────────── */
 
-const buildSchema = (captchaAnswer: number) =>
-  z.object({
-    name: z.string().trim().min(1, "Nombre requerido").max(100),
-    phone: z.string().trim().min(1, "Teléfono requerido").max(30),
-    email: z.string().trim().email("Correo inválido").max(255),
-    message: z.string().trim().min(1, "Mensaje requerido").max(5000),
-    captcha: z
-      .string()
-      .trim()
-      .min(1, "Resuelve el captcha")
-      .refine((v) => Number(v) === captchaAnswer, "Respuesta incorrecta"),
-  });
+const schema = z.object({
+  name: z.string().trim().min(1, "Nombre requerido").max(100),
+  phone: z.string().trim().min(1, "Teléfono requerido").max(30),
+  email: z.string().trim().email("Correo inválido").max(255),
+  message: z.string().trim().min(1, "Mensaje requerido").max(5000),
+});
 
 type FormValues = {
   name: string;
   phone: string;
   email: string;
   message: string;
-  captcha: string;
 };
+
 
 const formatBytes = (b: number) => {
   if (b < 1024) return `${b} B`;
@@ -103,28 +99,10 @@ export default function TrabajaConNosotrosPage() {
   const [dragActive, setDragActive] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
-  // Captcha state
-  const [captchaSeed, setCaptchaSeed] = useState(0);
-  const captcha = useMemo(() => {
-    // captchaSeed forces re-roll
-    void captchaSeed;
-    const a = Math.floor(Math.random() * 8) + 1;
-    const b = Math.floor(Math.random() * 8) + 1;
-    return { a, b, answer: a + b };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [captchaSeed]);
-
-  const schema = useMemo(() => buildSchema(captcha.answer), [captcha.answer]);
-
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
-    defaultValues: { name: "", phone: "", email: "", message: "", captcha: "" },
+    defaultValues: { name: "", phone: "", email: "", message: "" },
   });
-
-  const refreshCaptcha = () => {
-    setCaptchaSeed((s) => s + 1);
-    form.setValue("captcha", "");
-  };
 
   const validateAndSetFile = useCallback((f: File | null) => {
     setFileError(null);
@@ -158,6 +136,17 @@ export default function TrabajaConNosotrosPage() {
     }
     setSending(true);
     try {
+      // reCAPTCHA verification
+      const recaptchaToken = await getRecaptchaToken("job_application");
+      const { data: verifyData, error: verifyError } = await supabase.functions.invoke("verify-recaptcha", {
+        body: { token: recaptchaToken, action: "job_application" },
+      });
+      if (verifyError || !verifyData?.success) {
+        toast({ title: "Verificación fallida", description: "No se pudo validar reCAPTCHA. Intenta de nuevo.", variant: "destructive" });
+        setSending(false);
+        return;
+      }
+
       const ext = file.name.split(".").pop();
       const path = `${crypto.randomUUID()}.${ext}`;
       const { error: uploadErr } = await supabase.storage
@@ -183,7 +172,6 @@ export default function TrabajaConNosotrosPage() {
       form.reset();
       setFile(null);
       setFileError(null);
-      refreshCaptcha();
       if (fileRef.current) fileRef.current.value = "";
     } catch {
       toast({
@@ -195,6 +183,7 @@ export default function TrabajaConNosotrosPage() {
       setSending(false);
     }
   };
+
 
   return (
     <>
@@ -552,40 +541,13 @@ export default function TrabajaConNosotrosPage() {
                       )}
                     </div>
 
-                    {/* Captcha */}
-                    <FormField
-                      control={form.control}
-                      name="captcha"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Verificación de seguridad *</FormLabel>
-                          <div className="flex items-center gap-3">
-                            <div className="flex h-10 select-none items-center gap-2 rounded-md border border-border bg-muted px-4 font-mono text-sm font-semibold text-foreground">
-                              <span>
-                                {captcha.a} + {captcha.b} =
-                              </span>
-                            </div>
-                            <FormControl>
-                              <Input
-                                inputMode="numeric"
-                                placeholder="?"
-                                className="w-24"
-                                {...field}
-                              />
-                            </FormControl>
-                            <button
-                              type="button"
-                              onClick={refreshCaptcha}
-                              className="flex h-10 w-10 items-center justify-center rounded-md border border-border text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                              aria-label="Generar nuevo captcha"
-                            >
-                              <RefreshCw className="h-4 w-4" />
-                            </button>
-                          </div>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                    <p className="text-xs text-muted-foreground">
+                      Este sitio está protegido por reCAPTCHA y se aplican la{" "}
+                      <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="underline">Política de Privacidad</a>{" "}
+                      y los{" "}
+                      <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" className="underline">Términos de Servicio</a> de Google.
+                    </p>
+
 
                     <div className="flex flex-col items-start gap-4 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between">
                       <p className="text-xs text-muted-foreground">

@@ -6,7 +6,9 @@ import { z } from "zod";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import { getRecaptchaToken } from "@/lib/recaptcha";
 import type { Lang } from "@/components/layout/SiteLayout";
+
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -58,8 +60,9 @@ export default function ContactPage() {
   const onSubmit = async (values: FormValues) => {
     setSending(true);
     try {
+      const recaptchaToken = await getRecaptchaToken("contact");
       const { error } = await supabase.functions.invoke("send-email", {
-        body: { ...values, lang },
+        body: { ...values, lang, recaptchaToken },
       });
       if (error) throw error;
       toast({ title: t.successTitle, description: t.successDesc });
@@ -70,6 +73,7 @@ export default function ContactPage() {
       setSending(false);
     }
   };
+
 
   return (
     <>
