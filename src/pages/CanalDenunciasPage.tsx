@@ -471,30 +471,14 @@ export default function CanalDenunciasPage() {
 
                 {/* ── Step 5: Verificación y envío ── */}
                 <Section step={5} title="Verificación y envío" icon={ShieldCheck} active={step4Done} done={false}>
-                  {/* Math captcha */}
-                  <FormField control={form.control} name="captcha_answer" render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Verificación de seguridad *</FormLabel>
-                      <div className="flex items-center gap-3">
-                        <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-muted border border-border font-mono text-base">
-                          <span>{captcha.a}</span><span>+</span><span>{captcha.b}</span><span>=</span>
-                        </div>
-                        <FormControl>
-                          <Input
-                            type="number"
-                            inputMode="numeric"
-                            placeholder="?"
-                            className="w-24 text-center font-mono"
-                            {...field}
-                          />
-                        </FormControl>
-                        <Button type="button" variant="ghost" size="sm" onClick={() => { refreshCaptcha(); form.setValue("captcha_answer", ""); }}>
-                          Otra
-                        </Button>
-                      </div>
-                      <FormMessage />
-                    </FormItem>
-                  )} />
+                  <p className="text-xs text-muted-foreground">
+                    Este sitio está protegido por reCAPTCHA y se aplican la{" "}
+                    <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="underline">Política de Privacidad</a>{" "}
+                    y los{" "}
+                    <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" className="underline">Términos de Servicio</a> de Google.
+                  </p>
+
+
 
                   <FormField control={form.control} name="accepted_terms" render={({ field }) => (
                     <FormItem className="flex items-start gap-3 p-4 rounded-lg bg-muted/30 border border-border/60 space-y-0">
