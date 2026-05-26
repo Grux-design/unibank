@@ -328,7 +328,7 @@ export function BusinessSection() {
           <SectionHeading
             tag="Banca Empresarial"
             headline={<>Financiamos el futuro<br />y la visión de tu negocio</>}
-            body="Crédito comercial, planilla empresarial y valores – soluciones financieras adaptadas a cada etapa y sector de tu empresa."
+            body="Crédito comercial, planilla empresarial, Leasing, bonos verdes y soluciones financieras adaptadas a cada etapa y sector de tu negocio."
             
             mb={40}
           />
