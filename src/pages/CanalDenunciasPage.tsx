@@ -452,6 +452,8 @@ export default function CanalDenunciasPage() {
                     </FormItem>
                   )} />
 
+                  {v.reason && <ReasonInfoPanel reason={v.reason} />}
+
                   <FormField control={form.control} name="knowledge_source" render={({ field }) => (
                     <FormItem>
                       <FormLabel>¿Cómo conoce los hechos? *</FormLabel>
