@@ -286,7 +286,7 @@ function BentoDesktopGrid() {
         <LargeCard service={services[0]} isMobile={false} />
       </div>
       <div style={{ display: "flex", gap: G }}>
-        {card("planilla", wPlanilla, <SmallCard service={services[1]} index={1} />)}
+        {card("unileasing", wUnileasing, <SmallCard service={services[1]} index={1} />)}
         {card("valores", wValores, <SmallCard service={services[2]} index={2} />)}
       </div>
     </div>
