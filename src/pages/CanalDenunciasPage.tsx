@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Upload, ShieldCheck, FileText, User, MessageSquare, CalendarIcon, Clock, X, CheckCircle2 } from "lucide-react";
+import { Upload, ShieldCheck, FileText, User, MessageSquare, CalendarIcon, Clock, X, CheckCircle2, Info } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -26,7 +26,7 @@ const ACCEPT = ".jpg,.jpeg,.png,.pdf,.doc,.docx,.ppt,.pptx,.mov,.mp3,.zip,.m4a,.
 
 const relationships = ["Empleado", "Accionista", "Proveedor", "Cliente", "Miembro de la Junta Directiva", "Estudiante", "Otro"];
 const locations = ["Casa Matriz", "Costa del Este", "Oficinas", "Otra"];
-const companies = ["UniBank", "UniTrust", "UniLeasing", "Invertis Securities"];
+const companies = ["UniBank", "UniTrust", "UniLeasing", "Invertis Securities", "UniVivir"];
 const reasons = [
   "Incumplimiento al Código de Ética",
   "Corrupción, Soborno y Cohecho",
@@ -107,6 +107,94 @@ function Section({
       {(active || done) && <div className="p-6 space-y-5">{children}</div>}
     </section>
   );
+}
+
+// ───────────────────────── Reason info panel ─────────────────────────
+function ReasonInfoPanel({ reason }: { reason: string }) {
+  if (reason === "Corrupción, Soborno y Cohecho") {
+    return (
+      <div className="rounded-xl border border-primary/20 bg-muted/40 p-5 text-sm text-foreground/90 space-y-4 animate-in fade-in slide-in-from-top-1 duration-300">
+        <div className="flex items-center gap-2 text-primary font-semibold">
+          <Info className="w-4 h-4" /> Información sobre este motivo
+        </div>
+
+        <div>
+          <h4 className="font-semibold text-foreground">Corrupción</h4>
+          <p className="mt-1 text-muted-foreground">
+            La corrupción se refiere al abuso de poder o posición para obtener beneficios personales, generalmente a través de actos ilegales o inmorales. Este fenómeno puede ocurrir en diversos ámbitos, como el político, el empresarial y el social.
+          </p>
+          <ul className="mt-2 list-disc pl-5 space-y-1 text-muted-foreground">
+            <li><strong>Soborno:</strong> Un funcionario público acepta dinero a cambio de otorgar contratos gubernamentales.</li>
+            <li><strong>Malversación:</strong> Un empleado desfalca fondos de una empresa para uso personal.</li>
+            <li><strong>Tráfico de influencias:</strong> Un político utiliza su posición para asegurar un puesto de trabajo para un familiar.</li>
+            <li><strong>Evasión fiscal:</strong> Una empresa oculta ingresos para pagar menos impuestos.</li>
+            <li><strong>Extorsión:</strong> Un oficial de policía exige dinero a cambio de no imponer una multa.</li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 className="font-semibold text-foreground">Soborno</h4>
+          <p className="mt-1 text-xs italic text-muted-foreground">
+            Refiérase sin limitarse al Libro Segundo de los Delitos Título VII – Delitos contra el Orden Económico, Capítulos III Delitos Financieros y IV Blanqueo de Capitales del Código Penal de Panamá.
+          </p>
+          <p className="mt-2 text-muted-foreground">
+            El soborno es la acción de corromper a alguien mediante dinero, regalos o favores para obtener algo a cambio, generalmente de manera ilegal o inmoral. Es una forma de corrupción que implica el uso indebido de influencias o poder para obtener beneficios personales o empresariales.
+          </p>
+          <ul className="mt-2 list-disc pl-5 space-y-1 text-muted-foreground">
+            <li><strong>Soborno a funcionarios públicos:</strong> Un empresario paga a un funcionario para ganar una licitación o contrato gubernamental.</li>
+            <li><strong>Soborno a jueces o abogados:</strong> Ofrecer dinero a un juez para obtener un fallo favorable en un caso judicial.</li>
+            <li><strong>Soborno en el ámbito empresarial:</strong> Un vendedor soborna al encargado de compras de una empresa para que elija su producto sobre el de la competencia.</li>
+            <li><strong>Soborno en el deporte:</strong> Pagar a un deportista para influir en el resultado de un partido.</li>
+            <li><strong>Soborno en la salud:</strong> Ofrecer dinero a un profesional de la salud para recibir atención preferencial.</li>
+          </ul>
+          <p className="mt-2 text-xs italic text-muted-foreground">
+            Refiérase sin limitarse al Libro Segundo de los Delitos Título VII – Delitos contra el Orden Económico, Capítulo IV Blanqueo de Capitales del Código Penal de Panamá.
+          </p>
+        </div>
+
+        <div>
+          <h4 className="font-semibold text-foreground">Cohecho</h4>
+          <p className="mt-1 text-muted-foreground">
+            El cohecho es un delito que implica ofrecer, prometer o dar a un funcionario público dinero, regalos u otros beneficios para que realice o deje de realizar una acción en el ejercicio de sus funciones. Este delito puede ser tanto activo como pasivo:
+          </p>
+          <ul className="mt-2 list-disc pl-5 space-y-1 text-muted-foreground">
+            <li><strong>Cohecho activo:</strong> Cuando una persona ofrece o da el soborno.</li>
+            <li><strong>Cohecho pasivo:</strong> Cuando el funcionario público recibe o acepta el soborno.</li>
+            <li><strong>Cohecho en licitaciones:</strong> Un empresario ofrece dinero a un funcionario para ganar una licitación pública.</li>
+            <li><strong>Cohecho judicial:</strong> Un abogado soborna a un juez para obtener un fallo favorable en un caso.</li>
+            <li><strong>Cohecho en inspecciones:</strong> Un comerciante paga a un inspector para evitar una multa por incumplimientos.</li>
+            <li><strong>Cohecho en permisos:</strong> Un ciudadano ofrece dinero a un funcionario para acelerar la obtención de un permiso de construcción.</li>
+          </ul>
+          <p className="mt-2 text-xs italic text-muted-foreground">
+            Refiérase sin limitarse al Libro Segundo de los Delitos Título X - Delitos Contra la Administración Pública del Código Penal de Panamá.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (reason === "Prevención de Blanqueo de Capitales y Financiamiento del Terrorismo, Financiamiento de Armas de Destrucción Masiva / Evasión Fiscal") {
+    return (
+      <div className="rounded-xl border border-primary/20 bg-muted/40 p-5 text-sm text-foreground/90 animate-in fade-in slide-in-from-top-1 duration-300">
+        <div className="flex items-center gap-2 text-primary font-semibold mb-2">
+          <Info className="w-4 h-4" /> Información sobre este motivo
+        </div>
+        <p className="text-muted-foreground">
+          Para conocer más sobre las Señales de Alerta contra el Blanqueo de Capitales, Financiamiento del Terrorismo y el Financiamiento de la Proliferación de Armas de Destrucción Masiva ver el siguiente documento:{" "}
+          <a
+            href="https://www.uaf.gob.pa/tmp/file/487/Catalogo-de-Senales-de-Alerta.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary underline font-medium"
+          >
+            Catálogo de Señales
+          </a>.
+        </p>
+      </div>
+    );
+  }
+
+  return null;
 }
 
 // ───────────────────────── Page ─────────────────────────
@@ -203,6 +291,33 @@ export default function CanalDenunciasPage() {
       });
       if (error) throw error;
 
+      // Send notification email (non-blocking for UX)
+      try {
+        const { error: mailErr } = await supabase.functions.invoke("send-complaint", {
+          body: {
+            relationship: values.relationship,
+            location: values.location,
+            company: values.company,
+            isAnonymous: values.is_anonymous === "si",
+            name: values.name || null,
+            phone: values.phone || null,
+            email: values.email || null,
+            reason: values.reason,
+            knowledgeSource: values.knowledge_source,
+            description: values.description,
+            incidentDate: incident_date,
+            incidentTime: incident_time,
+            fileUrl: file_url,
+            fileName: file?.name ?? null,
+            recaptchaToken,
+          },
+        });
+        if (mailErr) console.error("send-complaint failed:", mailErr);
+      } catch (mailEx) {
+        console.error("send-complaint exception:", mailEx);
+      }
+
+
       toast({ title: "Denuncia enviada", description: "Su denuncia ha sido recibida. Gracias por contribuir a la ética y transparencia." });
       form.reset();
       setFile(null);
@@ -235,9 +350,17 @@ export default function CanalDenunciasPage() {
               <ShieldCheck className="w-3.5 h-3.5" /> Canal confidencial
             </div>
             <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-foreground">Canal de Denuncias</h1>
-            <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-              Bienvenido al canal de denuncias de <strong>Grupo UniBank</strong>. La información será evaluada de manera confidencial, objetiva e imparcial.
-            </p>
+            <div className="mt-6 max-w-3xl mx-auto space-y-4 text-base md:text-lg text-muted-foreground text-left sm:text-center">
+              <p>
+                Bienvenido al Canal de Denuncias de <strong>Grupo UniBank</strong>. Por este canal usted podrá como Colaborador, Proveedor, Accionista, Miembros de Junta Directiva, Cliente, Estudiante/Practicante, comunidades afectadas y otras partes interesadas.
+              </p>
+              <p>
+                A través de este canal, usted puede reportar acciones que contravengan la ética, la legalidad o nuestras políticas internas, así como riesgos e impactos ambientales y sociales relacionados con operaciones o proyectos financiados por Grupo UniBank.
+              </p>
+              <p>
+                Su información será tratada de manera confidencial, objetiva e imparcial, garantizando la posibilidad de presentar denuncias anónimas y sin represalias.
+              </p>
+            </div>
           </div>
         </div>
 
@@ -355,6 +478,8 @@ export default function CanalDenunciasPage() {
                       <FormMessage />
                     </FormItem>
                   )} />
+
+                  {v.reason && <ReasonInfoPanel reason={v.reason} />}
 
                   <FormField control={form.control} name="knowledge_source" render={({ field }) => (
                     <FormItem>
