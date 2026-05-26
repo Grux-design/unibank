@@ -291,6 +291,33 @@ export default function CanalDenunciasPage() {
       });
       if (error) throw error;
 
+      // Send notification email (non-blocking for UX)
+      try {
+        const { error: mailErr } = await supabase.functions.invoke("send-complaint", {
+          body: {
+            relationship: values.relationship,
+            location: values.location,
+            company: values.company,
+            isAnonymous: values.is_anonymous === "si",
+            name: values.name || null,
+            phone: values.phone || null,
+            email: values.email || null,
+            reason: values.reason,
+            knowledgeSource: values.knowledge_source,
+            description: values.description,
+            incidentDate: incident_date,
+            incidentTime: incident_time,
+            fileUrl: file_url,
+            fileName: file?.name ?? null,
+            recaptchaToken,
+          },
+        });
+        if (mailErr) console.error("send-complaint failed:", mailErr);
+      } catch (mailEx) {
+        console.error("send-complaint exception:", mailEx);
+      }
+
+
       toast({ title: "Denuncia enviada", description: "Su denuncia ha sido recibida. Gracias por contribuir a la ética y transparencia." });
       form.reset();
       setFile(null);
