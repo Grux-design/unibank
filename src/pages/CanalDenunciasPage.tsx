@@ -109,6 +109,94 @@ function Section({
   );
 }
 
+// ───────────────────────── Reason info panel ─────────────────────────
+function ReasonInfoPanel({ reason }: { reason: string }) {
+  if (reason === "Corrupción, Soborno y Cohecho") {
+    return (
+      <div className="rounded-xl border border-primary/20 bg-muted/40 p-5 text-sm text-foreground/90 space-y-4 animate-in fade-in slide-in-from-top-1 duration-300">
+        <div className="flex items-center gap-2 text-primary font-semibold">
+          <Info className="w-4 h-4" /> Información sobre este motivo
+        </div>
+
+        <div>
+          <h4 className="font-semibold text-foreground">Corrupción</h4>
+          <p className="mt-1 text-muted-foreground">
+            La corrupción se refiere al abuso de poder o posición para obtener beneficios personales, generalmente a través de actos ilegales o inmorales. Este fenómeno puede ocurrir en diversos ámbitos, como el político, el empresarial y el social.
+          </p>
+          <ul className="mt-2 list-disc pl-5 space-y-1 text-muted-foreground">
+            <li><strong>Soborno:</strong> Un funcionario público acepta dinero a cambio de otorgar contratos gubernamentales.</li>
+            <li><strong>Malversación:</strong> Un empleado desfalca fondos de una empresa para uso personal.</li>
+            <li><strong>Tráfico de influencias:</strong> Un político utiliza su posición para asegurar un puesto de trabajo para un familiar.</li>
+            <li><strong>Evasión fiscal:</strong> Una empresa oculta ingresos para pagar menos impuestos.</li>
+            <li><strong>Extorsión:</strong> Un oficial de policía exige dinero a cambio de no imponer una multa.</li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 className="font-semibold text-foreground">Soborno</h4>
+          <p className="mt-1 text-xs italic text-muted-foreground">
+            Refiérase sin limitarse al Libro Segundo de los Delitos Título VII – Delitos contra el Orden Económico, Capítulos III Delitos Financieros y IV Blanqueo de Capitales del Código Penal de Panamá.
+          </p>
+          <p className="mt-2 text-muted-foreground">
+            El soborno es la acción de corromper a alguien mediante dinero, regalos o favores para obtener algo a cambio, generalmente de manera ilegal o inmoral. Es una forma de corrupción que implica el uso indebido de influencias o poder para obtener beneficios personales o empresariales.
+          </p>
+          <ul className="mt-2 list-disc pl-5 space-y-1 text-muted-foreground">
+            <li><strong>Soborno a funcionarios públicos:</strong> Un empresario paga a un funcionario para ganar una licitación o contrato gubernamental.</li>
+            <li><strong>Soborno a jueces o abogados:</strong> Ofrecer dinero a un juez para obtener un fallo favorable en un caso judicial.</li>
+            <li><strong>Soborno en el ámbito empresarial:</strong> Un vendedor soborna al encargado de compras de una empresa para que elija su producto sobre el de la competencia.</li>
+            <li><strong>Soborno en el deporte:</strong> Pagar a un deportista para influir en el resultado de un partido.</li>
+            <li><strong>Soborno en la salud:</strong> Ofrecer dinero a un profesional de la salud para recibir atención preferencial.</li>
+          </ul>
+          <p className="mt-2 text-xs italic text-muted-foreground">
+            Refiérase sin limitarse al Libro Segundo de los Delitos Título VII – Delitos contra el Orden Económico, Capítulo IV Blanqueo de Capitales del Código Penal de Panamá.
+          </p>
+        </div>
+
+        <div>
+          <h4 className="font-semibold text-foreground">Cohecho</h4>
+          <p className="mt-1 text-muted-foreground">
+            El cohecho es un delito que implica ofrecer, prometer o dar a un funcionario público dinero, regalos u otros beneficios para que realice o deje de realizar una acción en el ejercicio de sus funciones. Este delito puede ser tanto activo como pasivo:
+          </p>
+          <ul className="mt-2 list-disc pl-5 space-y-1 text-muted-foreground">
+            <li><strong>Cohecho activo:</strong> Cuando una persona ofrece o da el soborno.</li>
+            <li><strong>Cohecho pasivo:</strong> Cuando el funcionario público recibe o acepta el soborno.</li>
+            <li><strong>Cohecho en licitaciones:</strong> Un empresario ofrece dinero a un funcionario para ganar una licitación pública.</li>
+            <li><strong>Cohecho judicial:</strong> Un abogado soborna a un juez para obtener un fallo favorable en un caso.</li>
+            <li><strong>Cohecho en inspecciones:</strong> Un comerciante paga a un inspector para evitar una multa por incumplimientos.</li>
+            <li><strong>Cohecho en permisos:</strong> Un ciudadano ofrece dinero a un funcionario para acelerar la obtención de un permiso de construcción.</li>
+          </ul>
+          <p className="mt-2 text-xs italic text-muted-foreground">
+            Refiérase sin limitarse al Libro Segundo de los Delitos Título X - Delitos Contra la Administración Pública del Código Penal de Panamá.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (reason === "Prevención de Blanqueo de Capitales y Financiamiento del Terrorismo, Financiamiento de Armas de Destrucción Masiva / Evasión Fiscal") {
+    return (
+      <div className="rounded-xl border border-primary/20 bg-muted/40 p-5 text-sm text-foreground/90 animate-in fade-in slide-in-from-top-1 duration-300">
+        <div className="flex items-center gap-2 text-primary font-semibold mb-2">
+          <Info className="w-4 h-4" /> Información sobre este motivo
+        </div>
+        <p className="text-muted-foreground">
+          Para conocer más sobre las Señales de Alerta contra el Blanqueo de Capitales, Financiamiento del Terrorismo y el Financiamiento de la Proliferación de Armas de Destrucción Masiva ver el siguiente documento:{" "}
+          <a
+            href="https://www.uaf.gob.pa/tmp/file/487/Catalogo-de-Senales-de-Alerta.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary underline font-medium"
+          >
+            Catálogo de Señales
+          </a>.
+        </p>
+      </div>
+    );
+  }
+
+  return null;
+}
+
 // ───────────────────────── Page ─────────────────────────
 export default function CanalDenunciasPage() {
   const [sending, setSending] = useState(false);
