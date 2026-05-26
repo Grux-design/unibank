@@ -1,7 +1,8 @@
 import { useState, useRef, useLayoutEffect } from "react";
 import React from "react";
 import { motion, useInView } from "motion/react";
-import { Building2, Users, BarChart3, ArrowRight } from "lucide-react";
+import { Building2, Truck, BarChart3, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { SectionHeading, LinkArrow } from "@/components/ui/atoms";
 
@@ -15,8 +16,8 @@ const CARD_H = 380;
 /* ── Images ────────────────────────────────────────────── */
 const IMG_LOANS =
   "https://images.unsplash.com/photo-1685981244090-c14c196d0bde?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080";
-const IMG_PAYROLL =
-  "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080";
+const IMG_LEASING =
+  "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080";
 const IMG_SECURITIES =
   "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080";
 
@@ -32,13 +33,14 @@ const services = [
     image: IMG_LOANS,
   },
   {
-    id: "planilla",
-    icon: Users,
-    label: "Servicios de Planilla",
-    title: "Optimiza tu tiempo y flujo de caja.",
-    body: "Simplifica la administración de tu negocio con nuestro ágil sistema de Pago de Planilla Empresarial.",
-    cta: "Conocer el servicio",
-    image: IMG_PAYROLL,
+    id: "unileasing",
+    icon: Truck,
+    label: "UniLeasing",
+    title: "Impulsa tu negocio.",
+    body: "Crece y Evoluciona con nuestro Leasing para adquirir la flota que necesites.",
+    cta: "Más información",
+    href: "/grupo/unileasing",
+    image: IMG_LEASING,
   },
   {
     id: "valores",
@@ -75,27 +77,46 @@ function CategoryTag({ icon: Icon, label }: { icon: React.ElementType; label: st
   );
 }
 
-function CtaLink({ children }: { children: React.ReactNode }) {
+function CtaLink({ children, href }: { children: React.ReactNode; href?: string }) {
   const [hov, setHov] = useState(false);
+  const style: React.CSSProperties = {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 6,
+    color: OR,
+    fontSize: 13,
+    fontWeight: 600,
+    cursor: "pointer",
+    transform: hov ? "translateX(4px)" : "translateX(0)",
+    transition: "transform 0.22s ease",
+    userSelect: "none",
+    textDecoration: "none",
+  };
+  const inner = (
+    <>
+      {children}
+      <ArrowRight size={13} strokeWidth={2.5} />
+    </>
+  );
+  if (href) {
+    return (
+      <Link
+        to={href}
+        onMouseEnter={() => setHov(true)}
+        onMouseLeave={() => setHov(false)}
+        style={style}
+      >
+        {inner}
+      </Link>
+    );
+  }
   return (
     <span
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
-      style={{
-        display: "inline-flex",
-        alignItems: "center",
-        gap: 6,
-        color: OR,
-        fontSize: 13,
-        fontWeight: 600,
-        cursor: "pointer",
-        transform: hov ? "translateX(4px)" : "translateX(0)",
-        transition: "transform 0.22s ease",
-        userSelect: "none",
-      }}
+      style={style}
     >
-      {children}
-      <ArrowRight size={13} strokeWidth={2.5} />
+      {inner}
     </span>
   );
 }
@@ -156,7 +177,7 @@ function LargeCard({ service, isMobile }: { service: typeof services[0]; isMobil
           </h3>
           <p style={{ margin: 0, fontSize: 13, color: SOFT, lineHeight: 1.6 }}>{service.body}</p>
         </div>
-        <CtaLink>{service.cta}</CtaLink>
+        <CtaLink href={(service as { href?: string }).href}>{service.cta}</CtaLink>
       </motion.div>
     </div>
   );
@@ -197,7 +218,7 @@ function SmallCard({ service, index }: { service: typeof services[0]; index: num
           {service.title}
         </h4>
         <p style={{ margin: 0, fontSize: 13, color: SOFT, lineHeight: 1.6 }}>{service.body}</p>
-        <CtaLink>{service.cta}</CtaLink>
+        <CtaLink href={(service as { href?: string }).href}>{service.cta}</CtaLink>
       </div>
     </motion.div>
   );
@@ -224,8 +245,8 @@ function BentoDesktopGrid() {
 
   /* Row 2: two equal cards with hover expand */
   const halfBase = cw > 0 ? (cw - G) / 2 : 0;
-  const wPlanilla = halfBase + (hovered === "planilla" ? DELTA : hovered === "valores" ? -DELTA : 0);
-  const wValores = halfBase + (hovered === "valores" ? DELTA : hovered === "planilla" ? -DELTA : 0);
+  const wUnileasing = halfBase + (hovered === "unileasing" ? DELTA : hovered === "valores" ? -DELTA : 0);
+  const wValores = halfBase + (hovered === "valores" ? DELTA : hovered === "unileasing" ? -DELTA : 0);
 
   const card = (id: string, w: number, children: React.ReactNode) => (
     <div
@@ -265,7 +286,7 @@ function BentoDesktopGrid() {
         <LargeCard service={services[0]} isMobile={false} />
       </div>
       <div style={{ display: "flex", gap: G }}>
-        {card("planilla", wPlanilla, <SmallCard service={services[1]} index={1} />)}
+        {card("unileasing", wUnileasing, <SmallCard service={services[1]} index={1} />)}
         {card("valores", wValores, <SmallCard service={services[2]} index={2} />)}
       </div>
     </div>
@@ -307,7 +328,7 @@ export function BusinessSection() {
           <SectionHeading
             tag="Banca Empresarial"
             headline={<>Financiamos el futuro<br />y la visión de tu negocio</>}
-            body="Crédito comercial, planilla empresarial y valores – soluciones financieras adaptadas a cada etapa y sector de tu empresa."
+            body="Crédito comercial, planilla empresarial, Leasing, bonos verdes y soluciones financieras adaptadas a cada etapa y sector de tu negocio."
             
             mb={40}
           />
