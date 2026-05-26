@@ -1,33 +1,45 @@
-## Correcciones en home → tab Empresas (`BusinessSection.tsx`)
+## Correcciones a la página Uni Leasing
 
-### 1. Subtítulo del hero
-Reemplazar el `body` actual:
-> "Crédito comercial, planilla empresarial y valores – soluciones financieras adaptadas a cada etapa y sector de tu empresa."
+### 1. Renombrar "UniLeasing" → "Uni Leasing" (con espacio)
+Reemplazo global de la marca visible al usuario en:
+- `src/pages/UniLeasingPage.tsx` (hero H1, sección sostenibilidad, CTA final, meta title/description, eyebrow, asunto del email)
+- `src/data/megaMenuData.ts`, `src/data/heroSlides.ts`, `src/data/footerData.ts`
+- `src/components/organisms/BusinessSection.tsx` (card label "UniLeasing")
+- Otras páginas donde aparezca el texto visible ("UniLeasing")
 
-Por:
-> "Crédito comercial, planilla empresarial, Leasing, bonos verdes y soluciones financieras adaptadas a cada etapa y sector de tu negocio."
+Nota: se mantienen sin cambio los identificadores internos (rutas `/grupo/unileasing`, nombre del componente `UniLeasingPage`, email `unileasing@unibank.com.pa`, claves `id: "unileasing"`).
 
-Línea 310 del componente.
+### 2. Hero
+- Eyebrow: cambiar `Grupo UniBank · Leasing` → `Leasing`.
+- H1: `Uni Leasing`.
 
-### 2. Reemplazar la card "Servicios de Planilla" por UniLeasing
-En el array `services` (líneas 34–42), sustituir el item `planilla` por:
-- `id`: `"unileasing"`
-- `icon`: `Truck` (de lucide-react)
-- `label` (cintillo crema): `"UniLeasing"`
-- `title`: `"Impulsa tu negocio."`
-- `body`: `"Crece y Evoluciona con nuestro Leasing para adquirir la flota que necesites."`
-- `cta`: `"Más información"`
-- `href`: `"/grupo/unileasing"`
-- `image`: nueva imagen relacionada a flota/vehículos comerciales (Unsplash, mismo patrón que el resto)
+### 3. Sección "¿Qué puedo adquirir?" — tarjeta "Vehículos y equipos usados"
+- Título: `Equipos Usados`
+- Subtítulo: `Activos previamente evaluados para su financiamiento mediante leasing, garantizando respaldo y viabilidad.`
 
-Actualizar referencias `hovered === "planilla"` → `"unileasing"` y `wPlanilla` → `wUnileasing` (líneas 227, 268) para mantener la lógica de hover-expand.
+### 4. Sección "Beneficios pensados para su negocio"
+- Cajón 1 título: `Mensualidades deducibles de impuesto sobre la ISR.`
+- Cajón 3 título: `Letras exenta de FECI`
+- Cajón 4: título `Plazos Accesibles`, subtítulo `Plazos diseñados para ajustarse a la capacidad de pago y proyección de su negocio.` (icono cambia de `Lock` a algo más acorde, p. ej. `CalendarClock`).
 
-### 3. Hacer que el CTA navegue
-Actualmente `CtaLink` es un `<span>` sin enlace. Cambiarlo para que acepte un `href` opcional y, cuando exista, renderice un `<Link>` de `react-router-dom` (manteniendo estilos y animación). Las otras dos cards seguirán funcionando igual (sin `href`, mismo span).
+### 5. Sección Sostenibilidad — separar título del cuadro
+- Mover el H2 `Uni Leasing promoviendo la sostenibilidad` **fuera** del cuadro con gradiente, como divisor de la página.
+- Mantener el subtítulo dentro del cuadro junto con los 4 íconos (Energía renovable, Movilidad eléctrica, Proyectos verdes, Innovación).
 
-## Archivos
-- ✏️ `src/components/organisms/BusinessSection.tsx`
+### 6. Animación "flip" en los íconos de Sostenibilidad
+Al hacer hover sobre cada tarjeta de los 4 íconos, se voltea como una moneda (efecto 3D flip) revelando una imagen temática del concepto:
+- Energía renovable → panel solar
+- Movilidad eléctrica → auto híbrido
+- Proyectos verdes → iluminarias LED
+- Innovación → ícono/imagen alternativa
 
-## Fuera de alcance
-- Las otras dos cards (Préstamos Comerciales, Emisión de Valores) no se tocan.
-- No se modifica la pestaña Personas ni la página de UniLeasing.
+Implementación con utilidades Tailwind (`perspective`, `transform-style: preserve-3d`, `backface-visibility`) y transición CSS; sin librerías nuevas. Imágenes generadas o íconos secundarios de lucide.
+
+### 7. CTA final
+- Sustituir `Nuestro equipo de UniLeasing…` → `Nuestro equipo de Uni Leasing…`.
+
+### Archivos a editar
+- `src/pages/UniLeasingPage.tsx` (principal)
+- `src/data/megaMenuData.ts`, `src/data/heroSlides.ts`, `src/data/footerData.ts`
+- `src/components/organisms/BusinessSection.tsx`
+- Cualquier otra ocurrencia visible de `UniLeasing` detectada por búsqueda
