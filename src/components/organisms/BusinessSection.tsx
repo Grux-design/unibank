@@ -1,7 +1,8 @@
 import { useState, useRef, useLayoutEffect } from "react";
 import React from "react";
 import { motion, useInView } from "motion/react";
-import { Building2, Users, BarChart3, ArrowRight } from "lucide-react";
+import { Building2, Truck, BarChart3, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { SectionHeading, LinkArrow } from "@/components/ui/atoms";
 
