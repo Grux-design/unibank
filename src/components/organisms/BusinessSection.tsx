@@ -245,8 +245,8 @@ function BentoDesktopGrid() {
 
   /* Row 2: two equal cards with hover expand */
   const halfBase = cw > 0 ? (cw - G) / 2 : 0;
-  const wPlanilla = halfBase + (hovered === "planilla" ? DELTA : hovered === "valores" ? -DELTA : 0);
-  const wValores = halfBase + (hovered === "valores" ? DELTA : hovered === "planilla" ? -DELTA : 0);
+  const wUnileasing = halfBase + (hovered === "unileasing" ? DELTA : hovered === "valores" ? -DELTA : 0);
+  const wValores = halfBase + (hovered === "valores" ? DELTA : hovered === "unileasing" ? -DELTA : 0);
 
   const card = (id: string, w: number, children: React.ReactNode) => (
     <div
