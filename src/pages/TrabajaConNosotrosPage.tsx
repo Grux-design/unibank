@@ -172,6 +172,24 @@ export default function TrabajaConNosotrosPage() {
       });
       if (error) throw error;
 
+      // Notify HR via email (non-blocking for UX)
+      try {
+        const { error: emailErr } = await supabase.functions.invoke("send-job-application", {
+          body: {
+            name: values.name,
+            phone: values.phone,
+            email: values.email,
+            message: values.message,
+            cvUrl: cv_url,
+            cvFileName: file.name,
+            recaptchaToken,
+          },
+        });
+        if (emailErr) console.error("send-job-application failed:", emailErr);
+      } catch (e) {
+        console.error("send-job-application threw:", e);
+      }
+
       toast({
         title: "¡Aplicación enviada!",
         description: "Hemos recibido tu información. Te contactaremos pronto.",
