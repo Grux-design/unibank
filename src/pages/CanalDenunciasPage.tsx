@@ -323,9 +323,17 @@ export default function CanalDenunciasPage() {
               <ShieldCheck className="w-3.5 h-3.5" /> Canal confidencial
             </div>
             <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-foreground">Canal de Denuncias</h1>
-            <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-              Bienvenido al canal de denuncias de <strong>Grupo UniBank</strong>. La información será evaluada de manera confidencial, objetiva e imparcial.
-            </p>
+            <div className="mt-6 max-w-3xl mx-auto space-y-4 text-base md:text-lg text-muted-foreground text-left sm:text-center">
+              <p>
+                Bienvenido al Canal de Denuncias de <strong>Grupo UniBank</strong>. Por este canal usted podrá como Colaborador, Proveedor, Accionista, Miembros de Junta Directiva, Cliente, Estudiante/Practicante, comunidades afectadas y otras partes interesadas.
+              </p>
+              <p>
+                A través de este canal, usted puede reportar acciones que contravengan la ética, la legalidad o nuestras políticas internas, así como riesgos e impactos ambientales y sociales relacionados con operaciones o proyectos financiados por Grupo UniBank.
+              </p>
+              <p>
+                Su información será tratada de manera confidencial, objetiva e imparcial, garantizando la posibilidad de presentar denuncias anónimas y sin represalias.
+              </p>
+            </div>
           </div>
         </div>
 
