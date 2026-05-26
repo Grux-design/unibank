@@ -91,7 +91,7 @@ export const slides: Slide[] = [
     cta:       "Solicitar Leasing",
     ctaAlt:    "Más sobre Leasing",
     image:     "https://images.unsplash.com/photo-1585846416120-3a7354ed7d39?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080",
-    cardTitle: "UniLeasing",
+    cardTitle: "Uni Leasing",
     cardSub:   "$1,850 / mes",
   },
   {

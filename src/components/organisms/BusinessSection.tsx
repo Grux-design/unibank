@@ -35,7 +35,7 @@ const services = [
   {
     id: "unileasing",
     icon: Truck,
-    label: "UniLeasing",
+    label: "Uni Leasing",
     title: "Impulsa tu negocio.",
     body: "Crece y Evoluciona con nuestro Leasing para adquirir la flota que necesites.",
     cta: "Más información",

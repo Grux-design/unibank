@@ -126,7 +126,7 @@ export default function SostenibilidadPage() {
                   <ArrowUpRight className="h-4 w-4" />
                 </a>
                 <p className="mt-3 text-xs text-muted-foreground">
-                  Emitido por UniLeasing · Estructurado por Invertis Securities
+                  Emitido por Uni Leasing · Estructurado por Invertis Securities
                 </p>
               </div>
 
