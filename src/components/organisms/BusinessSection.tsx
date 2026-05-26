@@ -177,7 +177,7 @@ function LargeCard({ service, isMobile }: { service: typeof services[0]; isMobil
           </h3>
           <p style={{ margin: 0, fontSize: 13, color: SOFT, lineHeight: 1.6 }}>{service.body}</p>
         </div>
-        <CtaLink>{service.cta}</CtaLink>
+        <CtaLink href={(service as { href?: string }).href}>{service.cta}</CtaLink>
       </motion.div>
     </div>
   );
