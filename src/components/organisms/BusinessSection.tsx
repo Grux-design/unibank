@@ -218,7 +218,7 @@ function SmallCard({ service, index }: { service: typeof services[0]; index: num
           {service.title}
         </h4>
         <p style={{ margin: 0, fontSize: 13, color: SOFT, lineHeight: 1.6 }}>{service.body}</p>
-        <CtaLink>{service.cta}</CtaLink>
+        <CtaLink href={(service as { href?: string }).href}>{service.cta}</CtaLink>
       </div>
     </motion.div>
   );
