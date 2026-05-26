@@ -26,7 +26,7 @@ const ACCEPT = ".jpg,.jpeg,.png,.pdf,.doc,.docx,.ppt,.pptx,.mov,.mp3,.zip,.m4a,.
 
 const relationships = ["Empleado", "Accionista", "Proveedor", "Cliente", "Miembro de la Junta Directiva", "Estudiante", "Otro"];
 const locations = ["Casa Matriz", "Costa del Este", "Oficinas", "Otra"];
-const companies = ["UniBank", "UniTrust", "UniLeasing", "Invertis Securities", "UniVivir"];
+const companies = ["UniBank", "UniTrust", "Uni Leasing", "Invertis Securities", "UniVivir"];
 const reasons = [
   "Incumplimiento al Código de Ética",
   "Corrupción, Soborno y Cohecho",

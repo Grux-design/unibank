@@ -68,7 +68,7 @@ export const empresasData: MenuSection = {
   image: "https://images.unsplash.com/photo-1758518727077-ffb66ffccced?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800",
   featured: {
     tag:          "Nuevo",
-    label:        "UniLeasing",
+    label:        "Uni Leasing",
     desc:         "Equipa tu empresa sin inmovilizar capital. Aprobación en 48h.",
     slug:         "unileasing",
     categorySlug: "financiamiento",
@@ -87,7 +87,7 @@ export const empresasData: MenuSection = {
       categorySlug: "financiamiento",
       items: [
         { label: "Préstamo Comercial",      slug: "prestamo-comercial" },
-        { label: "UniLeasing",              slug: "unileasing" },
+        { label: "Uni Leasing",              slug: "unileasing" },
         { label: "Líneas de Crédito",       slug: "linea-de-credito" },
         { label: "Préstamo Agroindustrial", slug: "prestamo-agroindustrial" },
       ],
