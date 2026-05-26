@@ -16,8 +16,8 @@ const CARD_H = 380;
 /* ── Images ────────────────────────────────────────────── */
 const IMG_LOANS =
   "https://images.unsplash.com/photo-1685981244090-c14c196d0bde?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080";
-const IMG_PAYROLL =
-  "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080";
+const IMG_LEASING =
+  "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080";
 const IMG_SECURITIES =
   "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080";
 
