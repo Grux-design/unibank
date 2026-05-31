@@ -557,7 +557,7 @@ export function DigitalBanking() {
 
   return (
     <section style={{ background: "#fff" }}>
-      <div style={{ maxWidth: 1440, margin: "0 auto", paddingLeft: px, paddingRight: px }}>
+      <div style={{ maxWidth: "98vw", margin: "0 auto", paddingLeft: px, paddingRight: px }}>
         {/* Section heading */}
         <motion.div
           ref={headRef}

@@ -593,7 +593,7 @@ export function ProductsSection() {
 
   return (
     <section style={{ background: "#fff", paddingTop: 40, paddingBottom: 64 }}>
-      <div style={{ maxWidth: 1440, margin: "0 auto", paddingLeft: px, paddingRight: px }}>
+      <div style={{ maxWidth: "98vw", margin: "0 auto", paddingLeft: px, paddingRight: px }}>
         <SectionHeading
           tag="Banca para Personas"
           headline={<>Protegemos y multiplicamos<br />lo que más valoras</>}
