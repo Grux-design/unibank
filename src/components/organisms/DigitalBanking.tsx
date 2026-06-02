@@ -695,10 +695,13 @@ export function DigitalBanking() {
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
                 <span style={{ fontSize: 14, color: "rgba(255,255,255,0.7)" }}>
-                  Lunes a Viernes 8:00 am – 5:00 pm
+                  Lunes a viernes 8:00 a.m. – 4:00 p.m. · Sábados 9:00 a.m. – 12:00 p.m.
                 </span>
                 <span style={{ fontSize: 14, color: "rgba(255,255,255,0.7)" }}>
-                  Sucursales en toda la República de Panamá
+                  Cajero automático disponible 24 horas
+                </span>
+                <span style={{ fontSize: 14, color: "rgba(255,255,255,0.7)" }}>
+                  Oficinas: Ave. Balboa, Edificio Grand Bay Tower, Planta Baja · Costa del Este, Edificio Península Center, Local #5
                 </span>
               </div>
             </div>
