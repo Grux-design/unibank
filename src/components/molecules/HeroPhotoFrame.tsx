@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import type { Slide } from "@/data/heroSlides";
 import { THEME } from "@/data/heroSlides";
-import textureAsset from "@/assets/texture-1.svg.asset.json";
 
 interface HeroPhotoFrameProps {
   slide: Slide;
@@ -15,14 +14,7 @@ export function HeroPhotoFrame({ slide }: HeroPhotoFrameProps) {
   useEffect(() => { setLoaded(false); }, [slide.image]);
 
   return (
-    <div style={{
-      position: "relative", width: "100%", height: "100%", minHeight: 508, overflow: "visible",
-      backgroundImage: `url(${textureAsset.url})`,
-      backgroundRepeat: "no-repeat",
-      backgroundPosition: "center",
-      backgroundSize: "contain",
-    }}>
-
+    <div style={{ position: "relative", width: "100%", height: "100%", minHeight: 508, overflow: "hidden", background: "transparent" }}>
       {/* Accent circle */}
       <div style={{
         position: "absolute", bottom: "5%", right: "-8%",
