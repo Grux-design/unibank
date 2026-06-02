@@ -131,9 +131,12 @@ export function BtnPrimary({
   fullWidth?: boolean;
 }) {
   const [hov, setHov] = useState(false);
+  const isExternal = /^https?:\/\//i.test(href);
   return (
     <a
       href={href}
+      target={isExternal ? "_blank" : undefined}
+      rel={isExternal ? "noopener noreferrer" : undefined}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
       style={{
