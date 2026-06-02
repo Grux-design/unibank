@@ -493,23 +493,6 @@ function AutoLoanCard({ isMobile }: { isMobile: boolean }) {
           <p style={{ margin: 0, fontSize: 13, color: SOFT, lineHeight: 1.6 }}>
             El auto de tus sueños está más cerca. Tasas competitivas y aprobación rápida.
           </p>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 2,
-              padding: "12px 16px",
-              background: "hsl(20 100% 97%)",
-              borderRadius: 12,
-              borderLeft: `3px solid ${OR}`,
-            }}
-          >
-            <span style={{ fontSize: 11, color: SOFT, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.06em" }}>
-              Tasa desde
-            </span>
-            <span style={{ fontSize: 24, fontWeight: 800, color: OR, letterSpacing: "-0.02em" }}>7.5% anual</span>
-            <span style={{ fontSize: 11, color: SOFT }}>Condiciones competitivas según tu perfil crediticio.</span>
-          </div>
         </div>
         <OrangeButton fullWidth href="https://onboardauto.unibank.com.pa/">
           Solicitar Crédito ahora <Plus size={14} strokeWidth={2.5} />
