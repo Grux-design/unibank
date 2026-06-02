@@ -90,7 +90,7 @@ export const slides: Slide[] = [
     body:      "Equipos, vehículos y tecnología con deducción fiscal real, adaptado a tu flujo de caja.",
     cta:       "Solicitar Leasing",
     ctaAlt:    "Más sobre Leasing",
-    image:     "https://images.unsplash.com/photo-1585846416120-3a7354ed7d39?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080",
+    image:     "/893174f9-3139-46c3-a57d-e0aa762dfbb8.jpg",
     cardTitle: "Uni Leasing",
     cardSub:   "$1,850 / mes",
   },
