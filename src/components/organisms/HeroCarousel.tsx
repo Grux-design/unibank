@@ -55,10 +55,11 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
           {/* Right column: photo frame + glass card overlay */}
           <div style={{
             flex: "0 0 auto",
-            width: "clamp(260px, 38%, 440px)",
+            width: "clamp(340px, 50%, 620px)",
             position: "relative",
             height: "100%",
           }}>
+
             <HeroPhotoFrame slide={slide} />
             <HeroGlassCard  nextSlide={nextSlide} currentKey={current} />
           </div>
