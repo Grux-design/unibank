@@ -32,7 +32,7 @@ const FEATURES = [
     description:
       "Envía dinero en segundos a cualquier banco de Panamá. Sin filas, sin formularios, sin esperas – solo resultados.",
     image:
-      "https://images.unsplash.com/photo-1526841803814-753ac32aa9e2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+      "/transferencias.jpg",
   },
   {
     id: "opening",
