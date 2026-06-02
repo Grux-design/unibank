@@ -3,7 +3,7 @@ import type { Lang } from "@/components/layout/SiteLayout";
 import { slides, THEME, SLIDE_DURATION } from "@/data/heroSlides";
 import { HeroSlideContent } from "@/components/molecules/HeroSlideContent";
 import { HeroPhotoFrame }   from "@/components/molecules/HeroPhotoFrame";
-import { HeroGlassCard }    from "@/components/molecules/HeroGlassCard";
+
 import { HeroControls }     from "@/components/molecules/HeroControls";
 
 interface HeroCarouselProps { lang: Lang }
