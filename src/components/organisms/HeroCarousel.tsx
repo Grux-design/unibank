@@ -60,7 +60,6 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
             height: "100%",
           }}>
             <HeroPhotoFrame slide={slide} />
-            <HeroGlassCard  nextSlide={nextSlide} currentKey={current} />
           </div>
         </div>
 
