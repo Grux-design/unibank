@@ -597,7 +597,7 @@ export function ProductsSection() {
         <SectionHeading
           tag="Banca para Personas"
           headline={<>Protegemos y multiplicamos<br />lo que más valoras</>}
-          body="Cuentas, tarjetas, préstamos e inversiones pensados para simplificar tu vida financiera y hacer crecer lo que construyes."
+          body="Cuentas, tarjetas e inversiones pensados para simplificar tu vida financiera y hacer crecer lo que construyes."
           mb={40}
         />
         {isMobile ? <BentoMobileStack /> : <BentoDesktopGrid />}
