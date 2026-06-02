@@ -43,7 +43,7 @@ const FEATURES = [
     description:
       "Abre cuentas y solicita nuevos productos en minutos, sin visitar una sucursal. Tu tiempo es demasiado valioso.",
     image:
-      "https://images.unsplash.com/photo-1663767117374-538a2a266fe1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+      "/apertura-digital.jpg",
   },
   {
     id: "payments",
