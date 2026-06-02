@@ -17,7 +17,7 @@ const IMG_PORTRAIT = "/5ca273f3-86ff-4e66-a9f7-ae25d492fce4.png";
 const IMG_MASTERCARD =
   "https://images.unsplash.com/photo-1556742044-3c52d6e88c62?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800";
 const IMG_INVERTIS =
-  "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800";
+  "/f640d2cc-2ec6-40bd-8fd2-a953cc05b798.jpg";
 const IMG_VIVIENDA =
   "https://images.unsplash.com/photo-1570129477492-45c003edd2be?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800";
 const IMG_AUTO =
