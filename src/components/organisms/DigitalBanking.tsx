@@ -26,11 +26,11 @@ const FEATURES = [
   {
     id: "transfers",
     title: "Transferencias",
-    tag: "ACH en tiempo real",
+    tag: "ACH Xpress y Xpress",
     cta: "Hacer una transferencia",
     href: "/banca-digital/transferencias",
     description:
-      "Envía dinero en segundos a cualquier banco de Panamá. Sin filas, sin formularios, sin esperas – solo resultados.",
+      "Envía dinero en segundos a otros bancos de forma rápida, simple y segura.",
     image:
       "/transferencias.jpg",
   },
