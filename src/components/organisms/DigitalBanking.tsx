@@ -54,7 +54,7 @@ const FEATURES = [
     description:
       "Paga electricidad, agua, celular y más directamente desde la app. Sin filas, sin comisiones, en segundos.",
     image:
-      "https://images.unsplash.com/photo-1556742044-3c52d6e88c62?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+      "/pagos-servicios.jpg",
   },
   {
     id: "notifications",
