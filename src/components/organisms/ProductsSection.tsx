@@ -511,7 +511,7 @@ function AutoLoanCard({ isMobile }: { isMobile: boolean }) {
             <span style={{ fontSize: 11, color: SOFT }}>Condiciones competitivas según tu perfil crediticio.</span>
           </div>
         </div>
-        <OrangeButton fullWidth>
+        <OrangeButton fullWidth href="https://onboardauto.unibank.com.pa/">
           Solicitar Crédito ahora <Plus size={14} strokeWidth={2.5} />
         </OrangeButton>
       </motion.div>
