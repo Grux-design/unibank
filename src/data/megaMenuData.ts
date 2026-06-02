@@ -53,12 +53,13 @@ export const personasData: MenuSection = {
       ],
     },
     {
-      name: "Otros Servicios",
+      name: "Valores Agregados",
       categorySlug: "otros-servicios",
       items: [
         { label: "Invertis Global Income Fund", slug: "invertis-global-income-fund", href: "https://www.invertissecurities.com/es/invertis-global-income-fund" },
         { label: "Mastercard Black Débito",     slug: "mastercard-black-debito" },
         { label: "Cajilla de Seguridad",        slug: "cajilla-de-seguridad" },
+        { label: "UniVivir Seguros",            slug: "univivir-seguros", href: "https://www.univivir.com.pa/" },
       ],
     },
   ],
