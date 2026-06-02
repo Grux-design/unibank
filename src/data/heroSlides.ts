@@ -106,7 +106,7 @@ export const slides: Slide[] = [
     body:      "Tasas competitivas, hasta 30 años de plazo. Asesor dedicado desde el día uno.",
     cta:       "Solicitar hipoteca",
     ctaAlt:    "Calcular mi cuota",
-    image:     "https://images.unsplash.com/photo-1758523671285-9ff3f4e0ff38?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080",
+    image:     "/7ea7ba88-a073-446a-8edd-ed2b250324c3.jpg",
     cardTitle: "Crédito Hipotecario",
     cardSub:   "Desde 6.5% EA",
   },
