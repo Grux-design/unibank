@@ -15,7 +15,7 @@ const DELTA = 20;
 /* ── Images ────────────────────────────────────────────── */
 const IMG_PORTRAIT = "/5ca273f3-86ff-4e66-a9f7-ae25d492fce4.png";
 const IMG_MASTERCARD =
-  "https://images.unsplash.com/photo-1556742044-3c52d6e88c62?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800";
+  "/3fb82a8f-5139-401a-b4db-72502ed6a3c9.jpg";
 const IMG_INVERTIS =
   "/f640d2cc-2ec6-40bd-8fd2-a953cc05b798.jpg";
 const IMG_VIVIENDA =
