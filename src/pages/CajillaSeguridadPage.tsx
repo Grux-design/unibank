@@ -387,7 +387,7 @@ export default function CajillaSeguridadPage() {
           </div>
           <div className="grid gap-4 md:grid-cols-2">
             {[
-              "Mantener al menos una (1) cuenta activa en UniBank.",
+              "Mantener una cuenta activa en UniBank.",
               "El arrendamiento de la cajilla es a título personal.",
             ].map((req) => (
               <div
@@ -428,11 +428,9 @@ export default function CajillaSeguridadPage() {
           </p>
           <div className="mt-8 flex justify-center">
             <a
-              href={`mailto:cajillasdeseguridad@unibank.com.pa?subject=${encodeURIComponent(
-                "Solicitud de información — Cajilla de Seguridad",
-              )}&body=${encodeURIComponent(
-                `Hola,\n\nMe interesa recibir más información sobre el servicio de Cajillas de Seguridad de UniBank.\n\nDatos de contacto:\nNombre:\nTeléfono:\nCorreo:\n\nGracias.`,
-              )}`}
+              href="https://api.whatsapp.com/send?phone=50763280229&text=%C2%A1Hola!,%20Tengo%20una%20Consulta%20sobre%20Cajillas%20de%20Seguridad"
+              target="_blank"
+              rel="noopener noreferrer"
               className="group inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg"
             >
               <Mail className="h-4 w-4" />
