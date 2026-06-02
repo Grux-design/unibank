@@ -65,7 +65,7 @@ export const personasData: MenuSection = {
 };
 
 export const empresasData: MenuSection = {
-  image: "https://images.unsplash.com/photo-1758518727077-ffb66ffccced?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800",
+  image: "/megamenu-empresas-solar.jpg",
   featured: {
     tag:          "Nuevo",
     label:        "Uni Leasing",
