@@ -3,7 +3,7 @@ import type { Lang } from "@/components/layout/SiteLayout";
 import { slides, THEME, SLIDE_DURATION } from "@/data/heroSlides";
 import { HeroSlideContent } from "@/components/molecules/HeroSlideContent";
 import { HeroPhotoFrame }   from "@/components/molecules/HeroPhotoFrame";
-import { HeroGlassCard }    from "@/components/molecules/HeroGlassCard";
+
 import { HeroControls }     from "@/components/molecules/HeroControls";
 
 interface HeroCarouselProps { lang: Lang }
@@ -24,7 +24,6 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
   const goPrev = () => advance((current - 1 + slides.length) % slides.length, -1);
 
   const slide     = slides[current];
-  const nextSlide = slides[(current + 1) % slides.length];
   const t         = THEME;
 
   return (
@@ -60,7 +59,6 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
             height: "100%",
           }}>
             <HeroPhotoFrame slide={slide} />
-            <HeroGlassCard  nextSlide={nextSlide} currentKey={current} />
           </div>
         </div>
 
