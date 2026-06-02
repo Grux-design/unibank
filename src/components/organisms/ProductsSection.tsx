@@ -43,30 +43,46 @@ const viviendaData = {
 };
 
 /* ── Sub-components ─────────────────────────────────────── */
-function OrangeButton({ children, fullWidth }: { children: React.ReactNode; fullWidth?: boolean }) {
+function OrangeButton({ children, fullWidth, href }: { children: React.ReactNode; fullWidth?: boolean; href?: string }) {
   const [hov, setHov] = useState(false);
+  const style: React.CSSProperties = {
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+    padding: "15px 28px",
+    borderRadius: 16,
+    border: "none",
+    background: hov ? "hsl(20 100% 45%)" : OR,
+    color: "#FBF4F0",
+    fontSize: 14,
+    fontWeight: 600,
+    letterSpacing: "0.004em",
+    cursor: "pointer",
+    transition: "background 0.18s",
+    width: fullWidth ? "100%" : undefined,
+    whiteSpace: "nowrap",
+    textDecoration: "none",
+  };
+  if (href) {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        onMouseEnter={() => setHov(true)}
+        onMouseLeave={() => setHov(false)}
+        style={style}
+      >
+        {children}
+      </a>
+    );
+  }
   return (
     <button
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
-      style={{
-        display: "inline-flex",
-        alignItems: "center",
-        justifyContent: "center",
-        gap: 8,
-        padding: "15px 28px",
-        borderRadius: 16,
-        border: "none",
-        background: hov ? "hsl(20 100% 45%)" : OR,
-        color: "#FBF4F0",
-        fontSize: 14,
-        fontWeight: 600,
-        letterSpacing: "0.004em",
-        cursor: "pointer",
-        transition: "background 0.18s",
-        width: fullWidth ? "100%" : undefined,
-        whiteSpace: "nowrap",
-      }}
+      style={style}
     >
       {children}
     </button>
