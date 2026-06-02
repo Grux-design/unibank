@@ -58,7 +58,7 @@ export const slides: Slide[] = [
     body:      "Cotiza tu Préstamo de Auto donde estés, de la manera más fácil y rápida. ¡Conoce tu letra mensual ahora!",
     cta:       "Solicitar ahora",
     ctaAlt:    "Ver condiciones",
-    image:     "https://images.unsplash.com/photo-1747671688812-76d7bca21f34?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080",
+    image:     "/be66e5af-67ba-4fd2-851b-2be6ac50832b.jpg",
     cardTitle: "Préstamo Auto",
     cardSub:   "Desde 8.5% EA",
   },
