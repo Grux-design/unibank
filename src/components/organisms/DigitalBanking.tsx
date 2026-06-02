@@ -700,9 +700,6 @@ export function DigitalBanking() {
                 <span style={{ fontSize: 14, color: "rgba(255,255,255,0.7)" }}>
                   Cajero automático disponible 24 horas
                 </span>
-                <span style={{ fontSize: 14, color: "rgba(255,255,255,0.7)" }}>
-                  Oficinas: Ave. Balboa, Edificio Grand Bay Tower, Planta Baja · Costa del Este, Edificio Península Center, Local #5
-                </span>
               </div>
             </div>
           </div>
