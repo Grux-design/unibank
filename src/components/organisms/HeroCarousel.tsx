@@ -24,7 +24,6 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
   const goPrev = () => advance((current - 1 + slides.length) % slides.length, -1);
 
   const slide     = slides[current];
-  const nextSlide = slides[(current + 1) % slides.length];
   const t         = THEME;
 
   return (
