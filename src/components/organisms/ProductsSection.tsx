@@ -477,7 +477,7 @@ function AutoLoanCard({ isMobile }: { isMobile: boolean }) {
         }}
       >
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-          <CategoryTag icon={Car} label="Crédito Automotriz" />
+          <CategoryTag icon={Car} label="Crédito de Auto" />
           <h4
             style={{
               margin: 0,
