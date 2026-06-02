@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import type { Slide } from "@/data/heroSlides";
 import { THEME } from "@/data/heroSlides";
@@ -8,6 +9,9 @@ interface HeroPhotoFrameProps {
 
 export function HeroPhotoFrame({ slide }: HeroPhotoFrameProps) {
   const t = THEME;
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => { setLoaded(false); }, [slide.image]);
 
   return (
     <div style={{ position: "relative", width: "100%", height: "100%", minHeight: 508, overflow: "hidden", background: "transparent" }}>
@@ -38,13 +42,20 @@ export function HeroPhotoFrame({ slide }: HeroPhotoFrameProps) {
             left: "11%", right: "11%",
             height: 480, borderRadius: 28,
             overflow: "hidden", zIndex: 2,
+            background: t.blobAccent,
           }}
         >
           <img
             src={slide.image}
             alt={slide.cardTitle}
-            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 15%" }}
-            loading="eager"
+            onLoad={() => setLoaded(true)}
+            style={{
+              width: "100%", height: "100%",
+              objectFit: "cover", objectPosition: "center 15%",
+              opacity: loaded ? 1 : 0,
+              transition: "opacity 600ms ease",
+            }}
+            loading="lazy"
             decoding="async"
           />
         </motion.div>
