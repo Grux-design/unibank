@@ -74,7 +74,7 @@ export const slides: Slide[] = [
     body:      "Sin saldo mínimo ni filas. Abre en 5 minutos, 100% digital, al 4.5% TEA.",
     cta:       "Abre tu cuenta",
     ctaAlt:    "Ver condiciones",
-    image:     "https://images.unsplash.com/photo-1770871820934-daf713c304af?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080",
+    image:     "/b6f5b3af-65b3-42cb-a174-da7f0eb5f34a.jpg",
     cardTitle: "Cuenta de Ahorros",
     cardSub:   "4.5% TEA anual",
   },
