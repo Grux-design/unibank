@@ -19,7 +19,7 @@ const IMG_MASTERCARD =
 const IMG_INVERTIS =
   "/f640d2cc-2ec6-40bd-8fd2-a953cc05b798.jpg";
 const IMG_VIVIENDA =
-  "/db2b6c56-8a29-4e64-99eb-43af2efc1b06.jpg";
+  "/vivienda-panama.jpg";
 const IMG_AUTO =
   "/db823a97-bba4-4a2f-a533-9c07d80474ef.jpg";
 
