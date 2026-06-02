@@ -29,11 +29,18 @@ export function MegaMenuFeaturedCard({ data, isPersonas, onClose }: MegaMenuFeat
         border: imgBorder,
         aspectRatio: "4/3",
       }}>
-        <img
-          src={data.image}
-          alt=""
-          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-        />
+        <picture>
+          <source srcSet={data.image.replace(/\.(jpe?g|png)$/i, ".webp")} type="image/webp" />
+          <img
+            src={data.image}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            width={800}
+            height={600}
+            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+          />
+        </picture>
       </div>
 
       {/* Content */}
