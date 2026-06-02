@@ -39,7 +39,7 @@ const FEATURES = [
     title: "Apertura digital",
     tag: "Sin papeleos",
     cta: "Abrir mi cuenta",
-    href: "/banca-digital/apertura",
+    href: "https://onboard.unibank.com.pa/es/auth/login",
     description:
       "Abre cuentas y solicita nuevos productos en minutos, sin visitar una sucursal. Tu tiempo es demasiado valioso.",
     image:
@@ -50,7 +50,7 @@ const FEATURES = [
     title: "Paga servicios",
     tag: "Sin comisiones",
     cta: "Pagar un servicio",
-    href: "/banca-digital/pagos",
+    href: "https://ebanking.unibank.com.pa/DIBS_UNIBANK_PANAMA/pages/loginP.jsp",
     description:
       "Paga electricidad, agua, celular y más directamente desde la app. Sin filas, sin comisiones, en segundos.",
     image:
