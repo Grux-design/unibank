@@ -21,7 +21,7 @@ const IMG_INVERTIS =
 const IMG_VIVIENDA =
   "https://images.unsplash.com/photo-1570129477492-45c003edd2be?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800";
 const IMG_AUTO =
-  "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800";
+  "/db823a97-bba4-4a2f-a533-9c07d80474ef.jpg";
 
 /* ── Data ───────────────────────────────────────────────── */
 const invertisData = {
