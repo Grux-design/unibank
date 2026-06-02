@@ -65,7 +65,7 @@ const FEATURES = [
     description:
       "Cada movimiento en tu cuenta llega al instante a tu teléfono. Tú siempre en control, siempre informado.",
     image:
-      "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+      "/fa18271f-ec08-46dc-ac45-9abc9e72b2a6.jpg",
   },
 ];
 
