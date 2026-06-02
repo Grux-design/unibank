@@ -17,7 +17,7 @@ export interface MenuSection {
 }
 
 export const personasData: MenuSection = {
-  image: "https://images.unsplash.com/photo-1704088030734-96769c4593a2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800",
+  image: "/megamenu-personas-piggy.jpg",
   featured: {
     tag:          "Lo más popular",
     label:        "Cuenta de Ahorros",
