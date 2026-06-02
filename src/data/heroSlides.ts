@@ -39,6 +39,7 @@ export interface Slide {
   headline:  HeadlinePart[];
   body:      string;
   cta:       string;
+  ctaHref?:  string;
   ctaAlt:    string;
   image:     string;
   cardTitle: string;
@@ -57,6 +58,7 @@ export const slides: Slide[] = [
     ],
     body:      "Cotiza tu Préstamo de Auto donde estés, de la manera más fácil y rápida. ¡Conoce tu letra mensual ahora!",
     cta:       "Solicitar ahora",
+    ctaHref:   "https://onboardauto.unibank.com.pa/",
     ctaAlt:    "",
     image:     "/be66e5af-67ba-4fd2-851b-2be6ac50832b.jpg",
     cardTitle: "Préstamo Auto",
