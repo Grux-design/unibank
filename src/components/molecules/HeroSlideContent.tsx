@@ -59,6 +59,7 @@ export function HeroSlideContent({ slide, dir }: HeroSlideContentProps) {
             >
               {slide.cta}
             </button>
+            {slide.ctaAlt && (
             <button
               style={{
                 background: t.secondaryBtnBg, color: t.secondaryBtnColor,
@@ -71,6 +72,7 @@ export function HeroSlideContent({ slide, dir }: HeroSlideContentProps) {
             >
               {slide.ctaAlt}
             </button>
+            )}
           </div>
         </motion.div>
       </AnimatePresence>
