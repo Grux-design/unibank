@@ -47,18 +47,22 @@ export function HeroSlideContent({ slide, dir }: HeroSlideContentProps) {
 
           {/* CTA buttons */}
           <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginTop: 4 }}>
-            <button
+            <a
+              href={slide.ctaHref || "#"}
+              target={slide.ctaHref ? "_blank" : undefined}
+              rel={slide.ctaHref ? "noopener noreferrer" : undefined}
               style={{
+                display: "inline-block", textDecoration: "none",
                 background: t.primaryBtnBg, color: t.primaryBtnColor,
                 border: "none", borderRadius: 100, padding: "13px 26px",
                 fontSize: 14, fontWeight: 600, cursor: "pointer",
                 transition: "opacity 0.18s", fontFamily: "inherit",
               }}
-              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = t.primaryBtnHoverBg; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = t.primaryBtnBg; }}
+              onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = t.primaryBtnHoverBg; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = t.primaryBtnBg; }}
             >
               {slide.cta}
-            </button>
+            </a>
             {slide.ctaAlt && (
             <button
               style={{
