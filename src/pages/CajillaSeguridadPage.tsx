@@ -387,7 +387,7 @@ export default function CajillaSeguridadPage() {
           </div>
           <div className="grid gap-4 md:grid-cols-2">
             {[
-              "Mantener al menos una (1) cuenta activa en UniBank.",
+              "Mantener una cuenta activa en UniBank.",
               "El arrendamiento de la cajilla es a título personal.",
             ].map((req) => (
               <div
