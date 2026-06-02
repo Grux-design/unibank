@@ -19,7 +19,7 @@ const IMG_LOANS =
 const IMG_LEASING =
   "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080";
 const IMG_SECURITIES =
-  "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080";
+  "/f640d2cc-2ec6-40bd-8fd2-a953cc05b798.jpg";
 
 /* ── Data ───────────────────────────────────────────────── */
 const services = [
