@@ -60,10 +60,10 @@ export const footerColumns: FooterColumn[] = [
 ];
 
 export const socialIcons: SocialIconEntry[] = [
-  { icon: Facebook,  label: "Facebook",  href: "#" },
-  { icon: Instagram, label: "Instagram", href: "#" },
-  { icon: Linkedin,  label: "LinkedIn",  href: "#" },
-  { icon: Youtube,   label: "YouTube",   href: "#" },
+  { icon: Facebook,  label: "Facebook",  href: "https://www.facebook.com/share/17CLzpSdjK/" },
+  { icon: Instagram, label: "Instagram", href: "https://www.instagram.com/unibankpanama" },
+  { icon: Linkedin,  label: "LinkedIn",  href: "https://www.linkedin.com/company/unibank-panama/" },
+  { icon: Youtube,   label: "YouTube",   href: "https://youtube.com/@unibankpanama8191" },
 ];
 
 export const legalLinks = [
