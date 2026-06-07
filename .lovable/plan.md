@@ -1,52 +1,109 @@
 
-## Página "Estados Financieros"
+## "Wow Effect" — Capa de elevación sobre la home actual
 
-Nueva ruta `/institucional/estados-financieros` con 3 secciones tal como el screenshot, filtro por año, URLs externas vacías (a completar después).
+Mantiene intactos layout, copy, secciones y estructura. Añade una capa premium de interacciones, animaciones scroll-driven y atmósfera de fondo, inspirado en Stripe / Linear / Vercel.
 
-### Archivos
+### Principios
 
-**`src/data/estadosFinancieros.ts`** (nuevo)
-Estructura de datos tipada con 3 colecciones. Cada documento: `{ label, year, month?, size, url }`. `url: "#"` placeholder hasta que el usuario provea los enlaces.
+- **Cero cambios de copy o jerarquía.** Solo decoración + interacciones.
+- **Performant first**: `transform`/`opacity` GPU-accelerated, `IntersectionObserver`, `prefers-reduced-motion` respetado.
+- **Respeta marca**: el resplandor / acentos se anclan al orange `#ff8136` y al purple `#801fff` ya existentes — nada psicodélico.
+- **Sin nuevas dependencias pesadas.** Usamos `framer-motion` (ya instalado) y SVG/CSS puros.
 
-- **`auditados`** — 18 entradas extraídas del screenshot:
-  - 2025: Estados Financieros – Diciembre 2025 (947.79 KB), Estados Financieros – Diciembre 2025 (2.83 MB), Estados Financieros – Diciembre 2025 (2.83 MB), Estados Financieros Grupo UniBank – Diciembre 2025 (932.62 KB)
-  - 2024: Estados Financieros – Diciembre 2024 (7.2 MB), Estados Financieros Grupo UniBank – Diciembre 2024 (2.5 MB)
-  - 2023: Estados Financieros – Diciembre 2023 (1.04 MB), Estados Financieros Grupo UniBank – Diciembre 2023 (1.51 MB)
-  - 2022: Estados Financieros – Diciembre 2022 (5.33 MB), Estados Financieros Grupo UniBank – Diciembre 2022 (5.30 MB)
-  - 2021: Estados Financieros Grupo UniBank – Diciembre 2021 (887.33 KB), Estados Financieros – Diciembre 2021 (903.07 KB)
-  - 2020: Estados Financieros – Diciembre 2020 (677.33 KB), Estados Financieros Grupo UniBank – Diciembre 2020 (4.48 MB)
-  - 2019: Estados Financieros – Diciembre 2019 (953.61 KB), Estados Financieros Grupo UniBank – Diciembre 2019 (1003.36 KB)
-  - 2018: Estados Financieros – Diciembre 2018 (3.61 MB), Estados Financieros Uni B&T Holdings – Diciembre 2018 (3.7 MB)
+---
 
-- **`regulatoria`** — Formularios INT-T / IN-A, etiquetados UniBank o UniLeasing, por periodo (Marzo / Junio / Septiembre / Diciembre) desde 2020 a 2025, ~50 entradas según screenshot. Campos: `label`, `year`, `period`, `entity` ("UniBank" | "UniLeasing"), `size`, `url`.
+### 1. Atmósfera de fondo (capa global de la home)
 
-- **`internos`** — Tabla por año con columnas Marzo/Junio/Septiembre (y eventualmente Diciembre vacío), años 2020–2025 visibles en screenshot. Estructura: `{ year, marzo?, junio?, septiembre?, diciembre? }` donde cada entrada es `{ label, size, url }`.
+Nuevo componente **`src/components/effects/AmbientBackground.tsx`** montado una sola vez en `HomePage.tsx`, `position: fixed`, `inset-0`, `pointer-events: none`, `z-index: -1`:
 
-**`src/pages/EstadosFinancierosPage.tsx`** (nuevo)
-- Hero corto reusando el patrón de `InstitutionalPage` (título grande sobre fondo `bg-muted/30`, breadcrumb arriba).
-- Filtro por año: chips/pills horizontales scrollables ("Todos", "2025", "2024"…) con estado local. Estilo siguiendo design tokens existentes (orange primary).
-- **Sección 1 "Estados Financieros Auditados"** — grid 2-col en desktop, lista cada item con icono PDF, label en `text-primary`, tamaño debajo en muted, abre en nueva pestaña.
-- **Sección 2 "Información Regulatoria"** — misma lista de PDFs, filtrable por año y opcionalmente por entidad (UniBank / UniLeasing) con segmento secundario.
-- **Sección 3 "Estados Financieros Internos"** — tabla responsive (columnas Marzo/Junio/Septiembre/Diciembre, filas por año) usando `@/components/ui/table`. En mobile colapsa a tarjetas por año.
-- Helmet con title/meta description SEO.
-- Cada link: `<a href={url} target="_blank" rel="noopener noreferrer">` con icono PDF de `lucide-react` (`FileText`).
-- Reutiliza tokens semánticos (`bg-background`, `text-foreground`, `text-primary`, `border-border`).
+- Dos blobs orgánicos en gradiente radial (orange y purple, `opacity: 0.08`) que flotan lentamente con `transform: translate3d(...)` impulsado por scroll progress (parallax muy sutil, 12-20s loop). Implementado con `useScroll` + `useTransform` de framer-motion.
+- Grid SVG minimalista (líneas finas `#000000 / 0.04`) con máscara radial que se desvanece hacia los bordes — da sensación de profundidad sin ruido visual.
+- Una capa de **noise grain** (data-uri SVG turbulence, `opacity: 0.025`, `mix-blend-mode: overlay`) para evitar el banding de los gradientes y dar textura "filmica".
+- Todo se desactiva automáticamente con `@media (prefers-reduced-motion: reduce)`.
 
-**`src/App.tsx`**
-Añadir ruta antes de la genérica `/institucional/:slug`:
-```tsx
-<Route path="/institucional/estados-financieros" element={<EstadosFinancierosPage />} />
-```
+### 2. Scroll-reveal universal
 
-**`src/data/footerData.ts`**
-Reañadir el link "Estados Financieros" en la columna "Conócenos" apuntando a `/institucional/estados-financieros` (sustituye al item removido anteriormente).
+Nuevo hook **`src/hooks/useRevealOnScroll.ts`** + componente wrapper **`src/components/effects/Reveal.tsx`**:
 
-### Fuera de alcance
-- URLs reales de cada PDF (placeholders `#` por ahora, se actualizarán cuando el usuario provea).
-- Traducción EN.
-- Integración con CMS — los datos viven en `src/data/`.
+- API: `<Reveal y={24} delay={0.05} once>{children}</Reveal>`.
+- Usa `IntersectionObserver` con threshold 0.15. Una vez visible, anima `opacity 0→1` y `translateY 24px→0` en 600ms con easing `[0.22, 1, 0.36, 1]` (out-expo).
+- Se aplica como wrapper **no destructivo** alrededor de cada bloque principal de la home:
+  - Audience toggle
+  - `<ProductsSection />` / `<BusinessSection />` (children individuales si exponen ítems iterables; si no, el bloque completo con stagger interno).
+  - `<DigitalBanking />` (cada feature card con `delay = index * 0.08` para efecto cascada).
+- Respeta `prefers-reduced-motion`: en ese caso, deja todo visible sin animar.
+
+### 3. Cursor-aware glow + tilt sobre cards existentes
+
+Nuevo componente wrapper **`src/components/effects/SpotlightCard.tsx`** (sin tocar las cards reales):
+
+- Envuelve las cards de `ProductsSection`, `BusinessSection`, `DigitalBanking` mediante un *higher-order wrapper*. Si una card es un `<a>` o `<div>` ya estilizado, el wrapper le aplica un `position: relative` y monta:
+  - Una capa `::before` con `radial-gradient(circle 240px at var(--mx) var(--my), rgba(255,129,54,0.18), transparent 60%)` que sigue al cursor (variables CSS actualizadas en `onMouseMove`).
+  - Un borde de luz `::after` con gradient conic mask en `border` que se ilumina al hover (técnica Linear).
+  - Tilt 3D sutil: `rotateX/rotateY` máximo ±4° con `transform-style: preserve-3d`, `perspective: 1000px`, lerp suave (no jitter).
+- Damping y `transition: transform 0.4s cubic-bezier(0.2,0.8,0.2,1)` al salir el cursor.
+
+Si modificar los componentes existentes resulta invasivo, se aplicará la técnica via un **selector global** en una hoja CSS nueva (`src/styles/wow.css`, importada en `main.tsx`) que detecta `[data-wow="card"]` y monta el efecto sin JS — y luego marcamos las cards existentes añadiendo solo el atributo `data-wow="card"` (un solo prop, no toca lógica). Preferimos esta vía para preservar la estructura.
+
+### 4. Botones premium
+
+Nuevo CSS utility class **`.wow-button`** en `src/styles/wow.css`:
+
+- Shimmer sweep diagonal en hover (gradient blanco translúcido 8% que cruza el botón en 700ms, técnica Stripe).
+- Lift sutil: `translateY(-1px)` + sombra orange `0 8px 24px -8px rgba(255,129,54,0.4)`.
+- Press feedback: `scale(0.985)` con `transition-duration: 80ms` en `:active`.
+- Aplicado añadiendo la clase a botones primarios existentes en hero CTAs y banca digital — sin reemplazar componentes.
+
+### 5. Hero — refuerzo de profundidad
+
+Sobre `HeroCarousel` (sin tocarlo):
+
+- Capa overlay en `HomePage.tsx` justo después del hero con un **gradient fade** vertical (de transparente a `bg-background`) en los últimos 80px — funde el hero con el resto de la página y elimina el corte duro.
+- Pequeñas **partículas flotantes** (5-7 puntos SVG con `<circle>` animados verticalmente vía CSS keyframes, `opacity: 0.4`, `filter: blur(0.5px)`) confinadas al hero, ancladas absolutamente, `pointer-events: none`. Sutil, no carnavalesco.
+
+### 6. Audience toggle — interacción premium
+
+Sin cambiar su lógica, añadir vía CSS en `wow.css`:
+
+- Sombra suave al pill activo con leve glow orange.
+- Indicador subrayado con `layoutId` de framer-motion para una transición fluida entre opciones (el toggle ya usa motion según el patrón del proyecto; si no, se añade un único `motion.div` decorativo absoluto).
+
+### 7. Transición entre Personas / Empresas
+
+Mejorar la `AnimatePresence` existente:
+
+- Sustituir `y: 14` por una combinación `opacity + scale 0.985 + blur(4px)→blur(0)` (350ms). Se siente cinematográfico sin desplazar layout.
+- Sin cambios en el toggle ni en las secciones internas.
+
+### 8. Digital Banking — reveal escalonado
+
+Wrappear los items dentro de `DigitalBanking` con `<Reveal>` con `delay` incremental. Si renderiza una lista, basta con un único cambio en el map.
+
+---
+
+### Archivos nuevos
+
+- `src/components/effects/AmbientBackground.tsx`
+- `src/components/effects/Reveal.tsx`
+- `src/hooks/useRevealOnScroll.ts`
+- `src/styles/wow.css` (importado en `src/main.tsx`)
+
+### Archivos modificados (mínimo, solo decorativo)
+
+- `src/pages/HomePage.tsx` — montar `<AmbientBackground />`, envolver bloques con `<Reveal>`, ajustar la transición de `AnimatePresence`, añadir overlay de fade post-hero.
+- `src/components/organisms/DigitalBanking.tsx` — envolver el `.map` de features con `<Reveal>` con delay incremental, añadir `data-wow="card"` a cada card.
+- `src/components/organisms/ProductsSection.tsx` y `BusinessSection.tsx` — añadir `data-wow="card"` a las cards y `className="wow-button"` a CTAs primarios. Sin cambios estructurales.
+- `src/components/organisms/HeroCarousel.tsx` (o el slide content) — añadir `className="wow-button"` a los CTAs principales del hero. Cero cambios en copy/layout.
 
 ### Notas técnicas
-- Filtro de año derivado dinámicamente de los datos (`[...new Set(items.map(i => i.year))].sort(desc)`).
-- Diciembre como columna opcional en Internos para futura expansión sin romper el tipo.
-- Sin cambios de business logic ni backend.
+
+- `framer-motion` ya está en dependencies (usado en `HomePage`).
+- Todos los efectos están envueltos en `@media (prefers-reduced-motion: reduce)` con fallback estático.
+- Performance: efectos basados en `transform`/`opacity`; `will-change` solo durante hover; sin re-renders innecesarios.
+- Z-index map: `AmbientBackground = -1`, contenido = 0, header flotante = 50 (ya existente).
+
+### Fuera de alcance
+
+- No cambia copy, jerarquía, secciones, rutas, ni componentes shared (header, footer, mega menu).
+- No modifica datos del CMS ni backend.
+- No agrega librerías nuevas.
