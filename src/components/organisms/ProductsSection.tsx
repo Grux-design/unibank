@@ -91,27 +91,49 @@ function OrangeButton({ children, fullWidth, href }: { children: React.ReactNode
   );
 }
 
-function CtaLink({ children }: { children: React.ReactNode }) {
+function CtaLink({ children, href }: { children: React.ReactNode; href?: string }) {
   const [hov, setHov] = useState(false);
+  const style: React.CSSProperties = {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 6,
+    color: OR,
+    fontSize: 13,
+    fontWeight: 600,
+    cursor: "pointer",
+    transform: hov ? "translateX(4px)" : "translateX(0)",
+    transition: "transform 0.22s ease",
+    userSelect: "none",
+    textDecoration: "none",
+  };
+  const inner = (
+    <>
+      {children}
+      <ArrowRight size={13} strokeWidth={2.5} />
+    </>
+  );
+  if (href) {
+    const external = /^https?:\/\//.test(href);
+    return (
+      <a
+        href={href}
+        target={external ? "_blank" : undefined}
+        rel={external ? "noopener noreferrer" : undefined}
+        onMouseEnter={() => setHov(true)}
+        onMouseLeave={() => setHov(false)}
+        style={style}
+      >
+        {inner}
+      </a>
+    );
+  }
   return (
     <span
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
-      style={{
-        display: "inline-flex",
-        alignItems: "center",
-        gap: 6,
-        color: OR,
-        fontSize: 13,
-        fontWeight: 600,
-        cursor: "pointer",
-        transform: hov ? "translateX(4px)" : "translateX(0)",
-        transition: "transform 0.22s ease",
-        userSelect: "none",
-      }}
+      style={style}
     >
-      {children}
-      <ArrowRight size={13} strokeWidth={2.5} />
+      {inner}
     </span>
   );
 }
