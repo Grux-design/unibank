@@ -30,6 +30,7 @@ const invertisData = {
   title: "Invertis Global Income Fund",
   body: "Diversifica tu portafolio. Accede a mercados globales con nuestros expertos.",
   cta: "Conocer el fondo",
+  href: "https://www.invertissecurities.com/es/invertis-global-income-fund",
   image: IMG_INVERTIS,
 };
 
@@ -39,6 +40,7 @@ const viviendaData = {
   title: "Préstamos de Vivienda",
   body: "Construye hoy el hogar que imaginas. Condiciones competitivas y acompañamiento.",
   cta: "Solicitar hipoteca",
+  href: "/personas/credito/prestamo-de-vivienda",
   image: IMG_VIVIENDA,
 };
 
@@ -89,27 +91,49 @@ function OrangeButton({ children, fullWidth, href }: { children: React.ReactNode
   );
 }
 
-function CtaLink({ children }: { children: React.ReactNode }) {
+function CtaLink({ children, href }: { children: React.ReactNode; href?: string }) {
   const [hov, setHov] = useState(false);
+  const style: React.CSSProperties = {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 6,
+    color: OR,
+    fontSize: 13,
+    fontWeight: 600,
+    cursor: "pointer",
+    transform: hov ? "translateX(4px)" : "translateX(0)",
+    transition: "transform 0.22s ease",
+    userSelect: "none",
+    textDecoration: "none",
+  };
+  const inner = (
+    <>
+      {children}
+      <ArrowRight size={13} strokeWidth={2.5} />
+    </>
+  );
+  if (href) {
+    const external = /^https?:\/\//.test(href);
+    return (
+      <a
+        href={href}
+        target={external ? "_blank" : undefined}
+        rel={external ? "noopener noreferrer" : undefined}
+        onMouseEnter={() => setHov(true)}
+        onMouseLeave={() => setHov(false)}
+        style={style}
+      >
+        {inner}
+      </a>
+    );
+  }
   return (
     <span
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
-      style={{
-        display: "inline-flex",
-        alignItems: "center",
-        gap: 6,
-        color: OR,
-        fontSize: 13,
-        fontWeight: 600,
-        cursor: "pointer",
-        transform: hov ? "translateX(4px)" : "translateX(0)",
-        transition: "transform 0.22s ease",
-        userSelect: "none",
-      }}
+      style={style}
     >
-      {children}
-      <ArrowRight size={13} strokeWidth={2.5} />
+      {inner}
     </span>
   );
 }
@@ -365,6 +389,7 @@ const mastercardData = {
   title: "Tarjeta Mastercard Black Débito",
   body: "Exclusividad y control en tus manos. Beneficios premium globales.",
   cta: "Solicitar tarjeta",
+  href: "/personas/otros-servicios/mastercard-black-debito",
   image: IMG_MASTERCARD,
 };
 
@@ -401,7 +426,7 @@ function MastercardCard() {
           {mastercardData.title}
         </h4>
         <p style={{ margin: 0, fontSize: 13, color: SOFT, lineHeight: 1.6 }}>{mastercardData.body}</p>
-        <CtaLink>{mastercardData.cta}</CtaLink>
+        <CtaLink href={mastercardData.href}>{mastercardData.cta}</CtaLink>
       </div>
     </motion.div>
   );
@@ -441,7 +466,7 @@ function SmallProductCard({ item, index }: { item: typeof invertisData; index: n
           {item.title}
         </h4>
         <p style={{ margin: 0, fontSize: 13, color: SOFT, lineHeight: 1.6 }}>{item.body}</p>
-        <CtaLink>{item.cta}</CtaLink>
+        <CtaLink href={(item as { href?: string }).href}>{item.cta}</CtaLink>
       </div>
     </motion.div>
   );

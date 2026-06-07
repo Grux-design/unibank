@@ -41,6 +41,7 @@ export interface Slide {
   cta:       string;
   ctaHref?:  string;
   ctaAlt:    string;
+  ctaAltHref?: string;
   image:     string;
   cardTitle: string;
   cardSub:   string;
@@ -75,6 +76,7 @@ export const slides: Slide[] = [
     ],
     body:      "Sin saldo mínimo ni filas. Abre en 5 minutos, 100% digital, al 4.5% TEA.",
     cta:       "Abre tu cuenta",
+    ctaHref:   "https://onboard.unibank.com.pa/es/auth/login",
     ctaAlt:    "",
     image:     "/b6f5b3af-65b3-42cb-a174-da7f0eb5f34a.jpg",
     cardTitle: "Cuenta de Ahorros",
@@ -91,7 +93,9 @@ export const slides: Slide[] = [
     ],
     body:      "Equipos, vehículos y tecnología con deducción fiscal real, adaptado a tu flujo de caja.",
     cta:       "Solicitar Leasing",
+    ctaHref:   "mailto:unileasing@unibank.com.pa",
     ctaAlt:    "Más sobre Leasing",
+    ctaAltHref: "/grupo/unileasing",
     image:     "/893174f9-3139-46c3-a57d-e0aa762dfbb8.jpg",
     cardTitle: "Uni Leasing",
     cardSub:   "$1,850 / mes",
@@ -107,7 +111,9 @@ export const slides: Slide[] = [
     ],
     body:      "Tasas competitivas, hasta 30 años de plazo. Asesor dedicado desde el día uno.",
     cta:       "Solicitar hipoteca",
+    ctaHref:   "https://api.whatsapp.com/send?phone=50763280229",
     ctaAlt:    "Calcular mi cuota",
+    ctaAltHref: "/personas/credito/prestamo-de-vivienda",
     image:     "/7ea7ba88-a073-446a-8edd-ed2b250324c3.jpg",
     cardTitle: "Crédito Hipotecario",
     cardSub:   "Desde 6.5% EA",

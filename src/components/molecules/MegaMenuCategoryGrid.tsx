@@ -65,9 +65,9 @@ export function MegaMenuCategoryGrid({ data, isPersonas, onClose }: MegaMenuCate
 
       <div style={{ display: "flex", gap: 4, marginTop: 20, paddingTop: 16, borderTop: "1px solid #E8E4E0" }}>
         {secondaryLinks.map((link) => (
-          <a
-            key={link}
-            href="#"
+          <Link
+            key={link.label}
+            to={link.href}
             onClick={onClose}
             style={{
               fontFamily: "Inter, sans-serif", fontSize: 12, fontWeight: 500,
@@ -78,8 +78,8 @@ export function MegaMenuCategoryGrid({ data, isPersonas, onClose }: MegaMenuCate
             onMouseEnter={e => { e.currentTarget.style.background = "#F2EFED"; e.currentTarget.style.color = "#1C1917"; }}
             onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#484746"; }}
           >
-            {link}
-          </a>
+            {link.label}
+          </Link>
         ))}
       </div>
     </div>

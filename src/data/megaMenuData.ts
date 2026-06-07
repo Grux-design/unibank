@@ -113,4 +113,7 @@ export const empresasData: MenuSection = {
   ],
 };
 
-export const secondaryLinks = ["Sobre UniBank", "Tarifas y Tasas", "Sucursales"];
+export const secondaryLinks: { label: string; href: string }[] = [
+  { label: "Tarifas y Tasas", href: "/tarifario" },
+  { label: "Sucursales", href: "/sucursales" },
+];

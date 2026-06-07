@@ -64,18 +64,20 @@ export function HeroSlideContent({ slide, dir }: HeroSlideContentProps) {
               {slide.cta}
             </a>
             {slide.ctaAlt && (
-            <button
+            <a
+              href={slide.ctaAltHref || "#"}
               style={{
+                display: "inline-block", textDecoration: "none",
                 background: t.secondaryBtnBg, color: t.secondaryBtnColor,
                 border: `1.5px solid ${t.secondaryBtnBorder}`, borderRadius: 100,
                 padding: "13px 26px", fontSize: 14, fontWeight: 600, cursor: "pointer",
                 transition: "border-color 0.18s", fontFamily: "inherit",
               }}
-              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = t.secondaryBtnHoverBorder; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = t.secondaryBtnBorder; }}
+              onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = t.secondaryBtnHoverBorder; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = t.secondaryBtnBorder; }}
             >
               {slide.ctaAlt}
-            </button>
+            </a>
             )}
           </div>
         </motion.div>
