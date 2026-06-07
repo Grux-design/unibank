@@ -30,6 +30,7 @@ const invertisData = {
   title: "Invertis Global Income Fund",
   body: "Diversifica tu portafolio. Accede a mercados globales con nuestros expertos.",
   cta: "Conocer el fondo",
+  href: "https://www.invertissecurities.com/es/invertis-global-income-fund",
   image: IMG_INVERTIS,
 };
 
@@ -39,6 +40,7 @@ const viviendaData = {
   title: "Préstamos de Vivienda",
   body: "Construye hoy el hogar que imaginas. Condiciones competitivas y acompañamiento.",
   cta: "Solicitar hipoteca",
+  href: "/personas/credito/prestamo-de-vivienda",
   image: IMG_VIVIENDA,
 };
 
