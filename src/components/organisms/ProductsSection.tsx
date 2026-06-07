@@ -426,7 +426,7 @@ function MastercardCard() {
           {mastercardData.title}
         </h4>
         <p style={{ margin: 0, fontSize: 13, color: SOFT, lineHeight: 1.6 }}>{mastercardData.body}</p>
-        <CtaLink>{mastercardData.cta}</CtaLink>
+        <CtaLink href={mastercardData.href}>{mastercardData.cta}</CtaLink>
       </div>
     </motion.div>
   );
