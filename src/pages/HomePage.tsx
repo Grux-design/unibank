@@ -7,6 +7,8 @@ import { AudienceToggle, type Audience } from "@/components/atoms/AudienceToggle
 import { ProductsSection } from "@/components/organisms/ProductsSection";
 import { BusinessSection } from "@/components/organisms/BusinessSection";
 import { DigitalBanking } from "@/components/organisms/DigitalBanking";
+import { AmbientBackground } from "@/components/effects/AmbientBackground";
+import { Reveal } from "@/components/effects/Reveal";
 import type { Lang } from "@/components/layout/SiteLayout";
 
 export default function HomePage() {
@@ -42,34 +44,52 @@ export default function HomePage() {
         </script>
       </Helmet>
 
-      <HeroCarousel lang={lang} />
+      {/* Ambient atmospheric backdrop */}
+      <AmbientBackground />
 
-      {/* 1. Audience toggle */}
-      <div style={{ background: "#ffffff" }}>
-        <AudienceToggle value={audience} onChange={setAudience} />
+      {/* Hero with floating particles overlay */}
+      <div style={{ position: "relative" }}>
+        <HeroCarousel lang={lang} />
+        <div className="wow-hero-particles" aria-hidden>
+          <span />
+          <span />
+          <span />
+          <span />
+          <span />
+          <span />
+          <span />
+        </div>
       </div>
 
-      {/* 2. Content section — swaps based on toggle */}
+      {/* Soft seam fade into the next section */}
+      <div className="wow-hero-fade" aria-hidden />
+
+      {/* 1. Audience toggle */}
+      <Reveal y={20}>
+        <div style={{ background: "transparent" }}>
+          <AudienceToggle value={audience} onChange={setAudience} />
+        </div>
+      </Reveal>
+
+      {/* 2. Content section — swaps based on toggle with cinematic transition */}
       <AnimatePresence mode="wait" initial={false}>
         <motion.div
           key={audience}
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.32, ease: [0.25, 0.1, 0.25, 1] }}
+          initial={{ opacity: 0, y: 18, filter: "blur(6px)", scale: 0.985 }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)", scale: 1 }}
+          exit={{ opacity: 0, y: -10, filter: "blur(6px)", scale: 0.99 }}
+          transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
         >
-          {audience === "personas" ? <ProductsSection /> : <BusinessSection />}
+          <Reveal y={32} amount={0.1}>
+            {audience === "personas" ? <ProductsSection /> : <BusinessSection />}
+          </Reveal>
         </motion.div>
       </AnimatePresence>
 
       {/* 3. Digital Banking — always visible */}
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
-      >
+      <Reveal y={36} amount={0.1}>
         <DigitalBanking />
-      </motion.div>
+      </Reveal>
     </>
   );
 }
