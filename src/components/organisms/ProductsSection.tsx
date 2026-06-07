@@ -466,7 +466,7 @@ function SmallProductCard({ item, index }: { item: typeof invertisData; index: n
           {item.title}
         </h4>
         <p style={{ margin: 0, fontSize: 13, color: SOFT, lineHeight: 1.6 }}>{item.body}</p>
-        <CtaLink>{item.cta}</CtaLink>
+        <CtaLink href={(item as { href?: string }).href}>{item.cta}</CtaLink>
       </div>
     </motion.div>
   );
