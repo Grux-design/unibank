@@ -8,7 +8,6 @@ import {
   ArrowLeftRight,
   UserPlus,
   CreditCard,
-  Bell,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
