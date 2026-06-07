@@ -41,6 +41,7 @@ export interface Slide {
   cta:       string;
   ctaHref?:  string;
   ctaAlt:    string;
+  ctaAltHref?: string;
   image:     string;
   cardTitle: string;
   cardSub:   string;
