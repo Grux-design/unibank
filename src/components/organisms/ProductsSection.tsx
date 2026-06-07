@@ -389,6 +389,7 @@ const mastercardData = {
   title: "Tarjeta Mastercard Black Débito",
   body: "Exclusividad y control en tus manos. Beneficios premium globales.",
   cta: "Solicitar tarjeta",
+  href: "/personas/otros-servicios/mastercard-black-debito",
   image: IMG_MASTERCARD,
 };
 
