@@ -112,7 +112,7 @@ export const slides: Slide[] = [
     body:      "Tasas competitivas, hasta 30 años de plazo. Asesor dedicado desde el día uno.",
     cta:       "Solicitar hipoteca",
     ctaHref:   "https://api.whatsapp.com/send?phone=50763280229",
-    ctaAlt:    "Calcular mi cuota",
+    ctaAlt:    "Conocer más",
     ctaAltHref: "/personas/credito/prestamo-de-vivienda",
     image:     "/7ea7ba88-a073-446a-8edd-ed2b250324c3.jpg",
     cardTitle: "Crédito Hipotecario",
