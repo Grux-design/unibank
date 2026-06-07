@@ -28,7 +28,7 @@ const FEATURES = [
     title: "Transferencias",
     tag: "ACH Xpress y Xpress",
     cta: "Hacer una transferencia",
-    href: "/banca-digital/transferencias",
+    href: "https://ebanking.unibank.com.pa/DIBS_UNIBANK_PANAMA/pages/loginP.jsp",
     description:
       "Envía dinero en segundos a otros bancos de forma rápida, simple y segura.",
     image:
@@ -56,20 +56,9 @@ const FEATURES = [
     image:
       "/pagos-servicios.jpg",
   },
-  {
-    id: "notifications",
-    title: "Notificaciones",
-    tag: "Alertas en tiempo real",
-    cta: "Activar alertas",
-    href: "/banca-digital/alertas",
-    description:
-      "Cada movimiento en tu cuenta llega al instante a tu teléfono. Tú siempre en control, siempre informado.",
-    image:
-      "/notificaciones.jpg",
-  },
 ];
 
-const FEATURE_ICONS = [ArrowLeftRight, UserPlus, CreditCard, Bell];
+const FEATURE_ICONS = [ArrowLeftRight, UserPlus, CreditCard];
 
 /* ── Ghost CTA button ───────────────────────────────────── */
 function CtaGhostBtn({
