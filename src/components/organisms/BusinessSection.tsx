@@ -30,6 +30,7 @@ const services = [
     title: "Impulsa el crecimiento de tu empresa.",
     body: "Préstamos comerciales, financiamiento agroindustrial y líneas de crédito diseñadas para cada sector productivo de Panamá.",
     cta: "Solicitar financiamiento",
+    href: "/empresas/financiamiento/prestamo-comercial",
     image: IMG_LOANS,
   },
   {
@@ -49,6 +50,7 @@ const services = [
     title: "Asesoría corporativa de alto nivel.",
     body: "Te acompañamos en la estructuración y emisión de valores para llevar tu empresa al siguiente nivel.",
     cta: "Hablar con un asesor",
+    href: "/empresas/otros-servicios/emision-de-valores",
     image: IMG_SECURITIES,
   },
 ];
