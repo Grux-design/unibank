@@ -1,9 +1,12 @@
 import { useRef, useState, useLayoutEffect } from "react";
 import React from "react";
 import { motion, useInView } from "motion/react";
+import { useNavigate } from "react-router-dom";
 import { TrendingUp, Home, ArrowRight, Plus, Car } from "lucide-react";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { SectionTag, SectionHeading } from "@/components/ui/atoms";
+
+const CUENTA_AHORROS_ROUTE = "/personas/cuentas/cuenta-de-ahorros";
 
 const OR = "var(--fun-orange)";
 const DARK = "var(--uni-dark)";
@@ -163,8 +166,14 @@ function CategoryTag({ icon: Icon, label }: { icon: React.ElementType; label: st
 
 /* ── FeaturedBanner ─────────────────────────────────────── */
 function FeaturedBanner({ isMobile }: { isMobile: boolean }) {
+  const navigate = useNavigate();
+  const go = () => navigate(CUENTA_AHORROS_ROUTE);
   return (
     <div
+      role="link"
+      tabIndex={0}
+      onClick={go}
+      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } }}
       style={{
         position: "relative",
         overflow: "hidden",
@@ -176,6 +185,7 @@ function FeaturedBanner({ isMobile }: { isMobile: boolean }) {
         height: isMobile ? "auto" : "100%",
         width: "100%",
         minHeight: isMobile ? 360 : undefined,
+        cursor: "pointer",
       }}
     >
       {/* ── Blob SVG background ── */}
