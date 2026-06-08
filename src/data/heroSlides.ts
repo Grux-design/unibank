@@ -30,6 +30,8 @@ export const THEME = {
   blobAccent:              "rgba(255,129,54,0.05)",
 };
 
+import heroAhorros from "@/assets/hero-ahorros.jpg.asset.json";
+
 // ─── TYPES ────────────────────────────────────────────────────
 export interface HeadlinePart { text: string; highlight: boolean }
 export interface Slide {
