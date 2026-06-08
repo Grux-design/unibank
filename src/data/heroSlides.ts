@@ -80,7 +80,7 @@ export const slides: Slide[] = [
     cta:       "Abre tu cuenta",
     ctaHref:   "https://onboard.unibank.com.pa/es/auth/login",
     ctaAlt:    "",
-    image:     "/b6f5b3af-65b3-42cb-a174-da7f0eb5f34a.jpg",
+    image:     heroAhorros.url,
     cardTitle: "Cuenta de Ahorros",
     cardSub:   "4.5% TEA anual",
   },
