@@ -30,8 +30,6 @@ export const THEME = {
   blobAccent:              "rgba(255,129,54,0.05)",
 };
 
-import heroAhorros from "@/assets/hero-ahorros.jpg.asset.json";
-
 // ─── TYPES ────────────────────────────────────────────────────
 export interface HeadlinePart { text: string; highlight: boolean }
 export interface Slide {
@@ -80,7 +78,7 @@ export const slides: Slide[] = [
     cta:       "Abre tu cuenta",
     ctaHref:   "https://onboard.unibank.com.pa/es/auth/login",
     ctaAlt:    "",
-    image:     heroAhorros.url,
+    image:     "/b6f5b3af-65b3-42cb-a174-da7f0eb5f34a.jpg",
     cardTitle: "Cuenta de Ahorros",
     cardSub:   "4.5% TEA anual",
   },
