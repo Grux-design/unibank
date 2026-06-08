@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { useOutletContext } from "react-router-dom";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
@@ -26,16 +26,27 @@ export default function HomePage() {
   // Hero choreography starts as soon as the splash begins to exit
   const heroAnimate = !splashOpen;
 
-  // Auto-dismiss splash after ~1.8s, mark as seen
-  if (typeof window !== "undefined" && splashOpen) {
-    // schedule once
-    (window as unknown as { __unibankIntroTimer?: number }).__unibankIntroTimer ??=
-      window.setTimeout(() => {
-        setSplashOpen(false);
-        markSeen();
-        delete (window as unknown as { __unibankIntroTimer?: number }).__unibankIntroTimer;
-      }, 1800);
-  }
+  // Auto-dismiss splash after ~1.8s
+  useEffect(() => {
+    if (!splashOpen) return;
+    const t = window.setTimeout(() => {
+      setSplashOpen(false);
+      markSeen();
+    }, 1800);
+    return () => window.clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Lock body scroll only while splash is visible; always restore on close/unmount
+  useEffect(() => {
+    if (!splashOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [splashOpen]);
+
 
   return (
     <>
