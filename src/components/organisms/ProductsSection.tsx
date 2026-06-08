@@ -166,8 +166,14 @@ function CategoryTag({ icon: Icon, label }: { icon: React.ElementType; label: st
 
 /* ── FeaturedBanner ─────────────────────────────────────── */
 function FeaturedBanner({ isMobile }: { isMobile: boolean }) {
+  const navigate = useNavigate();
+  const go = () => navigate(CUENTA_AHORROS_ROUTE);
   return (
     <div
+      role="link"
+      tabIndex={0}
+      onClick={go}
+      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } }}
       style={{
         position: "relative",
         overflow: "hidden",
@@ -179,6 +185,7 @@ function FeaturedBanner({ isMobile }: { isMobile: boolean }) {
         height: isMobile ? "auto" : "100%",
         width: "100%",
         minHeight: isMobile ? 360 : undefined,
+        cursor: "pointer",
       }}
     >
       {/* ── Blob SVG background ── */}
