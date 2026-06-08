@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export const EASE = {
   premium: [0.16, 1, 0.3, 1] as [number, number, number, number],
@@ -16,6 +16,7 @@ function prefersReducedMotion(): boolean {
 /**
  * useFirstVisit — returns whether the intro should play on this load.
  * Decision is made synchronously on first render (pre-paint) to avoid flash.
+ * Pure state — does NOT touch document.body. Callers manage scroll lock.
  */
 export function useFirstVisit(): {
   shouldPlay: boolean;
@@ -39,15 +40,6 @@ export function useFirstVisit(): {
     }
   };
 
-  useEffect(() => {
-    if (!shouldPlay) return;
-    // Lock scroll while intro is on screen
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = prev;
-    };
-  }, [shouldPlay]);
-
   return { shouldPlay, markSeen };
 }
+
