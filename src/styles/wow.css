@@ -4,6 +4,17 @@
    elements without altering layout or structure.
    =========================================================== */
 
+:root {
+  --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-cinematic: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-soft-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* Intro-only particle boost (first ~1.8s) */
+.wow-intro-boost .wow-hero-particles span {
+  animation-duration: 6s !important;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   html {
     scroll-behavior: smooth;
