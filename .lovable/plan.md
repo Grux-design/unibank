@@ -1,109 +1,77 @@
 
-## "Wow Effect" — Capa de elevación sobre la home actual
+# Cinematic Splash Screen + Hero Entrance Animation
 
-Mantiene intactos layout, copy, secciones y estructura. Añade una capa premium de interacciones, animaciones scroll-driven y atmósfera de fondo, inspirado en Stripe / Linear / Vercel.
+A premium, one-time intro sequence that plays only on a user's first visit, followed by a choreographed hero reveal. Skipped automatically on return visits and when `prefers-reduced-motion` is set.
 
-### Principios
+## 1. First-load gating
 
-- **Cero cambios de copy o jerarquía.** Solo decoración + interacciones.
-- **Performant first**: `transform`/`opacity` GPU-accelerated, `IntersectionObserver`, `prefers-reduced-motion` respetado.
-- **Respeta marca**: el resplandor / acentos se anclan al orange `#ff8136` y al purple `#801fff` ya existentes — nada psicodélico.
-- **Sin nuevas dependencias pesadas.** Usamos `framer-motion` (ya instalado) y SVG/CSS puros.
+- Storage key: `unibank_has_seen_intro` in `localStorage`.
+- On mount of `HomePage`, synchronously read the key before paint (to prevent flash):
+  - If key exists → no splash, hero renders in its current static state.
+  - If missing → render splash overlay, then set the key once the sequence completes.
+- Also short-circuit when `window.matchMedia('(prefers-reduced-motion: reduce)').matches` is true.
+- SSR-safe guard with `typeof window !== "undefined"`.
 
----
+## 2. Splash screen component
 
-### 1. Atmósfera de fondo (capa global de la home)
+New file: `src/components/effects/IntroSplash.tsx`
 
-Nuevo componente **`src/components/effects/AmbientBackground.tsx`** montado una sola vez en `HomePage.tsx`, `position: fixed`, `inset-0`, `pointer-events: none`, `z-index: -1`:
+Visual design (~1.7s total):
+- Full-viewport fixed overlay, `z-index: 9999`, near-black `#0A0A0F` background with a subtle radial gradient glow in brand orange `hsl(20 100% 56%)` and a faint film-grain layer (reuses the wow.css aesthetic).
+- Centerpiece: the Unibank logo symbol drawn as an SVG with `stroke-dasharray` / `stroke-dashoffset` path-drawing animation (~900ms), then a soft orange glow pulse (`filter: drop-shadow`) as it fills.
+- Below the mark: a typographic reveal of the brand promise ("Tu banco. Tu confianza.") using a clip-path mask sweep + blur-to-sharp filter transition, staggered per word.
+- All easing on the custom premium curve `cubic-bezier(0.16, 1, 0.3, 1)` (expo-out feel).
 
-- Dos blobs orgánicos en gradiente radial (orange y purple, `opacity: 0.08`) que flotan lentamente con `transform: translate3d(...)` impulsado por scroll progress (parallax muy sutil, 12-20s loop). Implementado con `useScroll` + `useTransform` de framer-motion.
-- Grid SVG minimalista (líneas finas `#000000 / 0.04`) con máscara radial que se desvanece hacia los bordes — da sensación de profundidad sin ruido visual.
-- Una capa de **noise grain** (data-uri SVG turbulence, `opacity: 0.025`, `mix-blend-mode: overlay`) para evitar el banding de los gradientes y dar textura "filmica".
-- Todo se desactiva automáticamente con `@media (prefers-reduced-motion: reduce)`.
+Exit transition (~700ms):
+- Whole overlay scales from `1 → 1.06` while a top-to-bottom clip-path wipe (`inset(0 0 100% 0)`) reveals the page underneath.
+- Simultaneously fades opacity `1 → 0` in the last 250ms.
+- Uses Framer Motion `AnimatePresence` with `mode="wait"` so the hero entrance only kicks off after the splash unmount completes.
 
-### 2. Scroll-reveal universal
+## 3. Coordinated hero entrance
 
-Nuevo hook **`src/hooks/useRevealOnScroll.ts`** + componente wrapper **`src/components/effects/Reveal.tsx`**:
+New file: `src/components/effects/HeroIntroChoreography.tsx` (a context/provider + wrapper) — OR simpler: extend `HomePage` with an `introPlaying` boolean passed to a new `IntroOrchestrator` that staggers children via Framer Motion `variants`.
 
-- API: `<Reveal y={24} delay={0.05} once>{children}</Reveal>`.
-- Usa `IntersectionObserver` con threshold 0.15. Una vez visible, anima `opacity 0→1` y `translateY 24px→0` en 600ms con easing `[0.22, 1, 0.36, 1]` (out-expo).
-- Se aplica como wrapper **no destructivo** alrededor de cada bloque principal de la home:
-  - Audience toggle
-  - `<ProductsSection />` / `<BusinessSection />` (children individuales si exponen ítems iterables; si no, el bloque completo con stagger interno).
-  - `<DigitalBanking />` (cada feature card con `delay = index * 0.08` para efecto cascada).
-- Respeta `prefers-reduced-motion`: en ese caso, deja todo visible sin animar.
+Sequence (starts the instant splash begins exiting, total ~1.4s):
+1. Hero card container: scale `0.96 → 1`, y `24 → 0`, blur `8px → 0`, 800ms.
+2. Eyebrow text: clip-path reveal left→right, 400ms, delay 120ms.
+3. Headline: per-word stagger (split on spaces in a lightweight wrapper), each word lifts y `18 → 0`, blur `6px → 0`, opacity, 60ms stagger.
+4. Body paragraph: fade + y `12 → 0`, 500ms, delay 380ms.
+5. CTA buttons: spring entrance (`type: "spring", stiffness: 240, damping: 22`), staggered 80ms apart, delay 520ms.
+6. Hero photo / glass card: scale `0.92 → 1` + y `30 → 0` + blur `10px → 0`, 1000ms, delay 200ms — "booting dashboard" feel.
+7. Floating particles already in `wow.css` get an extra opacity boost during the first 1.5s via a one-shot CSS class.
 
-### 3. Cursor-aware glow + tilt sobre cards existentes
+Implementation approach: introduce a single `motion.div` wrapper inside `HeroCarousel`'s right/left columns that receives `variants` keyed off an `intro` prop. To avoid restructuring `HeroSlideContent`/`HeroPhotoFrame`, the orchestration overlay lives in `HomePage` and animates the *outer* hero container (scale/blur) while a sibling layer animates the headline/body/CTAs via absolutely-positioned mirrors is overkill — instead we pass a one-time `playIntro` boolean down into `HeroCarousel` → `HeroSlideContent` and switch its existing `AnimatePresence` variants to a richer "intro" variant for the very first render only.
 
-Nuevo componente wrapper **`src/components/effects/SpotlightCard.tsx`** (sin tocar las cards reales):
+Minimal-impact integration:
+- `HomePage` owns `playIntro` state.
+- Pass `playIntro` to `HeroCarousel` and a new wrapper around `ProductsSection`/`BusinessSection` so the rest of the page also receives a softer stagger.
+- After ~2.2s total, set `playIntro = false` so subsequent slide changes use the normal transitions.
 
-- Envuelve las cards de `ProductsSection`, `BusinessSection`, `DigitalBanking` mediante un *higher-order wrapper*. Si una card es un `<a>` o `<div>` ya estilizado, el wrapper le aplica un `position: relative` y monta:
-  - Una capa `::before` con `radial-gradient(circle 240px at var(--mx) var(--my), rgba(255,129,54,0.18), transparent 60%)` que sigue al cursor (variables CSS actualizadas en `onMouseMove`).
-  - Un borde de luz `::after` con gradient conic mask en `border` que se ilumina al hover (técnica Linear).
-  - Tilt 3D sutil: `rotateX/rotateY` máximo ±4° con `transform-style: preserve-3d`, `perspective: 1000px`, lerp suave (no jitter).
-- Damping y `transition: transform 0.4s cubic-bezier(0.2,0.8,0.2,1)` al salir el cursor.
+## 4. Easing & timing tokens
 
-Si modificar los componentes existentes resulta invasivo, se aplicará la técnica via un **selector global** en una hoja CSS nueva (`src/styles/wow.css`, importada en `main.tsx`) que detecta `[data-wow="card"]` y monta el efecto sin JS — y luego marcamos las cards existentes añadiendo solo el atributo `data-wow="card"` (un solo prop, no toca lógica). Preferimos esta vía para preservar la estructura.
+Centralize in `src/styles/wow.css` (CSS custom properties) and a tiny `src/lib/motion.ts`:
+- `--ease-premium: cubic-bezier(0.16, 1, 0.3, 1)` (expo-out)
+- `--ease-soft-in-out: cubic-bezier(0.65, 0, 0.35, 1)`
+- `--ease-cinematic: cubic-bezier(0.22, 1, 0.36, 1)`
+Used by both the splash and hero choreography for a consistent "expensive" feel.
 
-### 4. Botones premium
+## 5. Accessibility & performance
 
-Nuevo CSS utility class **`.wow-button`** en `src/styles/wow.css`:
+- `prefers-reduced-motion: reduce` → splash never mounts, hero renders statically.
+- Splash overlay uses `role="status"` + `aria-label="Cargando Unibank"`, hidden from AT after exit.
+- Body gets `overflow: hidden` only while splash is visible to prevent scroll-induced layout shifts, restored on exit.
+- All animations are transform/opacity/filter only — no width/height/top/left transitions — so no CLS.
+- Logo SVG is inlined (no network wait), splash mounts synchronously on first paint.
+- Particles and ambient background remain GPU-accelerated; no new heavy work added.
 
-- Shimmer sweep diagonal en hover (gradient blanco translúcido 8% que cruza el botón en 700ms, técnica Stripe).
-- Lift sutil: `translateY(-1px)` + sombra orange `0 8px 24px -8px rgba(255,129,54,0.4)`.
-- Press feedback: `scale(0.985)` con `transition-duration: 80ms` en `:active`.
-- Aplicado añadiendo la clase a botones primarios existentes en hero CTAs y banca digital — sin reemplazar componentes.
+## Files
 
-### 5. Hero — refuerzo de profundidad
+- New: `src/components/effects/IntroSplash.tsx`
+- New: `src/lib/motion.ts` (easing constants + small `useFirstVisit` hook)
+- Edited: `src/styles/wow.css` (easing vars, splash keyframes, intro-only particle boost class)
+- Edited: `src/pages/HomePage.tsx` (gate logic, `AnimatePresence` for splash, pass `playIntro` to hero)
+- Edited: `src/components/organisms/HeroCarousel.tsx` (accept `playIntro`, richer entrance variants for first render)
+- Edited: `src/components/molecules/HeroSlideContent.tsx` (intro variants for eyebrow/headline/body/CTAs with stagger + blur)
+- Edited: `src/components/molecules/HeroPhotoFrame.tsx` (intro scale/blur entrance)
 
-Sobre `HeroCarousel` (sin tocarlo):
-
-- Capa overlay en `HomePage.tsx` justo después del hero con un **gradient fade** vertical (de transparente a `bg-background`) en los últimos 80px — funde el hero con el resto de la página y elimina el corte duro.
-- Pequeñas **partículas flotantes** (5-7 puntos SVG con `<circle>` animados verticalmente vía CSS keyframes, `opacity: 0.4`, `filter: blur(0.5px)`) confinadas al hero, ancladas absolutamente, `pointer-events: none`. Sutil, no carnavalesco.
-
-### 6. Audience toggle — interacción premium
-
-Sin cambiar su lógica, añadir vía CSS en `wow.css`:
-
-- Sombra suave al pill activo con leve glow orange.
-- Indicador subrayado con `layoutId` de framer-motion para una transición fluida entre opciones (el toggle ya usa motion según el patrón del proyecto; si no, se añade un único `motion.div` decorativo absoluto).
-
-### 7. Transición entre Personas / Empresas
-
-Mejorar la `AnimatePresence` existente:
-
-- Sustituir `y: 14` por una combinación `opacity + scale 0.985 + blur(4px)→blur(0)` (350ms). Se siente cinematográfico sin desplazar layout.
-- Sin cambios en el toggle ni en las secciones internas.
-
-### 8. Digital Banking — reveal escalonado
-
-Wrappear los items dentro de `DigitalBanking` con `<Reveal>` con `delay` incremental. Si renderiza una lista, basta con un único cambio en el map.
-
----
-
-### Archivos nuevos
-
-- `src/components/effects/AmbientBackground.tsx`
-- `src/components/effects/Reveal.tsx`
-- `src/hooks/useRevealOnScroll.ts`
-- `src/styles/wow.css` (importado en `src/main.tsx`)
-
-### Archivos modificados (mínimo, solo decorativo)
-
-- `src/pages/HomePage.tsx` — montar `<AmbientBackground />`, envolver bloques con `<Reveal>`, ajustar la transición de `AnimatePresence`, añadir overlay de fade post-hero.
-- `src/components/organisms/DigitalBanking.tsx` — envolver el `.map` de features con `<Reveal>` con delay incremental, añadir `data-wow="card"` a cada card.
-- `src/components/organisms/ProductsSection.tsx` y `BusinessSection.tsx` — añadir `data-wow="card"` a las cards y `className="wow-button"` a CTAs primarios. Sin cambios estructurales.
-- `src/components/organisms/HeroCarousel.tsx` (o el slide content) — añadir `className="wow-button"` a los CTAs principales del hero. Cero cambios en copy/layout.
-
-### Notas técnicas
-
-- `framer-motion` ya está en dependencies (usado en `HomePage`).
-- Todos los efectos están envueltos en `@media (prefers-reduced-motion: reduce)` con fallback estático.
-- Performance: efectos basados en `transform`/`opacity`; `will-change` solo durante hover; sin re-renders innecesarios.
-- Z-index map: `AmbientBackground = -1`, contenido = 0, header flotante = 50 (ya existente).
-
-### Fuera de alcance
-
-- No cambia copy, jerarquía, secciones, rutas, ni componentes shared (header, footer, mega menu).
-- No modifica datos del CMS ni backend.
-- No agrega librerías nuevas.
+No backend, routing, copy, CMS, or layout changes. Effects are additive and disappear after the first visit.

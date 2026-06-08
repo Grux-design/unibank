@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useOutletContext } from "react-router-dom";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { HeroCarousel } from "@/components/organisms/HeroCarousel";
 import { AudienceToggle, type Audience } from "@/components/atoms/AudienceToggle";
 import { ProductsSection } from "@/components/organisms/ProductsSection";
@@ -9,11 +9,33 @@ import { BusinessSection } from "@/components/organisms/BusinessSection";
 import { DigitalBanking } from "@/components/organisms/DigitalBanking";
 import { AmbientBackground } from "@/components/effects/AmbientBackground";
 import { Reveal } from "@/components/effects/Reveal";
+import { IntroSplash } from "@/components/effects/IntroSplash";
+import { useFirstVisit, EASE } from "@/lib/motion";
 import type { Lang } from "@/components/layout/SiteLayout";
 
 export default function HomePage() {
   const { lang } = useOutletContext<{ lang: Lang }>();
   const [audience, setAudience] = useState<Audience>("personas");
+  const prefersReduced = useReducedMotion();
+  const { shouldPlay, markSeen } = useFirstVisit();
+
+  // Splash visibility — true only on first visit (no reduced motion)
+  const [splashOpen, setSplashOpen] = useState<boolean>(shouldPlay);
+  const playIntro = shouldPlay && !prefersReduced;
+
+  // Hero choreography starts as soon as the splash begins to exit
+  const heroAnimate = !splashOpen;
+
+  // Auto-dismiss splash after ~1.8s, mark as seen
+  if (typeof window !== "undefined" && splashOpen) {
+    // schedule once
+    (window as unknown as { __unibankIntroTimer?: number }).__unibankIntroTimer ??=
+      window.setTimeout(() => {
+        setSplashOpen(false);
+        markSeen();
+        delete (window as unknown as { __unibankIntroTimer?: number }).__unibankIntroTimer;
+      }, 1800);
+  }
 
   return (
     <>
@@ -44,11 +66,24 @@ export default function HomePage() {
         </script>
       </Helmet>
 
+      {/* First-visit cinematic splash */}
+      <AnimatePresence>{splashOpen && <IntroSplash key="splash" />}</AnimatePresence>
+
       {/* Ambient atmospheric backdrop */}
       <AmbientBackground />
 
-      {/* Hero with floating particles overlay */}
-      <div style={{ position: "relative" }}>
+      {/* Hero with choreographed entrance (only on first visit) */}
+      <motion.div
+        style={{ position: "relative", willChange: "transform, filter, opacity" }}
+        initial={playIntro ? { opacity: 0, y: 28, scale: 0.97, filter: "blur(10px)" } : false}
+        animate={
+          heroAnimate
+            ? { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }
+            : undefined
+        }
+        transition={{ duration: 1.0, ease: EASE.premium, delay: playIntro ? 0.15 : 0 }}
+        className={playIntro ? "wow-intro-boost" : undefined}
+      >
         <HeroCarousel lang={lang} />
         <div className="wow-hero-particles" aria-hidden>
           <span />
@@ -59,17 +94,23 @@ export default function HomePage() {
           <span />
           <span />
         </div>
-      </div>
+      </motion.div>
 
       {/* Soft seam fade into the next section */}
       <div className="wow-hero-fade" aria-hidden />
 
       {/* 1. Audience toggle */}
-      <Reveal y={20}>
-        <div style={{ background: "transparent" }}>
-          <AudienceToggle value={audience} onChange={setAudience} />
-        </div>
-      </Reveal>
+      <motion.div
+        initial={playIntro ? { opacity: 0, y: 20 } : false}
+        animate={heroAnimate ? { opacity: 1, y: 0 } : undefined}
+        transition={{ duration: 0.7, ease: EASE.premium, delay: playIntro ? 0.55 : 0 }}
+      >
+        <Reveal y={20}>
+          <div style={{ background: "transparent" }}>
+            <AudienceToggle value={audience} onChange={setAudience} />
+          </div>
+        </Reveal>
+      </motion.div>
 
       {/* 2. Content section — swaps based on toggle with cinematic transition */}
       <AnimatePresence mode="wait" initial={false}>
@@ -78,7 +119,7 @@ export default function HomePage() {
           initial={{ opacity: 0, y: 18, filter: "blur(6px)", scale: 0.985 }}
           animate={{ opacity: 1, y: 0, filter: "blur(0px)", scale: 1 }}
           exit={{ opacity: 0, y: -10, filter: "blur(6px)", scale: 0.99 }}
-          transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.42, ease: EASE.cinematic }}
         >
           <Reveal y={32} amount={0.1}>
             {audience === "personas" ? <ProductsSection /> : <BusinessSection />}
