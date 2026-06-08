@@ -78,7 +78,9 @@ export default function HomePage() {
       </Helmet>
 
       {/* First-visit cinematic splash */}
-      <AnimatePresence>{splashOpen && <IntroSplash key="splash" />}</AnimatePresence>
+      <AnimatePresence onExitComplete={() => { document.body.style.overflow = ""; }}>
+        {splashOpen && <IntroSplash key="splash" />}
+      </AnimatePresence>
 
       {/* Ambient atmospheric backdrop */}
       <AmbientBackground />
