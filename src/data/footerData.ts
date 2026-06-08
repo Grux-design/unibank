@@ -24,6 +24,7 @@ export const footerColumns: FooterColumn[] = [
       { label: "Nuestro Equipo", href: "/institucional/junta-directiva" },
       { label: "Sostenibilidad", href: "/institucional/sostenibilidad" },
       { label: "Estados Financieros", href: "/institucional/estados-financieros" },
+      { label: "Calificación de Riesgo", href: "/institucional/calificacion-de-riesgo" },
       
       
       { label: "Gestión de Riesgo Operativo", href: "/documents/gestion-de-riesgo-operativo.pdf" },
