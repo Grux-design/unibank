@@ -26,6 +26,7 @@ import UniLeasingPage from "./pages/UniLeasingPage";
 import CajillaSeguridadPage from "./pages/CajillaSeguridadPage";
 import BlogPostPage from "./pages/BlogPostPage";
 import EstadosFinancierosPage from "./pages/EstadosFinancierosPage";
+import CalificacionRiesgoPage from "./pages/CalificacionRiesgoPage";
 
 const queryClient = new QueryClient();
 
@@ -58,6 +59,7 @@ const App = () => (
               <Route path="/institucional/junta-directiva" element={<JuntaDirectivaPage />} />
               <Route path="/institucional/sostenibilidad" element={<SostenibilidadPage />} />
               <Route path="/institucional/estados-financieros" element={<EstadosFinancierosPage />} />
+              <Route path="/institucional/calificacion-de-riesgo" element={<CalificacionRiesgoPage />} />
               <Route path="/institucional/:slug" element={<InstitutionalPage />} />
               <Route path="/:slug" element={<LegalPage />} />
             </Route>
