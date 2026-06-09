@@ -1,26 +1,20 @@
-## Goal
-Cap the home page's "98vw" containers so that on monitors wider than 1440px (e.g. 1920×1080) the layout renders as if viewed on a 1440px screen — preventing the hero, header, and sections from stretching too wide.
+## Goals
+1. Play the splash screen on every Home page refresh (not just the first visit).
+2. Increase splash duration from 1.8s to 3s.
+3. Replace the slogan `"Tu banco. Tu confianza."` with `"¿Ganas de Crecer? Tienes a UniBank"`.
 
-## Approach
-98vw of a 1440px viewport ≈ **1411px**. Replace each `maxWidth: "98vw"` with `maxWidth: "min(98vw, 1411px)"`. On viewports ≤1440px the behavior is unchanged (98vw wins); above 1440px the layout caps at 1411px and is centered by the existing `margin: "0 auto"`.
+## Changes
 
-## Files to edit
-1. `src/components/organisms/Header.tsx` (line 82) — header inner bar
-2. `src/components/organisms/HeroCarousel.tsx` (line 38) — hero card
-3. `src/components/organisms/ProductsSection.tsx` (line 630) — products grid container
-4. `src/components/organisms/DigitalBanking.tsx` (line 548) — digital banking container
+### `src/pages/HomePage.tsx`
+- Remove dependency on `useFirstVisit` for gating the splash. Always show splash on mount (skip only when `prefersReducedMotion`).
+- Replace `shouldPlay` with `!prefersReduced` so it plays on every refresh.
+- Bump the auto-dismiss timeout `1800` → `3000`.
+- Drop the `markSeen()` call (no longer needed for per-refresh playback). `useFirstVisit` can stay imported for `EASE` only, or switch to a direct import.
 
-In each, change:
-```ts
-maxWidth: "98vw"
-```
-to:
-```ts
-maxWidth: "min(98vw, 1411px)"
-```
-
-`BusinessSection.tsx` already uses `maxWidth: 1440`, which is consistent and doesn't need changes.
+### `src/components/effects/IntroSplash.tsx`
+- Change `const PROMISE = "Tu banco. Tu confianza.";` → `const PROMISE = "¿Ganas de Crecer? Tienes a UniBank";`.
+- If the splash has internal animation timings tuned to ~1.8s, leave them — the outer 3s window simply holds the final frame longer. (Will verify when implementing.)
 
 ## Notes
-- Centered by existing `margin: "0 auto"` — no extra wrappers needed.
-- AudienceToggle and other sections that don't currently use 98vw are out of scope (consistent with current behavior).
+- `useFirstVisit` hook itself is left intact in `src/lib/motion.ts` in case other surfaces use it.
+- No backend or routing changes.

@@ -17,22 +17,21 @@ export default function HomePage() {
   const { lang } = useOutletContext<{ lang: Lang }>();
   const [audience, setAudience] = useState<Audience>("personas");
   const prefersReduced = useReducedMotion();
-  const { shouldPlay, markSeen } = useFirstVisit();
+  const { shouldPlay: _shouldPlay, markSeen: _markSeen } = useFirstVisit();
 
-  // Splash visibility — true only on first visit (no reduced motion)
-  const [splashOpen, setSplashOpen] = useState<boolean>(shouldPlay);
-  const playIntro = shouldPlay && !prefersReduced;
+  // Splash plays on every refresh (skipped only when reduced motion is requested)
+  const [splashOpen, setSplashOpen] = useState<boolean>(!prefersReduced);
+  const playIntro = !prefersReduced;
 
   // Hero choreography starts as soon as the splash begins to exit
   const heroAnimate = !splashOpen;
 
-  // Auto-dismiss splash after ~1.8s
+  // Auto-dismiss splash after 3s
   useEffect(() => {
     if (!splashOpen) return;
     const t = window.setTimeout(() => {
       setSplashOpen(false);
-      markSeen();
-    }, 1800);
+    }, 3000);
     return () => window.clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
