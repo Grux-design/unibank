@@ -101,7 +101,7 @@ export const slides: Slide[] = [
     ctaHref:   "mailto:unileasing@unibank.com.pa",
     ctaAlt:    "Más sobre Leasing",
     ctaAltHref: "/grupo/unileasing",
-    image:     "/893174f9-3139-46c3-a57d-e0aa762dfbb8.jpg",
+    image:     uniHero3.url,
     cardTitle: "Uni Leasing",
     cardSub:   "$1,850 / mes",
   },
