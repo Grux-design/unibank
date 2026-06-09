@@ -74,7 +74,7 @@ export const slides: Slide[] = [
       { text: "ahorros\n",      highlight: true  },
       { text: "trabajando\npara ti.", highlight: false },
     ],
-    body:      "Sin saldo mínimo ni filas. Abre en 5 minutos, 100% digital, al 4.5% TEA.",
+    body:      "Sin saldo mínimo ni filas.",
     cta:       "Abre tu cuenta",
     ctaHref:   "https://onboard.unibank.com.pa/es/auth/login",
     ctaAlt:    "",
