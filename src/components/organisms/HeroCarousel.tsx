@@ -35,7 +35,7 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
     }}>
       <div style={{
         background: t.cardBg, borderRadius: 28, overflow: "hidden",
-        position: "relative", maxWidth: "98vw", margin: "0 auto",
+        position: "relative", maxWidth: "min(98vw, 1411px)", margin: "0 auto",
         minHeight: 540, paddingTop: 32, paddingRight: 48,
       }}>
         {/* Decorative concentric circles */}
