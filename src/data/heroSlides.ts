@@ -119,7 +119,7 @@ export const slides: Slide[] = [
     ctaHref:   "https://api.whatsapp.com/send?phone=50763280229",
     ctaAlt:    "Conocer más",
     ctaAltHref: "/personas/credito/prestamo-de-vivienda",
-    image:     uniHero4.url,
+    image:     "/images/uni-hero-new-4.png",
     cardTitle: "Crédito Hipotecario",
     cardSub:   "Desde 6.5% EA",
   },
