@@ -63,7 +63,7 @@ export const slides: Slide[] = [
     cta:       "Solicitar ahora",
     ctaHref:   "https://onboardauto.unibank.com.pa/",
     ctaAlt:    "",
-    image:     "/be66e5af-67ba-4fd2-851b-2be6ac50832b.jpg",
+    image:     uniHero1.url,
     cardTitle: "Préstamo Auto",
     cardSub:   "Desde 8.5% EA",
   },
