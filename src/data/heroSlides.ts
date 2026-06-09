@@ -1,3 +1,5 @@
+import uniHero1 from "@/assets/uni-hero-1.png.asset.json";
+
 // ─── DESIGN TOKENS ────────────────────────────────────────────
 export const SLIDE_DURATION = 6000;
 
