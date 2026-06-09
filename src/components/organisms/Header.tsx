@@ -79,7 +79,7 @@ export function Header({ lang, onToggleLang }: HeaderProps) {
         }}
       >
         {/* Main bar */}
-        <div className="mx-auto flex items-center justify-between px-4 sm:px-6" style={{ maxWidth: "98vw", width: "100%" }}>
+        <div className="mx-auto flex items-center justify-between px-4 sm:px-6" style={{ maxWidth: "min(98vw, 1411px)", width: "100%" }}>
 
           {/* LEFT GROUP — desktop LeftHeaderPill + mobile hamburger */}
           <div className="flex items-center">
