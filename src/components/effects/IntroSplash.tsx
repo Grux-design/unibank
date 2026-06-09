@@ -11,7 +11,7 @@ interface IntroSplashProps {
  * Parent controls mount/unmount via AnimatePresence.
  */
 export function IntroSplash({ onExitComplete: _ }: IntroSplashProps) {
-  const PROMISE = "Tu banco. Tu confianza.";
+  const PROMISE = "¿Ganas de Crecer? Tienes a UniBank";
   const words = PROMISE.split(" ");
 
   return (
