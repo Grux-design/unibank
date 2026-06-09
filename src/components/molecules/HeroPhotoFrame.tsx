@@ -33,10 +33,10 @@ export function HeroPhotoFrame({ slide }: HeroPhotoFrameProps) {
             alt={slide.cardTitle}
             onLoad={() => setLoaded(true)}
             style={{
-              width: "110%",
-              height: "115%",
+              width: "100%",
+              height: "100%",
               objectFit: "contain",
-              objectPosition: "bottom center",
+              objectPosition: "center center",
               opacity: loaded ? 1 : 0,
               transition: "opacity 600ms ease",
             }}
