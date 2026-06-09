@@ -53,8 +53,8 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
 
           {/* Right column: photo frame + glass card overlay */}
           <div style={{
-            flex: "0 0 auto",
-            width: "clamp(260px, 38%, 440px)",
+            flex: "0 0 38%",
+            width: "clamp(260px, 38%, 622px)",
             position: "relative",
             height: "100%",
           }}>
