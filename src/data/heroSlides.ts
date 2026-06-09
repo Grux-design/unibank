@@ -1,4 +1,7 @@
 import uniHero1 from "@/assets/uni-hero-1.png.asset.json";
+import uniHero2 from "@/assets/uni-hero-2.png.asset.json";
+import uniHero3 from "@/assets/uni-hero-3.png.asset.json";
+import uniHero4 from "@/assets/uni-hero-4.png.asset.json";
 
 // ─── DESIGN TOKENS ────────────────────────────────────────────
 export const SLIDE_DURATION = 6000;
@@ -80,7 +83,7 @@ export const slides: Slide[] = [
     cta:       "Abre tu cuenta",
     ctaHref:   "https://onboard.unibank.com.pa/es/auth/login",
     ctaAlt:    "",
-    image:     "/b6f5b3af-65b3-42cb-a174-da7f0eb5f34a.jpg",
+    image:     uniHero2.url,
     cardTitle: "Cuenta de Ahorros",
     cardSub:   "4.5% TEA anual",
   },
@@ -98,7 +101,7 @@ export const slides: Slide[] = [
     ctaHref:   "mailto:unileasing@unibank.com.pa",
     ctaAlt:    "Más sobre Leasing",
     ctaAltHref: "/grupo/unileasing",
-    image:     "/893174f9-3139-46c3-a57d-e0aa762dfbb8.jpg",
+    image:     uniHero3.url,
     cardTitle: "Uni Leasing",
     cardSub:   "$1,850 / mes",
   },
@@ -116,7 +119,7 @@ export const slides: Slide[] = [
     ctaHref:   "https://api.whatsapp.com/send?phone=50763280229",
     ctaAlt:    "Conocer más",
     ctaAltHref: "/personas/credito/prestamo-de-vivienda",
-    image:     "/7ea7ba88-a073-446a-8edd-ed2b250324c3.jpg",
+    image:     uniHero4.url,
     cardTitle: "Crédito Hipotecario",
     cardSub:   "Desde 6.5% EA",
   },
