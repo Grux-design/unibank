@@ -1,14 +1,18 @@
-# Replace hero slide images 2, 3, 4
+## Goal
+Make the floating header span up to 98vw (matching the hero carousel's max width) instead of the current `max-w-screen-xl` (1280px) cap.
 
-Upload the three new images as CDN assets and wire them into the matching slides in `src/data/heroSlides.ts`.
+## Change
+In `src/components/organisms/Header.tsx`, line 82, replace the Tailwind `max-w-screen-xl` utility on the main bar wrapper with an inline `maxWidth: "98vw"`:
 
-## Mapping
-- `uni-hero-2.png` → slide `naranja` (Cuenta de Ahorros, slide 2)
-- `uni-hero-3.png` → slide `leasing` (Uni Leasing, slide 3)
-- `uni-hero-4.png` → slide `hipoteca` (Crédito Hipotecario, slide 4)
+```tsx
+<div
+  className="mx-auto flex items-center justify-between px-4 sm:px-6"
+  style={{ maxWidth: "98vw", width: "100%" }}
+>
+```
 
-## Steps
-1. Upload all three via `lovable-assets create` from `/mnt/user-uploads/` and write the `.asset.json` pointers under `src/assets/`.
-2. Import them in `src/data/heroSlides.ts` next to the existing `uniHero1` import and swap each slide's `image` field to the new asset URL.
+That's it — single line change. The mega menu and mobile drawer remain unaffected (they already render outside this inner wrapper).
 
-No styling or layout changes — `HeroPhotoFrame` already centers and contains the figure correctly.
+## Notes
+- 98vw matches the hero card's `maxWidth: "98vw"` exactly, so the header pills will align horizontally with the hero card edges on desktop.
+- No changes to LeftHeaderPill / RightHeaderPill internals needed.
