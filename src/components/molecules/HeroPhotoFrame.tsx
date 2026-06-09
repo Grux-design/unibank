@@ -24,7 +24,7 @@ export function HeroPhotoFrame({ slide }: HeroPhotoFrameProps) {
             position: "absolute",
             inset: 0,
             display: "flex",
-            alignItems: "flex-end",
+            alignItems: "center",
             justifyContent: "center",
           }}
         >
