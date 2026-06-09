@@ -1,22 +1,27 @@
-# Free the hero image from its container
+# Fix hero image: vertical centering + overflow
 
-The new image already includes its own orange blob backdrop and transparent edges, so the rounded photo card in `HeroPhotoFrame` is fighting it — clipping the bottom, hiding the blob, and making the subject feel cramped.
+## Root cause
 
-## Change
+In `src/components/molecules/HeroPhotoFrame.tsx` the `<img>` has two leftover settings from the earlier "let it expand" pass:
 
-Edit `src/components/molecules/HeroPhotoFrame.tsx`:
+1. `width: "110%"` and `height: "115%"` — the img element itself is larger than its column, so its bounding box overflows the carousel card (visible in the screenshot as the blue rect extending past the card's right edge and into the header above).
+2. `objectPosition: "bottom center"` — even though the wrapper now uses `alignItems: center`, the image content inside the oversized img box is pinned to the bottom of that box. That's why the figure looks bottom-weighted instead of centered.
 
-- Remove the inner photo frame styling: no `borderRadius`, no `overflow: hidden`, no orange `background` fill, no `left: 11% / right: 11%` inset, no fixed `height: 480`.
-- Let the `motion.div` fill the right column edge-to-edge and allow the image to overflow naturally (image can extend slightly past the hero card bottom for a "popping out" feel).
-- Drop the two decorative accent shapes (`blobAccent` circle + transparent blob) since the new image already carries the orange blob composition.
-- Set `<img>` to `object-fit: contain`, `object-position: bottom center`, full width/height of the column, so the figure scales without cropping the head or hands.
-- Keep the existing fade-in `AnimatePresence` transition and the per-slide `key` so slide changes still cross-fade.
-- Allow the parent column to overflow visible: in `HeroCarousel.tsx`, the right column wrapper stays as-is, but the hero card's `overflow: hidden` already on the outer card keeps things tidy — we just stop clipping inside the frame.
+Switching `alignItems` to center earlier had no visible effect because the img itself was already filling (and exceeding) the wrapper.
+
+## Fix
+
+Edit only `src/components/molecules/HeroPhotoFrame.tsx`:
+
+- `<img>` `width: "100%"`, `height: "100%"` — match the column, no overflow.
+- `<img>` `objectPosition: "center center"` — let `object-fit: contain` center the figure inside its own box.
+- Keep wrapper `alignItems: "center"` (already correct) and `overflow: "visible"` on the outer frame in case future slides want gentle bleed.
+- Everything else (fade-in transition, AnimatePresence, key per slide) stays.
 
 ## Result
 
-The figure with the orange blob backdrop sits flush against the bottom of the hero card, scales naturally to the column, no rounded crop box, no double-background. Other slides (auto, leasing, hipoteca) still render fine because `object-fit: contain` works for any source; if they look too small later we can reintroduce a per-slide fit override, but no other slide changes are needed in this step.
+The figure sits centered both horizontally and vertically inside the right column of the hero card, the img bounding box no longer pokes out past the carousel, and the orange blob backdrop reads as designed.
 
 ## Files
 
-- `src/components/molecules/HeroPhotoFrame.tsx` — strip the framed container, let the image expand.
+- `src/components/molecules/HeroPhotoFrame.tsx`
