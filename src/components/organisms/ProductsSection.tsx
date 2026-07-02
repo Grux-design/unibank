@@ -375,44 +375,12 @@ function FeaturedBanner({ isMobile }: { isMobile: boolean }) {
             gap: 10,
           }}
         >
-          <button
-            style={{
-              width: "100%",
-              height: 52,
-              background: "#F7E8E0",
-              border: "none",
-              borderRadius: 16,
-              color: "#FF8136",
-              fontSize: 14,
-              fontWeight: 600,
-              cursor: "pointer",
-              letterSpacing: "0.004em",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 8,
-            }}
-          >
+          <ProductButton variant="onOrangeSolid" fullWidth>
             Abrir mi cuenta ahora <Plus size={16} strokeWidth={2.5} />
-          </button>
-          <button
-            style={{
-              width: "100%",
-              height: 52,
-              background: "transparent",
-              border: "2px solid rgba(247,232,224,0.7)",
-              borderRadius: 16,
-              color: "#F7E8E0",
-              fontSize: 14,
-              fontWeight: 600,
-              cursor: "pointer",
-              letterSpacing: "0.004em",
-            }}
-            onMouseEnter={e => { e.currentTarget.style.borderColor = "#fff"; }}
-            onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(247,232,224,0.7)"; }}
-          >
+          </ProductButton>
+          <ProductButton variant="onOrangeOutline" fullWidth>
             Saber más...
-          </button>
+          </ProductButton>
         </div>
       </div>
 
