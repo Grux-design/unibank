@@ -365,22 +365,22 @@ function FeaturedBanner({ isMobile }: { isMobile: boolean }) {
           de UniBank desde donde estés.
         </p>
 
-        {/* CTAs */}
-        <div
-          style={{
-            paddingTop: 20,
-            width: "100%",
-            display: "flex",
-            flexDirection: "column",
-            gap: 10,
-          }}
-        >
-          <ProductButton variant="onOrangeSolid" fullWidth>
-            Abrir mi cuenta ahora <Plus size={16} strokeWidth={2.5} />
-          </ProductButton>
-          <ProductButton variant="onOrangeOutline" fullWidth>
-            Saber más...
-          </ProductButton>
+        {/* CTA */}
+        <div style={{ paddingTop: 12 }}>
+          <span
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 6,
+              color: "#fff",
+              fontSize: 13,
+              fontWeight: 600,
+              userSelect: "none",
+            }}
+          >
+            Abrir mi cuenta ahora
+            <ArrowRight size={13} strokeWidth={2.5} />
+          </span>
         </div>
       </div>
 
@@ -535,9 +535,7 @@ function AutoLoanCard({ isMobile }: { isMobile: boolean }) {
             El auto de tus sueños está más cerca. Tasas competitivas y aprobación rápida.
           </p>
         </div>
-        <OrangeButton fullWidth href="https://onboardauto.unibank.com.pa/">
-          Solicitar Crédito ahora <Plus size={14} strokeWidth={2.5} />
-        </OrangeButton>
+        <CtaLink href="https://onboardauto.unibank.com.pa/">Solicitar Crédito ahora</CtaLink>
       </motion.div>
       {/* Right: image */}
       <div style={{ flex: isMobile ? undefined : "1 1 50%", minHeight: isMobile ? 200 : undefined, overflow: "hidden" }}>
