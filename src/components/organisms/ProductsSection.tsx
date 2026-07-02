@@ -535,9 +535,7 @@ function AutoLoanCard({ isMobile }: { isMobile: boolean }) {
             El auto de tus sueños está más cerca. Tasas competitivas y aprobación rápida.
           </p>
         </div>
-        <OrangeButton fullWidth href="https://onboardauto.unibank.com.pa/">
-          Solicitar Crédito ahora <Plus size={14} strokeWidth={2.5} />
-        </OrangeButton>
+        <CtaLink href="https://onboardauto.unibank.com.pa/">Solicitar Crédito ahora</CtaLink>
       </motion.div>
       {/* Right: image */}
       <div style={{ flex: isMobile ? undefined : "1 1 50%", minHeight: isMobile ? 200 : undefined, overflow: "hidden" }}>
