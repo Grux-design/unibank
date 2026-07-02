@@ -48,35 +48,72 @@ const viviendaData = {
 };
 
 /* ── Sub-components ─────────────────────────────────────── */
-function OrangeButton({ children, fullWidth, href }: { children: React.ReactNode; fullWidth?: boolean; href?: string }) {
+type ProductButtonVariant = "primary" | "onOrangeSolid" | "onOrangeOutline";
+
+interface ProductButtonProps {
+  children: React.ReactNode;
+  variant?: ProductButtonVariant;
+  fullWidth?: boolean;
+  href?: string;
+  onClick?: React.MouseEventHandler<HTMLElement>;
+}
+
+function ProductButton({ children, variant = "primary", fullWidth, href, onClick }: ProductButtonProps) {
   const [hov, setHov] = useState(false);
+
+  const palette: Record<ProductButtonVariant, {
+    bg: string; bgHover: string; color: string; border: string; borderHover: string;
+  }> = {
+    primary: {
+      bg: OR, bgHover: "hsl(20 100% 45%)", color: "#FBF4F0",
+      border: "none", borderHover: "none",
+    },
+    onOrangeSolid: {
+      bg: "#F7E8E0", bgHover: "#FFFFFF", color: "#FF8136",
+      border: "none", borderHover: "none",
+    },
+    onOrangeOutline: {
+      bg: "transparent", bgHover: "transparent", color: "#F7E8E0",
+      border: "2px solid rgba(247,232,224,0.7)", borderHover: "2px solid #fff",
+    },
+  };
+  const p = palette[variant];
+
   const style: React.CSSProperties = {
     display: "inline-flex",
     alignItems: "center",
     justifyContent: "center",
     gap: 8,
-    padding: "15px 28px",
+    padding: variant === "primary" ? "15px 28px" : undefined,
+    height: variant === "primary" ? undefined : 52,
     borderRadius: 16,
-    border: "none",
-    background: hov ? "hsl(20 100% 45%)" : OR,
-    color: "#FBF4F0",
+    border: hov ? p.borderHover : p.border,
+    background: hov ? p.bgHover : p.bg,
+    color: p.color,
     fontSize: 14,
     fontWeight: 600,
     letterSpacing: "0.004em",
     cursor: "pointer",
-    transition: "background 0.18s",
+    transition: "background 0.18s, border-color 0.18s, color 0.18s",
     width: fullWidth ? "100%" : undefined,
     whiteSpace: "nowrap",
     textDecoration: "none",
   };
+
+  const handlers = {
+    onMouseEnter: () => setHov(true),
+    onMouseLeave: () => setHov(false),
+  };
+
   if (href) {
+    const external = /^https?:\/\//.test(href);
     return (
       <a
         href={href}
-        target="_blank"
-        rel="noopener noreferrer"
-        onMouseEnter={() => setHov(true)}
-        onMouseLeave={() => setHov(false)}
+        target={external ? "_blank" : undefined}
+        rel={external ? "noopener noreferrer" : undefined}
+        onClick={onClick}
+        {...handlers}
         style={style}
       >
         {children}
@@ -84,15 +121,16 @@ function OrangeButton({ children, fullWidth, href }: { children: React.ReactNode
     );
   }
   return (
-    <button
-      onMouseEnter={() => setHov(true)}
-      onMouseLeave={() => setHov(false)}
-      style={style}
-    >
+    <button onClick={onClick} {...handlers} style={style}>
       {children}
     </button>
   );
 }
+
+// Backwards-compatible alias for the primary orange CTA used elsewhere in this section
+const OrangeButton = ({ children, fullWidth, href }: { children: React.ReactNode; fullWidth?: boolean; href?: string }) => (
+  <ProductButton variant="primary" fullWidth={fullWidth} href={href}>{children}</ProductButton>
+);
 
 function CtaLink({ children, href }: { children: React.ReactNode; href?: string }) {
   const [hov, setHov] = useState(false);
