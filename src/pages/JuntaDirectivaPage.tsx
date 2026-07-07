@@ -37,17 +37,17 @@ const suplentes: Person[] = [
 ];
 
 const lideres: Person[] = [
-  { name: "John Rozo Uribe", role: "Gerente General", highlight: true },
-  { name: "Mariela Arze", role: "VP de Tesorería, Instituciones y Alianzas Estratégicas" },
-  { name: "Jazmín Pérez", role: "VP de Personas, Pasivos y Gestión Patrimonial" },
-  { name: "Alexis Aizpurúa", role: "VP de Crecimiento de Negocios" },
-  { name: "Maricel de González", role: "VP de Finanzas" },
+  { name: "John Rozo Uribe", role: "Gerente General", highlight: true, avatar: johnAvatar.url },
+  { name: "Mariela Arze", role: "VP de Tesorería, Instituciones y Alianzas Estratégicas", avatar: marielaAvatar.url },
+  { name: "Jazmín Pérez", role: "VP de Personas, Pasivos y Gestión Patrimonial", avatar: jazminAvatar.url },
+  { name: "Alexis Aizpurúa", role: "VP de Crecimiento de Negocios", avatar: alexisAvatar.url },
+  { name: "Maricel de González", role: "VP de Finanzas", avatar: maricelAvatar.url },
   { name: "Ileana de Bundy", role: "VP de Recursos Humanos" },
-  { name: "Abdiel Blanco", role: "VP de Asesoría Legal y Gobierno Corporativo" },
-  { name: "Gustavo Valderrama", role: "VP de Riesgos" },
+  { name: "Abdiel Blanco", role: "VP de Asesoría Legal y Gobierno Corporativo", avatar: abdielAvatar.url },
+  { name: "Gustavo Valderrama", role: "VP de Riesgos", avatar: gustavoAvatar.url },
   { name: "Roberto Alcedo", role: "VP de Tecnología y Operaciones" },
-  { name: "Giniva Santamaría", role: "VP de Cumplimiento" },
-  { name: "Jahir Cervantes", role: "VP de Auditoría" },
+  { name: "Giniva Santamaría", role: "VP de Cumplimiento", avatar: ginivaAvatar.url },
+  { name: "Jahir Cervantes", role: "VP de Auditoría", avatar: jahirAvatar.url },
 ];
 
 function getInitials(name: string) {
