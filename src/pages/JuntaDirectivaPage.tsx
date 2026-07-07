@@ -16,7 +16,9 @@ interface Person {
   name: string;
   role: string;
   highlight?: boolean;
+  avatar?: string;
 }
+
 
 const principales: Person[] = [
   { name: "Sion Cohen", role: "Director – Presidente", highlight: true },
