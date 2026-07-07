@@ -9,6 +9,7 @@ import jazminAvatar from "@/assets/leadership/jazmin.jpg.asset.json";
 import johnAvatar from "@/assets/leadership/john.jpg.asset.json";
 import maricelAvatar from "@/assets/leadership/maricel.jpg.asset.json";
 import marielaAvatar from "@/assets/leadership/mariela.jpg.asset.json";
+import robertoAvatar from "@/assets/leadership/roberto.jpg.asset.json";
 
 
 
@@ -42,10 +43,9 @@ const lideres: Person[] = [
   { name: "Jazmín Pérez", role: "VP de Personas, Pasivos y Gestión Patrimonial", avatar: jazminAvatar.url },
   { name: "Alexis Aizpurúa", role: "VP de Crecimiento de Negocios", avatar: alexisAvatar.url },
   { name: "Maricel de González", role: "VP de Finanzas", avatar: maricelAvatar.url },
-  { name: "Ileana de Bundy", role: "VP de Recursos Humanos" },
   { name: "Abdiel Blanco", role: "VP de Asesoría Legal y Gobierno Corporativo", avatar: abdielAvatar.url },
   { name: "Gustavo Valderrama", role: "VP de Riesgos", avatar: gustavoAvatar.url },
-  { name: "Roberto Alcedo", role: "VP de Tecnología y Operaciones" },
+  { name: "Roberto Alcedo", role: "VP de Tecnología y Operaciones", avatar: robertoAvatar.url },
   { name: "Giniva Santamaría", role: "VP de Cumplimiento", avatar: ginivaAvatar.url },
   { name: "Jahir Cervantes", role: "VP de Auditoría", avatar: jahirAvatar.url },
 ];
