@@ -1,5 +1,16 @@
 import { Helmet } from "react-helmet-async";
 import { Target, Eye, Crown, Users2, Briefcase } from "lucide-react";
+import abdielAvatar from "@/assets/leadership/abdiel.jpg.asset.json";
+import alexisAvatar from "@/assets/leadership/alexis.jpg.asset.json";
+import ginivaAvatar from "@/assets/leadership/giniva.jpg.asset.json";
+import gustavoAvatar from "@/assets/leadership/gustavo.jpg.asset.json";
+import jahirAvatar from "@/assets/leadership/jahir.jpg.asset.json";
+import jazminAvatar from "@/assets/leadership/jazmin.jpg.asset.json";
+import johnAvatar from "@/assets/leadership/john.jpg.asset.json";
+import maricelAvatar from "@/assets/leadership/maricel.jpg.asset.json";
+import marielaAvatar from "@/assets/leadership/mariela.jpg.asset.json";
+
+
 
 interface Person {
   name: string;
