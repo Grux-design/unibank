@@ -1,11 +1,24 @@
 import { Helmet } from "react-helmet-async";
 import { Target, Eye, Crown, Users2, Briefcase } from "lucide-react";
+import abdielAvatar from "@/assets/leadership/abdiel.jpg.asset.json";
+import alexisAvatar from "@/assets/leadership/alexis.jpg.asset.json";
+import ginivaAvatar from "@/assets/leadership/giniva.jpg.asset.json";
+import gustavoAvatar from "@/assets/leadership/gustavo.jpg.asset.json";
+import jahirAvatar from "@/assets/leadership/jahir.jpg.asset.json";
+import jazminAvatar from "@/assets/leadership/jazmin.jpg.asset.json";
+import johnAvatar from "@/assets/leadership/john.jpg.asset.json";
+import maricelAvatar from "@/assets/leadership/maricel.jpg.asset.json";
+import marielaAvatar from "@/assets/leadership/mariela.jpg.asset.json";
+
+
 
 interface Person {
   name: string;
   role: string;
   highlight?: boolean;
+  avatar?: string;
 }
+
 
 const principales: Person[] = [
   { name: "Sion Cohen", role: "Director – Presidente", highlight: true },
@@ -24,17 +37,17 @@ const suplentes: Person[] = [
 ];
 
 const lideres: Person[] = [
-  { name: "John Rozo Uribe", role: "Gerente General", highlight: true },
-  { name: "Mariela Arze", role: "VP de Tesorería, Instituciones y Alianzas Estratégicas" },
-  { name: "Jazmín Pérez", role: "VP de Personas, Pasivos y Gestión Patrimonial" },
-  { name: "Alexis Aizpurúa", role: "VP de Crecimiento de Negocios" },
-  { name: "Maricel de González", role: "VP de Finanzas" },
+  { name: "John Rozo Uribe", role: "Gerente General", highlight: true, avatar: johnAvatar.url },
+  { name: "Mariela Arze", role: "VP de Tesorería, Instituciones y Alianzas Estratégicas", avatar: marielaAvatar.url },
+  { name: "Jazmín Pérez", role: "VP de Personas, Pasivos y Gestión Patrimonial", avatar: jazminAvatar.url },
+  { name: "Alexis Aizpurúa", role: "VP de Crecimiento de Negocios", avatar: alexisAvatar.url },
+  { name: "Maricel de González", role: "VP de Finanzas", avatar: maricelAvatar.url },
   { name: "Ileana de Bundy", role: "VP de Recursos Humanos" },
-  { name: "Abdiel Blanco", role: "VP de Asesoría Legal y Gobierno Corporativo" },
-  { name: "Gustavo Valderrama", role: "VP de Riesgos" },
+  { name: "Abdiel Blanco", role: "VP de Asesoría Legal y Gobierno Corporativo", avatar: abdielAvatar.url },
+  { name: "Gustavo Valderrama", role: "VP de Riesgos", avatar: gustavoAvatar.url },
   { name: "Roberto Alcedo", role: "VP de Tecnología y Operaciones" },
-  { name: "Giniva Santamaría", role: "VP de Cumplimiento" },
-  { name: "Jahir Cervantes", role: "VP de Auditoría" },
+  { name: "Giniva Santamaría", role: "VP de Cumplimiento", avatar: ginivaAvatar.url },
+  { name: "Jahir Cervantes", role: "VP de Auditoría", avatar: jahirAvatar.url },
 ];
 
 function getInitials(name: string) {
@@ -56,13 +69,27 @@ function PersonCard({ person, accent = false }: { person: Person; accent?: boole
     >
       <div className="flex items-start gap-4">
         <div
-          className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-full text-base font-semibold tracking-wide transition-colors ${
+          className={`flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-full text-base font-semibold tracking-wide transition-colors ${
             accent
               ? "bg-primary text-primary-foreground"
               : "bg-muted text-foreground group-hover:bg-primary group-hover:text-primary-foreground"
           }`}
         >
-          {getInitials(person.name)}
+          {person.avatar ? (
+            <img
+              src={person.avatar}
+              alt=""
+              width={56}
+              height={56}
+              draggable={false}
+              onContextMenu={(e) => e.preventDefault()}
+              onDragStart={(e) => e.preventDefault()}
+              className="h-full w-full select-none object-cover pointer-events-none"
+              style={{ WebkitUserSelect: "none", WebkitTouchCallout: "none" }}
+            />
+          ) : (
+            getInitials(person.name)
+          )}
         </div>
         <div className="min-w-0 flex-1">
           <h3 className="text-base font-semibold leading-snug text-foreground">{person.name}</h3>
