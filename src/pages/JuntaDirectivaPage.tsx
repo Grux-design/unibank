@@ -9,6 +9,7 @@ import jazminAvatar from "@/assets/leadership/jazmin.jpg.asset.json";
 import johnAvatar from "@/assets/leadership/john.jpg.asset.json";
 import maricelAvatar from "@/assets/leadership/maricel.jpg.asset.json";
 import marielaAvatar from "@/assets/leadership/mariela.jpg.asset.json";
+import robertoAvatar from "@/assets/leadership/roberto.jpg.asset.json";
 
 
 
