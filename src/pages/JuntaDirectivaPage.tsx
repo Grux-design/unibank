@@ -69,13 +69,27 @@ function PersonCard({ person, accent = false }: { person: Person; accent?: boole
     >
       <div className="flex items-start gap-4">
         <div
-          className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-full text-base font-semibold tracking-wide transition-colors ${
+          className={`flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-full text-base font-semibold tracking-wide transition-colors ${
             accent
               ? "bg-primary text-primary-foreground"
               : "bg-muted text-foreground group-hover:bg-primary group-hover:text-primary-foreground"
           }`}
         >
-          {getInitials(person.name)}
+          {person.avatar ? (
+            <img
+              src={person.avatar}
+              alt=""
+              width={56}
+              height={56}
+              draggable={false}
+              onContextMenu={(e) => e.preventDefault()}
+              onDragStart={(e) => e.preventDefault()}
+              className="h-full w-full select-none object-cover pointer-events-none"
+              style={{ WebkitUserSelect: "none", WebkitTouchCallout: "none" }}
+            />
+          ) : (
+            getInitials(person.name)
+          )}
         </div>
         <div className="min-w-0 flex-1">
           <h3 className="text-base font-semibold leading-snug text-foreground">{person.name}</h3>
