@@ -20,7 +20,7 @@ const T = {
   ivory100: "#F2EFED",
   ivory50: "#F8F7F6",
   white: "#FFFFFF",
-  radiusMd: "16px",
+  radiusBtn: "12px",
   radiusSm: "8px",
   radiusLg: "20px",
   radiusXl: "24px",
@@ -226,7 +226,7 @@ const PreferencesPanel: React.FC<{
           onMouseEnter={() => setAllowHover(true)}
           onMouseLeave={() => setAllowHover(false)}
           style={{
-            width: "100%", height: 44, borderRadius: T.radiusMd, border: `2px solid ${allowHover ? T.orange700 : T.orange500}`,
+            width: "100%", height: 44, borderRadius: T.radiusBtn, border: `2px solid ${allowHover ? T.orange700 : T.orange500}`,
             backgroundColor: allowHover ? T.orange700 : T.orange500, color: T.white,
             fontSize: 14, fontWeight: 600, fontFamily: T.fontFamily, cursor: "pointer",
             transition: "background-color 160ms ease, border-color 160ms ease", marginBottom: 16,
@@ -251,7 +251,7 @@ const PreferencesPanel: React.FC<{
           onMouseEnter={() => setConfirmHover(true)}
           onMouseLeave={() => setConfirmHover(false)}
           style={{
-            width: "100%", height: 44, borderRadius: T.radiusMd,
+            width: "100%", height: 44, borderRadius: T.radiusBtn,
             border: `1.5px solid ${confirmHover ? T.orange700 : T.orange500}`,
             backgroundColor: confirmHover ? T.orange50 : T.white, color: T.orange500,
             fontSize: 14, fontWeight: 600, fontFamily: T.fontFamily, cursor: "pointer",
@@ -302,7 +302,7 @@ const BannerToast: React.FC<{ onAcceptAll: () => void; onCustomize: () => void }
           onMouseEnter={() => setAcceptHover(true)}
           onMouseLeave={() => setAcceptHover(false)}
           style={{
-            width: "100%", height: 48, borderRadius: T.radiusMd,
+            width: "100%", height: 48, borderRadius: T.radiusBtn,
             border: `2px solid ${acceptHover ? T.orange700 : T.orange500}`,
             backgroundColor: acceptHover ? T.orange700 : T.orange500, color: T.white,
             fontSize: 14, fontWeight: 600, fontFamily: T.fontFamily, cursor: "pointer",
@@ -316,7 +316,7 @@ const BannerToast: React.FC<{ onAcceptAll: () => void; onCustomize: () => void }
           onMouseEnter={() => setConfigHover(true)}
           onMouseLeave={() => setConfigHover(false)}
           style={{
-            width: "100%", height: 48, borderRadius: T.radiusMd,
+            width: "100%", height: 48, borderRadius: T.radiusBtn,
             border: `1px solid ${configHover ? T.ivory300 : T.ivory200}`,
             backgroundColor: configHover ? T.ivory100 : "transparent", color: T.ivory700,
             fontSize: 14, fontWeight: 600, fontFamily: T.fontFamily, cursor: "pointer",

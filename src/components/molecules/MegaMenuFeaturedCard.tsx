@@ -72,7 +72,7 @@ export function MegaMenuFeaturedCard({ data, isPersonas, onClose }: MegaMenuFeat
           onClick={onClose}
           style={{
             marginTop: 16, display: "block", textAlign: "center",
-            padding: "12px 14px", borderRadius: 999,
+            padding: "12px 14px", borderRadius: 12,
             background: "#FFE8DA",
             color: "#FF8136", fontFamily: "Inter, sans-serif", fontSize: 14, fontWeight: 600,
             textDecoration: "none",

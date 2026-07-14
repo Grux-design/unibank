@@ -133,7 +133,7 @@ function PrimaryCTA({ label = "Solicite su asesoría fiduciaria" }: { label?: st
   return (
     <a
       href={MAILTO_HREF}
-      className="group inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg"
+      className="group inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg"
     >
       <Mail className="h-4 w-4" />
       {label}

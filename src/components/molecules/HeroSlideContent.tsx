@@ -54,7 +54,7 @@ export function HeroSlideContent({ slide, dir }: HeroSlideContentProps) {
               style={{
                 display: "inline-block", textDecoration: "none",
                 background: t.primaryBtnBg, color: t.primaryBtnColor,
-                border: "none", borderRadius: 100, padding: "13px 26px",
+                border: "none", borderRadius: 12, padding: "13px 26px",
                 fontSize: 14, fontWeight: 600, cursor: "pointer",
                 transition: "opacity 0.18s", fontFamily: "inherit",
               }}
@@ -69,7 +69,7 @@ export function HeroSlideContent({ slide, dir }: HeroSlideContentProps) {
               style={{
                 display: "inline-block", textDecoration: "none",
                 background: t.secondaryBtnBg, color: t.secondaryBtnColor,
-                border: `1.5px solid ${t.secondaryBtnBorder}`, borderRadius: 100,
+                border: `1.5px solid ${t.secondaryBtnBorder}`, borderRadius: 12,
                 padding: "13px 26px", fontSize: 14, fontWeight: 600, cursor: "pointer",
                 transition: "border-color 0.18s", fontFamily: "inherit",
               }}

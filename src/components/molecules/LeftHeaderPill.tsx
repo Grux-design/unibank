@@ -8,21 +8,15 @@ interface LeftHeaderPillProps {
   menuOpen: boolean;
   lang: Lang;
   onToggle: () => void;
-  onMouseEnter: () => void;
-  onMouseLeave: () => void;
 }
 
 export function LeftHeaderPill({
   menuOpen,
   lang,
   onToggle,
-  onMouseEnter,
-  onMouseLeave,
 }: LeftHeaderPillProps) {
   return (
     <div
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
       style={{
         display: "flex",
         alignItems: "center",
@@ -32,6 +26,7 @@ export function LeftHeaderPill({
         padding: "0 20px 0 8px",
         gap: 20,
         border: menuOpen ? "none" : "0.5px solid #E7E4E1",
+        boxShadow: menuOpen ? "none" : undefined,
         transition: "background 0.2s ease, border-radius 0.2s ease, border 0.2s ease",
       }}
     >

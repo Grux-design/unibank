@@ -86,7 +86,7 @@ function ProductButton({ children, variant = "primary", fullWidth, href, onClick
     gap: 8,
     padding: variant === "primary" ? "15px 28px" : undefined,
     height: variant === "primary" ? undefined : 52,
-    borderRadius: 16,
+    borderRadius: 12,
     border: hov ? p.borderHover : p.border,
     background: hov ? p.bgHover : p.bg,
     color: p.color,
