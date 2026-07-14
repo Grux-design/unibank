@@ -1,6 +1,7 @@
 import { MessageCircle, MapPin, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
 import type { FooterColumn } from "@/data/footerData";
+import { FooterInvertisBadge } from "@/components/atoms/FooterInvertisBadge";
 
 const ORANGE    = "#FF8136";
 const TEXT_DARK = "#1C1917";
@@ -88,6 +89,11 @@ export function FooterNavColumn({ column }: FooterNavColumnProps) {
           );
         })}
       </ul>
+      {column.title === "Grupo UniBank" && (
+        <div style={{ marginTop: 24, paddingTop: 16, borderTop: "1px solid #E7E4E1" }}>
+          <FooterInvertisBadge />
+        </div>
+      )}
     </div>
   );
 }

@@ -45,6 +45,14 @@ export function MegaMenuCategoryGrid({ data, isPersonas, onClose }: MegaMenuCate
               </a>
             );
           }
+          if (item.to) {
+            return (
+              <Link key={item.label} to={item.to}
+                onClick={onClose} style={linkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>
+                {item.label}
+              </Link>
+            );
+          }
           return (
             <Link key={item.label} to={`/${segment}/${cat.categorySlug}/${item.slug}`}
               onClick={onClose} style={linkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>

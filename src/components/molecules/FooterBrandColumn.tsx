@@ -1,6 +1,5 @@
 import logoFooter from "@/assets/logos/logo-footer.svg";
 import { FooterSBPBadge } from "@/components/atoms/FooterSBPBadge";
-import { FooterInvertisBadge } from "@/components/atoms/FooterInvertisBadge";
 
 const TEXT_MUTED = "#908E8D";
 
@@ -15,7 +14,6 @@ export function FooterBrandColumn() {
         Tu banco moderno en Panamá. Combinamos solidez financiera con agilidad digital para acompañarte en cada etapa de tu vida.
       </p>
       <FooterSBPBadge />
-      <FooterInvertisBadge />
     </div>
   );
 }

@@ -74,6 +74,8 @@ export interface FeatureItemFields {
   question?: string;
   answer?: string;
   link?: string;
+  label?: string;
+  url?: string;
 }
 
 export interface SectionFields {

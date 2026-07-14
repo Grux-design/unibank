@@ -2,6 +2,7 @@ export interface MenuItem {
   label: string;
   slug:  string;
   href?: string;
+  to?:   string;
 }
 
 export interface MenuCategory {
@@ -69,7 +70,7 @@ export const empresasData: MenuSection = {
   image: "/megamenu-empresas-solar.jpg",
   featured: {
     tag:          "Nuevo",
-    label:        "Uni Leasing",
+    label:        "Leasing",
     desc:         "Equipa tu empresa sin inmovilizar capital. Aprobación en 48h.",
     slug:         "unileasing",
     categorySlug: "financiamiento",
@@ -80,7 +81,10 @@ export const empresasData: MenuSection = {
       name: "Cuentas",
       categorySlug: "cuentas",
       items: [
-        { label: "Cuenta Jurídica Digital", slug: "cuenta-juridica-digital" },
+        { label: "Mi Negocio", slug: "mi-negocio" },
+        { label: "Cuenta de Ahorros", slug: "cuenta-de-ahorros", to: "/personas/cuentas/cuenta-de-ahorros" },
+        { label: "Cuenta Corriente", slug: "cuenta-corriente", to: "/personas/cuentas/cuenta-corriente" },
+        { label: "Depósito a Plazo Fijo", slug: "deposito-a-plazo-fijo", to: "/personas/cuentas/deposito-a-plazo-fijo" },
       ],
     },
     {
@@ -88,7 +92,7 @@ export const empresasData: MenuSection = {
       categorySlug: "financiamiento",
       items: [
         { label: "Préstamo Comercial",      slug: "prestamo-comercial" },
-        { label: "Uni Leasing",              slug: "unileasing" },
+        { label: "Leasing",                 slug: "unileasing" },
         { label: "Líneas de Crédito",       slug: "linea-de-credito" },
         { label: "Préstamo Agroindustrial", slug: "prestamo-agroindustrial" },
       ],
@@ -98,7 +102,7 @@ export const empresasData: MenuSection = {
       categorySlug: "otros-servicios",
       items: [
         { label: "Emisión de Valores",      slug: "emision-de-valores" },
-        { label: "Pago de Planilla",        slug: "pago-de-planilla" },
+        { label: "Planilla",                slug: "planilla" },
         { label: "Mastercard Black Débito", slug: "mastercard-black-debito" },
       ],
     },

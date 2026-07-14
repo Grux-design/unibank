@@ -131,6 +131,72 @@ export function HeroFormSection({ section }: Props) {
               </p>
             )}
 
+            {section.items && section.items.length > 0 && (
+              <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 8 }}>
+                {section.items.map((item) => {
+                  if (!item.link) return null;
+                  const isExternal = item.link.startsWith("http") || item.link.startsWith("mailto");
+                  const buttonStyle: React.CSSProperties = {
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: 52,
+                    padding: "0 32px",
+                    borderRadius: 16,
+                    background: "hsl(var(--primary))",
+                    color: "hsl(var(--primary-foreground))",
+                    fontSize: 15,
+                    fontWeight: 600,
+                    textDecoration: "none",
+                    cursor: "pointer",
+                    transition: "background 0.18s, transform 0.18s, box-shadow 0.18s",
+                    boxShadow: "0 4px 12px rgba(255, 129, 54, 0.2)",
+                    width: "fit-content",
+                  };
+
+                  const onEnter = (e: React.MouseEvent<HTMLAnchorElement>) => {
+                    e.currentTarget.style.background = "hsl(var(--primary-hover))";
+                    e.currentTarget.style.transform = "translateY(-1px)";
+                    e.currentTarget.style.boxShadow = "0 6px 16px rgba(255, 129, 54, 0.35)";
+                  };
+
+                  const onLeave = (e: React.MouseEvent<HTMLAnchorElement>) => {
+                    e.currentTarget.style.background = "hsl(var(--primary))";
+                    e.currentTarget.style.transform = "translateY(0)";
+                    e.currentTarget.style.boxShadow = "0 4px 12px rgba(255, 129, 54, 0.2)";
+                  };
+
+                  if (isExternal) {
+                    return (
+                      <a
+                        key={item.sys.id}
+                        href={item.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={buttonStyle}
+                        onMouseEnter={onEnter}
+                        onMouseLeave={onLeave}
+                      >
+                        {item.title}
+                      </a>
+                    );
+                  }
+
+                  return (
+                    <Link
+                      key={item.sys.id}
+                      to={item.link}
+                      style={buttonStyle}
+                      onMouseEnter={onEnter}
+                      onMouseLeave={onLeave}
+                    >
+                      {item.title}
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
+
             {showForm && (
               <div
                 style={{
