@@ -6,6 +6,7 @@ import { useBreakpoint } from "@/hooks/useBreakpoint";
 import footerBlob from "@/assets/footer-blob.png";
 
 const BORDER = "#E7E4E1";
+const FOOTER_BG = "#FBF4F0"; // funOrange/50
 
 export function Footer() {
   const bp = useBreakpoint();
@@ -17,7 +18,7 @@ export function Footer() {
       {/* Section 1: Brand + Nav */}
       <div
         style={{
-          background: "white",
+          background: FOOTER_BG,
           borderTop: `1px solid ${BORDER}`,
           padding: isMobile ? "40px 0 32px" : isCompact ? "48px 0 36px" : "56px 0 40px",
           position: "relative",
@@ -57,7 +58,7 @@ export function Footer() {
       </div>
 
       {/* Section 2: App stores + legal */}
-      <div style={{ background: "white", borderTop: `1px solid ${BORDER}`, padding: isMobile ? "16px 0" : "20px 0" }}>
+      <div style={{ background: FOOTER_BG, borderTop: `1px solid ${BORDER}`, padding: isMobile ? "16px 0" : "20px 0" }}>
         <div className="site-container">
           <FooterAppsBar />
         </div>
