@@ -227,55 +227,42 @@ export default function TrabajaConNosotrosPage() {
 
       <article className="min-h-screen bg-background">
         {/* ── Hero ───────────────────────────────────────────── */}
-        <section className="relative overflow-hidden bg-[#0b0b0c] text-white">
-          {/* decorative grid + glow */}
-          <div
-            aria-hidden
-            className="absolute -top-40 -right-32 h-[520px] w-[520px] rounded-full bg-primary/35 blur-3xl"
-          />
-          <div
-            aria-hidden
-            className="absolute -bottom-40 -left-20 h-[420px] w-[420px] rounded-full bg-primary/18 blur-3xl"
-          />
-
-          <div className="relative site-container pt-20 pb-12 md:pt-28 md:pb-20 lg:pt-32 lg:pb-24">
+        <section className="bg-muted/30 border-b border-border pt-20 pb-10 md:pt-28 md:pb-16 lg:pt-32">
+          <div className="site-container">
             <div className="max-w-3xl">
-              <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-medium uppercase tracking-wider text-white/80 backdrop-blur">
-                <Sparkles className="h-3.5 w-3.5 text-primary" />
+              <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary">
+                <Sparkles className="h-3.5 w-3.5" />
                 Carreras en UniBank
               </span>
-              <h1 className="mt-6 text-4xl font-extrabold leading-[1.05] tracking-tight md:text-6xl lg:text-[68px]">
+              <h1 className="mt-6 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.05] tracking-tight text-foreground">
                 Construye el futuro
                 <br />
                 de la banca <span className="text-primary">con nosotros</span>.
               </h1>
-              <p className="mt-6 max-w-2xl text-base leading-relaxed text-white/70 md:text-lg">
+              <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
                 ¿Deseas formar parte del equipo UniBank? Llena los datos del formulario y serás
                 añadido a nuestra base de datos de Recursos Humanos.
               </p>
 
-              <div className="mt-10 flex flex-wrap items-center gap-4">
+              <div className="mt-10 flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 sm:gap-4">
                 <a
                   href="#aplicar"
-                  className="group inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:-translate-y-0.5 hover:shadow-primary/30"
+                  className="group inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
                 >
                   Aplicar ahora
                   <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                 </a>
                 <a
                   href="#cultura"
-                  className="inline-flex items-center gap-2 rounded-xl border border-white/20 px-6 py-3 text-sm font-semibold text-white/90 transition-colors hover:bg-white/5"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-border px-6 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-muted/50"
                 >
                   Conoce nuestra cultura
                 </a>
               </div>
 
-              {/* Stats */}
-              <div className="mt-14 max-w-xl border-t border-white/10 pt-8">
-                <div>
-                  <div className="text-3xl font-bold tracking-tight">+30 años</div>
-                  <div className="mt-1 text-sm text-white/60">creando oportunidades en Panamá</div>
-                </div>
+              <div className="mt-10 md:mt-14 max-w-xl border-t border-border pt-6 md:pt-8">
+                <div className="text-3xl font-bold tracking-tight text-foreground">+30 años</div>
+                <div className="mt-1 text-sm text-muted-foreground">creando oportunidades en Panamá</div>
               </div>
             </div>
           </div>
