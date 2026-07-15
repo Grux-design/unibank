@@ -6,7 +6,7 @@ export const HEADER_PILL = {
   borderRadius: 16,
   background: "#ffffff",
   border: "0.5px solid #E7E4E1",
-  logoHeight: 48,
+  logoHeight: 34,
   mobileLogoPaddingInline: 12,
   mobileActionsPaddingInline: 10,
 } as const;

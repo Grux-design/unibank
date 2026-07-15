@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
 import { Search, X } from "lucide-react";
 import { Logo } from "@/components/atoms/Logo";
+import { HEADER_PILL } from "@/constants/headerPill";
 import { searchPages } from "@/data/searchPages";
 import type { Lang } from "@/components/layout/SiteLayout";
 
@@ -67,7 +68,7 @@ export function MobileSearchOverlay({ lang, onClose }: MobileSearchOverlayProps)
           aria-label="UniBank – Inicio"
           style={{ display: "flex", alignItems: "center", lineHeight: 0 }}
         >
-          <Logo variant="full-color" height={36} />
+          <Logo variant="full-color" height={HEADER_PILL.logoHeight} />
         </Link>
         <button
           type="button"

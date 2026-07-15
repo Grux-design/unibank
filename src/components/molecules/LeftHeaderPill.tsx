@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import { Menu, X } from "lucide-react";
 import { Logo } from "@/components/atoms/Logo";
+import { HEADER_PILL } from "@/constants/headerPill";
 import type { Lang } from "@/components/layout/SiteLayout";
 import type { HeaderLayout } from "@/hooks/useHeaderLayout";
 
@@ -109,12 +110,12 @@ export function LeftHeaderPill({
           alignItems: "center",
           flexShrink: 0,
           textDecoration: "none",
-          height: MENU_BUTTON_HEIGHT,
+          height: HEADER_PILL.logoHeight,
           lineHeight: 0,
         }}
         aria-label="UniBank – Inicio"
       >
-        <Logo variant="full-color" height={MENU_BUTTON_HEIGHT} priority />
+        <Logo variant="full-color" height={HEADER_PILL.logoHeight} priority />
       </Link>
 
       {showPymeBadge && (
