@@ -143,6 +143,14 @@
     }
   }
 
+  .shell-safe-top {
+    padding-top: max(16px, env(safe-area-inset-top, 0px));
+  }
+
+  .shell-safe-bottom {
+    padding-bottom: max(16px, env(safe-area-inset-bottom, 0px));
+  }
+
   /* Smooth page entry */
   #main-content > * {
     animation: fadeSlideIn 0.25s ease-out;

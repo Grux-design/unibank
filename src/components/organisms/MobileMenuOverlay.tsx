@@ -54,12 +54,11 @@ export function MobileMenuOverlay({ lang, onClose, onLangChange }: MobileMenuOve
       }}
     >
       <div
-        className="site-container-nav"
+        className="site-container-nav shell-safe-top"
         style={{
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          paddingTop: 16,
           paddingBottom: 12,
           flexShrink: 0,
         }}
@@ -123,11 +122,10 @@ export function MobileMenuOverlay({ lang, onClose, onLangChange }: MobileMenuOve
       </div>
 
       <div
-        className="site-container-nav"
+        className="site-container-nav shell-safe-bottom"
         style={{
           flexShrink: 0,
           paddingTop: 16,
-          paddingBottom: 24,
           borderTop: "1px solid #E8E4E0",
           background: "#FFFFFF",
         }}
