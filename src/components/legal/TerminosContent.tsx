@@ -7,9 +7,9 @@ interface SectionProps {
 
 function Section({ title, children }: SectionProps) {
   return (
-    <section className="mt-12 first:mt-0">
-      <h2 className="text-2xl font-bold tracking-tight text-foreground mb-4">{title}</h2>
-      <div className="space-y-4 text-muted-foreground leading-relaxed">{children}</div>
+    <section className="mt-10 md:mt-12 first:mt-0">
+      <h2 className="text-xl md:text-2xl font-bold tracking-tight text-foreground mb-3 md:mb-4">{title}</h2>
+      <div className="space-y-4 text-sm md:text-base text-muted-foreground leading-relaxed">{children}</div>
     </section>
   );
 }
@@ -26,7 +26,7 @@ function Bullets({ items }: { items: React.ReactNode[] }) {
 
 export function TerminosContent() {
   return (
-    <div className="max-w-3xl mx-auto px-6 py-16">
+    <div className="site-container max-w-3xl py-12 md:py-20">
       <Section title="Aviso">
         <p>
           En <strong className="text-foreground">Grupo UniBank</strong> hemos tomado todas las precauciones
