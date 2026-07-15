@@ -23,7 +23,7 @@ export default function SostenibilidadPage() {
             aria-hidden
             className="pointer-events-none absolute -bottom-40 -left-32 h-96 w-96 rounded-full bg-primary/10 blur-3xl"
           />
-          <div className="relative mx-auto max-w-6xl px-6 py-24 md:py-32">
+          <div className="relative site-container py-24 md:py-32">
             <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary">
               <Leaf className="h-3.5 w-3.5" />
               ESG
@@ -39,7 +39,7 @@ export default function SostenibilidadPage() {
         </section>
 
         {/* Compromiso */}
-        <section className="mx-auto max-w-5xl px-6 py-20">
+        <section className="site-container py-20">
           <div className="mb-10">
             <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary">
               Nuestro compromiso
@@ -94,7 +94,7 @@ export default function SostenibilidadPage() {
 
         {/* Bonos Verdes */}
         <section className="border-t border-border bg-muted/30">
-          <div className="mx-auto max-w-6xl px-6 py-20">
+          <div className="site-container py-20">
             <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
               <div>
                 <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary">
@@ -120,7 +120,7 @@ export default function SostenibilidadPage() {
                   href="https://www.flipsnack.com/unibankpanama/marco-de-referencia-bono-verde-unileasing/full-view.html"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-8 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:shadow-md hover:opacity-95"
+                  className="mt-8 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:shadow-md hover:opacity-95"
                 >
                   Conoce nuestro Marco de Referencia
                   <ArrowUpRight className="h-4 w-4" />

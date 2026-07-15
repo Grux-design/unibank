@@ -58,7 +58,7 @@ export default function SucursalesPage() {
 
       <article className="min-h-screen">
         <div className="bg-muted/30 border-b border-border">
-          <div className="max-w-4xl mx-auto px-6 py-20 text-center">
+          <div className="site-container py-20 text-center">
             <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-foreground">
               Nuestras Sucursales
             </h1>
@@ -68,8 +68,8 @@ export default function SucursalesPage() {
           </div>
         </div>
 
-        <section className="bg-background py-16 px-4 sm:px-6">
-          <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+        <section className="bg-background py-16">
+          <div className="site-container grid grid-cols-1 md:grid-cols-2 gap-8">
             {branches.map((b) => (
               <Card
                 key={b.name}

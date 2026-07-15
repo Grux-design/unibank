@@ -21,9 +21,15 @@ export function Logo({ variant = "full-color", height = 40, className }: LogoPro
     <img
       src={srcMap[variant]}
       alt="UniBank"
-      height={height}
       className={className}
-      style={{ height, width: "auto" }}
+      style={{
+        display: "block",
+        height,
+        width: "auto",
+        maxWidth: "none",
+        margin: 0,
+        padding: 0,
+      }}
       draggable={false}
     />
   );

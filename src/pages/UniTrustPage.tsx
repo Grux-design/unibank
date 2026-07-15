@@ -133,7 +133,7 @@ function PrimaryCTA({ label = "Solicite su asesoría fiduciaria" }: { label?: st
   return (
     <a
       href={MAILTO_HREF}
-      className="group inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg"
+      className="group inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg"
     >
       <Mail className="h-4 w-4" />
       {label}
@@ -164,7 +164,7 @@ export default function UniTrustPage() {
             aria-hidden
             className="pointer-events-none absolute -bottom-40 -left-32 h-96 w-96 rounded-full bg-primary/5 blur-3xl"
           />
-          <div className="relative mx-auto max-w-6xl px-6 py-24 md:py-32">
+          <div className="relative site-container py-24 md:py-32">
             <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary">
               <Sparkles className="h-3.5 w-3.5" />
               Grupo UniBank · Fiduciaria
@@ -183,7 +183,7 @@ export default function UniTrustPage() {
         </section>
 
         {/* ¿Qué es UniTrust? */}
-        <section className="mx-auto max-w-6xl px-6 py-20">
+        <section className="site-container py-20">
           <div className="grid gap-10 md:grid-cols-5 md:items-center">
             <div className="md:col-span-3">
               <SectionHeader
@@ -222,7 +222,7 @@ export default function UniTrustPage() {
 
         {/* Nuestro Compromiso */}
         <section className="border-t border-border bg-muted/30">
-          <div className="mx-auto max-w-6xl px-6 py-20">
+          <div className="site-container py-20">
             <SectionHeader
               icon={Handshake}
               eyebrow="Nuestro Compromiso"
@@ -248,7 +248,7 @@ export default function UniTrustPage() {
 
         {/* Productos */}
         <section>
-          <div className="mx-auto max-w-6xl px-6 py-20">
+          <div className="site-container py-20">
             <SectionHeader
               icon={Briefcase}
               eyebrow="Productos"
@@ -274,7 +274,7 @@ export default function UniTrustPage() {
 
         {/* CTA final */}
         <section className="border-t border-border bg-gradient-to-br from-primary/10 via-primary/5 to-background">
-          <div className="mx-auto max-w-5xl px-6 py-20 text-center">
+          <div className="site-container py-20 text-center">
             <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary">
               <Mail className="h-3.5 w-3.5" />
               Hablemos

@@ -83,10 +83,10 @@ export default function CajillaSeguridadPage() {
       <section
         style={{
           background: "hsl(var(--background))",
-          padding: "clamp(96px, 10vw, 120px) clamp(16px, 3.9vw, 72px) clamp(48px, 8vw, 96px)",
+          padding: "clamp(96px, 10vw, 120px) 16px clamp(48px, 8vw, 96px)",
         }}
       >
-        <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+        <div style={{ width: "100%" }}>
           {/* Breadcrumbs */}
           <nav aria-label="Breadcrumb" className="mb-8">
             <ol className="flex flex-wrap items-center gap-1 text-sm">
@@ -136,7 +136,7 @@ export default function CajillaSeguridadPage() {
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <a href="#contacto">
-                  <Button size="lg" className="rounded-full px-7 h-12 text-base font-semibold">
+                  <Button size="lg" className="px-7 h-12 text-base font-semibold">
                     Solicitar información
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
@@ -163,11 +163,11 @@ export default function CajillaSeguridadPage() {
       {/* ── ¿Qué es? ────────────────────────────────────────── */}
       <section
         style={{
-          padding: "clamp(64px, 9vw, 112px) clamp(16px, 3.9vw, 72px)",
+          padding: "clamp(64px, 9vw, 112px) 16px",
           background: "hsl(var(--background))",
         }}
       >
-        <div className="max-w-6xl mx-auto grid gap-12 md:gap-16 md:grid-cols-12 items-center">
+        <div className="site-container grid gap-12 md:gap-16 md:grid-cols-12 items-center">
           {/* Left: large editorial image with floating badge */}
           <div className="md:col-span-5 relative">
             <div
@@ -274,9 +274,9 @@ export default function CajillaSeguridadPage() {
       {/* ── Beneficios (feature strip) ──────────────────────── */}
       <section
         className="bg-orange-50"
-        style={{ padding: "clamp(48px, 7vw, 88px) clamp(16px, 3.9vw, 72px)" }}
+        style={{ padding: "clamp(48px, 7vw, 88px) 16px" }}
       >
-        <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+        <div style={{ width: "100%" }}>
           <div className="text-center mb-12">
             <h2
               className="text-3xl md:text-4xl font-extrabold text-foreground"
@@ -317,9 +317,9 @@ export default function CajillaSeguridadPage() {
       {/* ── Tamaños disponibles (split layout) ──────────────── */}
       <section
         className="bg-muted"
-        style={{ padding: "clamp(48px, 7vw, 88px) clamp(16px, 3.9vw, 72px)" }}
+        style={{ padding: "clamp(48px, 7vw, 88px) 16px" }}
       >
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-10 md:gap-16 items-start">
+        <div className="site-container flex flex-col md:flex-row gap-10 md:gap-16 items-start">
           <div className="md:w-2/5 md:sticky md:top-28">
             <h2
               className="text-3xl md:text-4xl font-extrabold text-foreground leading-tight"
@@ -372,11 +372,11 @@ export default function CajillaSeguridadPage() {
       {/* ── Requisitos ──────────────────────────────────────── */}
       <section
         style={{
-          padding: "clamp(48px, 7vw, 88px) clamp(16px, 3.9vw, 72px)",
+          padding: "clamp(48px, 7vw, 88px) 16px",
           background: "hsl(var(--background))",
         }}
       >
-        <div className="max-w-4xl mx-auto">
+        <div className="site-container">
           <div className="text-center mb-10">
             <h2
               className="text-3xl md:text-4xl font-extrabold text-foreground"
@@ -414,7 +414,7 @@ export default function CajillaSeguridadPage() {
 
       {/* ── CTA final (estilo UniTrust) ─────────────────────── */}
       <section className="border-t border-border bg-gradient-to-br from-primary/10 via-primary/5 to-background">
-        <div className="mx-auto max-w-5xl px-6 py-20 text-center">
+        <div className="site-container py-20 text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary">
             <Mail className="h-3.5 w-3.5" />
             Hablemos
@@ -431,7 +431,7 @@ export default function CajillaSeguridadPage() {
               href="https://api.whatsapp.com/send?phone=50763280229&text=%C2%A1Hola!,%20Tengo%20una%20Consulta%20sobre%20Cajillas%20de%20Seguridad"
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg"
+              className="group inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg"
             >
               <Mail className="h-4 w-4" />
               Solicitar información

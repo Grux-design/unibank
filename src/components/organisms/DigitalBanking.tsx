@@ -353,7 +353,7 @@ function MobileFeatureCarousel({ features }: { features: typeof FEATURES }) {
               justifyContent: "center",
               width: 32,
               height: 32,
-              borderRadius: "50%",
+              borderRadius: 12,
               border: `1px solid ${BORDER}`,
               background: "#fff",
               cursor: "pointer",
@@ -386,7 +386,7 @@ function MobileFeatureCarousel({ features }: { features: typeof FEATURES }) {
               justifyContent: "center",
               width: 32,
               height: 32,
-              borderRadius: "50%",
+              borderRadius: 12,
               border: `1px solid ${BORDER}`,
               background: "#fff",
               cursor: "pointer",
@@ -539,13 +539,12 @@ function StickyScrollFeatures({ features }: { features: typeof FEATURES }) {
 /* ── DigitalBanking (export) ────────────────────────────── */
 export function DigitalBanking() {
   const isMobile = useIsMobile();
-  const px = isMobile ? 16 : "clamp(16px, 3.9vw, 72px)";
   const headRef = useRef<HTMLDivElement>(null);
   const headInView = useInView(headRef, { once: true, margin: "0px 0px -80px 0px" });
 
   return (
     <section style={{ background: "#fff" }}>
-      <div style={{ maxWidth: "min(98vw, 1411px)", margin: "0 auto", paddingLeft: px, paddingRight: px }}>
+      <div className="site-container">
         {/* Section heading */}
         <motion.div
           ref={headRef}

@@ -95,7 +95,7 @@ export default function LegalPage() {
       <article className="min-h-screen">
         {/* Title hero section */}
         <div className="bg-muted/30 border-b border-border">
-          <div className="max-w-4xl mx-auto px-6 py-20 text-center">
+          <div className="site-container py-20 text-center">
             <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-foreground">
               {displayTitle}
             </h1>

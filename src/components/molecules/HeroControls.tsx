@@ -9,15 +9,16 @@ interface HeroControlsProps {
   slide:    Slide;
   onPrev:   () => void;
   onNext:   () => void;
+  isMobile?: boolean;
 }
 
-export function HeroControls({ current, total, slide, onPrev, onNext }: HeroControlsProps) {
+export function HeroControls({ current, total, slide, onPrev, onNext, isMobile = false }: HeroControlsProps) {
   const t = THEME;
 
   return (
     <div style={{
       display: "flex", alignItems: "center", justifyContent: "space-between",
-      padding: "16px 48px 24px 48px",
+      padding: isMobile ? "12px 20px 20px" : "16px 48px 24px 48px",
     }}>
       {/* Counter + progress dash + tag */}
       <div style={{ display: "flex", alignItems: "center", gap: 14 }}>

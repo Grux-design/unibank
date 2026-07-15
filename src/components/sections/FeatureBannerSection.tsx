@@ -22,8 +22,8 @@ export function FeatureBannerSection({ section }: Props) {
   })();
 
   return (
-    <section className="w-full bg-muted py-[80px] px-4 md:px-8">
-      <div className="max-w-6xl mx-auto">
+    <section className="w-full bg-muted py-[80px]">
+      <div className="site-container">
         <div className="bg-background rounded-3xl overflow-hidden flex flex-col md:flex-row p-16 gap-12">
           {/* Image */}
           {imageUrl && (
@@ -50,7 +50,7 @@ export function FeatureBannerSection({ section }: Props) {
               </div>
             )}
             <div>
-              <Button size="lg" className="rounded-full px-8">
+              <Button size="lg" className="px-8">
                 {section.secondaryCta || "Conocer más"}
               </Button>
             </div>

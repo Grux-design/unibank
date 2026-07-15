@@ -3,10 +3,12 @@ import type { Slide } from "@/data/heroSlides";
 import { THEME } from "@/data/heroSlides";
 import { HeroEyebrow } from "@/components/atoms/HeroEyebrow";
 import { HeroHeadline } from "@/components/atoms/HeroHeadline";
+import { HeroCtaButton } from "@/components/atoms/HeroCtaButton";
 
 interface HeroSlideContentProps {
   slide: Slide;
   dir:   number;
+  isMobile?: boolean;
 }
 
 const slideVariants = {
@@ -15,14 +17,14 @@ const slideVariants = {
   exit:   (d: number) => ({ x: d > 0 ? -60 :  60, opacity: 0 }),
 };
 
-export function HeroSlideContent({ slide, dir }: HeroSlideContentProps) {
+export function HeroSlideContent({ slide, dir, isMobile = false }: HeroSlideContentProps) {
   const t = THEME;
 
   return (
     <div
       style={{
-        flex: "1 1 0",
-        padding: "20px 48px 32px 48px",
+        flex: isMobile ? undefined : "1 1 60%",
+        padding: isMobile ? "24px 24px 8px" : "20px 48px 32px 48px",
         display: "flex", flexDirection: "column", justifyContent: "center",
         position: "relative", overflow: "hidden", minWidth: 0,
       }}
@@ -36,48 +38,40 @@ export function HeroSlideContent({ slide, dir }: HeroSlideContentProps) {
           animate="center"
           exit="exit"
           transition={{ duration: 0.38, ease: [0.32, 0.72, 0, 1] }}
-          style={{ display: "flex", flexDirection: "column", gap: 20 }}
+          style={{ display: "flex", flexDirection: "column", gap: 24 }}
         >
           <HeroEyebrow text={slide.eyebrow} />
           <HeroHeadline parts={slide.headline} />
 
-          <p style={{ fontSize: 15, lineHeight: 1.6, color: t.bodyColor, margin: 0, maxWidth: 380 }}>
+          <p style={{ fontSize: 16, lineHeight: 1.65, color: t.bodyColor, margin: 0, maxWidth: 520 }}>
             {slide.body}
           </p>
 
           {/* CTA buttons */}
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginTop: 4 }}>
-            <a
+          <div style={{
+            display: "flex",
+            flexDirection: isMobile ? "column" : "row",
+            flexWrap: isMobile ? "nowrap" : "wrap",
+            alignItems: isMobile ? "stretch" : "center",
+            gap: 10,
+            marginTop: 4,
+          }}>
+            <HeroCtaButton
               href={slide.ctaHref || "#"}
               target={slide.ctaHref ? "_blank" : undefined}
               rel={slide.ctaHref ? "noopener noreferrer" : undefined}
-              style={{
-                display: "inline-block", textDecoration: "none",
-                background: t.primaryBtnBg, color: t.primaryBtnColor,
-                border: "none", borderRadius: 100, padding: "13px 26px",
-                fontSize: 14, fontWeight: 600, cursor: "pointer",
-                transition: "opacity 0.18s", fontFamily: "inherit",
-              }}
-              onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = t.primaryBtnHoverBg; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = t.primaryBtnBg; }}
+              fullWidth={isMobile}
             >
               {slide.cta}
-            </a>
+            </HeroCtaButton>
             {slide.ctaAlt && (
-            <a
-              href={slide.ctaAltHref || "#"}
-              style={{
-                display: "inline-block", textDecoration: "none",
-                background: t.secondaryBtnBg, color: t.secondaryBtnColor,
-                border: `1.5px solid ${t.secondaryBtnBorder}`, borderRadius: 100,
-                padding: "13px 26px", fontSize: 14, fontWeight: 600, cursor: "pointer",
-                transition: "border-color 0.18s", fontFamily: "inherit",
-              }}
-              onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = t.secondaryBtnHoverBorder; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = t.secondaryBtnBorder; }}
-            >
-              {slide.ctaAlt}
-            </a>
+              <HeroCtaButton
+                href={slide.ctaAltHref || "#"}
+                variant="secondary"
+                fullWidth={isMobile}
+              >
+                {slide.ctaAlt}
+              </HeroCtaButton>
             )}
           </div>
         </motion.div>

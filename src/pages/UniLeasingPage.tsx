@@ -134,7 +134,7 @@ function PrimaryCTA({ label = "Solicite su financiamiento" }: { label?: string }
   return (
     <a
       href={MAILTO_HREF}
-      className="group inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg"
+      className="group inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg"
     >
       <Mail className="h-4 w-4" />
       {label}
@@ -221,7 +221,7 @@ export default function UniLeasingPage() {
             aria-hidden
             className="pointer-events-none absolute -bottom-40 -left-32 h-96 w-96 rounded-full bg-primary/5 blur-3xl"
           />
-          <div className="relative mx-auto max-w-6xl px-6 py-24 md:py-32">
+          <div className="relative site-container py-24 md:py-32">
             <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary">
               <Sparkles className="h-3.5 w-3.5" />
               Leasing
@@ -240,7 +240,7 @@ export default function UniLeasingPage() {
         </section>
 
         {/* ¿Qué puedo adquirir? */}
-        <section className="mx-auto max-w-6xl px-6 py-20">
+        <section className="site-container py-20">
           <SectionHeader
             icon={Package}
             eyebrow="¿Qué puedo adquirir?"
@@ -256,7 +256,7 @@ export default function UniLeasingPage() {
 
         {/* Ventajas */}
         <section className="border-t border-border bg-muted/30">
-          <div className="mx-auto max-w-6xl px-6 py-20">
+          <div className="site-container py-20">
             <SectionHeader
               icon={CheckCircle2}
               eyebrow="Ventajas del Leasing"
@@ -275,7 +275,7 @@ export default function UniLeasingPage() {
         </section>
 
         {/* Sostenibilidad */}
-        <section className="mx-auto max-w-6xl px-6 py-20">
+        <section className="site-container py-20">
           <div className="mb-10 flex flex-col items-start gap-3">
             <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary">
               <Leaf className="h-3.5 w-3.5" />
@@ -312,7 +312,7 @@ export default function UniLeasingPage() {
 
         {/* CTA final */}
         <section className="border-t border-border bg-gradient-to-br from-primary/10 via-primary/5 to-background">
-          <div className="mx-auto max-w-5xl px-6 py-20 text-center">
+          <div className="site-container py-20 text-center">
             <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary">
               <Mail className="h-3.5 w-3.5" />
               Hablemos

@@ -146,7 +146,7 @@ export default function BlogPage() {
       <article className="min-h-screen">
         {/* ── Hero ── */}
         <header className="bg-muted/30 border-b border-border">
-          <div className="max-w-6xl mx-auto px-6 py-16 md:py-20">
+          <div className="site-container py-16 md:py-20">
             <div className="flex flex-col items-center text-center">
               <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-primary bg-primary/10 rounded-full px-3 py-1">
                 <Newspaper className="w-3.5 h-3.5" />
@@ -182,8 +182,8 @@ export default function BlogPage() {
 
         {/* ── Loading state ── */}
         {isLoading && (
-          <section className="bg-background py-16 px-4 sm:px-6">
-            <div className="max-w-6xl mx-auto">
+          <section className="bg-background py-16">
+            <div className="site-container">
               <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
                 <Skeleton className="lg:col-span-3 aspect-[16/10] rounded-lg" />
                 <div className="lg:col-span-2 space-y-6">
@@ -212,8 +212,8 @@ export default function BlogPage() {
 
         {/* ── Featured editorial section ── */}
         {!isLoading && heroFeatured && (
-          <section className="bg-background pt-12 md:pt-16 px-4 sm:px-6">
-            <div className="max-w-6xl mx-auto">
+          <section className="bg-background pt-12 md:pt-16">
+            <div className="site-container">
               <div className="flex items-end justify-between mb-6">
                 <h2 className="text-2xl md:text-3xl font-bold text-foreground">
                   Destacados
@@ -338,7 +338,7 @@ export default function BlogPage() {
         {!isLoading && showAdvancedSections && (
           <>
             <div className="sticky top-20 z-30 bg-background/90 backdrop-blur-md border-y border-border mt-12">
-              <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 space-y-3">
+              <div className="site-container py-4 space-y-3">
                 <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                   <div className="relative flex-1 sm:max-w-md">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -393,8 +393,8 @@ export default function BlogPage() {
               </div>
             </div>
 
-            <section id="blog-grid" className="bg-background py-12 md:py-16 px-4 sm:px-6">
-              <div className="max-w-6xl mx-auto">
+            <section id="blog-grid" className="bg-background py-12 md:py-16">
+              <div className="site-container">
                 {paginated.length === 0 ? (
                   <div className="text-center py-20 border border-dashed border-border rounded-2xl">
                     <Newspaper className="w-10 h-10 mx-auto text-muted-foreground/60" />
@@ -532,7 +532,7 @@ export default function BlogPage() {
         {/* ── Newsletter CTA ── */}
         {!isLoading && posts.length > 0 && (
           <section className="bg-primary/5 border-t border-border mt-16 md:mt-24">
-            <div className="max-w-5xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-5 gap-8 items-center">
+            <div className="site-container py-16 grid grid-cols-1 md:grid-cols-5 gap-8 items-center">
               <div className="md:col-span-3">
                 <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
                   <Mail className="w-3.5 h-3.5" /> Newsletter

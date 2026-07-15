@@ -22,12 +22,12 @@ export function MegaMenu({ onClose }: MegaMenuProps) {
       transition={{ duration: 0.22, ease: "easeOut" }}
       style={{
         position: "absolute", left: 0, right: 0, top: "100%", zIndex: 40,
-        background: "#ffffff", borderTop: "1px solid #E0DDD9",
+        background: "#ffffff",
         borderBottom: "1px solid #E0DDD9",
-        boxShadow: "0 8px 32px -4px rgba(28,25,23,0.12)",
+        boxShadow: "none",
       }}
     >
-      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 24px" }}>
+      <div className="site-container-nav">
         <MegaMenuTabBar activeTab={activeTab} onTabChange={setActiveTab} />
 
         <div style={{ borderTop: "1px solid #E8E4E0" }} />

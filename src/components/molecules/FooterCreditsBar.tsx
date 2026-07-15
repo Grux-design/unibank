@@ -7,7 +7,7 @@ export function FooterCreditsBar() {
   return (
     <div style={{
       background: `linear-gradient(135deg, #E8621A 0%, ${ORANGE} 50%, #FFAC70 100%)`,
-      padding: "18px 32px",
+      padding: "18px 0",
       position: "relative", overflow: "hidden",
     }}>
       {/* Abstract shapes */}
@@ -17,8 +17,7 @@ export function FooterCreditsBar() {
         <circle cx="300" cy="10" r="40" fill="white" />
       </svg>
 
-      <div style={{
-        maxWidth: 1200, margin: "0 auto",
+      <div className="site-container" style={{
         display: "flex", alignItems: "center",
         justifyContent: "space-between", flexWrap: "wrap", gap: 12,
         position: "relative",

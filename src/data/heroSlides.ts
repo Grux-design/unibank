@@ -1,14 +1,23 @@
-import uniHero1 from "@/assets/uni-hero-1.png.asset.json";
-import uniHero2 from "@/assets/uni-hero-2.png.asset.json";
-import uniHero3 from "@/assets/uni-hero-3.png.asset.json";
-import uniHero4 from "@/assets/uni-hero-4.png.asset.json";
-
 // ─── DESIGN TOKENS ────────────────────────────────────────────
 export const SLIDE_DURATION = 6000;
 
+import { CTA_BUTTON_SIZE } from "@/constants/ctaButtons";
+
+/** Shared sizing for hero CTA buttons across all slides */
+export const HERO_CTA_BUTTON = {
+  height:       CTA_BUTTON_SIZE.height,
+  minHeight:    CTA_BUTTON_SIZE.minHeight,
+  padding:      `0 ${CTA_BUTTON_SIZE.paddingX}px`,
+  fontSize:     CTA_BUTTON_SIZE.fontSize,
+  fontWeight:   CTA_BUTTON_SIZE.fontWeight,
+  lineHeight:   CTA_BUTTON_SIZE.lineHeight,
+  borderRadius: CTA_BUTTON_SIZE.borderRadius,
+  borderWidth:  1.5,
+} as const;
+
 export const THEME = {
   cardBg:                  "#F2EFED",
-  hasPattern:              true,
+  hasPattern:              false,
   eyebrowColor:            "#726F6E",
   headlineColor:           "#1F1E1E",
   highlightColor:          "#FF8136",
@@ -20,6 +29,8 @@ export const THEME = {
   primaryBtnHoverBg:       "#CE4D00",
   secondaryBtnBg:          "#FFFFFF",
   secondaryBtnColor:       "#1F1E1E",
+  secondaryBtnHoverBg:     "#F7E8E0",
+  secondaryBtnActiveBg:    "#F0D4C4",
   secondaryBtnBorder:      "#E7E4E1",
   secondaryBtnHoverBorder: "#CAC6C3",
   arrowBtnBg:              "rgba(255,129,54,0.12)",
@@ -37,6 +48,7 @@ export const THEME = {
 
 // ─── TYPES ────────────────────────────────────────────────────
 export interface HeadlinePart { text: string; highlight: boolean }
+
 export interface Slide {
   id:        string;
   tag:       string;
@@ -66,7 +78,7 @@ export const slides: Slide[] = [
     cta:       "Solicitar ahora",
     ctaHref:   "https://onboardauto.unibank.com.pa/",
     ctaAlt:    "",
-    image:     uniHero1.url,
+    image:     "/images/uni-hero-1.png",
     cardTitle: "Préstamo Auto",
     cardSub:   "Desde 8.5% EA",
   },
@@ -83,7 +95,7 @@ export const slides: Slide[] = [
     cta:       "Abre tu cuenta",
     ctaHref:   "https://onboard.unibank.com.pa/es/auth/login",
     ctaAlt:    "",
-    image:     uniHero2.url,
+    image:     "/images/uni-hero-2.png",
     cardTitle: "Cuenta de Ahorros",
     cardSub:   "4.5% TEA anual",
   },
@@ -101,7 +113,7 @@ export const slides: Slide[] = [
     ctaHref:   "mailto:unileasing@unibank.com.pa",
     ctaAlt:    "Más sobre Leasing",
     ctaAltHref: "/grupo/unileasing",
-    image:     uniHero3.url,
+    image:     "/images/uni-hero-3.png",
     cardTitle: "Uni Leasing",
     cardSub:   "$1,850 / mes",
   },

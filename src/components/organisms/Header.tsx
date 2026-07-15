@@ -1,34 +1,29 @@
 import { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { Menu, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { LeftHeaderPill } from "@/components/molecules/LeftHeaderPill";
 import { RightHeaderPill } from "@/components/molecules/RightHeaderPill";
 import { MegaMenu } from "@/components/organisms/MegaMenu";
+import { MobileMenuOverlay } from "@/components/organisms/MobileMenuOverlay";
+import { MobileSearchOverlay } from "@/components/organisms/MobileSearchOverlay";
+import { MobileHeaderBar } from "@/components/molecules/MobileHeaderBar";
 import type { Lang } from "@/components/layout/SiteLayout";
+import { useHeaderLayout } from "@/hooks/useHeaderLayout";
+
+type MobilePanel = "menu" | "search" | null;
 
 interface HeaderProps {
   lang: Lang;
   onToggleLang: () => void;
 }
 
-const CLOSE_DELAY = 450;
-
 export function Header({ lang, onToggleLang }: HeaderProps) {
+  const layout = useHeaderLayout();
+  const isMobile = layout === "mobile";
+
   const [menuOpen, setMenuOpen] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [mobilePanel, setMobilePanel] = useState<MobilePanel>(null);
   const headerRef = useRef<HTMLElement>(null);
 
-  const navLinks = [
-    { label: { es: "Inicio", en: "Home" }, href: "/" },
-    { label: { es: "Nosotros", en: "About" }, href: "/about" },
-    { label: { es: "Servicios", en: "Services" }, href: "/services" },
-    { label: { es: "Blog", en: "Blog" }, href: "/blog" },
-    { label: { es: "Contacto", en: "Contact" }, href: "/contact" },
-  ];
-
-  // Close on outside click
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
@@ -39,32 +34,27 @@ export function Header({ lang, onToggleLang }: HeaderProps) {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  // Close on scroll
   useEffect(() => {
     const handler = () => setMenuOpen(false);
     window.addEventListener("scroll", handler, { passive: true });
     return () => window.removeEventListener("scroll", handler);
   }, []);
 
-  // Lock body scroll when mobile drawer is open
   useEffect(() => {
-    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    document.body.style.overflow = mobilePanel ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
-  }, [mobileOpen]);
+  }, [mobilePanel]);
 
-  const cancelClose = () => {
-    if (closeTimer.current) clearTimeout(closeTimer.current);
-  };
+  useEffect(() => {
+    if (!isMobile) setMobilePanel(null);
+  }, [isMobile]);
 
-  const openMenu = () => {
-    cancelClose();
-    setMenuOpen(true);
-  };
+  const toggleMenu = () => setMenuOpen((open) => !open);
+  const openMobilePanel = (panel: MobilePanel) => setMobilePanel(panel);
+  const closeMobilePanel = () => setMobilePanel(null);
 
-  const scheduleClose = () => {
-    closeTimer.current = setTimeout(() => {
-      setMenuOpen(false);
-    }, CLOSE_DELAY);
+  const handleLangChange = (code: Lang) => {
+    if (code !== lang) onToggleLang();
   };
 
   return (
@@ -73,92 +63,49 @@ export function Header({ lang, onToggleLang }: HeaderProps) {
         ref={headerRef}
         className="relative sticky top-0 z-50 pt-4"
         style={{
-          background: menuOpen ? "#ffffff" : "transparent",
-          borderBottom: menuOpen ? "1px solid #E0DDD9" : "1px solid transparent",
+          background: menuOpen && !isMobile ? "#ffffff" : "transparent",
+          borderBottom: "1px solid transparent",
+          boxShadow: menuOpen && !isMobile ? "none" : undefined,
           transition: "background 0.2s ease, border-color 0.2s ease",
         }}
       >
-        {/* Main bar */}
-        <div className="mx-auto flex items-center justify-between px-4 sm:px-6" style={{ maxWidth: "min(98vw, 1411px)", width: "100%" }}>
-
-          {/* LEFT GROUP — desktop LeftHeaderPill + mobile hamburger */}
-          <div className="flex items-center">
-            {/* Desktop pill */}
-            <div className="hidden sm:block">
-              <LeftHeaderPill
-                menuOpen={menuOpen}
+        <div className="site-container-nav flex items-center justify-between gap-3">
+          {isMobile ? (
+            <MobileHeaderBar
+              lang={lang}
+              menuOpen={mobilePanel === "menu"}
+              onOpenSearch={() => openMobilePanel(mobilePanel === "search" ? null : "search")}
+              onOpenMenu={() => openMobilePanel(mobilePanel === "menu" ? null : "menu")}
+            />
+          ) : (
+            <>
+              <div className="flex min-w-0 flex-shrink items-center">
+                <LeftHeaderPill
+                  menuOpen={menuOpen}
+                  lang={lang}
+                  layout={layout}
+                  onToggle={toggleMenu}
+                />
+              </div>
+              <RightHeaderPill
+                isMenuOpen={menuOpen}
                 lang={lang}
-                onToggle={() => (menuOpen ? setMenuOpen(false) : openMenu())}
-                onMouseEnter={openMenu}
-                onMouseLeave={scheduleClose}
+                layout={layout}
+                onLangChange={handleLangChange}
               />
-            </div>
-
-            {/* Mobile hamburger + logo group */}
-            <div className="flex items-center gap-3 rounded-2xl bg-background px-3 py-2 shadow-sm sm:hidden">
-              <button
-                className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#F7E8E0] text-[#FF8136] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-                onClick={() => setMobileOpen((o) => !o)}
-                aria-label="Toggle mobile menu"
-                aria-expanded={mobileOpen}
-              >
-                {mobileOpen ? <X size={18} /> : <Menu size={18} />}
-              </button>
-              <Link
-                to="/"
-                className="flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-sm"
-                aria-label="UniBank – Inicio"
-              >
-                <img src="/favicon.svg" alt="UniBank" style={{ height: 28, width: "auto" }} />
-              </Link>
-            </div>
-          </div>
-
-          {/* RIGHT GROUP */}
-          <RightHeaderPill
-            isMenuOpen={menuOpen}
-            lang={lang}
-            onLangChange={(code) => { if (code !== lang) onToggleLang(); }}
-          />
+            </>
+          )}
         </div>
 
-        {/* Mega menu — full-width, anchored below the bar */}
-        <div
-          onMouseEnter={cancelClose}
-          onMouseLeave={scheduleClose}
-        >
+        {!isMobile && (
           <AnimatePresence>
-            {menuOpen && (
-              <MegaMenu onClose={() => setMenuOpen(false)} />
-            )}
+            {menuOpen && <MegaMenu onClose={() => setMenuOpen(false)} />}
           </AnimatePresence>
-        </div>
-
-        {/* Mobile nav drawer */}
-        {mobileOpen && (
-          <div className="border-t border-border bg-background px-4 pb-6 pt-4 sm:hidden">
-            <nav aria-label="Mobile navigation">
-              <ul className="flex flex-col gap-1" role="list">
-                {navLinks.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      to={link.href}
-                      onClick={() => setMobileOpen(false)}
-                      className="block rounded-xl px-4 py-3 text-sm font-semibold text-foreground hover:bg-primary/5 hover:text-primary transition-colors"
-                    >
-                      {link.label[lang]}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          </div>
         )}
       </header>
 
-      {/* Backdrop — dims page behind the mega menu */}
       <AnimatePresence>
-        {menuOpen && (
+        {menuOpen && !isMobile && (
           <motion.div
             key="backdrop"
             initial={{ opacity: 0 }}
@@ -176,7 +123,24 @@ export function Header({ lang, onToggleLang }: HeaderProps) {
           />
         )}
       </AnimatePresence>
+
+      <AnimatePresence>
+        {isMobile && mobilePanel === "menu" && (
+          <MobileMenuOverlay
+            key="mobile-menu"
+            lang={lang}
+            onClose={closeMobilePanel}
+            onLangChange={handleLangChange}
+          />
+        )}
+        {isMobile && mobilePanel === "search" && (
+          <MobileSearchOverlay
+            key="mobile-search"
+            lang={lang}
+            onClose={closeMobilePanel}
+          />
+        )}
+      </AnimatePresence>
     </>
   );
 }
-

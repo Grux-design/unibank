@@ -11,7 +11,7 @@ export function UnknownSection({ section }: Props) {
   return (
     <div
       style={{
-        margin: "24px clamp(16px, 3.9vw, 72px)",
+        margin: "24px 16px",
         padding: "24px 28px",
         border: "2px dashed hsl(var(--primary))",
         borderRadius: 16,

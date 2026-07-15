@@ -249,7 +249,7 @@ export default function TrabajaConNosotrosPage() {
             style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.18), transparent 70%)" }}
           />
 
-          <div className="relative mx-auto max-w-6xl px-6 pt-32 pb-24 md:pt-40 md:pb-32">
+          <div className="relative site-container pt-32 pb-24 md:pt-40 md:pb-32">
             <div className="max-w-3xl">
               <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-medium uppercase tracking-wider text-white/80 backdrop-blur">
                 <Sparkles className="h-3.5 w-3.5 text-primary" />
@@ -268,14 +268,14 @@ export default function TrabajaConNosotrosPage() {
               <div className="mt-10 flex flex-wrap items-center gap-4">
                 <a
                   href="#aplicar"
-                  className="group inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:-translate-y-0.5 hover:shadow-primary/30"
+                  className="group inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:-translate-y-0.5 hover:shadow-primary/30"
                 >
                   Aplicar ahora
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                 </a>
                 <a
                   href="#cultura"
-                  className="inline-flex items-center gap-2 rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-white/90 transition-colors hover:bg-white/5"
+                  className="inline-flex items-center gap-2 rounded-xl border border-white/20 px-6 py-3 text-sm font-semibold text-white/90 transition-colors hover:bg-white/5"
                 >
                   Conoce nuestra cultura
                 </a>
@@ -294,7 +294,7 @@ export default function TrabajaConNosotrosPage() {
 
         {/* ── Perks ──────────────────────────────────────────── */}
         <section id="cultura" className="border-b border-border bg-background py-20 px-6">
-          <div className="mx-auto max-w-6xl">
+          <div className="site-container">
             <div className="max-w-2xl">
               <div className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
                 Por qué UniBank
@@ -333,7 +333,7 @@ export default function TrabajaConNosotrosPage() {
 
         {/* ── Process ────────────────────────────────────────── */}
         <section className="border-b border-border bg-muted/30 py-20 px-6">
-          <div className="mx-auto max-w-6xl">
+          <div className="site-container">
             <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
               <div className="max-w-xl">
                 <div className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
@@ -364,7 +364,7 @@ export default function TrabajaConNosotrosPage() {
 
         {/* ── Application form ──────────────────────────────── */}
         <section id="aplicar" className="bg-background py-24 px-6">
-          <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-12">
+          <div className="site-container grid gap-12 lg:grid-cols-12">
             {/* Left col */}
             <aside className="lg:col-span-5">
               <div className="lg:sticky lg:top-28">
@@ -588,7 +588,7 @@ export default function TrabajaConNosotrosPage() {
                         type="submit"
                         size="lg"
                         disabled={sending || !recaptchaToken}
-                        className="w-full rounded-full px-8 sm:w-auto"
+                        className="w-full rounded-xl px-8 sm:w-auto"
                       >
                         {sending ? "Enviando…" : "Enviar aplicación"}
                         {!sending && <ArrowRight className="ml-2 h-4 w-4" />}

@@ -137,7 +137,7 @@ export default function CalificacionRiesgoPage() {
 
       {/* Hero */}
       <section className="bg-muted/30 py-20 md:py-28">
-        <div className="container mx-auto px-6 max-w-6xl">
+        <div className="site-container">
           <Badge variant="outline" className="mb-4 gap-1.5">
             <ShieldCheck className="h-3.5 w-3.5" />
             Pacific Credit Rating
@@ -189,7 +189,7 @@ export default function CalificacionRiesgoPage() {
 
       {/* Documents */}
       <section className="py-16 md:py-20">
-        <div className="container mx-auto px-6 max-w-6xl">
+        <div className="site-container">
           <div className="flex items-baseline justify-between mb-2 flex-wrap gap-2">
             <h2 className="text-2xl md:text-3xl font-semibold text-foreground">
               Documentos Relacionados

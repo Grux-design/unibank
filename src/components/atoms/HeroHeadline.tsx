@@ -7,9 +7,9 @@ export function HeroHeadline({ parts }: HeroHeadlineProps) {
   return (
     <h1
       style={{
-        fontSize:   "clamp(2rem, 4vw, 3.25rem)",
+        fontSize:   "clamp(2.75rem, 5vw, 4.25rem)",
         fontWeight: 700,
-        lineHeight: 1.1,
+        lineHeight: 1.08,
         margin:     0,
         color:      THEME.headlineColor,
         whiteSpace: "pre-line",

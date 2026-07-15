@@ -15,7 +15,7 @@ export default function TarifarioPage() {
 
       <article className="min-h-screen">
         <div className="bg-muted/30 border-b border-border">
-          <div className="max-w-4xl mx-auto px-6 py-20 text-center">
+          <div className="site-container py-20 text-center">
             <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-foreground">
               Tarifario
             </h1>
@@ -25,8 +25,8 @@ export default function TarifarioPage() {
           </div>
         </div>
 
-        <section className="bg-background py-16 px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto">
+        <section className="bg-background py-16">
+          <div className="site-container">
             {/* Download bar */}
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8 p-4 rounded-xl border border-border/60 bg-muted/20">
               <div className="flex items-center gap-3">

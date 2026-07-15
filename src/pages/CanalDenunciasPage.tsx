@@ -345,7 +345,7 @@ export default function CanalDenunciasPage() {
       <article className="min-h-screen">
         {/* Hero */}
         <div className="bg-muted/30 border-b border-border">
-          <div className="max-w-4xl mx-auto px-6 py-20 text-center">
+          <div className="site-container py-20 text-center">
             <div className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-primary bg-primary/10 px-3 py-1 rounded-full mb-4">
               <ShieldCheck className="w-3.5 h-3.5" /> Canal confidencial
             </div>
@@ -365,7 +365,7 @@ export default function CanalDenunciasPage() {
         </div>
 
         {/* Form */}
-        <section className="bg-background py-16 px-4 sm:px-6">
+        <section className="bg-background py-16">
           <div className="max-w-3xl mx-auto">
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
