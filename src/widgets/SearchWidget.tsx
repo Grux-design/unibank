@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { useNavigate } from "react-router-dom";
-import { Search, X } from "lucide-react";
+import { Search, X } from "@/lib/icons";
 import { searchPages } from "@/data/searchPages";
 
 export function SearchWidget() {

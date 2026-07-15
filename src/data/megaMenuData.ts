@@ -20,7 +20,7 @@ export interface MenuSection {
 export const personasData: MenuSection = {
   image: "/megamenu-personas-piggy.jpg",
   featured: {
-    tag:          "Lo más popular",
+    tag:          "",
     label:        "Cuenta de Ahorros",
     desc:         "Sin mantenimiento, sin comisiones. La cuenta que trabaja para ti.",
     slug:         "cuenta-de-ahorros",

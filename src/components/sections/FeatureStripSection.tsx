@@ -1,4 +1,4 @@
-import { LayoutGrid } from "lucide-react";
+import { LayoutGrid } from "@/lib/icons";
 import type { ResolvedSection } from "@/integrations/contentful/types";
 
 interface Props {

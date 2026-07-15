@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Globe } from "lucide-react";
+import { Menu, X, Globe } from "@/lib/icons";
 import { Button } from "@/components/ui/button";
 
 const navLinks = [

@@ -61,6 +61,7 @@ export function HeroCtaButton({
     background: colors.bg,
     color: colors.color,
     width: fullWidth ? "100%" : undefined,
+    alignSelf: fullWidth ? "stretch" : undefined,
   };
 
   const setBg = (el: InteractiveEl, bg: string) => {

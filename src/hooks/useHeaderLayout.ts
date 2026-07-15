@@ -1,25 +1,19 @@
 import { useEffect, useState } from "react";
+import { resolveBreakpoint, type Breakpoint } from "@/constants/breakpoints";
 
-export type HeaderLayout = "mobile" | "compact" | "full";
-
-const MOBILE_MAX = 767;
-const FULL_MIN = 1200;
+export type HeaderLayout = Breakpoint;
 
 export function useHeaderLayout(): HeaderLayout {
-  const [layout, setLayout] = useState<HeaderLayout>(() => resolveLayout(window.innerWidth));
+  const [layout, setLayout] = useState<HeaderLayout>(() =>
+    typeof window !== "undefined" ? resolveBreakpoint(window.innerWidth) : "full"
+  );
 
   useEffect(() => {
-    const update = () => setLayout(resolveLayout(window.innerWidth));
+    const update = () => setLayout(resolveBreakpoint(window.innerWidth));
     update();
     window.addEventListener("resize", update, { passive: true });
     return () => window.removeEventListener("resize", update);
   }, []);
 
   return layout;
-}
-
-function resolveLayout(width: number): HeaderLayout {
-  if (width <= MOBILE_MAX) return "mobile";
-  if (width < FULL_MIN) return "compact";
-  return "full";
 }

@@ -16,14 +16,14 @@ import {
   Briefcase,
   Users,
   TrendingUp,
-  ArrowRight,
+  ChevronRight,
   Sparkles,
   
   X,
   FileText,
   Mail,
   CheckCircle2,
-} from "lucide-react";
+} from "@/lib/icons";
 
 /* ─── Constants ────────────────────────────────────────────── */
 
@@ -271,7 +271,7 @@ export default function TrabajaConNosotrosPage() {
                   className="group inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:-translate-y-0.5 hover:shadow-primary/30"
                 >
                   Aplicar ahora
-                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                  <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                 </a>
                 <a
                   href="#cultura"
@@ -591,7 +591,7 @@ export default function TrabajaConNosotrosPage() {
                         className="w-full rounded-xl px-8 sm:w-auto"
                       >
                         {sending ? "Enviando…" : "Enviar aplicación"}
-                        {!sending && <ArrowRight className="ml-2 h-4 w-4" />}
+                        {!sending && <ChevronRight className="ml-2 h-4 w-4" />}
                       </Button>
                     </div>
                   </form>

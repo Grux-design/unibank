@@ -1,19 +1,22 @@
 import * as React from "react";
-
-const MOBILE_BREAKPOINT = 768;
+import { MOBILE_MAX, resolveBreakpoint } from "@/constants/breakpoints";
 
 export function useIsMobile() {
-  const [isMobile, setIsMobile] = React.useState<boolean | undefined>(undefined);
+  const [isMobile, setIsMobile] = React.useState(() =>
+    typeof window !== "undefined"
+      ? resolveBreakpoint(window.innerWidth) === "mobile"
+      : false
+  );
 
   React.useEffect(() => {
-    const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`);
+    const mql = window.matchMedia(`(max-width: ${MOBILE_MAX}px)`);
     const onChange = () => {
-      setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
+      setIsMobile(resolveBreakpoint(window.innerWidth) === "mobile");
     };
     mql.addEventListener("change", onChange);
-    setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
+    onChange();
     return () => mql.removeEventListener("change", onChange);
   }, []);
 
-  return !!isMobile;
+  return isMobile;
 }

@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { FileText, Search, X, Download } from "lucide-react";
+import { FileText, Search, X, Download } from "@/lib/icons";
 import {
   auditados,
   regulatoria,

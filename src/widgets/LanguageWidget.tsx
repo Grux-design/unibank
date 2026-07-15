@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Globe, ChevronDown, Check } from "lucide-react";
+import { Globe, ChevronDown, Check } from "@/lib/icons";
 
 interface LanguageWidgetProps {
   lang:         "es" | "en";

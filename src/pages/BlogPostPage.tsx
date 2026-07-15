@@ -2,7 +2,7 @@ import { Link, useLocation, useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { documentToReactComponents, type Options } from "@contentful/rich-text-react-renderer";
 import { BLOCKS, INLINES, MARKS, type Document } from "@contentful/rich-text-types";
-import { ArrowLeft, CalendarDays, Clock, Share2 } from "lucide-react";
+import { ChevronLeft, CalendarDays, Clock, Share2 } from "@/lib/icons";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
@@ -165,7 +165,7 @@ export default function BlogPostPage() {
           </p>
           <Button asChild className="mt-6">
             <Link to={backHref}>
-              <ArrowLeft className="w-4 h-4 mr-2" /> Volver al blog
+              <ChevronLeft className="w-4 h-4 mr-2" /> Volver al blog
             </Link>
           </Button>
         </div>
@@ -213,7 +213,7 @@ export default function BlogPostPage() {
               to={backHref}
               className="inline-flex items-center gap-2 text-sm text-white/90 hover:text-white mb-6 w-fit"
             >
-              <ArrowLeft className="w-4 h-4" /> Volver al blog
+              <ChevronLeft className="w-4 h-4" /> Volver al blog
             </Link>
             {post.category && (
               <Badge className="bg-primary text-primary-foreground hover:bg-primary border-0 uppercase tracking-wider text-[10px] w-fit mb-4">
@@ -265,7 +265,7 @@ export default function BlogPostPage() {
           <div className="mt-16 pt-8 border-t border-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <Button asChild variant="outline">
               <Link to={backHref}>
-                <ArrowLeft className="w-4 h-4 mr-2" /> Más artículos
+                <ChevronLeft className="w-4 h-4 mr-2" /> Más artículos
               </Link>
             </Button>
             <Button variant="ghost" onClick={handleShare}>

@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async";
-import { Leaf, Sprout, Recycle, Users, ArrowUpRight, BadgeCheck } from "lucide-react";
+import { Leaf, Sprout, Recycle, Users, ChevronRight, BadgeCheck } from "@/lib/icons";
 
 export default function SostenibilidadPage() {
   return (
@@ -123,7 +123,7 @@ export default function SostenibilidadPage() {
                   className="mt-8 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:shadow-md hover:opacity-95"
                 >
                   Conoce nuestro Marco de Referencia
-                  <ArrowUpRight className="h-4 w-4" />
+                  <ChevronRight className="h-4 w-4" />
                 </a>
                 <p className="mt-3 text-xs text-muted-foreground">
                   Emitido por Uni Leasing · Estructurado por Invertis Securities

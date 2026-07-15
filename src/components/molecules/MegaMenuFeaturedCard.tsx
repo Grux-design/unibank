@@ -45,13 +45,15 @@ export function MegaMenuFeaturedCard({ data, isPersonas, onClose }: MegaMenuFeat
 
       {/* Content */}
       <div style={{ flex: 1, display: "flex", flexDirection: "column", paddingTop: 16 }}>
-        <span style={{
-          fontFamily: "Inter, sans-serif", fontSize: 10, fontWeight: 700,
-          letterSpacing: "0.08em", textTransform: "uppercase",
-          color: tagColor, marginBottom: 4,
-        }}>
-          {data.featured.tag}
-        </span>
+        {data.featured.tag ? (
+          <span style={{
+            fontFamily: "Inter, sans-serif", fontSize: 10, fontWeight: 700,
+            letterSpacing: "0.08em", textTransform: "uppercase",
+            color: tagColor, marginBottom: 4,
+          }}>
+            {data.featured.tag}
+          </span>
+        ) : null}
         <p style={{
           fontFamily: "Inter, sans-serif", fontSize: 16, fontWeight: 700,
           color: "#fff", lineHeight: 1.3, margin: "0 0 4px 0",
