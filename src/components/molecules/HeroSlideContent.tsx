@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "motion/react";
 import type { Slide } from "@/data/heroSlides";
-import { THEME } from "@/data/heroSlides";
+import { THEME, HERO_LAYOUT } from "@/data/heroSlides";
 import { HeroEyebrow } from "@/components/atoms/HeroEyebrow";
 import { HeroHeadline } from "@/components/atoms/HeroHeadline";
 import { HeroCtaButton } from "@/components/atoms/HeroCtaButton";
@@ -23,9 +23,10 @@ export function HeroSlideContent({ slide, dir, isMobile = false }: HeroSlideCont
   return (
     <div
       style={{
-        flex: isMobile ? undefined : "1 1 60%",
-        padding: isMobile ? "24px 24px 8px" : "20px 48px 32px 48px",
-        display: "flex", flexDirection: "column", justifyContent: "center",
+        flex: isMobile ? 1 : "1 1 60%",
+        minHeight: isMobile ? 0 : undefined,
+        padding: isMobile ? HERO_LAYOUT.mobile.contentPadding : "20px 48px 32px 48px",
+        display: "flex", flexDirection: "column", justifyContent: isMobile ? "center" : "center",
         position: "relative", overflow: "hidden", minWidth: 0,
       }}
     >
@@ -38,10 +39,10 @@ export function HeroSlideContent({ slide, dir, isMobile = false }: HeroSlideCont
           animate="center"
           exit="exit"
           transition={{ duration: 0.38, ease: [0.32, 0.72, 0, 1] }}
-          style={{ display: "flex", flexDirection: "column", gap: 24 }}
+          style={{ display: "flex", flexDirection: "column", gap: isMobile ? HERO_LAYOUT.mobile.contentGap : 24 }}
         >
           <HeroEyebrow text={slide.eyebrow} />
-          <HeroHeadline parts={slide.headline} />
+          <HeroHeadline parts={slide.headline} isMobile={isMobile} />
 
           <p style={{ fontSize: 16, lineHeight: 1.65, color: t.bodyColor, margin: 0, maxWidth: 520 }}>
             {slide.body}

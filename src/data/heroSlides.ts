@@ -15,6 +15,28 @@ export const HERO_CTA_BUTTON = {
   borderWidth:  1.5,
 } as const;
 
+/** Responsive hero layout — mobile measured against unibank-design.figma.site */
+export const HERO_LAYOUT = {
+  desktop: {
+    sectionPaddingTop: 90,
+    sectionPaddingBottom: 32,
+    cardMinHeight: 620,
+    innerMinHeight: 560,
+    imageMinHeight: 560,
+  },
+  mobile: {
+    sectionPaddingTop: 16,
+    sectionPaddingBottom: 16,
+    cardHeight: "98vh",
+    imageFlexBasis: "40%",
+    imagePadding: 16,
+    imagePaddingTop: 64,
+    contentPadding: "20px 20px 4px",
+    contentGap: 16,
+    controlsPadding: "12px 20px 16px",
+  },
+} as const;
+
 export const THEME = {
   cardBg:                  "#F2EFED",
   hasPattern:              false,
@@ -71,7 +93,7 @@ export const slides: Slide[] = [
     tag:       "Personas",
     eyebrow:   "¡Aprobación en minutos!",
     headline:  [
-      { text: "El préstamo\ndigital para tu\n", highlight: false },
+      { text: "El préstamo digital para tu ", highlight: false },
       { text: "próximo auto.",                   highlight: true  },
     ],
     body:      "Cotiza tu Préstamo de Auto donde estés, de la manera más fácil y rápida. ¡Conoce tu letra mensual ahora!",
@@ -88,8 +110,8 @@ export const slides: Slide[] = [
     eyebrow:   "Banca sin saldo mínimo",
     headline:  [
       { text: "Tus ",           highlight: false },
-      { text: "ahorros\n",      highlight: true  },
-      { text: "trabajando\npara ti.", highlight: false },
+      { text: "ahorros ",      highlight: true  },
+      { text: "trabajando para ti.", highlight: false },
     ],
     body:      "Sin saldo mínimo ni filas.",
     cta:       "Abre tu cuenta",
@@ -104,9 +126,8 @@ export const slides: Slide[] = [
     tag:       "Empresas",
     eyebrow:   "Para tu empresa",
     headline:  [
-      { text: "Moderniza sin\n", highlight: false },
-      { text: "tocar\n",          highlight: true  },
-      { text: "tu capital.",      highlight: false },
+      { text: "Moderniza sin tocar ", highlight: false },
+      { text: "tu capital.",          highlight: true  },
     ],
     body:      "Equipos, vehículos y tecnología con deducción fiscal real, adaptado a tu flujo de caja.",
     cta:       "Solicitar Leasing",
@@ -122,9 +143,8 @@ export const slides: Slide[] = [
     tag:       "Personas",
     eyebrow:   "Tu hogar, tu sueño",
     headline:  [
-      { text: "El hogar que\n", highlight: false },
-      { text: "soñaste,\n",      highlight: true  },
-      { text: "financiado.",     highlight: false },
+      { text: "El hogar que soñaste, ", highlight: false },
+      { text: "financiado.",            highlight: true  },
     ],
     body:      "Tasas competitivas, hasta 30 años de plazo. Asesor dedicado desde el día uno.",
     cta:       "Solicitar hipoteca",

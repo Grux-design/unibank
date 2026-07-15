@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import type { Lang } from "@/components/layout/SiteLayout";
-import { slides, THEME, SLIDE_DURATION } from "@/data/heroSlides";
+import { slides, THEME, SLIDE_DURATION, HERO_LAYOUT } from "@/data/heroSlides";
 import { HeroSlideContent } from "@/components/molecules/HeroSlideContent";
 import { HeroPhotoFrame }   from "@/components/molecules/HeroPhotoFrame";
 import { HeroGlassCard }    from "@/components/molecules/HeroGlassCard";
@@ -28,12 +28,13 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
   const slide     = slides[current];
   const nextSlide = slides[(current + 1) % slides.length];
   const t         = THEME;
+  const layout    = isMobile ? HERO_LAYOUT.mobile : HERO_LAYOUT.desktop;
 
   return (
     <section className="site-container-hero" style={{
       background: "#FFFFFF",
-      paddingTop: isMobile ? 72 : 96,
-      paddingBottom: isMobile ? 24 : 32,
+      paddingTop: layout.sectionPaddingTop,
+      paddingBottom: layout.sectionPaddingBottom,
       fontFamily: '"Inter", -apple-system, sans-serif',
     }}>
       <div style={{
@@ -42,7 +43,10 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
         borderRadius: isMobile ? 28 : 36,
         overflow: "hidden",
         position: "relative",
-        minHeight: isMobile ? undefined : 620,
+        height: isMobile ? HERO_LAYOUT.mobile.cardHeight : undefined,
+        minHeight: isMobile ? HERO_LAYOUT.mobile.cardHeight : layout.cardMinHeight,
+        display: isMobile ? "flex" : undefined,
+        flexDirection: isMobile ? "column" : undefined,
         paddingTop: isMobile ? 0 : 32,
         paddingRight: isMobile ? 0 : 40,
       }}>
@@ -50,15 +54,18 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
           display: "flex",
           flexDirection: isMobile ? "column" : "row",
           alignItems: isMobile ? "stretch" : "stretch",
+          flex: isMobile ? 1 : undefined,
+          minHeight: isMobile ? 0 : layout.innerMinHeight,
           gap: 0,
-          minHeight: isMobile ? undefined : 560,
         }}>
           {isMobile && (
             <div style={{
               position: "relative",
               width: "100%",
-              minHeight: 280,
-              flexShrink: 0,
+              flex: `0 0 ${HERO_LAYOUT.mobile.imageFlexBasis}`,
+              minHeight: 0,
+              padding: `${HERO_LAYOUT.mobile.imagePaddingTop}px ${HERO_LAYOUT.mobile.imagePadding}px ${HERO_LAYOUT.mobile.imagePadding}px ${HERO_LAYOUT.mobile.imagePadding}px`,
+              boxSizing: "border-box",
             }}>
               <HeroPhotoFrame slide={slide} isMobile />
             </div>

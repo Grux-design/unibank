@@ -37,7 +37,7 @@ export function MobileHeaderBar({
           }}
           aria-label="UniBank – Inicio"
         >
-          <Logo variant="full-color" height={HEADER_PILL.logoHeight} />
+          <Logo variant="responsive" height={HEADER_PILL.logoHeight} priority />
         </Link>
       </div>
 

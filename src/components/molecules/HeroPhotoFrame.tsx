@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import type { Slide } from "@/data/heroSlides";
+import { HERO_LAYOUT } from "@/data/heroSlides";
 
 interface HeroPhotoFrameProps {
   slide: Slide;
@@ -16,8 +17,8 @@ export function HeroPhotoFrame({ slide, isMobile = false }: HeroPhotoFrameProps)
     <div style={{
       position: "relative",
       width: "100%",
-      height: isMobile ? 280 : "100%",
-      minHeight: isMobile ? 280 : 560,
+      height: isMobile ? "100%" : "100%",
+      minHeight: isMobile ? 0 : HERO_LAYOUT.desktop.imageMinHeight,
       overflow: isMobile ? "hidden" : "visible",
     }}>
       <AnimatePresence mode="wait">
@@ -40,10 +41,10 @@ export function HeroPhotoFrame({ slide, isMobile = false }: HeroPhotoFrameProps)
             alt={slide.cardTitle}
             onLoad={() => setLoaded(true)}
             style={{
-              width: "108%",
-              height: "108%",
+              width: isMobile ? "100%" : "108%",
+              height: isMobile ? "100%" : "108%",
               objectFit: "contain",
-              objectPosition: isMobile ? "center bottom" : "left center",
+              objectPosition: isMobile ? "center center" : "left center",
               opacity: loaded ? 1 : 0,
               transition: "opacity 600ms ease",
             }}

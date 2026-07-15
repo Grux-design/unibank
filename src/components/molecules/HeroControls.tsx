@@ -1,5 +1,5 @@
 import type { Slide } from "@/data/heroSlides";
-import { THEME } from "@/data/heroSlides";
+import { THEME, HERO_LAYOUT } from "@/data/heroSlides";
 import { HeroProgressBar } from "@/components/atoms/HeroProgressBar";
 import { HeroArrowButton }  from "@/components/atoms/HeroArrowButton";
 
@@ -18,7 +18,8 @@ export function HeroControls({ current, total, slide, onPrev, onNext, isMobile =
   return (
     <div style={{
       display: "flex", alignItems: "center", justifyContent: "space-between",
-      padding: isMobile ? "12px 20px 20px" : "16px 48px 24px 48px",
+      flexShrink: isMobile ? 0 : undefined,
+      padding: isMobile ? HERO_LAYOUT.mobile.controlsPadding : "16px 48px 24px 48px",
     }}>
       {/* Counter + progress dash + tag */}
       <div style={{ display: "flex", alignItems: "center", gap: 14 }}>

@@ -114,7 +114,7 @@ export function LeftHeaderPill({
         }}
         aria-label="UniBank – Inicio"
       >
-        <Logo variant="full-color" height={MENU_BUTTON_HEIGHT} />
+        <Logo variant="full-color" height={MENU_BUTTON_HEIGHT} priority />
       </Link>
 
       {showPymeBadge && (

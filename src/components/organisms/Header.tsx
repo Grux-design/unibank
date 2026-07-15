@@ -61,8 +61,9 @@ export function Header({ lang, onToggleLang }: HeaderProps) {
     <>
       <header
         ref={headerRef}
-        className="relative sticky top-0 z-50 pt-4"
+        className="relative sticky top-0 z-50"
         style={{
+          paddingTop: 10,
           background: menuOpen && !isMobile ? "#ffffff" : "transparent",
           borderBottom: "1px solid transparent",
           boxShadow: menuOpen && !isMobile ? "none" : undefined,
@@ -118,7 +119,7 @@ export function Header({ lang, onToggleLang }: HeaderProps) {
               inset: 0,
               zIndex: 30,
               background: "rgba(28,25,23,0.25)",
-              top: 82,
+              top: 76,
             }}
           />
         )}
