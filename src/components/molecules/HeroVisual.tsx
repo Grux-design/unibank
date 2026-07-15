@@ -35,8 +35,7 @@ export function HeroVisual({
           loading="eager"
           decoding="async"
         />
-        {/* subtle gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-secondary/30 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-secondary/20" />
       </div>
 
       {/* Product badge — top left */}

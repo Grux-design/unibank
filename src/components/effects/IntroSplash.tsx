@@ -1,6 +1,20 @@
 import { motion } from "motion/react";
 import { EASE } from "@/lib/motion";
 
+/** Brand oranges on dark base — splash is an intentional gradient exception. */
+const SPLASH_BACKGROUND = [
+  "radial-gradient(ellipse 88% 78% at 50% 40%, rgba(255,129,54,0.34) 0%, rgba(239,87,33,0.16) 36%, transparent 68%)",
+  "radial-gradient(ellipse 52% 44% at 92% 88%, rgba(255,186,92,0.16) 0%, transparent 62%)",
+  "radial-gradient(ellipse 38% 32% at 8% 12%, rgba(255,129,54,0.12) 0%, transparent 58%)",
+  "linear-gradient(168deg, #1a1410 0%, #0A0A0F 48%, #120d0a 100%)",
+].join(", ");
+
+const BRAND_ORANGE = "#FF8136";
+const ISOTIPO_LEFT =
+  "M19.3745 26.4835C18.1452 25.1076 17.3993 23.2917 17.3993 21.3002V8.30105C17.3993 7.12244 16.6172 6.1285 15.5418 5.80805C15.4711 5.78632 15.3969 5.77003 15.3227 5.75374C15.1543 5.71934 14.9805 5.70123 14.8013 5.70123C10.4924 5.70123 7 9.19361 7 13.5007V23.9C7 26.4038 8.29086 28.6108 10.2407 29.8872C11.3632 30.6222 12.7048 31.0513 14.1495 31.0513C15.3209 31.0513 16.4234 30.7689 17.3993 30.2692C18.6467 29.6319 19.6823 28.6398 20.3703 27.4249C20.01 27.1407 19.6768 26.8257 19.3745 26.4817";
+const ISOTIPO_RIGHT =
+  "M25.2006 13.5002C23.7649 13.5002 22.6008 14.6643 22.6008 16.1V23.8995C22.6008 25.4474 22.1825 26.8958 21.4584 28.145C20.5368 29.7292 19.1102 30.9892 17.4011 31.7007C16.4017 32.119 15.3046 32.3489 14.1513 32.3489C13.7748 32.3489 13.4 32.3235 13.0325 32.2747C14.3487 33.1093 15.8224 33.7176 17.3993 34.0399C18.2412 34.21 19.1102 34.2988 20.0009 34.2988C20.8917 34.2988 21.7589 34.21 22.5989 34.0399C28.5336 32.8341 33 27.5892 33 21.2996C33 16.9908 29.5077 13.5002 25.1988 13.5002";
+
 interface IntroSplashProps {
   onExitComplete?: () => void;
 }
@@ -30,8 +44,7 @@ export function IntroSplash({ onExitComplete: _ }: IntroSplashProps) {
         position: "fixed",
         inset: 0,
         zIndex: 9999,
-        background:
-          "radial-gradient(60% 60% at 50% 50%, rgba(255,129,54,0.18) 0%, rgba(10,10,15,1) 70%), #0A0A0F",
+        background: SPLASH_BACKGROUND,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -54,7 +67,7 @@ export function IntroSplash({ onExitComplete: _ }: IntroSplashProps) {
         }}
       />
 
-      {/* Logo path-draw */}
+      {/* Isotipo light — path-draw (white + orange) */}
       <motion.svg
         width="84"
         height="84"
@@ -65,14 +78,15 @@ export function IntroSplash({ onExitComplete: _ }: IntroSplashProps) {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.6, ease: EASE.premium }}
         style={{
-          filter: "drop-shadow(0 0 24px rgba(255,129,54,0.55))",
+          filter:
+            "drop-shadow(0 0 18px rgba(255,255,255,0.22)) drop-shadow(0 0 28px rgba(255,129,54,0.5))",
         }}
       >
         <motion.path
-          d="M25.2006 13.5002C23.7649 13.5002 22.6008 14.6643 22.6008 16.1V23.8995C22.6008 25.4474 22.1825 26.8958 21.4584 28.145C20.5368 29.7292 19.1102 30.9892 17.4011 31.7007C16.4017 32.119 15.3046 32.3489 14.1513 32.3489C13.7748 32.3489 13.4 32.3235 13.0325 32.2747C14.3487 33.1093 15.8224 33.7176 17.3993 34.0399C18.2412 34.21 19.1102 34.2988 20.0009 34.2988C20.8917 34.2988 21.7589 34.21 22.5989 34.0399C28.5336 32.8341 33 27.5892 33 21.2996C33 16.9908 29.5077 13.5002 25.1988 13.5002"
-          stroke="#FF8136"
+          d={ISOTIPO_RIGHT}
+          stroke={BRAND_ORANGE}
           strokeWidth="1.2"
-          fill="#FF8136"
+          fill={BRAND_ORANGE}
           initial={{ pathLength: 0, fillOpacity: 0 }}
           animate={{ pathLength: 1, fillOpacity: 1 }}
           transition={{
@@ -81,10 +95,10 @@ export function IntroSplash({ onExitComplete: _ }: IntroSplashProps) {
           }}
         />
         <motion.path
-          d="M19.3745 26.4835C18.1452 25.1076 17.3993 23.2917 17.3993 21.3002V8.30105C17.3993 7.12244 16.6172 6.1285 15.5418 5.80805C15.4711 5.78632 15.3969 5.77003 15.3227 5.75374C15.1543 5.71934 14.9805 5.70123 14.8013 5.70123C10.4924 5.70123 7 9.19361 7 13.5007V23.9C7 26.4038 8.29086 28.6108 10.2407 29.8872C11.3632 30.6222 12.7048 31.0513 14.1495 31.0513C15.3209 31.0513 16.4234 30.7689 17.3993 30.2692C18.6467 29.6319 19.6823 28.6398 20.3703 27.4249C20.01 27.1407 19.6768 26.8257 19.3745 26.4817"
-          stroke="#FF8136"
+          d={ISOTIPO_LEFT}
+          stroke="#FFFFFF"
           strokeWidth="1.2"
-          fill="#FF8136"
+          fill="#FFFFFF"
           initial={{ pathLength: 0, fillOpacity: 0 }}
           animate={{ pathLength: 1, fillOpacity: 1 }}
           transition={{

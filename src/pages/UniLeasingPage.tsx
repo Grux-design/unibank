@@ -212,7 +212,7 @@ export default function UniLeasingPage() {
 
       <article className="min-h-screen bg-background">
         {/* Hero */}
-        <section className="relative overflow-hidden border-b border-border bg-gradient-to-br from-muted/40 via-background to-background">
+        <section className="relative overflow-hidden border-b border-border bg-background">
           <div
             aria-hidden
             className="pointer-events-none absolute -top-32 -right-32 h-96 w-96 rounded-full bg-primary/10 blur-3xl"
@@ -285,7 +285,7 @@ export default function UniLeasingPage() {
               Uni Leasing promoviendo la sostenibilidad
             </h2>
           </div>
-          <div className="relative overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/10 via-primary/5 to-background p-10 md:p-14">
+          <div className="relative overflow-hidden rounded-3xl border border-border bg-orange-50 p-10 md:p-14">
             <div
               aria-hidden
               className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-primary/15 blur-3xl"
@@ -311,7 +311,7 @@ export default function UniLeasingPage() {
         </section>
 
         {/* CTA final */}
-        <section className="border-t border-border bg-gradient-to-br from-primary/10 via-primary/5 to-background">
+        <section className="border-t border-border bg-orange-50">
           <div className="site-container py-20 text-center">
             <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary">
               <Mail className="h-3.5 w-3.5" />

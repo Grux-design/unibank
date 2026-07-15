@@ -205,9 +205,9 @@ export default function BlogPostPage() {
               className="absolute inset-0 w-full h-full object-cover"
             />
           ) : (
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-primary/5" />
+            <div className="absolute inset-0 bg-primary/10" />
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/10" />
+          <div className="absolute inset-0 bg-black/55" />
           <div className="relative h-full max-w-3xl mx-auto px-6 pb-12 md:pb-16 flex flex-col justify-end">
             <Link
               to={backHref}

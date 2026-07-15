@@ -133,15 +133,7 @@ export default function JuntaDirectivaPage() {
 
       <article className="min-h-screen bg-background">
         {/* Hero */}
-        <section className="relative overflow-hidden border-b border-border bg-gradient-to-br from-muted/40 via-background to-background">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute -top-32 -right-32 h-96 w-96 rounded-full bg-primary/10 blur-3xl"
-          />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute -bottom-40 -left-32 h-96 w-96 rounded-full bg-primary/5 blur-3xl"
-          />
+        <section className="relative overflow-hidden border-b border-border bg-background">
           <div className="relative site-container py-24 md:py-32">
             <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary">
               Gobierno Corporativo

@@ -147,14 +147,6 @@ export default function CajillaSeguridadPage() {
                 className="h-full w-full object-cover"
                 loading="lazy"
               />
-              <div
-                className="absolute inset-0"
-                style={{
-                  background:
-                    "linear-gradient(180deg, transparent 55%, hsl(var(--foreground) / 0.55) 100%)",
-                }}
-                aria-hidden
-              />
               <div className="absolute bottom-4 left-4 right-4 md:bottom-6 md:left-6 md:right-6 flex items-center gap-3 bg-background/95 backdrop-blur rounded-2xl p-4 shadow-lg">
                 <div
                   className="flex items-center justify-center rounded-xl flex-shrink-0"
@@ -355,7 +347,7 @@ export default function CajillaSeguridadPage() {
       </section>
 
       {/* ── CTA final ───────────────────────────────────────── */}
-      <section id="contacto" className="border-t border-border bg-gradient-to-br from-primary/10 via-primary/5 to-background py-12 md:py-20">
+      <section id="contacto" className="border-t border-border bg-orange-50 py-12 md:py-20">
         <div className="site-container text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary">
             <Mail className="h-3.5 w-3.5" />

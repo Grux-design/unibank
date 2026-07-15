@@ -9,7 +9,7 @@ export function FooterCreditsBar() {
 
   return (
     <div style={{
-      background: `linear-gradient(135deg, #E8621A 0%, ${ORANGE} 50%, #FFAC70 100%)`,
+      background: ORANGE,
       padding: "18px 0",
       position: "relative", overflow: "hidden",
     }}>
