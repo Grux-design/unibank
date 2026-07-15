@@ -90,21 +90,21 @@ function Section({
         !active && !done && "opacity-60"
       )}
     >
-      <header className="flex items-center gap-3 px-6 py-4 border-b border-border/60">
+      <header className="flex items-center gap-3 px-4 py-3 sm:px-6 sm:py-4 border-b border-border/60">
         <div
           className={cn(
-            "w-9 h-9 rounded-full flex items-center justify-center text-sm font-semibold shrink-0",
+            "w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center text-sm font-semibold shrink-0",
             done ? "bg-primary text-primary-foreground" : active ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"
           )}
         >
-          {done ? <CheckCircle2 className="w-5 h-5" /> : step}
+          {done ? <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5" /> : step}
         </div>
-        <div className="flex items-center gap-2">
-          <Icon className="w-4 h-4 text-muted-foreground" />
-          <h2 className="text-base font-semibold text-foreground">{title}</h2>
+        <div className="flex items-center gap-2 min-w-0 flex-1">
+          <Icon className="w-4 h-4 text-muted-foreground shrink-0" />
+          <h2 className="text-sm sm:text-base font-semibold text-foreground leading-snug">{title}</h2>
         </div>
       </header>
-      {(active || done) && <div className="p-6 space-y-5">{children}</div>}
+      {(active || done) && <div className="p-4 sm:p-6 space-y-4 sm:space-y-5">{children}</div>}
     </section>
   );
 }
@@ -350,7 +350,7 @@ export default function CanalDenunciasPage() {
               <ShieldCheck className="w-3.5 h-3.5" /> Canal confidencial
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-foreground">Canal de Denuncias</h1>
-            <div className="mt-6 max-w-3xl mx-auto space-y-4 text-sm md:text-base lg:text-lg text-muted-foreground text-left sm:text-center">
+            <div className="mt-6 max-w-3xl mx-auto space-y-4 text-sm md:text-base text-muted-foreground text-left">
               <p>
                 Bienvenido al Canal de Denuncias de <strong>Grupo UniBank</strong>. Por este canal usted podrá como Colaborador, Proveedor, Accionista, Miembros de Junta Directiva, Cliente, Estudiante/Practicante, comunidades afectadas y otras partes interesadas.
               </p>
@@ -368,7 +368,7 @@ export default function CanalDenunciasPage() {
         <section className="bg-background py-12 md:py-16">
           <div className="site-container max-w-3xl">
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 md:space-y-5">
 
                 {/* ── Step 1: Contexto ── */}
                 <Section step={1} title="Contexto de la denuncia" icon={FileText} active={true} done={step1Done}>
@@ -414,7 +414,7 @@ export default function CanalDenunciasPage() {
                     <FormItem>
                       <FormLabel>¿Desea permanecer anónimo? *</FormLabel>
                       <FormControl>
-                        <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-2 gap-3">
+                        <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                           {[
                             { v: "si", label: "Sí, anónimo" },
                             { v: "no", label: "No, quiero identificarme" },
@@ -423,7 +423,7 @@ export default function CanalDenunciasPage() {
                               key={opt.v}
                               htmlFor={`anon-${opt.v}`}
                               className={cn(
-                                "flex items-center gap-3 px-4 py-3 rounded-lg border cursor-pointer transition-colors",
+                                "flex items-center gap-3 px-3 py-3 sm:px-4 rounded-lg border cursor-pointer transition-colors",
                                 field.value === opt.v ? "border-primary bg-primary/5" : "border-border hover:border-primary/40"
                               )}
                             >
@@ -585,7 +585,7 @@ export default function CanalDenunciasPage() {
                       </div>
                     ) : (
                       <div
-                        className="border-2 border-dashed border-border rounded-lg p-6 text-center cursor-pointer hover:border-primary/40 hover:bg-muted/20 transition-colors"
+                        className="border-2 border-dashed border-border rounded-lg p-5 sm:p-6 text-center cursor-pointer hover:border-primary/40 hover:bg-muted/20 transition-colors"
                         onClick={() => fileRef.current?.click()}
                       >
                         <Upload className="w-8 h-8 mx-auto text-muted-foreground mb-2" />
@@ -641,7 +641,7 @@ export default function CanalDenunciasPage() {
 
                   <ReCaptcha ref={recaptchaRef} onChange={setRecaptchaToken} />
 
-                  <Button type="submit" disabled={sending || !recaptchaToken} size="lg" className="w-full">
+                  <Button type="submit" disabled={sending || !recaptchaToken} size="lg" className="w-full rounded-xl">
                     {sending ? "Enviando…" : "Enviar denuncia"}
                   </Button>
                 </Section>
