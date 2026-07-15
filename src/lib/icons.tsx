@@ -69,6 +69,7 @@ import {
   Loader as LoaderIcon,
   Lock as LockIcon,
   Mailbox as MailboxIcon,
+  Map as MapIcon,
   MapPoint as MapPointIcon,
   Menu as MenuIcon,
   MessageCircle2 as MessageCircle2Icon,
@@ -169,6 +170,7 @@ export const LinkSquare = filled(LinkSquareIcon);
 export const Loader = filled(LoaderIcon);
 export const Lock = filled(LockIcon);
 export const Mailbox = filled(MailboxIcon);
+export const Map = filled(MapIcon);
 export const MapPoint = filled(MapPointIcon);
 export const MessageCircle2 = filled(MessageCircle2Icon);
 export const MessageSquare2 = filled(MessageSquare2Icon);

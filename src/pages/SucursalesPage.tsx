@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async";
-import { MapPin, Phone, Clock, ExternalLink } from "@/lib/icons";
+import { MapPin, Phone, Clock, Map } from "@/lib/icons";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import avenidaBalboaImg from "@/assets/branches/avenida-balboa.jpeg";
@@ -136,7 +136,7 @@ export default function SucursalesPage() {
                     </Button>
                     <Button size="sm" asChild className="flex-1 w-full sm:w-auto">
                       <a href={b.mapUrl} target="_blank" rel="noopener noreferrer">
-                        <ExternalLink className="w-3.5 h-3.5 mr-1" /> Ver Mapa
+                        <Map className="w-3.5 h-3.5 mr-1" /> Ver Mapa
                       </a>
                     </Button>
                   </div>
