@@ -33,7 +33,7 @@ export function LeftHeaderPill({
         height: 66,
         padding: layout === "compact" ? "0 14px 0 8px" : "0 20px 0 8px",
         gap: layout === "compact" ? 14 : 20,
-        border: menuOpen ? "none" : "0.5px solid #E7E4E1",
+        border: menuOpen ? "0.5px solid transparent" : "0.5px solid #E7E4E1",
         boxShadow: menuOpen ? "none" : undefined,
         transition: "background 0.2s ease, border-radius 0.2s ease, border 0.2s ease",
         flexShrink: 0,
@@ -41,9 +41,13 @@ export function LeftHeaderPill({
       }}
     >
       <button
-        onClick={onToggle}
+        onClick={(e) => {
+          onToggle();
+          e.currentTarget.blur();
+        }}
         aria-label={menuOpen ? (lang === "es" ? "Cerrar menú" : "Close menu") : (lang === "es" ? "Abrir menú" : "Open menu")}
         aria-expanded={menuOpen}
+        className="focus-visible:outline-none"
         style={{
           display: "flex",
           alignItems: "center",

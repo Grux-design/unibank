@@ -27,7 +27,7 @@ export function RightHeaderPill({
         borderRadius: isMenuOpen ? 0 : 16,
         height: 66, padding: layout === "mobile" ? "0 6px" : "0 10px",
         gap: layout === "mobile" ? 2 : 4,
-        border: isMenuOpen ? "none" : "0.5px solid #E7E4E1",
+        border: isMenuOpen ? "0.5px solid transparent" : "0.5px solid #E7E4E1",
         boxShadow: isMenuOpen ? "none" : undefined,
         transition: "background 0.2s ease, border-radius 0.2s ease, border 0.2s ease",
         flexShrink: 0,

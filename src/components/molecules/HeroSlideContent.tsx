@@ -19,6 +19,7 @@ const slideVariants = {
 
 export function HeroSlideContent({ slide, dir, isMobile = false }: HeroSlideContentProps) {
   const t = THEME;
+  const mobileCtaFullWidth = isMobile && slide.id === "hipoteca";
 
   return (
     <div
@@ -53,7 +54,7 @@ export function HeroSlideContent({ slide, dir, isMobile = false }: HeroSlideCont
             display: "flex",
             flexDirection: isMobile ? "column" : "row",
             flexWrap: isMobile ? "nowrap" : "wrap",
-            alignItems: isMobile ? "stretch" : "center",
+            alignItems: isMobile ? (mobileCtaFullWidth ? "stretch" : "flex-start") : "center",
             gap: 10,
             marginTop: 4,
           }}>
@@ -61,7 +62,7 @@ export function HeroSlideContent({ slide, dir, isMobile = false }: HeroSlideCont
               href={slide.ctaHref || "#"}
               target={slide.ctaHref ? "_blank" : undefined}
               rel={slide.ctaHref ? "noopener noreferrer" : undefined}
-              fullWidth={isMobile}
+              fullWidth={mobileCtaFullWidth}
             >
               {slide.cta}
             </HeroCtaButton>
@@ -69,7 +70,7 @@ export function HeroSlideContent({ slide, dir, isMobile = false }: HeroSlideCont
               <HeroCtaButton
                 href={slide.ctaAltHref || "#"}
                 variant="secondary"
-                fullWidth={isMobile}
+                fullWidth={mobileCtaFullWidth}
               >
                 {slide.ctaAlt}
               </HeroCtaButton>
