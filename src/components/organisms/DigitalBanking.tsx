@@ -14,6 +14,7 @@ import {
   Clock,
 } from "@/lib/icons";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { OrangeBlobBackground } from "@/components/atoms/OrangeBlobBackground";
 import { BtnPrimary, SectionHeading } from "@/components/ui/atoms";
 import { TAG_PILL_HUG, TAG_STACK_HUG } from "@/constants/tagPill";
 
@@ -796,27 +797,17 @@ export function DigitalBanking() {
           style={{
             margin: "32px 0 64px",
             borderRadius: 28,
-            background: "var(--gradient-brand)",
+            background: "#FF8136",
             overflow: "hidden",
             position: "relative",
             boxShadow: "var(--shadow-orange)",
           }}
         >
-          <div
-            style={{
-              position: "absolute",
-              top: -40,
-              right: -40,
-              width: 180,
-              height: 180,
-              borderRadius: "50%",
-              background: "rgba(255,255,255,0.08)",
-              pointerEvents: "none",
-            }}
-          />
+          <OrangeBlobBackground />
           <div
             style={{
               position: "relative",
+              zIndex: 1,
               display: "flex",
               flexDirection: isMobile ? "column" : "row",
               alignItems: isMobile ? "flex-start" : "center",

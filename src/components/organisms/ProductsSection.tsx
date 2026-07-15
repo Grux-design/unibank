@@ -8,6 +8,7 @@ import { SectionTag, SectionHeading } from "@/components/ui/atoms";
 import { CTA_BUTTON_COLORS, CTA_BUTTON_SIZE } from "@/constants/ctaButtons";
 import { TAG_PILL_HUG } from "@/constants/tagPill";
 import { HeroCtaButton } from "@/components/atoms/HeroCtaButton";
+import { OrangeBlobBackground } from "@/components/atoms/OrangeBlobBackground";
 
 const CUENTA_AHORROS_ROUTE = "/personas/cuentas/cuenta-de-ahorros";
 
@@ -249,25 +250,7 @@ function FeaturedBanner({ isMobile }: { isMobile: boolean }) {
         cursor: "pointer",
       }}
     >
-      {/* ── Blob SVG background ── */}
-      <svg
-        aria-hidden
-        style={{
-          position: "absolute",
-          inset: 0,
-          width: "100%",
-          height: "100%",
-          pointerEvents: "none",
-          zIndex: 0,
-        }}
-        viewBox="0 0 1336 460"
-        preserveAspectRatio="xMidYMid slice"
-        fill="none"
-      >
-        <circle cx="1060" cy="230" r="340" fill="#FF9A52" fillOpacity="0.55" />
-        <circle cx="1180" cy="140" r="220" fill="#FFB273" fillOpacity="0.35" />
-        <ellipse cx="120" cy="480" rx="260" ry="200" fill="#E8721F" fillOpacity="0.35" />
-      </svg>
+      <OrangeBlobBackground />
 
       {isMobile ? (
         <>
