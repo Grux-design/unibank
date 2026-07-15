@@ -25,9 +25,6 @@ interface IntroSplashProps {
  * Parent controls mount/unmount via AnimatePresence.
  */
 export function IntroSplash({ onExitComplete: _ }: IntroSplashProps) {
-  const PROMISE = "¿Ganas de Crecer? Tienes a UniBank";
-  const words = PROMISE.split(" ");
-
   return (
     <motion.div
       role="status"
@@ -49,7 +46,7 @@ export function IntroSplash({ onExitComplete: _ }: IntroSplashProps) {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        gap: 28,
+        gap: 14,
         willChange: "transform, opacity, clip-path",
       }}
     >
@@ -108,36 +105,27 @@ export function IntroSplash({ onExitComplete: _ }: IntroSplashProps) {
         />
       </motion.svg>
 
-      {/* Brand promise — per-word reveal */}
-      <div
+      {/* Wordmark */}
+      <motion.span
+        initial={{ y: 24, opacity: 0, filter: "blur(8px)" }}
+        animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
+        transition={{
+          duration: 0.7,
+          delay: 0.7,
+          ease: EASE.premium,
+        }}
         style={{
-          display: "flex",
-          gap: "0.4em",
-          flexWrap: "wrap",
-          justifyContent: "center",
+          display: "inline-block",
           fontFamily: '"Inter", -apple-system, sans-serif',
-          fontSize: "clamp(1.1rem, 2.2vw, 1.5rem)",
-          fontWeight: 500,
-          letterSpacing: "-0.01em",
+          fontSize: "clamp(1.25rem, 2.4vw, 1.625rem)",
+          fontWeight: 600,
+          letterSpacing: "-0.02em",
           color: "rgba(255,255,255,0.92)",
+          willChange: "transform, filter, opacity",
         }}
       >
-        {words.map((w, i) => (
-          <motion.span
-            key={i}
-            initial={{ y: 24, opacity: 0, filter: "blur(8px)" }}
-            animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
-            transition={{
-              duration: 0.7,
-              delay: 0.7 + i * 0.12,
-              ease: EASE.premium,
-            }}
-            style={{ display: "inline-block", willChange: "transform, filter, opacity" }}
-          >
-            {w}
-          </motion.span>
-        ))}
-      </div>
+        UniBank
+      </motion.span>
     </motion.div>
   );
 }
