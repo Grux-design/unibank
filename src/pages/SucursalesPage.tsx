@@ -57,19 +57,19 @@ export default function SucursalesPage() {
       </Helmet>
 
       <article className="min-h-screen">
-        <div className="bg-muted/30 border-b border-border">
-          <div className="site-container py-20 text-center">
-            <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-foreground">
+        <div className="bg-muted/30 border-b border-border pt-20 pb-10 md:pt-28 md:pb-16 lg:pt-32">
+          <div className="site-container text-center">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-foreground">
               Nuestras Sucursales
             </h1>
-            <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="mt-4 text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
               Visítanos en cualquiera de nuestras oficinas. Estamos aquí para atenderte.
             </p>
           </div>
         </div>
 
-        <section className="bg-background py-16">
-          <div className="site-container grid grid-cols-1 md:grid-cols-2 gap-8">
+        <section className="bg-background py-12 md:py-20">
+          <div className="site-container grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
             {branches.map((b) => (
               <Card
                 key={b.name}
@@ -89,7 +89,7 @@ export default function SucursalesPage() {
                   )}
                 </div>
 
-                <CardContent className="p-6 flex flex-col flex-1">
+                <CardContent className="p-5 md:p-6 flex flex-col flex-1">
                   <h2 className="text-lg font-bold text-foreground mb-5 group-hover:text-primary transition-colors">
                     {b.name}
                   </h2>
@@ -128,13 +128,13 @@ export default function SucursalesPage() {
                     </div>
                   </div>
 
-                  <div className="flex gap-3 mt-6">
-                    <Button size="sm" variant="outline" asChild className="flex-1">
+                  <div className="flex flex-col sm:flex-row gap-3 mt-6">
+                    <Button size="sm" variant="outline" asChild className="flex-1 w-full sm:w-auto">
                       <a href={`tel:${b.phone.replace(/[^+\d]/g, "")}`}>
                         <Phone className="w-3.5 h-3.5 mr-1" /> Llamar
                       </a>
                     </Button>
-                    <Button size="sm" asChild className="flex-1">
+                    <Button size="sm" asChild className="flex-1 w-full sm:w-auto">
                       <a href={b.mapUrl} target="_blank" rel="noopener noreferrer">
                         <ExternalLink className="w-3.5 h-3.5 mr-1" /> Ver Mapa
                       </a>

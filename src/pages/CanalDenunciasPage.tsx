@@ -344,13 +344,13 @@ export default function CanalDenunciasPage() {
 
       <article className="min-h-screen">
         {/* Hero */}
-        <div className="bg-muted/30 border-b border-border">
-          <div className="site-container py-20 text-center">
+        <div className="bg-muted/30 border-b border-border pt-20 pb-10 md:pt-28 md:pb-16 lg:pt-32">
+          <div className="site-container text-center">
             <div className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-primary bg-primary/10 px-3 py-1 rounded-full mb-4">
               <ShieldCheck className="w-3.5 h-3.5" /> Canal confidencial
             </div>
-            <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-foreground">Canal de Denuncias</h1>
-            <div className="mt-6 max-w-3xl mx-auto space-y-4 text-base md:text-lg text-muted-foreground text-left sm:text-center">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-foreground">Canal de Denuncias</h1>
+            <div className="mt-6 max-w-3xl mx-auto space-y-4 text-sm md:text-base lg:text-lg text-muted-foreground text-left sm:text-center">
               <p>
                 Bienvenido al Canal de Denuncias de <strong>Grupo UniBank</strong>. Por este canal usted podrá como Colaborador, Proveedor, Accionista, Miembros de Junta Directiva, Cliente, Estudiante/Practicante, comunidades afectadas y otras partes interesadas.
               </p>
@@ -365,8 +365,8 @@ export default function CanalDenunciasPage() {
         </div>
 
         {/* Form */}
-        <section className="bg-background py-16">
-          <div className="max-w-3xl mx-auto">
+        <section className="bg-background py-12 md:py-16">
+          <div className="site-container max-w-3xl">
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
 

@@ -14,16 +14,16 @@ export default function SostenibilidadPage() {
 
       <article className="min-h-screen bg-background">
         {/* Hero */}
-        <section className="relative overflow-hidden border-b border-border bg-background">
-          <div className="relative site-container py-24 md:py-32">
+        <section className="relative overflow-hidden border-b border-border bg-background pt-20 pb-10 md:pt-28 md:pb-16 lg:pt-32">
+          <div className="relative site-container">
             <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary">
               <Leaf className="h-3.5 w-3.5" />
               ESG
             </span>
-            <h1 className="mt-5 max-w-3xl text-4xl font-extrabold leading-tight tracking-tight text-foreground md:text-6xl">
+            <h1 className="mt-5 max-w-3xl text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight text-foreground">
               Sostenibilidad
             </h1>
-            <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted-foreground">
+            <p className="mt-5 max-w-2xl text-base md:text-lg leading-relaxed text-muted-foreground">
               Nuestro compromiso con el medio ambiente y la sociedad guía cada decisión que tomamos
               como grupo financiero.
             </p>
@@ -31,16 +31,17 @@ export default function SostenibilidadPage() {
         </section>
 
         {/* Compromiso */}
-        <section className="site-container py-20">
-          <div className="mb-10">
+        <section className="py-12 md:py-20">
+          <div className="site-container">
+          <div className="mb-8 md:mb-10">
             <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary">
               Nuestro compromiso
             </span>
-            <h2 className="mt-4 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
+            <h2 className="mt-4 text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight text-foreground">
               Decisiones responsables, impacto positivo
             </h2>
           </div>
-          <p className="text-lg leading-relaxed text-muted-foreground">
+          <p className="text-sm md:text-base lg:text-lg leading-relaxed text-muted-foreground">
             En Grupo UniBank, creemos firmemente en la importancia de la sostenibilidad como norte
             en todas nuestras acciones. Reconocemos que el futuro de nuestro planeta depende de
             decisiones responsables y conscientes. Por eso, nos comprometemos a promover prácticas
@@ -52,7 +53,7 @@ export default function SostenibilidadPage() {
           </p>
 
           {/* Pillars */}
-          <div className="mt-12 grid gap-5 md:grid-cols-3">
+          <div className="mt-10 md:mt-12 grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-5">
             {[
               {
                 icon: Sprout,
@@ -72,7 +73,7 @@ export default function SostenibilidadPage() {
             ].map(({ icon: Icon, title, desc }) => (
               <div
                 key={title}
-                className="group rounded-2xl border border-border bg-card p-6 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"
+                className="group rounded-2xl border border-border bg-card p-5 md:p-6 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"
               >
                 <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
                   <Icon className="h-6 w-6" />
@@ -82,21 +83,22 @@ export default function SostenibilidadPage() {
               </div>
             ))}
           </div>
+          </div>
         </section>
 
         {/* Bonos Verdes */}
-        <section className="border-t border-border bg-muted/30">
-          <div className="site-container py-20">
-            <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-              <div>
+        <section className="border-t border-border bg-muted/30 py-12 md:py-20">
+          <div className="site-container">
+            <div className="grid grid-cols-1 gap-8 min-[1200px]:grid-cols-2 min-[1200px]:items-center min-[1200px]:gap-10">
+              <div className="order-2 min-[1200px]:order-1">
                 <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary">
                   <BadgeCheck className="h-3.5 w-3.5" />
                   Hito histórico
                 </span>
-                <h2 className="mt-4 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
+                <h2 className="mt-4 text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight text-foreground">
                   Bonos Verdes
                 </h2>
-                <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
+                <p className="mt-5 text-sm md:text-base lg:text-lg leading-relaxed text-muted-foreground">
                   Reconocemos la gran importancia de los bonos verdes en nuestra estrategia
                   financiera, siendo el{" "}
                   <span className="font-semibold text-foreground">
@@ -112,7 +114,7 @@ export default function SostenibilidadPage() {
                   href="https://www.flipsnack.com/unibankpanama/marco-de-referencia-bono-verde-unileasing/full-view.html"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-8 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:shadow-md hover:opacity-95"
+                  className="mt-8 inline-flex w-full max-w-sm sm:w-auto items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:shadow-md hover:opacity-95"
                 >
                   Conoce nuestro Marco de Referencia
                   <ChevronRight className="h-4 w-4" />
@@ -123,9 +125,8 @@ export default function SostenibilidadPage() {
               </div>
 
               {/* Decorative stat card */}
-              <div className="relative">
-                <div className="absolute inset-0 rounded-3xl bg-primary/15 blur-2xl" />
-                <div className="relative overflow-hidden rounded-3xl border border-border bg-card p-10">
+              <div className="order-1 min-[1200px]:order-2 relative">
+                <div className="relative overflow-hidden rounded-2xl md:rounded-3xl border border-border bg-card p-6 md:p-10">
                   <div className="flex items-center gap-3">
                     <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
                       <Leaf className="h-6 w-6" />
@@ -135,7 +136,7 @@ export default function SostenibilidadPage() {
                     </div>
                   </div>
                   <div className="mt-8">
-                    <div className="text-6xl font-extrabold tracking-tight text-foreground">1°</div>
+                    <div className="text-5xl md:text-6xl font-extrabold tracking-tight text-foreground">1°</div>
                     <p className="mt-3 text-base leading-relaxed text-muted-foreground">
                       Primer grupo financiero de capital panameño en emitir Bonos Verdes
                       registrados en la Bolsa Latinoamericana de Valores.
