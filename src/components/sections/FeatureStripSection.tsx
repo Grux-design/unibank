@@ -10,16 +10,16 @@ export function FeatureStripSection({ section }: Props) {
 
   return (
     <section
-      className="bg-orange-50 px-[80px] py-[80px]"
+      className="bg-orange-50"
       style={{
-        padding: "clamp(48px, 7vw, 88px) 16px",
+        padding: "clamp(40px, 7vw, 88px) 0",
       }}
     >
-      <div style={{ width: "100%" }}>
+      <div className="site-container">
         {/* Header */}
         {headline && (
           <h2
-            className="text-center my-0 mb-[24px] pb-[24px] text-4xl"
+            className="text-center my-0 mb-6 md:mb-[24px] pb-6 md:pb-[24px] text-2xl md:text-4xl"
             style={{
               fontWeight: 800,
               letterSpacing: "-0.025em",
@@ -40,14 +40,7 @@ export function FeatureStripSection({ section }: Props) {
             return (
               <div
                 key={item.sys.id}
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 16,
-                  padding: "32px 28px",
-                  background: "hsl(var(--background))",
-                  borderRadius: 28,
-                }}
+                className="flex flex-col gap-4 p-5 sm:p-7 md:p-8 bg-background rounded-[20px] md:rounded-[28px]"
               >
                 {/* Icon — bare, no background wrapper */}
                 <div style={{ flexShrink: 0 }}>

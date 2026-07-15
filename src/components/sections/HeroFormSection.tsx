@@ -1,21 +1,7 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { ChevronRight } from "@/lib/icons";
+import { Link } from "react-router-dom";
+import { useIsMobile } from "@/hooks/useIsMobile";
 import type { ResolvedSection } from "@/integrations/contentful/types";
-
-const SEGMENT_LABELS: Record<string, string> = {
-  personas: "Personas",
-  empresas: "Empresas",
-  cuentas: "Cuentas",
-  tarjetas: "Tarjetas",
-  prestamos: "Préstamos",
-  inversiones: "Inversiones",
-  credito: "Crédito",
-  financiamiento: "Financiamiento",
-  "mercado-de-capitales": "Mercado de Capitales",
-  gestion: "Gestión",
-  "canales-digitales": "Canales Digitales",
-};
 
 interface Props {
   section: ResolvedSection;
@@ -24,17 +10,7 @@ interface Props {
 export function HeroFormSection({ section }: Props) {
   const { title, headline, subheadline, mainImage, showForm } = section;
   const [idValue, setIdValue] = useState("");
-  const location = useLocation();
-
-  const segments = location.pathname.split("/").filter(Boolean);
-  const breadcrumbs = [
-    { label: "Inicio", href: "/" },
-    ...segments.map((seg, i) => ({
-      label: SEGMENT_LABELS[seg] ?? (i === segments.length - 1 && title ? title : seg),
-      href: "/" + segments.slice(0, i + 1).join("/"),
-      isLast: i === segments.length - 1,
-    })),
-  ];
+  const isMobile = useIsMobile();
 
   const imgSrc = mainImage?.fields?.file?.url;
 
@@ -42,45 +18,14 @@ export function HeroFormSection({ section }: Props) {
     <section
       style={{
         background: "hsl(var(--background))",
-        padding: "clamp(96px, 10vw, 120px) 16px clamp(48px, 8vw, 96px)",
+        padding: isMobile
+          ? "80px 0 40px"
+          : "clamp(96px, 10vw, 120px) 0 clamp(48px, 8vw, 96px)",
       }}
     >
-      <div style={{ width: "100%" }}>
-        {/* ── Breadcrumbs ── */}
-        <nav aria-label="Breadcrumb" className="mb-8">
-          <ol className="flex flex-wrap items-center gap-1 text-sm">
-            {breadcrumbs.map((crumb, i) => {
-              const isLast = i === breadcrumbs.length - 1;
-              return (
-                <li key={crumb.href} className="flex items-center gap-1">
-                  {i > 0 && (
-                    <ChevronRight
-                      size={14}
-                      className="text-muted-foreground/50 flex-shrink-0"
-                    />
-                  )}
-                  {isLast ? (
-                    <span className="font-semibold text-foreground">
-                      {crumb.label}
-                    </span>
-                  ) : (
-                    <Link
-                      to={crumb.href}
-                      className="text-muted-foreground hover:text-primary transition-colors"
-                    >
-                      {crumb.label}
-                    </Link>
-                  )}
-                </li>
-              );
-            })}
-          </ol>
-        </nav>
-
+      <div className="site-container">
         {/* ── Hero grid ── */}
-        <div
-          className="grid md:grid-cols-2 gap-10 items-center"
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 items-center">
           {/* ── Left: Content + optional form ── */}
           <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
             {title && (
@@ -151,7 +96,7 @@ export function HeroFormSection({ section }: Props) {
                     cursor: "pointer",
                     transition: "background 0.18s, transform 0.18s, box-shadow 0.18s",
                     boxShadow: "0 4px 12px rgba(255, 129, 54, 0.2)",
-                    width: "fit-content",
+                    width: isMobile ? "100%" : "fit-content",
                   };
 
                   const onEnter = (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -207,7 +152,7 @@ export function HeroFormSection({ section }: Props) {
                   display: "flex",
                   flexDirection: "column",
                   gap: 16,
-                  maxWidth: 420,
+                  maxWidth: isMobile ? "100%" : 420,
                 }}
               >
                 <p
@@ -281,9 +226,9 @@ export function HeroFormSection({ section }: Props) {
           {imgSrc && (
             <div
               style={{
-                borderRadius: 28,
+                borderRadius: isMobile ? 20 : 28,
                 overflow: "hidden",
-                minHeight: 480,
+                minHeight: isMobile ? 280 : 480,
                 height: "100%",
                 background: "hsl(var(--muted))",
               }}
@@ -294,7 +239,7 @@ export function HeroFormSection({ section }: Props) {
                 style={{
                   width: "100%",
                   height: "100%",
-                  minHeight: 480,
+                  minHeight: isMobile ? 280 : 480,
                   objectFit: "cover",
                   display: "block",
                 }}

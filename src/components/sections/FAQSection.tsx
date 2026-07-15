@@ -19,24 +19,24 @@ export function FAQSection({ section }: Props) {
   const [openValue, setOpenValue] = useState<string | undefined>(undefined);
 
   return (
-    <section className="w-full bg-muted py-[80px]">
-      <div className="site-container flex flex-col md:flex-row gap-10 md:gap-16">
+    <section className="w-full bg-muted py-12 md:py-20">
+      <div className="site-container flex flex-col md:flex-row gap-8 md:gap-10 lg:gap-16">
         {/* Left column */}
         <div className="md:w-2/5">
           {section.title && (
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 leading-tight">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-3 md:mb-4 leading-tight">
               {section.title}
             </h2>
           )}
           {section.headline && (
-            <p className="text-muted-foreground text-base mb-8">
+            <p className="text-muted-foreground text-sm md:text-base mb-6 md:mb-8">
               {section.headline}
             </p>
           )}
         </div>
 
         {/* Right column: Accordion */}
-        <div className="md:w-3/5">
+        <div className="md:w-3/5 min-w-0">
           <Accordion
             type="single"
             collapsible
@@ -62,15 +62,15 @@ export function FAQSection({ section }: Props) {
                 <AccordionItem
                   key={item.sys.id}
                   value={itemValue}
-                  className="bg-background rounded-2xl border-0 px-6"
+                  className="bg-background rounded-2xl border-0 px-4 md:px-6"
                 >
-                  <AccordionTrigger className="text-left text-base font-semibold text-foreground hover:no-underline py-[32px] [&>svg]:hidden">
-                    <span className="flex-1 text-xl">{questionText}</span>
+                  <AccordionTrigger className="text-left text-base font-semibold text-foreground hover:no-underline py-5 md:py-8 [&>svg]:hidden">
+                    <span className="flex-1 text-base md:text-xl pr-3">{questionText}</span>
                     <span className="ml-4 flex-shrink-0">
                       {isOpen ? <X className="h-5 w-5" /> : <Plus className="h-5 w-5" />}
                     </span>
                   </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground text-lg leading-relaxed">
+                  <AccordionContent className="text-muted-foreground text-base md:text-lg leading-relaxed pb-4 md:pb-6">
                     {renderAnswer()}
                   </AccordionContent>
                 </AccordionItem>
