@@ -12,23 +12,29 @@ import {
 } from "@/lib/icons";
 import type { Lang } from "@/components/layout/SiteLayout";
 import { useHeaderLayout } from "@/hooks/useHeaderLayout";
+import { openAbreCuenta, type AbreCuentaId } from "@/constants/abreCuenta";
 
 type ExpandedPanel = "abre" | "banca" | null;
 
-const ABRE_OPTIONS = [
+const ABRE_OPTIONS: {
+  label: string;
+  description: string;
+  id: AbreCuentaId;
+  icon: typeof PiggyBank;
+}[] = [
   {
     label: "Cuenta de Ahorros",
     description: "Para personas Naturales",
-    href: "/cuenta-ahorros",
+    id: "ahorros",
     icon: PiggyBank,
   },
   {
     label: "Cuenta Jurídica",
     description: "Para empresas y Negocios",
-    href: "/cuenta-juridica",
+    id: "juridica",
     icon: Building2,
   },
-] as const;
+];
 
 const BANCA_OPTIONS = [
   { label: "Personas", href: "/login", icon: User },
@@ -44,6 +50,12 @@ export function MobileMenuFooterCtas({ lang, onClose }: MobileMenuFooterCtasProp
   const [expanded, setExpanded] = useState<ExpandedPanel>(null);
   const navigate = useNavigate();
   const isTablet = useHeaderLayout() === "compact";
+
+  const handleAbreSelect = (id: AbreCuentaId) => {
+    setExpanded(null);
+    onClose();
+    openAbreCuenta(id);
+  };
 
   const handleSelect = (href: string) => {
     setExpanded(null);
@@ -112,9 +124,9 @@ export function MobileMenuFooterCtas({ lang, onClose }: MobileMenuFooterCtasProp
                 const Icon = opt.icon;
                 return (
                   <button
-                    key={opt.href}
+                    key={opt.label}
                     type="button"
-                    onClick={() => handleSelect(opt.href)}
+                    onClick={() => handleAbreSelect(opt.id)}
                     style={{
                       display: "flex",
                       alignItems: "center",

@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { useNavigate } from "react-router-dom";
 import { Plus, X, ChevronRight } from "@/lib/icons";
+import { openAbreCuenta, type AbreCuentaId } from "@/constants/abreCuenta";
 import type { HeaderLayout } from "@/hooks/useHeaderLayout";
 
-const options = [
-  { label: "Cuenta de Ahorros", description: "Para personas Naturales", href: "/cuenta-ahorros"  },
-  { label: "Cuenta Jurídica",   description: "Para empresas y Negocios", href: "/cuenta-juridica" },
+const options: { label: string; description: string; id: AbreCuentaId }[] = [
+  { label: "Cuenta de Ahorros", description: "Para personas Naturales", id: "ahorros" },
+  { label: "Cuenta Jurídica", description: "Para empresas y Negocios", id: "juridica" },
 ];
 
 const OPEN_W = 300;
@@ -24,7 +24,6 @@ interface AbreCuentaWidgetProps {
 export function AbreCuentaWidget({ layout = "full" }: AbreCuentaWidgetProps) {
   const [open, setOpen] = useState(false);
   const ref             = useRef<HTMLDivElement>(null);
-  const navigate        = useNavigate();
   const styles          = LAYOUT_STYLES[layout];
 
   useEffect(() => {
@@ -86,7 +85,10 @@ export function AbreCuentaWidget({ layout = "full" }: AbreCuentaWidgetProps) {
               {options.map((opt, i) => (
                 <button
                   key={i}
-                  onClick={() => { setOpen(false); navigate(opt.href); }}
+                  onClick={() => {
+                    setOpen(false);
+                    openAbreCuenta(opt.id);
+                  }}
                   style={{
                     display: "flex", alignItems: "center", justifyContent: "space-between",
                     padding: "14px 14px", border: "none", cursor: "pointer",
