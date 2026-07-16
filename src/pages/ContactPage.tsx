@@ -97,73 +97,88 @@ export default function ContactPage() {
         <link rel="canonical" href="https://unibank.com.pa/contact" />
       </Helmet>
 
-      <section className="py-20 px-4">
-        <div className="max-w-2xl mx-auto">
-          <h1 className="text-4xl font-bold text-foreground mb-3">{t.h1}</h1>
-          <p className="text-muted-foreground mb-10">{t.sub}</p>
+      <article className="min-h-screen bg-background">
+        <section className="bg-muted/30 border-b border-border pt-20 pb-10 md:pt-28 md:pb-16 lg:pt-32">
+          <div className="site-container max-w-2xl">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-foreground">
+              {t.h1}
+            </h1>
+            <p className="mt-4 text-base md:text-lg text-muted-foreground">{t.sub}</p>
+          </div>
+        </section>
 
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t.name}</FormLabel>
-                      <FormControl><Input placeholder={isEs ? "Juan Pérez" : "John Doe"} {...field} /></FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t.email}</FormLabel>
-                      <FormControl><Input type="email" placeholder="juan@ejemplo.com" {...field} /></FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+        <section className="py-12 md:py-16 lg:py-20">
+          <div className="site-container max-w-2xl">
+            <div className="rounded-2xl border border-border bg-card p-5 shadow-sm sm:p-6 md:p-8">
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 md:space-y-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 md:gap-6">
+                    <FormField
+                      control={form.control}
+                      name="name"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>{t.name}</FormLabel>
+                          <FormControl><Input placeholder={isEs ? "Juan Pérez" : "John Doe"} {...field} /></FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>{t.email}</FormLabel>
+                          <FormControl><Input type="email" placeholder="juan@ejemplo.com" {...field} /></FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
 
-              <FormField
-                control={form.control}
-                name="subject"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t.subject}</FormLabel>
-                    <FormControl><Input {...field} /></FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                  <FormField
+                    control={form.control}
+                    name="subject"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{t.subject}</FormLabel>
+                        <FormControl><Input {...field} /></FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-              <FormField
-                control={form.control}
-                name="message"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t.message}</FormLabel>
-                    <FormControl>
-                      <Textarea rows={6} className="resize-none" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                  <FormField
+                    control={form.control}
+                    name="message"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{t.message}</FormLabel>
+                        <FormControl>
+                          <Textarea rows={6} className="resize-none min-h-[140px]" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-              <ReCaptcha ref={recaptchaRef} onChange={setRecaptchaToken} />
+                  <ReCaptcha ref={recaptchaRef} onChange={setRecaptchaToken} />
 
-              <Button type="submit" disabled={sending || !recaptchaToken} className="w-full sm:w-auto">
-                {sending ? t.sending : t.send}
-              </Button>
-            </form>
-          </Form>
-        </div>
-      </section>
+                  <Button
+                    type="submit"
+                    disabled={sending || !recaptchaToken}
+                    size="lg"
+                    className="w-full rounded-xl sm:w-auto"
+                  >
+                    {sending ? t.sending : t.send}
+                  </Button>
+                </form>
+              </Form>
+            </div>
+          </div>
+        </section>
+      </article>
     </>
   );
 }
