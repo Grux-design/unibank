@@ -139,6 +139,7 @@
     :root {
       --site-gutter-nav: 16px;
       --site-gutter-hero: 16px;
+      --site-gutter: 16px;
     }
   }
 

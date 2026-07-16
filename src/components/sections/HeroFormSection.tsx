@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useIsMobile } from "@/hooks/useIsMobile";
+import { useBreakpoint } from "@/hooks/useBreakpoint";
 import type { ResolvedSection } from "@/integrations/contentful/types";
 
 interface Props {
@@ -10,7 +10,9 @@ interface Props {
 export function HeroFormSection({ section }: Props) {
   const { title, headline, subheadline, mainImage, showForm } = section;
   const [idValue, setIdValue] = useState("");
-  const isMobile = useIsMobile();
+  const bp = useBreakpoint();
+  const isStacked = bp !== "full";
+  const isMobile = bp === "mobile";
 
   const imgSrc = mainImage?.fields?.file?.url;
 
@@ -18,16 +20,44 @@ export function HeroFormSection({ section }: Props) {
     <section
       style={{
         background: "hsl(var(--background))",
-        padding: isMobile
-          ? "80px 0 40px"
+        padding: isStacked
+          ? isMobile
+            ? "80px 0 40px"
+            : "clamp(96px, 10vw, 120px) 0 48px"
           : "clamp(96px, 10vw, 120px) 0 clamp(48px, 8vw, 96px)",
       }}
     >
       <div className="site-container">
         {/* ── Hero grid ── */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 items-center">
-          {/* ── Left: Content + optional form ── */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+        <div className="grid grid-cols-1 min-[1200px]:grid-cols-2 gap-8 min-[1200px]:gap-10 items-center">
+          {/* Image first when stacked (mobile + compact) */}
+          {imgSrc && (
+            <div
+              className="order-1 min-[1200px]:order-2"
+              style={{
+                borderRadius: isStacked ? 20 : 28,
+                overflow: "hidden",
+                minHeight: isStacked ? 280 : 480,
+                height: "100%",
+                background: "hsl(var(--muted))",
+              }}
+            >
+              <img
+                src={imgSrc}
+                alt={mainImage?.fields?.title ?? headline ?? ""}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  minHeight: isStacked ? 280 : 480,
+                  objectFit: "cover",
+                  display: "block",
+                }}
+              />
+            </div>
+          )}
+
+          {/* Text second on mobile, left column on desktop */}
+          <div className="order-2 min-[1200px]:order-1" style={{ display: "flex", flexDirection: "column", gap: 24 }}>
             {title && (
               <p
                 style={{
@@ -96,7 +126,7 @@ export function HeroFormSection({ section }: Props) {
                     cursor: "pointer",
                     transition: "background 0.18s, transform 0.18s, box-shadow 0.18s",
                     boxShadow: "0 4px 12px rgba(255, 129, 54, 0.2)",
-                    width: isMobile ? "100%" : "fit-content",
+                    width: isStacked ? "100%" : "fit-content",
                   };
 
                   const onEnter = (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -152,7 +182,7 @@ export function HeroFormSection({ section }: Props) {
                   display: "flex",
                   flexDirection: "column",
                   gap: 16,
-                  maxWidth: isMobile ? "100%" : 420,
+                  maxWidth: isStacked ? "100%" : 420,
                 }}
               >
                 <p
@@ -221,31 +251,6 @@ export function HeroFormSection({ section }: Props) {
               </div>
             )}
           </div>
-
-          {/* ── Right: Image ── */}
-          {imgSrc && (
-            <div
-              style={{
-                borderRadius: isMobile ? 20 : 28,
-                overflow: "hidden",
-                minHeight: isMobile ? 280 : 480,
-                height: "100%",
-                background: "hsl(var(--muted))",
-              }}
-            >
-              <img
-                src={imgSrc}
-                alt={mainImage?.fields?.title ?? headline ?? ""}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  minHeight: isMobile ? 280 : 480,
-                  objectFit: "cover",
-                  display: "block",
-                }}
-              />
-            </div>
-          )}
         </div>
       </div>
     </section>
