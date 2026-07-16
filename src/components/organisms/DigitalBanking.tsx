@@ -24,8 +24,7 @@ const SOFT = "var(--uni-dark-soft)";
 const CARD_BG = "#f2efed";
 const BORDER = "#E7E4E1";
 const MUTED = "var(--uni-muted)";
-const IMG_GRADIENT =
-  "linear-gradient(to top, hsl(20 25% 12% / 0.78) 0%, hsl(20 40% 20% / 0.22) 48%, transparent 72%)";
+const IMG_OVERLAY = "hsl(20 25% 12% / 0.45)";
 
 /* ── Data ───────────────────────────────────────────────── */
 const FEATURES = [
@@ -382,7 +381,7 @@ function MobileFeatureCarousel({ features }: { features: typeof FEATURES }) {
           style={{
             position: "absolute",
             inset: 0,
-            background: IMG_GRADIENT,
+            background: IMG_OVERLAY,
           }}
         />
         <div
@@ -655,7 +654,7 @@ function StickyScrollFeatures({ features }: { features: typeof FEATURES }) {
             style={{
               position: "absolute",
               inset: 0,
-              background: IMG_GRADIENT,
+              background: IMG_OVERLAY,
               pointerEvents: "none",
             }}
           />

@@ -14,15 +14,7 @@ export default function SostenibilidadPage() {
 
       <article className="min-h-screen bg-background">
         {/* Hero */}
-        <section className="relative overflow-hidden border-b border-border bg-gradient-to-br from-muted/40 via-background to-background">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute -top-32 -right-32 h-96 w-96 rounded-full bg-primary/10 blur-3xl"
-          />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute -bottom-40 -left-32 h-96 w-96 rounded-full bg-primary/10 blur-3xl"
-          />
+        <section className="relative overflow-hidden border-b border-border bg-background">
           <div className="relative site-container py-24 md:py-32">
             <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary">
               <Leaf className="h-3.5 w-3.5" />
@@ -132,7 +124,7 @@ export default function SostenibilidadPage() {
 
               {/* Decorative stat card */}
               <div className="relative">
-                <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary/20 via-primary/10 to-transparent blur-2xl" />
+                <div className="absolute inset-0 rounded-3xl bg-primary/15 blur-2xl" />
                 <div className="relative overflow-hidden rounded-3xl border border-border bg-card p-10">
                   <div className="flex items-center gap-3">
                     <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">

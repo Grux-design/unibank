@@ -56,10 +56,10 @@
     --btn-font-size: 0.9375rem;
     --btn-font-weight: 600;
 
-    /* Gradients */
-    --gradient-brand: linear-gradient(135deg, hsl(20 100% 60%), hsl(20 100% 48%));
-    --gradient-dark: linear-gradient(135deg, hsl(0 0% 6%), hsl(0 0% 12%));
-    --gradient-hero: linear-gradient(160deg, hsl(30 80% 97%) 0%, hsl(22 80% 93%) 100%);
+    /* Brand solids (gradients deprecated — use solid colors only) */
+    --gradient-brand: hsl(20 100% 60%);
+    --gradient-dark: hsl(0 0% 6%);
+    --gradient-hero: hsl(30 80% 97%);
 
     /* Shadows */
     --shadow-sm: 0 1px 3px hsl(0 0% 0% / 0.08);
