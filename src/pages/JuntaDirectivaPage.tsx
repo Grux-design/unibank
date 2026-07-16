@@ -1,17 +1,5 @@
 import { Helmet } from "react-helmet-async";
 import { Target, Eye, Crown, Users2, Briefcase } from "@/lib/icons";
-import abdielAvatar from "@/assets/leadership/abdiel.jpg.asset.json";
-import alexisAvatar from "@/assets/leadership/alexis.jpg.asset.json";
-import ginivaAvatar from "@/assets/leadership/giniva.jpg.asset.json";
-import gustavoAvatar from "@/assets/leadership/gustavo.jpg.asset.json";
-import jahirAvatar from "@/assets/leadership/jahir.jpg.asset.json";
-import jazminAvatar from "@/assets/leadership/jazmin.jpg.asset.json";
-import johnAvatar from "@/assets/leadership/john.jpg.asset.json";
-import maricelAvatar from "@/assets/leadership/maricel.jpg.asset.json";
-import marielaAvatar from "@/assets/leadership/mariela.jpg.asset.json";
-import robertoAvatar from "@/assets/leadership/roberto.jpg.asset.json";
-
-
 
 interface Person {
   name: string;
@@ -19,7 +7,6 @@ interface Person {
   highlight?: boolean;
   avatar?: string;
 }
-
 
 const principales: Person[] = [
   { name: "Sion Cohen", role: "Director – Presidente", highlight: true },
@@ -38,16 +25,16 @@ const suplentes: Person[] = [
 ];
 
 const lideres: Person[] = [
-  { name: "John Rozo Uribe", role: "Gerente General", highlight: true, avatar: johnAvatar.url },
-  { name: "Mariela Arze", role: "VP de Tesorería, Instituciones y Alianzas Estratégicas", avatar: marielaAvatar.url },
-  { name: "Jazmín Pérez", role: "VP de Personas, Pasivos y Gestión Patrimonial", avatar: jazminAvatar.url },
-  { name: "Alexis Aizpurúa", role: "VP de Crecimiento de Negocios", avatar: alexisAvatar.url },
-  { name: "Maricel de González", role: "VP de Finanzas", avatar: maricelAvatar.url },
-  { name: "Abdiel Blanco", role: "VP de Asesoría Legal y Gobierno Corporativo", avatar: abdielAvatar.url },
-  { name: "Gustavo Valderrama", role: "VP de Riesgos", avatar: gustavoAvatar.url },
-  { name: "Roberto Alcedo", role: "VP de Tecnología y Operaciones", avatar: robertoAvatar.url },
-  { name: "Giniva Santamaría", role: "VP de Cumplimiento", avatar: ginivaAvatar.url },
-  { name: "Jahir Cervantes", role: "VP de Auditoría", avatar: jahirAvatar.url },
+  { name: "John Rozo Uribe", role: "Gerente General", highlight: true, avatar: "/images/leadership/john.jpg" },
+  { name: "Mariela Arze", role: "VP de Tesorería, Instituciones y Alianzas Estratégicas" },
+  { name: "Jazmín Pérez", role: "VP de Personas, Pasivos y Gestión Patrimonial", avatar: "/images/leadership/jazmin.jpg" },
+  { name: "Alexis Aizpurúa", role: "VP de Crecimiento de Negocios", avatar: "/images/leadership/alexis.jpg" },
+  { name: "Maricel de González", role: "VP de Finanzas", avatar: "/images/leadership/maricel.jpg" },
+  { name: "Abdiel Blanco", role: "VP de Asesoría Legal y Gobierno Corporativo", avatar: "/images/leadership/abdiel.jpg" },
+  { name: "Gustavo Valderrama", role: "VP de Riesgos", avatar: "/images/leadership/gustavo.jpg" },
+  { name: "Roberto Alcedo", role: "VP de Tecnología y Operaciones", avatar: "/images/leadership/roberto.jpg" },
+  { name: "Giniva Santamaría", role: "VP de Cumplimiento", avatar: "/images/leadership/giniva.jpg" },
+  { name: "Jahir Cervantes", role: "VP de Auditoría", avatar: "/images/leadership/jahir.jpg" },
 ];
 
 function getInitials(name: string) {
@@ -78,13 +65,13 @@ function PersonCard({ person, accent = false }: { person: Person; accent?: boole
           {person.avatar ? (
             <img
               src={person.avatar}
-              alt=""
+              alt={person.name}
               width={56}
               height={56}
               draggable={false}
               onContextMenu={(e) => e.preventDefault()}
               onDragStart={(e) => e.preventDefault()}
-              className="h-full w-full select-none object-cover pointer-events-none"
+              className="h-full w-full select-none object-cover object-top pointer-events-none"
               style={{ WebkitUserSelect: "none", WebkitTouchCallout: "none" }}
             />
           ) : (
