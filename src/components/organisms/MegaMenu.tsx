@@ -27,7 +27,7 @@ export function MegaMenu({ onClose }: MegaMenuProps) {
         boxShadow: "none",
       }}
     >
-      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 24px" }}>
+      <div className="site-container-nav">
         <MegaMenuTabBar activeTab={activeTab} onTabChange={setActiveTab} />
 
         <div style={{ borderTop: "1px solid #E8E4E0" }} />

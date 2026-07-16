@@ -42,10 +42,10 @@ export function HeroFormSection({ section }: Props) {
     <section
       style={{
         background: "hsl(var(--background))",
-        padding: "clamp(96px, 10vw, 120px) clamp(16px, 3.9vw, 72px) clamp(48px, 8vw, 96px)",
+        padding: "clamp(96px, 10vw, 120px) 16px clamp(48px, 8vw, 96px)",
       }}
     >
-      <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+      <div style={{ width: "100%" }}>
         {/* ── Breadcrumbs ── */}
         <nav aria-label="Breadcrumb" className="mb-8">
           <ol className="flex flex-wrap items-center gap-1 text-sm">

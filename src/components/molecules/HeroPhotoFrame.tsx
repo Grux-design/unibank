@@ -1,18 +1,26 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import type { Slide } from "@/data/heroSlides";
+import { HERO_LAYOUT } from "@/data/heroSlides";
 
 interface HeroPhotoFrameProps {
   slide: Slide;
+  isMobile?: boolean;
 }
 
-export function HeroPhotoFrame({ slide }: HeroPhotoFrameProps) {
+export function HeroPhotoFrame({ slide, isMobile = false }: HeroPhotoFrameProps) {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => { setLoaded(false); }, [slide.image]);
 
   return (
-    <div style={{ position: "relative", width: "100%", height: "100%", minHeight: 508, overflow: "visible" }}>
+    <div style={{
+      position: "relative",
+      width: "100%",
+      height: isMobile ? "100%" : "100%",
+      minHeight: isMobile ? 0 : HERO_LAYOUT.desktop.imageMinHeight,
+      overflow: isMobile ? "hidden" : "visible",
+    }}>
       <AnimatePresence mode="wait">
         <motion.div
           key={slide.id + "-img"}
@@ -25,7 +33,7 @@ export function HeroPhotoFrame({ slide }: HeroPhotoFrameProps) {
             inset: 0,
             display: "flex",
             alignItems: "center",
-            justifyContent: "center",
+            justifyContent: isMobile ? "center" : "flex-start",
           }}
         >
           <img
@@ -33,10 +41,10 @@ export function HeroPhotoFrame({ slide }: HeroPhotoFrameProps) {
             alt={slide.cardTitle}
             onLoad={() => setLoaded(true)}
             style={{
-              width: "100%",
-              height: "100%",
+              width: isMobile ? "100%" : "108%",
+              height: isMobile ? "100%" : "108%",
               objectFit: "contain",
-              objectPosition: "center center",
+              objectPosition: isMobile ? "center center" : "left center",
               opacity: loaded ? 1 : 0,
               transition: "opacity 600ms ease",
             }}

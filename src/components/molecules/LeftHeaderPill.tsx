@@ -2,19 +2,27 @@ import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import { Menu, X } from "lucide-react";
 import { Logo } from "@/components/atoms/Logo";
+import { HEADER_PILL } from "@/constants/headerPill";
 import type { Lang } from "@/components/layout/SiteLayout";
+import type { HeaderLayout } from "@/hooks/useHeaderLayout";
+
+const MENU_BUTTON_HEIGHT = 48;
 
 interface LeftHeaderPillProps {
   menuOpen: boolean;
   lang: Lang;
   onToggle: () => void;
+  layout?: HeaderLayout;
 }
 
 export function LeftHeaderPill({
   menuOpen,
   lang,
   onToggle,
+  layout = "full",
 }: LeftHeaderPillProps) {
+  const showPymeBadge = layout === "full";
+
   return (
     <div
       style={{
@@ -23,18 +31,23 @@ export function LeftHeaderPill({
         background: menuOpen ? "transparent" : "#ffffff",
         borderRadius: menuOpen ? 0 : 16,
         height: 66,
-        padding: "0 20px 0 8px",
-        gap: 20,
-        border: menuOpen ? "none" : "0.5px solid #E7E4E1",
+        padding: layout === "compact" ? "0 14px 0 8px" : "0 20px 0 8px",
+        gap: layout === "compact" ? 14 : 20,
+        border: menuOpen ? "0.5px solid transparent" : "0.5px solid #E7E4E1",
         boxShadow: menuOpen ? "none" : undefined,
         transition: "background 0.2s ease, border-radius 0.2s ease, border 0.2s ease",
+        flexShrink: 0,
+        minWidth: 0,
       }}
     >
-      {/* Hamburger button */}
       <button
-        onClick={onToggle}
+        onClick={(e) => {
+          onToggle();
+          e.currentTarget.blur();
+        }}
         aria-label={menuOpen ? (lang === "es" ? "Cerrar menú" : "Close menu") : (lang === "es" ? "Abrir menú" : "Open menu")}
         aria-expanded={menuOpen}
+        className="focus-visible:outline-none"
         style={{
           display: "flex",
           alignItems: "center",
@@ -54,7 +67,6 @@ export function LeftHeaderPill({
           if (!menuOpen) e.currentTarget.style.background = "#F7E8E0";
         }}
       >
-        {/* Animated icon swap */}
         <AnimatePresence mode="wait" initial={false}>
           {menuOpen ? (
             <motion.span
@@ -81,7 +93,6 @@ export function LeftHeaderPill({
           )}
         </AnimatePresence>
 
-        {/* Label */}
         <span
           style={{
             fontFamily: "Inter, sans-serif",
@@ -96,7 +107,6 @@ export function LeftHeaderPill({
         </span>
       </button>
 
-      {/* Logo */}
       <Link
         to="/"
         style={{
@@ -104,61 +114,63 @@ export function LeftHeaderPill({
           alignItems: "center",
           flexShrink: 0,
           textDecoration: "none",
+          height: HEADER_PILL.logoHeight,
+          lineHeight: 0,
         }}
         aria-label="UniBank – Inicio"
       >
-        <Logo variant="full-color" height={36} />
+        <Logo variant="full-color" height={HEADER_PILL.logoHeight} priority />
       </Link>
 
-      {/* Novedad link */}
-      <Link
-        to="/empresas/cuentas/mi-negocio"
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 8,
-          height: 40,
-          padding: "0 12px 0 8px",
-          borderRadius: 10,
-          background: "#F5F0FF",
-          border: "0.5px solid #E4D9FF",
-          textDecoration: "none",
-          flexShrink: 0,
-          transition: "background 0.15s ease",
-        }}
-        onMouseEnter={(e) => { e.currentTarget.style.background = "#ECE1FF"; }}
-        onMouseLeave={(e) => { e.currentTarget.style.background = "#F5F0FF"; }}
-      >
-        <span
+      {showPymeBadge && (
+        <Link
+          to="/empresas/cuentas/mi-negocio"
           style={{
-            fontFamily: "Inter, sans-serif",
-            fontWeight: 600,
-            fontSize: 10,
-            lineHeight: 1,
-            letterSpacing: 0.4,
-            textTransform: "uppercase",
-            color: "#ffffff",
-            background: "#801FFF",
-            padding: "4px 6px",
-            borderRadius: 6,
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            height: 40,
+            padding: "0 12px 0 8px",
+            borderRadius: 10,
+            background: "#F5F0FF",
+            border: "0.5px solid #E4D9FF",
+            textDecoration: "none",
+            flexShrink: 0,
+            transition: "background 0.15s ease",
           }}
+          onMouseEnter={(e) => { e.currentTarget.style.background = "#ECE1FF"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.background = "#F5F0FF"; }}
         >
-          {lang === "es" ? "Nuevo" : "New"}
-        </span>
-        <span
-          style={{
-            fontFamily: "Inter, sans-serif",
-            fontWeight: 500,
-            fontSize: 13,
-            lineHeight: "20px",
-            color: "#000000F5",
-            whiteSpace: "nowrap",
-          }}
-        >
-          {lang === "es" ? "Mi Negocio" : "My Business"}
-        </span>
-      </Link>
-
+          <span
+            style={{
+              fontFamily: "Inter, sans-serif",
+              fontWeight: 600,
+              fontSize: 10,
+              lineHeight: 1,
+              letterSpacing: 0.4,
+              textTransform: "uppercase",
+              color: "#ffffff",
+              background: "#801FFF",
+              padding: "4px 6px",
+              borderRadius: 6,
+            }}
+          >
+            {lang === "es" ? "Nuevo" : "New"}
+          </span>
+          <span
+            style={{
+              fontFamily: "Inter, sans-serif",
+              fontWeight: 500,
+              fontSize: 13,
+              lineHeight: "20px",
+              color: "#000000F5",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {lang === "es" ? "Mi Negocio" : "My Business"}
+          </span>
+        </Link>
+      )}
     </div>
   );
 }

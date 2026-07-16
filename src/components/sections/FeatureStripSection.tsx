@@ -12,10 +12,10 @@ export function FeatureStripSection({ section }: Props) {
     <section
       className="bg-orange-50 px-[80px] py-[80px]"
       style={{
-        padding: "clamp(48px, 7vw, 88px) clamp(16px, 3.9vw, 72px)",
+        padding: "clamp(48px, 7vw, 88px) 16px",
       }}
     >
-      <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+      <div style={{ width: "100%" }}>
         {/* Header */}
         {headline && (
           <h2

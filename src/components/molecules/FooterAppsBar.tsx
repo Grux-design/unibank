@@ -21,7 +21,7 @@ const playIcon = (
 export function FooterAppsBar() {
   return (
     <div style={{
-      maxWidth: 1200, margin: "0 auto",
+      width: "100%",
       display: "flex", alignItems: "center",
       justifyContent: "space-between", flexWrap: "wrap", gap: 16,
     }}>

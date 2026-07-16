@@ -2,19 +2,30 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { useNavigate } from "react-router-dom";
 import { Plus, X, ArrowRight } from "lucide-react";
+import type { HeaderLayout } from "@/hooks/useHeaderLayout";
 
 const options = [
   { label: "Cuenta de Ahorros", description: "Para personas Naturales", href: "/cuenta-ahorros"  },
   { label: "Cuenta Jurídica",   description: "Para empresas y Negocios", href: "/cuenta-juridica" },
 ];
 
-const CLOSED_W = 200;
-const OPEN_W   = 300;
+const OPEN_W = 300;
 
-export function AbreCuentaWidget() {
+const LAYOUT_STYLES: Record<HeaderLayout, { padding: string; closedW: number }> = {
+  full:    { padding: "0 16px", closedW: 200 },
+  compact: { padding: "0 12px", closedW: 192 },
+  mobile:  { padding: "0 10px", closedW: 186 },
+};
+
+interface AbreCuentaWidgetProps {
+  layout?: HeaderLayout;
+}
+
+export function AbreCuentaWidget({ layout = "full" }: AbreCuentaWidgetProps) {
   const [open, setOpen] = useState(false);
   const ref             = useRef<HTMLDivElement>(null);
   const navigate        = useNavigate();
+  const styles          = LAYOUT_STYLES[layout];
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -27,7 +38,7 @@ export function AbreCuentaWidget() {
   return (
     <motion.div
       ref={ref}
-      animate={{ width: open ? OPEN_W : CLOSED_W }}
+      animate={{ width: open ? OPEN_W : styles.closedW }}
       transition={{ duration: 0.38, ease: [0.4, 0, 0.2, 1] }}
       style={{ position: "relative", flexShrink: 0, height: 48 }}
     >
@@ -40,7 +51,7 @@ export function AbreCuentaWidget() {
           background: "hsl(var(--primary))", border: "none", borderRadius: 12,
           cursor: open ? "default" : "pointer", pointerEvents: open ? "none" : "auto",
           display: "flex", alignItems: "center", justifyContent: "space-between",
-          padding: "0 16px",
+          padding: styles.padding,
         }}
       >
         <span style={{ fontFamily: "Inter, sans-serif", fontWeight: 500, fontSize: 14, color: "#fff", whiteSpace: "nowrap" }}>

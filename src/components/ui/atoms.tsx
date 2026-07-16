@@ -154,7 +154,8 @@ export function BtnPrimary({
         textDecoration: "none",
         transition: "background 0.18s",
         cursor: "pointer",
-        width: fullWidth ? "100%" : undefined,
+        width: fullWidth ? "100%" : "fit-content",
+        alignSelf: fullWidth ? "stretch" : "flex-start",
         whiteSpace: "nowrap",
         border: "none",
       }}

@@ -19,8 +19,8 @@ export function FAQSection({ section }: Props) {
   const [openValue, setOpenValue] = useState<string | undefined>(undefined);
 
   return (
-    <section className="w-full bg-muted py-[80px] px-4 md:px-8">
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-10 md:gap-16">
+    <section className="w-full bg-muted py-[80px]">
+      <div className="site-container flex flex-col md:flex-row gap-10 md:gap-16">
         {/* Left column */}
         <div className="md:w-2/5">
           {section.title && (

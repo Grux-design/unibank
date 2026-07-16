@@ -59,6 +59,83 @@ const FEATURES = [
 
 const FEATURE_ICONS = [ArrowLeftRight, UserPlus, CreditCard];
 
+/** Shared spacing for desktop accordion + mobile feature cards */
+const FEATURE_BOX = {
+  paddingBlock: 24,
+  headerBodyGap: 16,
+  bodyGap: 16,
+  bodyOffsetLeft: 42,
+  mobileContentPadding: "24px 20px",
+} as const;
+
+const FEATURE_TAG_PILL_BASE: React.CSSProperties = {
+  display: "inline-flex",
+  alignItems: "center",
+  width: "max-content",
+  maxWidth: "max-content",
+  alignSelf: "flex-start",
+  whiteSpace: "nowrap",
+  flexShrink: 0,
+};
+
+const IMAGE_OVERLAY_STACK: React.CSSProperties = {
+  position: "absolute",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "flex-start",
+  width: "max-content",
+  maxWidth: "max-content",
+  gap: 8,
+  zIndex: 2,
+};
+
+function FeatureBoxBody({
+  feature,
+  indent = true,
+  showTag = true,
+}: {
+  feature: (typeof FEATURES)[0];
+  indent?: boolean;
+  showTag?: boolean;
+}) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "flex-start",
+        gap: FEATURE_BOX.bodyGap,
+        paddingLeft: indent ? FEATURE_BOX.bodyOffsetLeft : 0,
+      }}
+    >
+      {showTag && (
+        <span
+          style={{
+            ...FEATURE_TAG_PILL_BASE,
+            padding: "3px 10px",
+            borderRadius: 99,
+            background: "hsl(20 100% 95%)",
+            color: OR,
+            fontSize: 10,
+            fontWeight: 700,
+            letterSpacing: "0.1em",
+            textTransform: "uppercase",
+          }}
+        >
+          {feature.tag}
+        </span>
+      )}
+      <p style={{ margin: 0, fontSize: 14, color: SOFT, lineHeight: 1.65, maxWidth: 380 }}>
+        {feature.description}
+      </p>
+      <BtnPrimary href={feature.href}>
+        {feature.cta}
+        <ArrowRight size={13} strokeWidth={2.5} />
+      </BtnPrimary>
+    </div>
+  );
+}
+
 /* ── Ghost CTA button ───────────────────────────────────── */
 function CtaGhostBtn({
   href,
@@ -102,121 +179,92 @@ function FeatureRow({
   feature,
   index,
   isActive,
-  isMobile,
   onClick,
 }: {
   feature: (typeof FEATURES)[0];
   index: number;
   isActive: boolean;
-  isMobile: boolean;
   onClick: () => void;
 }) {
   const [hov, setHov] = useState(false);
   const Icon = FEATURE_ICONS[index];
 
   return (
-    <div
+    <article
       onClick={onClick}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
-      style={{ cursor: isActive ? "default" : "pointer" }}
+      style={{
+        borderTop: `${isActive ? 2 : 1}px solid ${isActive ? OR : BORDER}`,
+        paddingTop: FEATURE_BOX.paddingBlock,
+        paddingBottom: FEATURE_BOX.paddingBlock,
+        cursor: isActive ? "default" : "pointer",
+      }}
     >
-      {/* Top rule */}
       <div
         style={{
-          height: isActive ? 2 : 1,
-          background: isActive ? OR : BORDER,
-          marginBottom: 16,
-          transition: "background 0.25s, height 0.25s",
+          display: "flex",
+          flexDirection: "column",
+          gap: isActive ? FEATURE_BOX.headerBodyGap : 0,
         }}
-      />
-      {/* Number + icon + title row */}
-      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-        <span
-          style={{
-            fontSize: 11,
-            fontWeight: 700,
-            color: isActive ? OR : BORDER,
-            letterSpacing: "0.06em",
-            minWidth: 24,
-            transition: "color 0.25s",
-          }}
-        >
-          {String(index + 1).padStart(2, "0")}
-        </span>
-        <span
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            width: 30,
-            height: 30,
-            borderRadius: 8,
-            background: isActive ? OR : "rgba(31,30,30,0.06)",
-            transition: "background 0.25s",
-            flexShrink: 0,
-          }}
-        >
-          <Icon size={15} strokeWidth={1.5} color={isActive ? "#fff" : SOFT} />
-        </span>
-        <span
-          style={{
-            fontSize: 16,
-            fontWeight: 700,
-            color: isActive ? DARK : hov ? DARK : "rgba(31,30,30,0.45)",
-            letterSpacing: "-0.01em",
-            transition: "color 0.25s",
-          }}
-        >
-          {feature.title}
-        </span>
-      </div>
-
-      {/* Expanded content */}
-      <AnimatePresence>
-        {isActive && (
-          <motion.div
-            key={`exp-${index}`}
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.32, ease: "easeOut" }}
-            style={{ overflow: "hidden" }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <span
+            style={{
+              fontSize: 11,
+              fontWeight: 700,
+              color: isActive ? OR : BORDER,
+              letterSpacing: "0.06em",
+              minWidth: 24,
+              transition: "color 0.25s",
+            }}
           >
-            <div style={{ paddingLeft: 42, marginTop: 18, display: "flex", flexDirection: "column", gap: 16 }}>
-              {/* Tag pill */}
-              <span
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  padding: "3px 10px",
-                  borderRadius: 99,
-                  background: "hsl(20 100% 95%)",
-                  color: OR,
-                  fontSize: 10,
-                  fontWeight: 700,
-                  letterSpacing: "0.1em",
-                  textTransform: "uppercase",
-                  width: "fit-content",
-                }}
-              >
-                {feature.tag}
-              </span>
-              <p style={{ margin: 0, fontSize: 14, color: SOFT, lineHeight: 1.65, maxWidth: 380 }}>
-                {feature.description}
-              </p>
-              <BtnPrimary href={feature.href}>
-                {feature.cta}
-                <ArrowRight size={13} strokeWidth={2.5} />
-              </BtnPrimary>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            {String(index + 1).padStart(2, "0")}
+          </span>
+          <span
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: 30,
+              height: 30,
+              borderRadius: 8,
+              background: isActive ? OR : "rgba(31,30,30,0.06)",
+              transition: "background 0.25s",
+              flexShrink: 0,
+            }}
+          >
+            <Icon size={15} strokeWidth={1.5} color={isActive ? "#fff" : SOFT} />
+          </span>
+          <span
+            style={{
+              fontSize: 16,
+              fontWeight: 700,
+              color: isActive ? DARK : hov ? DARK : "rgba(31,30,30,0.45)",
+              letterSpacing: "-0.01em",
+              transition: "color 0.25s",
+            }}
+          >
+            {feature.title}
+          </span>
+        </div>
 
-      {/* Bottom spacer */}
-      <div style={{ height: 20 }} />
-    </div>
+        <AnimatePresence initial={false}>
+          {isActive && (
+            <motion.div
+              key={`exp-${index}`}
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.32, ease: "easeOut" }}
+              style={{ overflow: "hidden", display: "flex", flexDirection: "column", alignItems: "flex-start" }}
+            >
+              <FeatureBoxBody feature={feature} />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </article>
   );
 }
 
@@ -273,7 +321,13 @@ function MobileFeatureCarousel({ features }: { features: typeof FEATURES }) {
             background: "linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 50%)",
           }}
         />
-        <div style={{ position: "absolute", bottom: 16, left: 16, display: "flex", flexDirection: "column", gap: 8 }}>
+        <div
+          style={{
+            ...IMAGE_OVERLAY_STACK,
+            bottom: 16,
+            left: 16,
+          }}
+        >
           <span
             style={{
               fontSize: 10,
@@ -293,8 +347,7 @@ function MobileFeatureCarousel({ features }: { features: typeof FEATURES }) {
               exit={{ opacity: 0, y: -5 }}
               transition={{ duration: 0.22 }}
               style={{
-                display: "inline-flex",
-                alignItems: "center",
+                ...FEATURE_TAG_PILL_BASE,
                 padding: "3px 10px",
                 borderRadius: 99,
                 background: "rgba(255,255,255,0.12)",
@@ -304,7 +357,6 @@ function MobileFeatureCarousel({ features }: { features: typeof FEATURES }) {
                 color: "rgba(255,255,255,0.92)",
                 letterSpacing: "0.1em",
                 textTransform: "uppercase",
-                width: "fit-content",
               }}
             >
               {feature.tag}
@@ -314,7 +366,7 @@ function MobileFeatureCarousel({ features }: { features: typeof FEATURES }) {
       </div>
 
       {/* Content */}
-      <div style={{ background: "#fff", padding: "20px 20px 24px" }}>
+      <div style={{ background: "#fff", padding: FEATURE_BOX.mobileContentPadding }}>
         <AnimatePresence mode="wait">
           <motion.div
             key={`mob-content-${activeIndex}`}
@@ -322,10 +374,11 @@ function MobileFeatureCarousel({ features }: { features: typeof FEATURES }) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.28 }}
+            style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: FEATURE_BOX.headerBodyGap }}
           >
             <h4
               style={{
-                margin: "0 0 8px",
+                margin: 0,
                 fontSize: 20,
                 fontWeight: 800,
                 color: DARK,
@@ -334,12 +387,7 @@ function MobileFeatureCarousel({ features }: { features: typeof FEATURES }) {
             >
               {feature.title}
             </h4>
-            <p style={{ margin: "0 0 16px", fontSize: 14, color: SOFT, lineHeight: 1.65 }}>
-              {feature.description}
-            </p>
-            <BtnPrimary href={feature.href}>
-              {feature.cta}
-            </BtnPrimary>
+            <FeatureBoxBody feature={feature} indent={false} showTag={false} />
           </motion.div>
         </AnimatePresence>
 
@@ -448,14 +496,13 @@ function StickyScrollFeatures({ features }: { features: typeof FEATURES }) {
         }}
       >
         {/* Left: accordion list */}
-        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
+        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", height: "100%" }}>
           {features.map((f, i) => (
             <FeatureRow
               key={f.id}
               feature={f}
               index={i}
               isActive={i === activeIndex}
-              isMobile={false}
               onClick={() => setActiveIndex(i)}
             />
           ))}
@@ -484,13 +531,9 @@ function StickyScrollFeatures({ features }: { features: typeof FEATURES }) {
           {/* Overlay label */}
           <div
             style={{
-              position: "absolute",
+              ...IMAGE_OVERLAY_STACK,
               top: 20,
               left: 20,
-              display: "flex",
-              flexDirection: "column",
-              gap: 8,
-              zIndex: 2,
             }}
           >
             <span
@@ -512,8 +555,7 @@ function StickyScrollFeatures({ features }: { features: typeof FEATURES }) {
                 exit={{ opacity: 0, y: -4 }}
                 transition={{ duration: 0.25 }}
                 style={{
-                  display: "inline-flex",
-                  alignItems: "center",
+                  ...FEATURE_TAG_PILL_BASE,
                   padding: "4px 12px",
                   borderRadius: 99,
                   background: "rgba(255,255,255,0.12)",
@@ -523,7 +565,6 @@ function StickyScrollFeatures({ features }: { features: typeof FEATURES }) {
                   color: "rgba(255,255,255,0.9)",
                   letterSpacing: "0.1em",
                   textTransform: "uppercase",
-                  width: "fit-content",
                 }}
               >
                 {features[activeIndex].tag}
@@ -539,13 +580,12 @@ function StickyScrollFeatures({ features }: { features: typeof FEATURES }) {
 /* ── DigitalBanking (export) ────────────────────────────── */
 export function DigitalBanking() {
   const isMobile = useIsMobile();
-  const px = isMobile ? 16 : "clamp(16px, 3.9vw, 72px)";
   const headRef = useRef<HTMLDivElement>(null);
   const headInView = useInView(headRef, { once: true, margin: "0px 0px -80px 0px" });
 
   return (
     <section style={{ background: "#fff" }}>
-      <div style={{ maxWidth: "min(98vw, 1411px)", margin: "0 auto", paddingLeft: px, paddingRight: px }}>
+      <div className="site-container">
         {/* Section heading */}
         <motion.div
           ref={headRef}

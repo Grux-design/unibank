@@ -5,6 +5,7 @@ import { Globe, ChevronDown, Check } from "lucide-react";
 interface LanguageWidgetProps {
   lang:         "es" | "en";
   onLangChange: (code: "es" | "en") => void;
+  variant?:     "full" | "compact" | "icon";
 }
 
 const languages = [
@@ -12,7 +13,7 @@ const languages = [
   { code: "en" as const, label: "English" },
 ];
 
-export function LanguageWidget({ lang, onLangChange }: LanguageWidgetProps) {
+export function LanguageWidget({ lang, onLangChange, variant = "full" }: LanguageWidgetProps) {
   const [open,    setOpen]    = useState(false);
   const [hovered, setHovered] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -32,8 +33,10 @@ export function LanguageWidget({ lang, onLangChange }: LanguageWidgetProps) {
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         style={{
-          display: "flex", alignItems: "center", gap: 6,
-          height: 48, padding: "0 14px",
+          display: "flex", alignItems: "center", gap: variant === "icon" ? 0 : 6,
+          height: 48, padding: variant === "icon" ? 0 : "0 14px",
+          width: variant === "icon" ? 48 : undefined,
+          justifyContent: variant === "icon" ? "center" : undefined,
           background: hovered && !open ? "#FAFAFA" : "transparent",
           border: open ? "2px solid hsl(var(--primary))" : hovered ? "1px solid #D6D1CC" : "1px solid #E8E4E0",
           borderRadius: 12, cursor: "pointer",
@@ -43,11 +46,15 @@ export function LanguageWidget({ lang, onLangChange }: LanguageWidgetProps) {
         }}
       >
         <Globe size={15} color="#484746" strokeWidth={1.8} />
-        <span style={{ letterSpacing: "0.02em" }}>{lang === "es" ? "ES" : "EN"}</span>
-        <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.16 }}
-          style={{ display: "flex", alignItems: "center" }}>
-          <ChevronDown size={13} color="#908E8D" strokeWidth={2.5} />
-        </motion.span>
+        {variant !== "icon" && (
+          <span style={{ letterSpacing: "0.02em" }}>{lang === "es" ? "ES" : "EN"}</span>
+        )}
+        {variant === "full" && (
+          <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.16 }}
+            style={{ display: "flex", alignItems: "center" }}>
+            <ChevronDown size={13} color="#908E8D" strokeWidth={2.5} />
+          </motion.span>
+        )}
       </button>
 
       <AnimatePresence>

@@ -2,19 +2,30 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { useNavigate } from "react-router-dom";
 import { Lock, X, User, Building2, ArrowRight } from "lucide-react";
+import type { HeaderLayout } from "@/hooks/useHeaderLayout";
 
 const options = [
   { label: "Personas", href: "/login", icon: <User     size={15} color="#484746" /> },
   { label: "Empresas", href: "/login", icon: <Building2 size={15} color="#484746" /> },
 ];
 
-const CLOSED_W = 166;
-const OPEN_W   = 280;
+const OPEN_W = 280;
 
-export function BancaEnLineaWidget() {
+const LAYOUT_STYLES: Record<HeaderLayout, { gap: number; padding: string; closedW: number }> = {
+  full:    { gap: 8, padding: "0 14px", closedW: 166 },
+  compact: { gap: 5, padding: "0 10px", closedW: 158 },
+  mobile:  { gap: 4, padding: "0 8px",  closedW: 152 },
+};
+
+interface BancaEnLineaWidgetProps {
+  layout?: HeaderLayout;
+}
+
+export function BancaEnLineaWidget({ layout = "full" }: BancaEnLineaWidgetProps) {
   const [open, setOpen] = useState(false);
   const ref             = useRef<HTMLDivElement>(null);
   const navigate        = useNavigate();
+  const styles          = LAYOUT_STYLES[layout];
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -27,7 +38,7 @@ export function BancaEnLineaWidget() {
   return (
     <motion.div
       ref={ref}
-      animate={{ width: open ? OPEN_W : CLOSED_W }}
+      animate={{ width: open ? OPEN_W : styles.closedW }}
       transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
       style={{ position: "relative", flexShrink: 0, height: 48 }}
     >
@@ -39,7 +50,8 @@ export function BancaEnLineaWidget() {
           position: "absolute", inset: 0, width: "100%", height: "100%",
           background: "#F2EFED", border: "none", borderRadius: 12,
           cursor: open ? "default" : "pointer", pointerEvents: open ? "none" : "auto",
-          display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          gap: styles.gap, padding: styles.padding,
           fontFamily: "Inter, sans-serif", fontWeight: 500, fontSize: 14, color: "#484746",
           whiteSpace: "nowrap",
         }}

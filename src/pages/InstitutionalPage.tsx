@@ -16,7 +16,7 @@ export default function InstitutionalPage() {
       </Helmet>
 
       <section className="bg-muted/30 py-20 md:py-28">
-        <div className="container mx-auto px-6 max-w-4xl">
+        <div className="site-container">
           <h1 className="text-4xl md:text-5xl font-bold text-foreground tracking-tight">
             {page.title}
           </h1>

@@ -1,9 +1,45 @@
 // ─── DESIGN TOKENS ────────────────────────────────────────────
 export const SLIDE_DURATION = 6000;
 
+import { CTA_BUTTON_SIZE } from "@/constants/ctaButtons";
+
+/** Shared sizing for hero CTA buttons across all slides */
+export const HERO_CTA_BUTTON = {
+  height:       CTA_BUTTON_SIZE.height,
+  minHeight:    CTA_BUTTON_SIZE.minHeight,
+  padding:      `0 ${CTA_BUTTON_SIZE.paddingX}px`,
+  fontSize:     CTA_BUTTON_SIZE.fontSize,
+  fontWeight:   CTA_BUTTON_SIZE.fontWeight,
+  lineHeight:   CTA_BUTTON_SIZE.lineHeight,
+  borderRadius: CTA_BUTTON_SIZE.borderRadius,
+  borderWidth:  1.5,
+} as const;
+
+/** Responsive hero layout — mobile measured against unibank-design.figma.site */
+export const HERO_LAYOUT = {
+  desktop: {
+    sectionPaddingTop: 90,
+    sectionPaddingBottom: 32,
+    cardMinHeight: 620,
+    innerMinHeight: 560,
+    imageMinHeight: 560,
+  },
+  mobile: {
+    sectionPaddingTop: 16,
+    sectionPaddingBottom: 16,
+    cardHeight: "98vh",
+    imageFlexBasis: "40%",
+    imagePadding: 16,
+    imagePaddingTop: 64,
+    contentPadding: "20px 20px 4px",
+    contentGap: 16,
+    controlsPadding: "12px 20px 16px",
+  },
+} as const;
+
 export const THEME = {
   cardBg:                  "#F2EFED",
-  hasPattern:              true,
+  hasPattern:              false,
   eyebrowColor:            "#726F6E",
   headlineColor:           "#1F1E1E",
   highlightColor:          "#FF8136",
@@ -15,6 +51,8 @@ export const THEME = {
   primaryBtnHoverBg:       "#CE4D00",
   secondaryBtnBg:          "#FFFFFF",
   secondaryBtnColor:       "#1F1E1E",
+  secondaryBtnHoverBg:     "#F7E8E0",
+  secondaryBtnActiveBg:    "#F0D4C4",
   secondaryBtnBorder:      "#E7E4E1",
   secondaryBtnHoverBorder: "#CAC6C3",
   arrowBtnBg:              "rgba(255,129,54,0.12)",
@@ -32,6 +70,7 @@ export const THEME = {
 
 // ─── TYPES ────────────────────────────────────────────────────
 export interface HeadlinePart { text: string; highlight: boolean }
+
 export interface Slide {
   id:        string;
   tag:       string;
@@ -54,7 +93,7 @@ export const slides: Slide[] = [
     tag:       "Personas",
     eyebrow:   "¡Aprobación en minutos!",
     headline:  [
-      { text: "El préstamo\ndigital para tu\n", highlight: false },
+      { text: "El préstamo digital para tu ", highlight: false },
       { text: "próximo auto.",                   highlight: true  },
     ],
     body:      "Cotiza tu Préstamo de Auto donde estés, de la manera más fácil y rápida. ¡Conoce tu letra mensual ahora!",
@@ -71,8 +110,8 @@ export const slides: Slide[] = [
     eyebrow:   "Banca sin saldo mínimo",
     headline:  [
       { text: "Tus ",           highlight: false },
-      { text: "ahorros\n",      highlight: true  },
-      { text: "trabajando\npara ti.", highlight: false },
+      { text: "ahorros ",      highlight: true  },
+      { text: "trabajando para ti.", highlight: false },
     ],
     body:      "Sin saldo mínimo ni filas.",
     cta:       "Abre tu cuenta",
@@ -87,9 +126,8 @@ export const slides: Slide[] = [
     tag:       "Empresas",
     eyebrow:   "Para tu empresa",
     headline:  [
-      { text: "Moderniza sin\n", highlight: false },
-      { text: "tocar\n",          highlight: true  },
-      { text: "tu capital.",      highlight: false },
+      { text: "Moderniza sin tocar ", highlight: false },
+      { text: "tu capital.",          highlight: true  },
     ],
     body:      "Equipos, vehículos y tecnología con deducción fiscal real, adaptado a tu flujo de caja.",
     cta:       "Solicitar Leasing",
@@ -105,9 +143,8 @@ export const slides: Slide[] = [
     tag:       "Personas",
     eyebrow:   "Tu hogar, tu sueño",
     headline:  [
-      { text: "El hogar que\n", highlight: false },
-      { text: "soñaste,\n",      highlight: true  },
-      { text: "financiado.",     highlight: false },
+      { text: "El hogar que soñaste, ", highlight: false },
+      { text: "financiado.",            highlight: true  },
     ],
     body:      "Tasas competitivas, hasta 30 años de plazo. Asesor dedicado desde el día uno.",
     cta:       "Solicitar hipoteca",

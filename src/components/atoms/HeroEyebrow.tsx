@@ -6,10 +6,9 @@ export function HeroEyebrow({ text }: HeroEyebrowProps) {
   return (
     <span
       style={{
-        fontSize:       12,
-        fontWeight:     600,
-        letterSpacing:  "0.08em",
-        textTransform:  "uppercase",
+        fontSize:       14,
+        fontWeight:     500,
+        letterSpacing:  "0.01em",
         color:          THEME.eyebrowColor,
       }}
     >

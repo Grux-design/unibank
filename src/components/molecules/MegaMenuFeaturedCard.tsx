@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { HeroCtaButton } from "@/components/atoms/HeroCtaButton";
 import type { MenuSection } from "@/data/megaMenuData";
 
 interface MegaMenuFeaturedCardProps {
@@ -67,22 +67,16 @@ export function MegaMenuFeaturedCard({ data, isPersonas, onClose }: MegaMenuFeat
 
         <div style={{ flex: 1 }} />
 
-        <Link
-          to={featuredHref}
-          onClick={onClose}
-          style={{
-            marginTop: 16, display: "block", textAlign: "center",
-            padding: "12px 14px", borderRadius: 12,
-            background: "#FFE8DA",
-            color: "#FF8136", fontFamily: "Inter, sans-serif", fontSize: 14, fontWeight: 600,
-            textDecoration: "none",
-            transition: "background 0.14s",
-          }}
-          onMouseEnter={e => { e.currentTarget.style.background = "#FFD9C4"; }}
-          onMouseLeave={e => { e.currentTarget.style.background = "#FFE8DA"; }}
-        >
-          {data.featured.ctaLabel}
-        </Link>
+        <div style={{ marginTop: 16 }}>
+          <HeroCtaButton
+            to={featuredHref}
+            variant="secondary"
+            fullWidth
+            onClick={onClose}
+          >
+            {data.featured.ctaLabel}
+          </HeroCtaButton>
+        </div>
       </div>
     </div>
   );

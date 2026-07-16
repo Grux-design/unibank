@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { TrendingUp, Home, ArrowRight, Plus, Car } from "lucide-react";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { SectionTag, SectionHeading } from "@/components/ui/atoms";
+import { CTA_BUTTON_COLORS, CTA_BUTTON_SIZE } from "@/constants/ctaButtons";
 
 const CUENTA_AHORROS_ROUTE = "/personas/cuentas/cuenta-de-ahorros";
 
@@ -48,7 +49,7 @@ const viviendaData = {
 };
 
 /* ── Sub-components ─────────────────────────────────────── */
-type ProductButtonVariant = "primary" | "onOrangeSolid" | "onOrangeOutline";
+type ProductButtonVariant = "primary" | "onOrangeSolid" | "onOrangeOutline" | "onLightSolid";
 
 interface ProductButtonProps {
   children: React.ReactNode;
@@ -60,49 +61,68 @@ interface ProductButtonProps {
 
 function ProductButton({ children, variant = "primary", fullWidth, href, onClick }: ProductButtonProps) {
   const [hov, setHov] = useState(false);
+  const [pressed, setPressed] = useState(false);
 
   const palette: Record<ProductButtonVariant, {
-    bg: string; bgHover: string; color: string; border: string; borderHover: string;
+    bg: string; bgHover: string; bgActive: string; color: string; border: string; borderHover: string;
   }> = {
     primary: {
-      bg: OR, bgHover: "hsl(20 100% 45%)", color: "#FBF4F0",
+      bg: CTA_BUTTON_COLORS.primary.bg,
+      bgHover: CTA_BUTTON_COLORS.primary.bgHover,
+      bgActive: CTA_BUTTON_COLORS.primary.bgHover,
+      color: CTA_BUTTON_COLORS.primary.color,
+      border: "none", borderHover: "none",
+    },
+    onLightSolid: {
+      bg: CTA_BUTTON_COLORS.lightSolid.bg,
+      bgHover: CTA_BUTTON_COLORS.lightSolid.bgHover,
+      bgActive: CTA_BUTTON_COLORS.lightSolid.bgActive,
+      color: CTA_BUTTON_COLORS.lightSolid.color,
       border: "none", borderHover: "none",
     },
     onOrangeSolid: {
-      bg: "#F7E8E0", bgHover: "#FFFFFF", color: "#FF8136",
+      bg: CTA_BUTTON_COLORS.onOrangeSolid.bg,
+      bgHover: CTA_BUTTON_COLORS.onOrangeSolid.bgHover,
+      bgActive: CTA_BUTTON_COLORS.onOrangeSolid.bgActive,
+      color: CTA_BUTTON_COLORS.onOrangeSolid.color,
       border: "none", borderHover: "none",
     },
     onOrangeOutline: {
-      bg: "transparent", bgHover: "transparent", color: "#F7E8E0",
+      bg: "transparent", bgHover: "transparent", bgActive: "transparent", color: "#F7E8E0",
       border: "2px solid rgba(247,232,224,0.7)", borderHover: "2px solid #fff",
     },
   };
   const p = palette[variant];
+  const bg = pressed ? p.bgActive : hov ? p.bgHover : p.bg;
 
   const style: React.CSSProperties = {
     display: "inline-flex",
     alignItems: "center",
     justifyContent: "center",
     gap: 8,
-    padding: variant === "primary" ? "15px 28px" : undefined,
-    height: variant === "primary" ? undefined : 52,
-    borderRadius: 12,
+    padding: variant === "primary" ? CTA_BUTTON_SIZE.paddingPrimary : `0 ${CTA_BUTTON_SIZE.paddingX}px`,
+    height: variant === "primary" ? undefined : CTA_BUTTON_SIZE.height,
+    minHeight: variant === "primary" ? undefined : CTA_BUTTON_SIZE.minHeight,
+    borderRadius: CTA_BUTTON_SIZE.borderRadius,
     border: hov ? p.borderHover : p.border,
-    background: hov ? p.bgHover : p.bg,
+    background: bg,
     color: p.color,
-    fontSize: 14,
-    fontWeight: 600,
-    letterSpacing: "0.004em",
+    fontSize: CTA_BUTTON_SIZE.fontSize,
+    fontWeight: CTA_BUTTON_SIZE.fontWeight,
+    lineHeight: CTA_BUTTON_SIZE.lineHeight,
     cursor: "pointer",
     transition: "background 0.18s, border-color 0.18s, color 0.18s",
     width: fullWidth ? "100%" : undefined,
     whiteSpace: "nowrap",
     textDecoration: "none",
+    boxSizing: "border-box",
   };
 
   const handlers = {
     onMouseEnter: () => setHov(true),
-    onMouseLeave: () => setHov(false),
+    onMouseLeave: () => { setHov(false); setPressed(false); },
+    onMouseDown: () => setPressed(true),
+    onMouseUp: () => setPressed(false),
   };
 
   if (href) {
@@ -627,11 +647,10 @@ function BentoMobileStack() {
 /* ── ProductsSection (export) ───────────────────────────── */
 export function ProductsSection() {
   const isMobile = useIsMobile();
-  const px = isMobile ? 16 : "clamp(16px, 3.9vw, 72px)";
 
   return (
     <section style={{ background: "#fff", paddingTop: 40, paddingBottom: 64 }}>
-      <div style={{ maxWidth: "min(98vw, 1411px)", margin: "0 auto", paddingLeft: px, paddingRight: px }}>
+      <div className="site-container">
         <SectionHeading
           tag="Banca para Personas"
           headline={<>Protegemos y multiplicamos<br />lo que más valoras</>}
