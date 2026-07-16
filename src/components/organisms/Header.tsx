@@ -74,7 +74,7 @@ export function Header({ lang, onToggleLang }: HeaderProps) {
         ref={headerRef}
         className="relative sticky top-0 z-50"
         style={{
-          paddingTop: 10,
+          paddingTop: isMobile ? "max(10px, env(safe-area-inset-top, 0px))" : 10,
           background: menuChromeOpen && !isMobile ? "#ffffff" : "transparent",
           borderBottom: "1px solid transparent",
           boxShadow: menuChromeOpen && !isMobile ? "none" : undefined,
