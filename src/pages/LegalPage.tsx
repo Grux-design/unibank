@@ -16,16 +16,16 @@ const SLUG_MAP: Record<string, string> = {
 const richTextOptions = {
   renderNode: {
     [BLOCKS.HEADING_1]: (_node: unknown, children: React.ReactNode) => (
-      <h1 className="text-3xl font-bold mt-10 mb-4">{children}</h1>
+      <h1 className="text-2xl md:text-3xl font-bold mt-10 mb-4">{children}</h1>
     ),
     [BLOCKS.HEADING_2]: (_node: unknown, children: React.ReactNode) => (
-      <h2 className="text-2xl font-semibold mt-8 mb-3">{children}</h2>
+      <h2 className="text-xl md:text-2xl font-semibold mt-8 mb-3">{children}</h2>
     ),
     [BLOCKS.HEADING_3]: (_node: unknown, children: React.ReactNode) => (
-      <h3 className="text-xl font-semibold mt-6 mb-2">{children}</h3>
+      <h3 className="text-lg md:text-xl font-semibold mt-6 mb-2">{children}</h3>
     ),
     [BLOCKS.PARAGRAPH]: (_node: unknown, children: React.ReactNode) => (
-      <p className="mb-4 leading-relaxed text-muted-foreground">{children}</p>
+      <p className="mb-4 text-sm md:text-base leading-relaxed text-muted-foreground">{children}</p>
     ),
     [BLOCKS.UL_LIST]: (_node: unknown, children: React.ReactNode) => (
       <ul className="list-disc pl-6 mb-4 space-y-1 text-muted-foreground">{children}</ul>
@@ -59,7 +59,7 @@ export default function LegalPage() {
 
   if (isLoading) {
     return (
-      <div className="max-w-3xl mx-auto px-6 py-24">
+      <div className="site-container max-w-3xl py-12 md:py-20">
         <Skeleton className="h-10 w-2/3 mb-8" />
         <Skeleton className="h-4 w-full mb-3" />
         <Skeleton className="h-4 w-full mb-3" />
@@ -72,8 +72,8 @@ export default function LegalPage() {
 
   if (error || !page) {
     return (
-      <div className="max-w-3xl mx-auto px-6 py-24 text-center">
-        <h1 className="text-2xl font-bold mb-4">Página no encontrada</h1>
+      <div className="site-container max-w-3xl py-12 md:py-20 text-center">
+        <h1 className="text-xl md:text-2xl font-bold mb-4">Página no encontrada</h1>
         <p className="text-muted-foreground">No pudimos cargar esta página. Intenta de nuevo más tarde.</p>
       </div>
     );
@@ -94,9 +94,9 @@ export default function LegalPage() {
 
       <article className="min-h-screen">
         {/* Title hero section */}
-        <div className="bg-muted/30 border-b border-border">
-          <div className="site-container py-20 text-center">
-            <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-foreground">
+        <div className="bg-muted/30 border-b border-border pt-20 pb-10 md:pt-28 md:pb-16 lg:pt-32">
+          <div className="site-container text-center">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-foreground">
               {displayTitle}
             </h1>
           </div>
@@ -104,8 +104,8 @@ export default function LegalPage() {
 
         {/* Content section */}
         {content && !isTerminos && (
-          <div className="bg-background">
-            <div className="max-w-3xl mx-auto px-6 py-16">
+          <div className="bg-background py-12 md:py-20">
+            <div className="site-container max-w-3xl">
               <div className="prose prose-neutral max-w-none">
                 {documentToReactComponents(content, richTextOptions)}
               </div>

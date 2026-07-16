@@ -44,7 +44,7 @@ function buildRichTextOptions(assetMap: Map<string, ContentfulAsset>): Options {
     },
     renderNode: {
       [BLOCKS.PARAGRAPH]: (_node, children) => (
-        <p className="text-lg leading-relaxed text-foreground/90 mb-6">{children}</p>
+        <p className="text-base md:text-lg leading-relaxed text-foreground/90 mb-6">{children}</p>
       ),
       [BLOCKS.HEADING_1]: (_n, c) => (
         <h1 className="text-3xl md:text-4xl font-extrabold text-foreground mt-12 mb-5 tracking-tight">{c}</h1>
@@ -59,14 +59,14 @@ function buildRichTextOptions(assetMap: Map<string, ContentfulAsset>): Options {
         <h4 className="text-lg md:text-xl font-semibold text-foreground mt-8 mb-2">{c}</h4>
       ),
       [BLOCKS.UL_LIST]: (_n, c) => (
-        <ul className="list-disc pl-6 mb-6 space-y-2 text-lg text-foreground/90">{c}</ul>
+        <ul className="list-disc pl-6 mb-6 space-y-2 text-base md:text-lg text-foreground/90">{c}</ul>
       ),
       [BLOCKS.OL_LIST]: (_n, c) => (
-        <ol className="list-decimal pl-6 mb-6 space-y-2 text-lg text-foreground/90">{c}</ol>
+        <ol className="list-decimal pl-6 mb-6 space-y-2 text-base md:text-lg text-foreground/90">{c}</ol>
       ),
       [BLOCKS.LIST_ITEM]: (_n, c) => <li className="leading-relaxed">{c}</li>,
       [BLOCKS.QUOTE]: (_n, c) => (
-        <blockquote className="border-l-4 border-primary pl-6 my-8 italic text-xl text-foreground/80">
+        <blockquote className="border-l-4 border-primary pl-4 md:pl-6 my-8 italic text-lg md:text-xl text-foreground/80">
           {c}
         </blockquote>
       ),
@@ -81,7 +81,7 @@ function buildRichTextOptions(assetMap: Map<string, ContentfulAsset>): Options {
         if (!isImage) return null;
         const caption = asset?.fields?.description || asset?.fields?.title;
         return (
-          <figure className="my-10 -mx-2 md:-mx-8">
+          <figure className="my-8 md:my-10 -mx-0 sm:-mx-2 md:-mx-8">
             <img
               src={url}
               alt={asset?.fields?.title || ""}
@@ -142,8 +142,8 @@ export default function BlogPostPage() {
   if (isLoading) {
     return (
       <article className="min-h-screen">
-        <Skeleton className="w-full h-[420px] md:h-[520px]" />
-        <div className="max-w-2xl mx-auto px-6 py-16 space-y-4">
+        <Skeleton className="w-full h-[320px] md:h-[420px] lg:h-[520px]" />
+        <div className="site-container max-w-2xl py-12 md:py-16 space-y-4">
           <Skeleton className="h-6 w-32" />
           <Skeleton className="h-4 w-full" />
           <Skeleton className="h-4 w-full" />
@@ -157,8 +157,8 @@ export default function BlogPostPage() {
 
   if (isError || !data?.post) {
     return (
-      <article className="min-h-screen flex items-center justify-center px-6">
-        <div className="text-center">
+      <article className="min-h-screen flex items-center justify-center py-20">
+        <div className="site-container max-w-md text-center">
           <h1 className="text-2xl font-bold text-foreground">Artículo no encontrado</h1>
           <p className="mt-2 text-muted-foreground">
             El artículo que buscas no existe o fue removido.
@@ -196,7 +196,7 @@ export default function BlogPostPage() {
 
       <article className="min-h-screen bg-background">
         {/* Hero */}
-        <header className="relative w-full h-[420px] md:h-[520px] bg-muted overflow-hidden">
+        <header className="relative w-full h-[320px] sm:h-[380px] md:h-[480px] lg:h-[520px] bg-muted overflow-hidden">
           {heroUrl ? (
             <img
               src={heroUrl}
@@ -208,10 +208,10 @@ export default function BlogPostPage() {
             <div className="absolute inset-0 bg-primary/10" />
           )}
           <div className="absolute inset-0 bg-black/55" />
-          <div className="relative h-full max-w-3xl mx-auto px-6 pb-12 md:pb-16 flex flex-col justify-end">
+          <div className="relative h-full site-container max-w-3xl pb-10 md:pb-16 flex flex-col justify-end">
             <Link
               to={backHref}
-              className="inline-flex items-center gap-2 text-sm text-white/90 hover:text-white mb-6 w-fit"
+              className="inline-flex items-center gap-2 text-sm text-white/90 hover:text-white mb-4 md:mb-6 w-fit"
             >
               <ChevronLeft className="w-4 h-4" /> Volver al blog
             </Link>
@@ -220,11 +220,11 @@ export default function BlogPostPage() {
                 {post.category}
               </Badge>
             )}
-            <h1 className="text-3xl md:text-5xl font-extrabold text-white leading-tight tracking-tight">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-white leading-tight tracking-tight">
               {post.title}
             </h1>
             {post.excerpt && (
-              <p className="mt-4 text-lg text-white/85 max-w-2xl line-clamp-2">
+              <p className="mt-3 md:mt-4 text-base md:text-lg text-white/85 max-w-2xl line-clamp-2">
                 {post.excerpt}
               </p>
             )}
@@ -250,25 +250,25 @@ export default function BlogPostPage() {
         </header>
 
         {/* Body */}
-        <div className="max-w-2xl mx-auto px-6 py-16 md:py-20">
+        <div className="site-container max-w-2xl py-12 md:py-16 lg:py-20">
           <div className="article-body">
             {post.body
               ? documentToReactComponents(post.body as Document, options)
               : (
-                <p className="text-lg text-muted-foreground">
+                <p className="text-base md:text-lg text-muted-foreground">
                   Este artículo aún no tiene contenido.
                 </p>
               )}
           </div>
 
           {/* Footer */}
-          <div className="mt-16 pt-8 border-t border-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <Button asChild variant="outline">
+          <div className="mt-12 md:mt-16 pt-8 border-t border-border flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4">
+            <Button asChild variant="outline" className="w-full sm:w-auto">
               <Link to={backHref}>
                 <ChevronLeft className="w-4 h-4 mr-2" /> Más artículos
               </Link>
             </Button>
-            <Button variant="ghost" onClick={handleShare}>
+            <Button variant="ghost" onClick={handleShare} className="w-full sm:w-auto">
               <Share2 className="w-4 h-4 mr-2" />
               {copied ? "¡Enlace copiado!" : "Compartir"}
             </Button>
