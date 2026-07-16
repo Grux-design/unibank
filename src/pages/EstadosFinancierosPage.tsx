@@ -146,12 +146,12 @@ export default function EstadosFinancierosPage() {
         />
       </Helmet>
 
-      <section className="bg-muted/30 py-20 md:py-28">
+      <section className="bg-muted/30 pt-20 pb-10 md:pt-28 md:pb-16 lg:pt-32">
         <div className="site-container">
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground tracking-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground tracking-tight">
             Estados Financieros
           </h1>
-          <p className="mt-4 text-base md:text-lg text-muted-foreground max-w-2xl">
+          <p className="mt-4 text-sm md:text-base lg:text-lg text-muted-foreground max-w-2xl">
             Consulta y descarga nuestros informes financieros auditados, formularios
             regulatorios y reportes internos.
           </p>
@@ -159,7 +159,7 @@ export default function EstadosFinancierosPage() {
       </section>
 
       {/* Auditados */}
-      <section className="py-16 md:py-20">
+      <section className="py-12 md:py-20">
         <div className="site-container">
           <div className="flex items-baseline justify-between mb-2 flex-wrap gap-2">
             <h2 className="text-2xl md:text-3xl font-semibold text-foreground">
@@ -216,8 +216,8 @@ export default function EstadosFinancierosPage() {
             </div>
           </div>
 
-          {/* Table */}
-          <div className="rounded-lg border border-border overflow-hidden bg-background">
+          {/* Table — desktop */}
+          <div className="hidden md:block rounded-lg border border-border overflow-hidden bg-background">
             <Table>
               <TableHeader>
                 <TableRow className="bg-muted/40 hover:bg-muted/40">
@@ -260,11 +260,38 @@ export default function EstadosFinancierosPage() {
               </TableBody>
             </Table>
           </div>
+
+          <div className="md:hidden space-y-3">
+            {filteredAudit.map((doc, i) => (
+              <div key={i} className="rounded-lg border border-border p-4 bg-background">
+                <DocLink doc={doc} />
+                <div className="mt-3 flex items-center justify-between gap-3 text-sm text-muted-foreground">
+                  <span>
+                    {doc.year} · PDF · {doc.size}
+                  </span>
+                  <a
+                    href={doc.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Descargar ${doc.label}`}
+                    className="inline-flex items-center justify-center h-8 w-8 rounded-md text-muted-foreground hover:text-primary hover:bg-muted transition-colors"
+                  >
+                    <Download className="h-4 w-4" />
+                  </a>
+                </div>
+              </div>
+            ))}
+            {filteredAudit.length === 0 && (
+              <p className="text-center text-muted-foreground py-12">
+                No se encontraron documentos con los filtros aplicados.
+              </p>
+            )}
+          </div>
         </div>
       </section>
 
       {/* Regulatoria */}
-      <section className="py-16 md:py-20 bg-muted/20">
+      <section className="py-12 md:py-20 bg-muted/20">
         <div className="site-container">
           <div className="flex items-baseline justify-between mb-2 flex-wrap gap-2">
             <h2 className="text-2xl md:text-3xl font-semibold text-foreground">
@@ -280,7 +307,7 @@ export default function EstadosFinancierosPage() {
 
           {/* Filters */}
           <div className="bg-background border border-border rounded-lg p-4 md:p-5 mb-6">
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
               <FilterField label="Año" htmlFor="reg-year">
                 <Select value={regYear} onValueChange={setRegYear}>
                   <SelectTrigger id="reg-year">
@@ -362,8 +389,8 @@ export default function EstadosFinancierosPage() {
             )}
           </div>
 
-          {/* Table */}
-          <div className="rounded-lg border border-border overflow-hidden bg-background">
+          {/* Table — desktop */}
+          <div className="hidden md:block rounded-lg border border-border overflow-hidden bg-background">
             <Table>
               <TableHeader>
                 <TableRow className="bg-muted/40 hover:bg-muted/40">
@@ -419,11 +446,48 @@ export default function EstadosFinancierosPage() {
               </TableBody>
             </Table>
           </div>
+
+          <div className="md:hidden space-y-3">
+            {filteredReg.map((doc, i) => {
+              const form = doc.label.includes("IN-A") ? "IN-A" : "INT-T";
+              return (
+                <div key={i} className="rounded-lg border border-border p-4 bg-background space-y-3">
+                  <DocLink doc={doc} />
+                  <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                    <Badge variant="outline" className="font-mono">
+                      {form}
+                    </Badge>
+                    <span>{doc.entity}</span>
+                    <span>·</span>
+                    <span>{doc.period}</span>
+                    <span>·</span>
+                    <span>{doc.year}</span>
+                    <span>·</span>
+                    <span>PDF · {doc.size}</span>
+                  </div>
+                  <a
+                    href={doc.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-sm font-medium text-primary"
+                  >
+                    <Download className="h-4 w-4" />
+                    Descargar
+                  </a>
+                </div>
+              );
+            })}
+            {filteredReg.length === 0 && (
+              <p className="text-center text-muted-foreground py-12">
+                No se encontraron documentos con los filtros aplicados.
+              </p>
+            )}
+          </div>
         </div>
       </section>
 
       {/* Internos */}
-      <section className="py-16 md:py-20">
+      <section className="py-12 md:py-20">
         <div className="site-container">
           <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-2">
             Estados Financieros Internos

@@ -136,24 +136,24 @@ export default function CalificacionRiesgoPage() {
       </Helmet>
 
       {/* Hero */}
-      <section className="bg-muted/30 py-20 md:py-28">
+      <section className="bg-muted/30 pt-20 pb-10 md:pt-28 md:pb-16 lg:pt-32">
         <div className="site-container">
           <Badge variant="outline" className="mb-4 gap-1.5">
             <ShieldCheck className="h-3.5 w-3.5" />
             Pacific Credit Rating
           </Badge>
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground tracking-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground tracking-tight">
             Calificación de Riesgo
           </h1>
-          <p className="mt-4 text-base md:text-lg text-muted-foreground max-w-2xl">
+          <p className="mt-4 text-sm md:text-base lg:text-lg text-muted-foreground max-w-2xl">
             Una banca ágil, sólida y digital. Nuestra calificación refleja un perfil de
             negocio bueno para crecer, calidad de cartera saludable, alta liquidez
             respaldada por depósitos y capitalización adecuada y estable.
           </p>
 
           {/* Rating highlight card */}
-          <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="rounded-xl border border-border bg-background p-6 flex items-center gap-5">
+          <div className="mt-8 md:mt-10 grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="rounded-xl border border-border bg-background p-5 md:p-6 flex items-center gap-4 md:gap-5">
               <div className="flex h-20 w-20 flex-shrink-0 items-center justify-center rounded-2xl bg-primary text-primary-foreground">
                 <span className="text-4xl font-bold leading-none">A</span>
               </div>
@@ -165,7 +165,7 @@ export default function CalificacionRiesgoPage() {
                 <p className="text-sm text-muted-foreground">Perspectiva Estable</p>
               </div>
             </div>
-            <div className="rounded-xl border border-border bg-background p-6">
+            <div className="rounded-xl border border-border bg-background p-5 md:p-6">
               <p className="text-xs uppercase tracking-wide text-muted-foreground">
                 Calificadora
               </p>
@@ -174,7 +174,7 @@ export default function CalificacionRiesgoPage() {
               </p>
               <p className="text-sm text-muted-foreground mt-1">PCR · Panamá</p>
             </div>
-            <div className="rounded-xl border border-border bg-background p-6">
+            <div className="rounded-xl border border-border bg-background p-5 md:p-6">
               <p className="text-xs uppercase tracking-wide text-muted-foreground">
                 Última actualización
               </p>
@@ -188,7 +188,7 @@ export default function CalificacionRiesgoPage() {
       </section>
 
       {/* Documents */}
-      <section className="py-16 md:py-20">
+      <section className="py-12 md:py-20">
         <div className="site-container">
           <div className="flex items-baseline justify-between mb-2 flex-wrap gap-2">
             <h2 className="text-2xl md:text-3xl font-semibold text-foreground">
@@ -259,7 +259,7 @@ export default function CalificacionRiesgoPage() {
           </div>
 
           {/* Table */}
-          <div className="rounded-lg border border-border overflow-hidden bg-background">
+          <div className="hidden md:block rounded-lg border border-border overflow-hidden bg-background">
             <Table>
               <TableHeader>
                 <TableRow className="bg-muted/40 hover:bg-muted/40">
@@ -309,6 +309,41 @@ export default function CalificacionRiesgoPage() {
                 )}
               </TableBody>
             </Table>
+          </div>
+
+          <div className="md:hidden space-y-3">
+            {filtered.map((doc, i) => (
+              <div key={i} className="rounded-lg border border-border p-4 bg-background space-y-3">
+                <a
+                  href={doc.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-primary hover:underline font-medium"
+                >
+                  <FileText className="h-4 w-4 flex-shrink-0" />
+                  <span>{doc.label}</span>
+                </a>
+                <div className="flex items-center justify-between gap-3 text-sm text-muted-foreground">
+                  <span>
+                    {doc.period} · {doc.year}
+                  </span>
+                  <a
+                    href={doc.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Descargar ${doc.label}`}
+                    className="inline-flex items-center justify-center h-8 w-8 rounded-md text-muted-foreground hover:text-primary hover:bg-muted transition-colors"
+                  >
+                    <Download className="h-4 w-4" />
+                  </a>
+                </div>
+              </div>
+            ))}
+            {filtered.length === 0 && (
+              <p className="text-center text-muted-foreground py-12">
+                No se encontraron documentos con los filtros aplicados.
+              </p>
+            )}
           </div>
         </div>
       </section>

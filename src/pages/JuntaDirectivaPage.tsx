@@ -63,7 +63,7 @@ function getInitials(name: string) {
 function PersonCard({ person, accent = false }: { person: Person; accent?: boolean }) {
   return (
     <div
-      className={`group relative rounded-2xl border bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${
+      className={`group relative rounded-2xl border bg-card p-5 md:p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${
         accent ? "border-primary/30 bg-primary/5" : "border-border hover:border-primary/40"
       }`}
     >
@@ -110,12 +110,12 @@ function SectionHeader({
   title: string;
 }) {
   return (
-    <div className="mb-10 flex flex-col items-start gap-3">
+    <div className="mb-8 md:mb-10 flex flex-col items-start gap-3">
       <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary">
         <Icon className="h-3.5 w-3.5" />
         {eyebrow}
       </span>
-      <h2 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">{title}</h2>
+      <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight text-foreground">{title}</h2>
     </div>
   );
 }
@@ -133,15 +133,15 @@ export default function JuntaDirectivaPage() {
 
       <article className="min-h-screen bg-background">
         {/* Hero */}
-        <section className="relative overflow-hidden border-b border-border bg-background">
-          <div className="relative site-container py-24 md:py-32">
+        <section className="relative overflow-hidden border-b border-border bg-background pt-20 pb-10 md:pt-28 md:pb-16 lg:pt-32">
+          <div className="relative site-container">
             <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary">
               Gobierno Corporativo
             </span>
-            <h1 className="mt-5 max-w-3xl text-4xl font-extrabold leading-tight tracking-tight text-foreground md:text-6xl">
+            <h1 className="mt-5 max-w-3xl text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight text-foreground">
               Junta Directiva
             </h1>
-            <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted-foreground">
+            <p className="mt-5 max-w-2xl text-base md:text-lg leading-relaxed text-muted-foreground">
               Liderazgo comprometido con la excelencia, la transparencia y la cercanía al cliente.
               Conoce a las personas que guían el rumbo de UniBank.
             </p>
@@ -149,39 +149,41 @@ export default function JuntaDirectivaPage() {
         </section>
 
         {/* Misión & Visión */}
-        <section className="site-container py-20">
-          <div className="grid gap-6 md:grid-cols-2">
-            <div className="group relative overflow-hidden rounded-3xl border border-border bg-card p-10 transition-all hover:border-primary/40 hover:shadow-lg">
+        <section className="py-12 md:py-20">
+          <div className="site-container">
+          <div className="grid gap-4 md:gap-6 md:grid-cols-2">
+            <div className="group relative overflow-hidden rounded-2xl md:rounded-3xl border border-border bg-card p-6 md:p-10 transition-all hover:border-primary/40 hover:shadow-lg">
               <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
                 <Target className="h-6 w-6" />
               </div>
               <h3 className="text-sm font-semibold uppercase tracking-wider text-primary">Misión</h3>
-              <p className="mt-4 text-xl font-medium leading-relaxed text-foreground">
+              <p className="mt-4 text-base md:text-lg lg:text-xl font-medium leading-relaxed text-foreground">
                 “Lograr la preferencia de los clientes por nuestra oferta moderna, ágil y profesional
                 de servicios bancarios.”
               </p>
             </div>
-            <div className="group relative overflow-hidden rounded-3xl border border-border bg-card p-10 transition-all hover:border-primary/40 hover:shadow-lg">
+            <div className="group relative overflow-hidden rounded-2xl md:rounded-3xl border border-border bg-card p-6 md:p-10 transition-all hover:border-primary/40 hover:shadow-lg">
               <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
                 <Eye className="h-6 w-6" />
               </div>
               <h3 className="text-sm font-semibold uppercase tracking-wider text-primary">Visión</h3>
-              <p className="mt-4 text-xl font-medium leading-relaxed text-foreground">
+              <p className="mt-4 text-base md:text-lg lg:text-xl font-medium leading-relaxed text-foreground">
                 “Ser el banco de referencia en Panamá por su profesionalidad y cercanía al cliente.”
               </p>
             </div>
           </div>
+          </div>
         </section>
 
         {/* Directores Principales */}
-        <section className="border-t border-border bg-muted/30">
-          <div className="site-container py-20">
+        <section className="border-t border-border bg-muted/30 py-12 md:py-20">
+          <div className="site-container">
             <SectionHeader icon={Crown} eyebrow="Directores Principales" title="Nuestra Junta Directiva" />
-            <p className="mb-10 max-w-3xl text-base leading-relaxed text-muted-foreground">
+            <p className="mb-8 md:mb-10 max-w-3xl text-sm md:text-base leading-relaxed text-muted-foreground">
               Profesionales de amplia trayectoria que guían la estrategia institucional de UniBank
               con visión de largo plazo.
             </p>
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 sm:gap-5">
               {principales.map((p) => (
                 <PersonCard key={p.name} person={p} accent={p.highlight} />
               ))}
@@ -190,10 +192,10 @@ export default function JuntaDirectivaPage() {
         </section>
 
         {/* Directores Suplentes */}
-        <section>
-          <div className="site-container py-20">
+        <section className="py-12 md:py-20">
+          <div className="site-container">
             <SectionHeader icon={Users2} eyebrow="Directores Suplentes" title="Suplentes" />
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 sm:gap-5">
               {suplentes.map((p) => (
                 <PersonCard key={p.name} person={p} />
               ))}
@@ -202,14 +204,14 @@ export default function JuntaDirectivaPage() {
         </section>
 
         {/* Equipo Gerencial */}
-        <section className="border-t border-border bg-muted/30">
-          <div className="site-container py-20">
+        <section className="border-t border-border bg-muted/30 py-12 md:py-20">
+          <div className="site-container">
             <SectionHeader icon={Briefcase} eyebrow="UniLíderes" title="Equipo Gerencial" />
-            <p className="mb-10 max-w-3xl text-base leading-relaxed text-muted-foreground">
+            <p className="mb-8 md:mb-10 max-w-3xl text-sm md:text-base leading-relaxed text-muted-foreground">
               UniLíderes está conformado por un equipo gerencial diverso y experimentado que impulsa
               día a día la operación, la innovación y el crecimiento del banco.
             </p>
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 sm:gap-5">
               {lideres.map((p) => (
                 <PersonCard key={p.name} person={p} accent={p.highlight} />
               ))}
