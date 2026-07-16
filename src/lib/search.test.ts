@@ -22,8 +22,9 @@ describe("searchEntries", () => {
   });
 
   it("finds Mi Negocio via pyme / juridica synonyms", () => {
-    expect(searchEntries(searchPages, "pyme")[0]?.href).toBe("/empresas/cuentas/mi-negocio");
-    expect(searchEntries(searchPages, "cuenta juridica").some((p) => p.href.includes("mi-negocio"))).toBe(true);
+    expect(searchEntries(searchPages, "pyme")[0]?.href).toBe("/empresas/cuentas/cuenta-juridica-digital");
+    expect(searchEntries(searchPages, "cuenta juridica").some((p) => p.href.includes("cuenta-juridica-digital"))).toBe(true);
+    expect(searchEntries(searchPages, "cuenta juridica digital")[0]?.href).toBe("/empresas/cuentas/cuenta-juridica-digital");
   });
 
   it("finds Cajilla, UniTrust, UniLeasing, and Canal de denuncias", () => {
@@ -46,7 +47,8 @@ describe("searchEntries", () => {
 
   it("indexes real product hrefs instead of legacy stubs", () => {
     expect(searchPageHrefs).toContain("/personas/cuentas/cuenta-de-ahorros");
-    expect(searchPageHrefs).toContain("/empresas/cuentas/mi-negocio");
+    expect(searchPageHrefs).toContain("/empresas/cuentas/cuenta-juridica-digital");
+    expect(searchPageHrefs).not.toContain("/empresas/cuentas/mi-negocio");
     expect(searchPageHrefs).not.toContain("/cuenta-ahorros");
     expect(searchPageHrefs).not.toContain("/tarjetas");
     expect(searchPageHrefs).not.toContain("/banca-movil");
