@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { useNavigate } from "react-router-dom";
-import { Lock, X, User, Building2, ArrowRight } from "lucide-react";
+import { Lock, X, User, Building2, ChevronRight } from "@/lib/icons";
 import type { HeaderLayout } from "@/hooks/useHeaderLayout";
 
 const options = [
@@ -104,7 +104,7 @@ export function BancaEnLineaWidget({ layout = "full" }: BancaEnLineaWidgetProps)
                     </div>
                     <span style={{ fontFamily: "Inter, sans-serif", fontWeight: 600, fontSize: 14, color: "#1C1917" }}>{opt.label}</span>
                   </div>
-                  <ArrowRight size={13} color="#484746" style={{ transform: "rotate(-45deg)", flexShrink: 0 }} />
+                  <ChevronRight size={13} color="#484746" style={{ flexShrink: 0 }} />
                 </button>
               ))}
             </div>

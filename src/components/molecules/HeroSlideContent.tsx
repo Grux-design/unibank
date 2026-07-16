@@ -1,34 +1,41 @@
 import { motion, AnimatePresence } from "motion/react";
 import type { Slide } from "@/data/heroSlides";
-import { THEME, HERO_LAYOUT } from "@/data/heroSlides";
+import { THEME, getHeroLayout, type HeroLayoutTier } from "@/data/heroSlides";
 import { HeroEyebrow } from "@/components/atoms/HeroEyebrow";
 import { HeroHeadline } from "@/components/atoms/HeroHeadline";
 import { HeroCtaButton } from "@/components/atoms/HeroCtaButton";
 
 interface HeroSlideContentProps {
   slide: Slide;
-  dir:   number;
-  isMobile?: boolean;
+  dir: number;
+  layoutTier?: HeroLayoutTier;
 }
 
 const slideVariants = {
-  enter:  (d: number) => ({ x: d > 0 ?  60 : -60, opacity: 0 }),
+  enter: (d: number) => ({ x: d > 0 ? 60 : -60, opacity: 0 }),
   center: { x: 0, opacity: 1 },
-  exit:   (d: number) => ({ x: d > 0 ? -60 :  60, opacity: 0 }),
+  exit: (d: number) => ({ x: d > 0 ? -60 : 60, opacity: 0 }),
 };
 
-export function HeroSlideContent({ slide, dir, isMobile = false }: HeroSlideContentProps) {
+export function HeroSlideContent({ slide, dir, layoutTier = "full" }: HeroSlideContentProps) {
   const t = THEME;
-  const mobileCtaFullWidth = isMobile && slide.id === "hipoteca";
+  const layout = getHeroLayout(layoutTier);
+  const isStacked = layout.stackLayout;
+  const equalColumns = "equalColumns" in layout && layout.equalColumns;
+  const ctaFullWidth = layout.ctaFullWidth;
 
   return (
     <div
       style={{
-        flex: isMobile ? 1 : "1 1 60%",
-        minHeight: isMobile ? 0 : undefined,
-        padding: isMobile ? HERO_LAYOUT.mobile.contentPadding : "20px 48px 32px 48px",
-        display: "flex", flexDirection: "column", justifyContent: isMobile ? "center" : "center",
-        position: "relative", overflow: "hidden", minWidth: 0,
+        flex: isStacked ? 1 : equalColumns ? "1 1 0" : "1 1 60%",
+        minHeight: isStacked ? 0 : undefined,
+        padding: layout.contentPadding,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        position: "relative",
+        overflow: "hidden",
+        minWidth: 0,
       }}
     >
       <AnimatePresence mode="wait" custom={dir}>
@@ -40,29 +47,40 @@ export function HeroSlideContent({ slide, dir, isMobile = false }: HeroSlideCont
           animate="center"
           exit="exit"
           transition={{ duration: 0.38, ease: [0.32, 0.72, 0, 1] }}
-          style={{ display: "flex", flexDirection: "column", gap: isMobile ? HERO_LAYOUT.mobile.contentGap : 24 }}
+          style={{ display: "flex", flexDirection: "column", gap: layout.contentGap }}
         >
           <HeroEyebrow text={slide.eyebrow} />
-          <HeroHeadline parts={slide.headline} isMobile={isMobile} />
+          <HeroHeadline parts={slide.headline} layoutTier={layoutTier} />
 
-          <p style={{ fontSize: 16, lineHeight: 1.65, color: t.bodyColor, margin: 0, maxWidth: 520 }}>
+          <p
+            style={{
+              fontSize: isStacked ? "clamp(14px, 3.8vw, 16px)" : "clamp(15px, 1.5vw, 16px)",
+              lineHeight: 1.65,
+              color: t.bodyColor,
+              margin: 0,
+              maxWidth: 520,
+              whiteSpace: "normal",
+            }}
+          >
             {slide.body}
           </p>
 
-          {/* CTA buttons */}
-          <div style={{
-            display: "flex",
-            flexDirection: isMobile ? "column" : "row",
-            flexWrap: isMobile ? "nowrap" : "wrap",
-            alignItems: isMobile ? (mobileCtaFullWidth ? "stretch" : "flex-start") : "center",
-            gap: 10,
-            marginTop: 4,
-          }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: ctaFullWidth ? "column" : "row",
+              flexWrap: ctaFullWidth ? "nowrap" : "wrap",
+              alignItems: ctaFullWidth ? "stretch" : "center",
+              gap: 10,
+              marginTop: 4,
+              width: ctaFullWidth ? "100%" : undefined,
+            }}
+          >
             <HeroCtaButton
               href={slide.ctaHref || "#"}
               target={slide.ctaHref ? "_blank" : undefined}
               rel={slide.ctaHref ? "noopener noreferrer" : undefined}
-              fullWidth={mobileCtaFullWidth}
+              fullWidth={ctaFullWidth}
             >
               {slide.cta}
             </HeroCtaButton>
@@ -70,7 +88,7 @@ export function HeroSlideContent({ slide, dir, isMobile = false }: HeroSlideCont
               <HeroCtaButton
                 href={slide.ctaAltHref || "#"}
                 variant="secondary"
-                fullWidth={mobileCtaFullWidth}
+                fullWidth={ctaFullWidth}
               >
                 {slide.ctaAlt}
               </HeroCtaButton>

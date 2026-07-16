@@ -18,7 +18,7 @@ export function FooterInvertisBadge() {
       onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = ORANGE; }}
       onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = TEXT_LINK; }}
     >
-      Grupo Invertis
+      Invertis
     </a>
   );
 }

@@ -1,9 +1,12 @@
 import { socialIcons } from "@/data/footerData";
 import { FooterSocialIcon } from "@/components/atoms/FooterSocialIcon";
+import { useBreakpoint } from "@/hooks/useBreakpoint";
 
 const ORANGE = "#FF8136";
 
 export function FooterCreditsBar() {
+  const isMobile = useBreakpoint() === "mobile";
+
   return (
     <div style={{
       background: `linear-gradient(135deg, #E8621A 0%, ${ORANGE} 50%, #FFAC70 100%)`,
@@ -18,8 +21,12 @@ export function FooterCreditsBar() {
       </svg>
 
       <div className="site-container" style={{
-        display: "flex", alignItems: "center",
-        justifyContent: "space-between", flexWrap: "wrap", gap: 12,
+        display: "flex",
+        flexDirection: isMobile ? "column" : "row",
+        alignItems: isMobile ? "flex-start" : "center",
+        justifyContent: "space-between",
+        flexWrap: "wrap",
+        gap: isMobile ? 16 : 12,
         position: "relative",
       }}>
         <p style={{ fontFamily: "Inter, sans-serif", fontSize: 13, color: "rgba(255,255,255,0.85)", margin: 0 }}>

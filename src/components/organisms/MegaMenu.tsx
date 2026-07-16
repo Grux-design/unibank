@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { personasData, empresasData } from "@/data/megaMenuData";
 import { MegaMenuTabBar }       from "@/components/molecules/MegaMenuTabBar";
 import { MegaMenuCategoryGrid } from "@/components/molecules/MegaMenuCategoryGrid";
@@ -13,18 +13,25 @@ export function MegaMenu({ onClose }: MegaMenuProps) {
   const [activeTab, setActiveTab] = useState<Tab>("personas");
   const data       = activeTab === "personas" ? personasData : empresasData;
   const isPersonas = activeTab === "personas";
+  const prefersReduced = useReducedMotion();
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: -8 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -8 }}
-      transition={{ duration: 0.22, ease: "easeOut" }}
+      initial={prefersReduced ? { opacity: 0 } : { clipPath: "inset(0 0 100% 0)" }}
+      animate={prefersReduced ? { opacity: 1 } : { clipPath: "inset(0 0 0% 0)" }}
+      exit={prefersReduced ? { opacity: 0 } : { clipPath: "inset(0 0 100% 0)" }}
+      transition={
+        prefersReduced
+          ? { duration: 0.2 }
+          : { duration: 0.34, ease: [0.32, 0.72, 0, 1] }
+      }
       style={{
         position: "absolute", left: 0, right: 0, top: "100%", zIndex: 40,
         background: "#ffffff",
         borderBottom: "1px solid #E0DDD9",
         boxShadow: "none",
+        overflow: "hidden",
+        willChange: prefersReduced ? undefined : "clip-path",
       }}
     >
       <div className="site-container-nav">

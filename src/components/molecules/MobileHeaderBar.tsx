@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Menu, Search } from "lucide-react";
+import { Menu, Search } from "@/lib/icons";
 import { Logo } from "@/components/atoms/Logo";
 import { HEADER_PILL, headerPillShellStyle } from "@/constants/headerPill";
 import type { Lang } from "@/components/layout/SiteLayout";

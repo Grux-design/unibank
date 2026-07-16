@@ -2,6 +2,9 @@
 export const SLIDE_DURATION = 6000;
 
 import { CTA_BUTTON_SIZE } from "@/constants/ctaButtons";
+import type { Breakpoint } from "@/constants/breakpoints";
+
+export type HeroLayoutTier = Breakpoint;
 
 /** Shared sizing for hero CTA buttons across all slides */
 export const HERO_CTA_BUTTON = {
@@ -15,18 +18,48 @@ export const HERO_CTA_BUTTON = {
   borderWidth:  1.5,
 } as const;
 
-/** Responsive hero layout — mobile measured against unibank-design.figma.site */
+/** Responsive hero layout tokens — mobile ≤767 · compact 768–1199 · full ≥1200
+ *  Rule: when ctaFullWidth is true (mobile + compact), hero CTAs always span 100% width.
+ */
 export const HERO_LAYOUT = {
-  desktop: {
+  full: {
     sectionPaddingTop: 90,
     sectionPaddingBottom: 32,
-    cardMinHeight: 620,
-    innerMinHeight: 560,
-    imageMinHeight: 560,
+    cardBorderRadius: 36,
+    cardMinHeight: 684,
+    cardHeight: 684,
+    innerMinHeight: 624,
+    imageMinHeight: 624,
+    contentPadding: "20px 48px 32px 48px",
+    contentGap: 24,
+    controlsPadding: "16px 48px 24px 48px",
+    columnGap: 64,
+    equalColumns: true,
+    showGlassCard: true,
+    stackLayout: false,
+    ctaFullWidth: false,
+  },
+  compact: {
+    sectionPaddingTop: 32,
+    sectionPaddingBottom: 24,
+    cardBorderRadius: 28,
+    cardMinHeight: 460,
+    innerMinHeight: 400,
+    imageMinHeight: 380,
+    contentPadding: "20px 28px 24px",
+    contentGap: 20,
+    controlsPadding: "14px 28px 20px",
+    imageColumnWidth: "clamp(220px, 36%, 420px)",
+    columnGap: 0,
+    equalColumns: false,
+    showGlassCard: false,
+    stackLayout: false,
+    ctaFullWidth: true,
   },
   mobile: {
     sectionPaddingTop: 16,
     sectionPaddingBottom: 16,
+    cardBorderRadius: 28,
     cardHeight: "98vh",
     imageFlexBasis: "40%",
     imagePadding: 16,
@@ -34,8 +67,17 @@ export const HERO_LAYOUT = {
     contentPadding: "20px 20px 4px",
     contentGap: 16,
     controlsPadding: "12px 20px 16px",
+    columnGap: 0,
+    equalColumns: false,
+    showGlassCard: false,
+    stackLayout: true,
+    ctaFullWidth: true,
   },
 } as const;
+
+export function getHeroLayout(tier: HeroLayoutTier) {
+  return HERO_LAYOUT[tier];
+}
 
 export const THEME = {
   cardBg:                  "#F2EFED",
@@ -87,7 +129,28 @@ export interface Slide {
 }
 
 // ─── DATA ─────────────────────────────────────────────────────
-export const slides: Slide[] = [
+function stripLineBreaks(text: string): string {
+  return text.replace(/\n+/g, " ");
+}
+
+function normalizeSlide(slide: Slide): Slide {
+  return {
+    ...slide,
+    tag: stripLineBreaks(slide.tag),
+    eyebrow: stripLineBreaks(slide.eyebrow),
+    headline: slide.headline.map((part) => ({
+      ...part,
+      text: stripLineBreaks(part.text),
+    })),
+    body: stripLineBreaks(slide.body),
+    cta: stripLineBreaks(slide.cta),
+    ctaAlt: stripLineBreaks(slide.ctaAlt),
+    cardTitle: stripLineBreaks(slide.cardTitle),
+    cardSub: stripLineBreaks(slide.cardSub),
+  };
+}
+
+const RAW_SLIDES: Slide[] = [
   {
     id:        "auto",
     tag:       "Personas",
@@ -156,3 +219,5 @@ export const slides: Slide[] = [
     cardSub:   "Desde 6.5% EA",
   },
 ];
+
+export const slides: Slide[] = RAW_SLIDES.map(normalizeSlide);

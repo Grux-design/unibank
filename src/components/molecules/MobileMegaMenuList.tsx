@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
 import { Link } from "react-router-dom";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight } from "@/lib/icons";
 import type { MenuSection } from "@/data/megaMenuData";
 import { secondaryLinks } from "@/data/megaMenuData";
 
@@ -20,7 +20,6 @@ const linkRowStyle: CSSProperties = {
   fontSize: 15,
   fontWeight: 500,
   color: "#1C1917",
-  borderBottom: "1px solid #E8E4E0",
 };
 
 const categoryCaptionStyle: CSSProperties = {
@@ -38,8 +37,14 @@ export function MobileMegaMenuList({ data, isPersonas, onClose }: MobileMegaMenu
 
   return (
     <div className="site-container-nav" style={{ paddingBottom: 24 }}>
-      {data.categories.map((cat) => (
-        <div key={cat.name} style={{ marginBottom: 16 }}>
+      {data.categories.map((cat, catIndex) => (
+        <div
+          key={cat.name}
+          style={{
+            paddingTop: catIndex > 0 ? 20 : 0,
+            borderTop: catIndex > 0 ? "1px solid #E8E4E0" : undefined,
+          }}
+        >
           <p style={categoryCaptionStyle}>
             {cat.name}
           </p>

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
-import { Search, X } from "lucide-react";
+import { Search, X } from "@/lib/icons";
 import { Logo } from "@/components/atoms/Logo";
 import { HEADER_PILL } from "@/constants/headerPill";
 import { searchPages } from "@/data/searchPages";
@@ -81,8 +81,8 @@ export function MobileSearchOverlay({ lang, onClose }: MobileSearchOverlayProps)
             width: 40,
             height: 40,
             borderRadius: 12,
-            border: "1px solid #E8E4E0",
-            background: "#FFFFFF",
+            border: "none",
+            background: "#F2EFED",
             cursor: "pointer",
           }}
         >

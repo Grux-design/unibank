@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import { useState } from "react";
 import {
-  ArrowRight,
+  ChevronRight,
   Mail,
   Sparkles,
   Package,
@@ -20,8 +20,8 @@ import {
   Lightbulb,
   Sprout,
   Rocket,
-  type LucideIcon,
-} from "lucide-react";
+  type Icon,
+} from "@/lib/icons";
 
 const MAIL_TO = "unileasing@unibank.com.pa";
 const MAIL_SUBJECT = "Solicitud de información — Uni Leasing";
@@ -44,7 +44,7 @@ const MAILTO_HREF = `mailto:${MAIL_TO}?subject=${encodeURIComponent(
 )}&body=${encodeURIComponent(MAIL_BODY)}`;
 
 interface Item {
-  icon: LucideIcon;
+  icon: Icon;
   title: string;
   body: string;
 }
@@ -111,7 +111,7 @@ function SectionHeader({
   title,
   description,
 }: {
-  icon: LucideIcon;
+  icon: Icon;
   eyebrow: string;
   title: string;
   description?: string;
@@ -138,7 +138,7 @@ function PrimaryCTA({ label = "Solicite su financiamiento" }: { label?: string }
     >
       <Mail className="h-4 w-4" />
       {label}
-      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+      <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
     </a>
   );
 }
@@ -156,8 +156,8 @@ function FeatureCard({ icon: Icon, title, body }: Item) {
 }
 
 interface FlipCardItem {
-  frontIcon: LucideIcon;
-  backIcon: LucideIcon;
+  frontIcon: Icon;
+  backIcon: Icon;
   label: string;
   backLabel: string;
 }

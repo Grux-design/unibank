@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { motion, AnimatePresence } from "motion/react";
-import { X, Globe } from "lucide-react";
+import { motion, AnimatePresence, useReducedMotion } from "motion/react";
+import { X, Globe } from "@/lib/icons";
 import { Logo } from "@/components/atoms/Logo";
 import { SegmentedToggle } from "@/components/atoms/SegmentedToggle";
 import { MobileMegaMenuList } from "@/components/molecules/MobileMegaMenuList";
@@ -31,13 +31,18 @@ const LANG_OPTIONS = [
 export function MobileMenuOverlay({ lang, onClose, onLangChange }: MobileMenuOverlayProps) {
   const [activeTab, setActiveTab] = useState<Tab>("personas");
   const data = activeTab === "personas" ? personasData : empresasData;
+  const prefersReduced = useReducedMotion();
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.2 }}
+      initial={prefersReduced ? { opacity: 0 } : { y: "-100%" }}
+      animate={prefersReduced ? { opacity: 1 } : { y: 0 }}
+      exit={prefersReduced ? { opacity: 0 } : { y: "-100%" }}
+      transition={
+        prefersReduced
+          ? { duration: 0.2 }
+          : { duration: 0.38, ease: [0.32, 0.72, 0, 1] }
+      }
       style={{
         position: "fixed",
         inset: 0,
@@ -45,6 +50,7 @@ export function MobileMenuOverlay({ lang, onClose, onLangChange }: MobileMenuOve
         background: "#FFFFFF",
         display: "flex",
         flexDirection: "column",
+        willChange: prefersReduced ? undefined : "transform",
       }}
     >
       <div
@@ -77,8 +83,8 @@ export function MobileMenuOverlay({ lang, onClose, onLangChange }: MobileMenuOve
             width: 40,
             height: 40,
             borderRadius: 12,
-            border: "1px solid #E8E4E0",
-            background: "#FFFFFF",
+            border: "none",
+            background: "#F2EFED",
             cursor: "pointer",
           }}
         >

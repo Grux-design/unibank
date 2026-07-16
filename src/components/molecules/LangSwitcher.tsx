@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Globe, Check, ChevronUp, ChevronDown } from "lucide-react";
+import { Globe, Check, ChevronUp, ChevronDown } from "@/lib/icons";
 import { cn } from "@/lib/utils";
 
 interface LangSwitcherProps {

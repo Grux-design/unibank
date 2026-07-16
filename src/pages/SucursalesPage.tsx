@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async";
-import { MapPin, Phone, Clock, ExternalLink } from "lucide-react";
+import { MapPin, Phone, Clock, ExternalLink } from "@/lib/icons";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import avenidaBalboaImg from "@/assets/branches/avenida-balboa.jpeg";

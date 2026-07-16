@@ -10,6 +10,7 @@ export function HeroEyebrow({ text }: HeroEyebrowProps) {
         fontWeight:     500,
         letterSpacing:  "0.01em",
         color:          THEME.eyebrowColor,
+        whiteSpace:     "normal",
       }}
     >
       {text}

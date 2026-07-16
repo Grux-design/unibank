@@ -5,11 +5,11 @@ import {
   Plus,
   Lock,
   X,
-  ArrowRight,
+  ChevronRight,
   PiggyBank,
   Building2,
   User,
-} from "lucide-react";
+} from "@/lib/icons";
 import type { Lang } from "@/components/layout/SiteLayout";
 
 type ExpandedPanel = "abre" | "banca" | null;
@@ -165,10 +165,10 @@ export function MobileMenuFooterCtas({ lang, onClose }: MobileMenuFooterCtasProp
                         </span>
                       </div>
                     </div>
-                    <ArrowRight
+                    <ChevronRight
                       size={16}
                       color="#FFFFFF"
-                      style={{ transform: "rotate(-45deg)", flexShrink: 0, marginLeft: 8 }}
+                      style={{ flexShrink: 0, marginLeft: 8 }}
                     />
                   </button>
                 );
@@ -281,10 +281,10 @@ export function MobileMenuFooterCtas({ lang, onClose }: MobileMenuFooterCtasProp
                         {opt.label}
                       </span>
                     </div>
-                    <ArrowRight
+                    <ChevronRight
                       size={13}
                       color="#484746"
-                      style={{ transform: "rotate(-45deg)", flexShrink: 0 }}
+                      style={{ flexShrink: 0 }}
                     />
                   </button>
                 );

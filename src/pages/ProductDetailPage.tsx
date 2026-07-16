@@ -1,6 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { ArrowLeft } from "lucide-react";
+import { ChevronLeft } from "@/lib/icons";
 import { useContentfulPage } from "@/hooks/useContentfulPage";
 import { PageBuilder } from "@/components/organisms/PageBuilder";
 
@@ -144,7 +144,7 @@ function PageError({ message }: { message: string }) {
           textDecoration: "none",
         }}
       >
-        <ArrowLeft size={14} />
+        <ChevronLeft size={14} />
         Volver a Personas
       </Link>
     </div>

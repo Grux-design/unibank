@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async";
-import { Target, Eye, Crown, Users2, Briefcase } from "lucide-react";
+import { Target, Eye, Crown, Users2, Briefcase } from "@/lib/icons";
 import abdielAvatar from "@/assets/leadership/abdiel.jpg.asset.json";
 import alexisAvatar from "@/assets/leadership/alexis.jpg.asset.json";
 import ginivaAvatar from "@/assets/leadership/giniva.jpg.asset.json";

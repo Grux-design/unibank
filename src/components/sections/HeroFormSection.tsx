@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight } from "@/lib/icons";
 import type { ResolvedSection } from "@/integrations/contentful/types";
 
 const SEGMENT_LABELS: Record<string, string> = {

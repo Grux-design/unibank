@@ -1,4 +1,4 @@
-import { Facebook, Instagram, Linkedin, Youtube, type LucideIcon } from "lucide-react";
+import { Facebook, Instagram, Linkedin, Youtube, type Icon } from "@/lib/icons";
 
 export interface FooterLink {
   label: string;
@@ -12,7 +12,7 @@ export interface FooterColumn {
 }
 
 export interface SocialIconEntry {
-  icon:  LucideIcon;
+  icon:  Icon;
   label: string;
   href:  string;
 }

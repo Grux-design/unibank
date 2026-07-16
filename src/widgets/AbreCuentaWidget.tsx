@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { useNavigate } from "react-router-dom";
-import { Plus, X, ArrowRight } from "lucide-react";
+import { Plus, X, ChevronRight } from "@/lib/icons";
 import type { HeaderLayout } from "@/hooks/useHeaderLayout";
 
 const options = [
@@ -113,7 +113,7 @@ export function AbreCuentaWidget({ layout = "full" }: AbreCuentaWidgetProps) {
                     </span>
                   </div>
                   <span className="opt-arrow" style={{ opacity: 0, transition: "opacity 0.15s", display: "flex", alignItems: "center", flexShrink: 0, marginLeft: 12 }}>
-                    <ArrowRight size={16} color="#fff" style={{ transform: "rotate(-45deg)" }} />
+                    <ChevronRight size={16} color="#fff" />
                   </span>
                 </button>
               ))}
