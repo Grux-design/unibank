@@ -81,7 +81,7 @@ export const empresasData: MenuSection = {
       name: "Cuentas",
       categorySlug: "cuentas",
       items: [
-        { label: "Mi Negocio",         slug: "mi-negocio" },
+        { label: "Mi Negocio",         slug: "cuenta-juridica-digital" },
         { label: "Cuenta de Ahorros",  slug: "cuenta-de-ahorros" },
         { label: "Cuenta Corriente",   slug: "cuenta-corriente" },
       ],

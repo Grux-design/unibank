@@ -27,7 +27,7 @@ export function HeaderPymeBadge({
 
   return (
     <Link
-      to="/empresas/cuentas/mi-negocio"
+      to="/empresas/cuentas/cuenta-juridica-digital"
       onClick={onNavigate}
       style={{
         display: "flex",
