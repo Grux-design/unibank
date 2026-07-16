@@ -34,7 +34,7 @@ export function HeroSlideContent({ slide, dir, layoutTier = "full" }: HeroSlideC
             : "contentFlex" in layout
               ? layout.contentFlex
               : "1 1 60%",
-        minHeight: isStacked ? 0 : undefined,
+        minHeight: 0,
         padding: layout.contentPadding,
         display: "flex",
         flexDirection: "column",

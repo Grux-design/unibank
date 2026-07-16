@@ -75,7 +75,6 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
             alignItems: "stretch",
             flex: isStacked || layoutTier === "full" ? 1 : undefined,
             minHeight: isStacked || layoutTier === "full" ? 0 : layout.innerMinHeight,
-            overflow: layoutTier === "full" ? "hidden" : undefined,
             gap: !isStacked ? layout.columnGap : 0,
           }}
         >
@@ -91,7 +90,7 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
                 boxSizing: "border-box",
               }}
             >
-              <HeroPhotoFrame slide={slide} layoutTier={layoutTier} />
+              <HeroPhotoFrame slide={slide} />
             </div>
           )}
 
@@ -103,14 +102,15 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
                 flex: equalColumns ? "1 1 0" : `0 0 ${"imageColumnWidth" in layout ? layout.imageColumnWidth : "40%"}`,
                 width: equalColumns ? undefined : "imageColumnWidth" in layout ? layout.imageColumnWidth : undefined,
                 position: "relative",
-                height: "100%",
-                minHeight: layout.imageMinHeight,
-                overflow: "hidden",
+                minHeight: 0,
                 minWidth: 0,
                 alignSelf: "stretch",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
-              <HeroPhotoFrame slide={slide} layoutTier={layoutTier} />
+              <HeroPhotoFrame slide={slide} />
             </div>
           )}
         </div>
