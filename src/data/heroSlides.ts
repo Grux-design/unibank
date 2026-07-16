@@ -1,8 +1,3 @@
-import uniHero1 from "@/assets/uni-hero-1.png.asset.json";
-import uniHero2 from "@/assets/uni-hero-2.png.asset.json";
-import uniHero3 from "@/assets/uni-hero-3.png.asset.json";
-import uniHero4 from "@/assets/uni-hero-4.png.asset.json";
-
 // ─── DESIGN TOKENS ────────────────────────────────────────────
 export const SLIDE_DURATION = 6000;
 
@@ -66,7 +61,7 @@ export const slides: Slide[] = [
     cta:       "Solicitar ahora",
     ctaHref:   "https://onboardauto.unibank.com.pa/",
     ctaAlt:    "",
-    image:     uniHero1.url,
+    image:     "/images/uni-hero-1.png",
     cardTitle: "Préstamo Auto",
     cardSub:   "Desde 8.5% EA",
   },
@@ -83,7 +78,7 @@ export const slides: Slide[] = [
     cta:       "Abre tu cuenta",
     ctaHref:   "https://onboard.unibank.com.pa/es/auth/login",
     ctaAlt:    "",
-    image:     uniHero2.url,
+    image:     "/images/uni-hero-2.png",
     cardTitle: "Cuenta de Ahorros",
     cardSub:   "4.5% TEA anual",
   },
@@ -101,7 +96,7 @@ export const slides: Slide[] = [
     ctaHref:   "mailto:unileasing@unibank.com.pa",
     ctaAlt:    "Más sobre Leasing",
     ctaAltHref: "/grupo/unileasing",
-    image:     uniHero3.url,
+    image:     "/images/uni-hero-3.png",
     cardTitle: "Uni Leasing",
     cardSub:   "$1,850 / mes",
   },

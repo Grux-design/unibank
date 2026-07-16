@@ -268,14 +268,14 @@ export default function TrabajaConNosotrosPage() {
               <div className="mt-10 flex flex-wrap items-center gap-4">
                 <a
                   href="#aplicar"
-                  className="group inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:-translate-y-0.5 hover:shadow-primary/30"
+                  className="group inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:-translate-y-0.5 hover:shadow-primary/30"
                 >
                   Aplicar ahora
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                 </a>
                 <a
                   href="#cultura"
-                  className="inline-flex items-center gap-2 rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-white/90 transition-colors hover:bg-white/5"
+                  className="inline-flex items-center gap-2 rounded-xl border border-white/20 px-6 py-3 text-sm font-semibold text-white/90 transition-colors hover:bg-white/5"
                 >
                   Conoce nuestra cultura
                 </a>
@@ -588,7 +588,7 @@ export default function TrabajaConNosotrosPage() {
                         type="submit"
                         size="lg"
                         disabled={sending || !recaptchaToken}
-                        className="w-full rounded-full px-8 sm:w-auto"
+                        className="w-full rounded-xl px-8 sm:w-auto"
                       >
                         {sending ? "Enviando…" : "Enviar aplicación"}
                         {!sending && <ArrowRight className="ml-2 h-4 w-4" />}

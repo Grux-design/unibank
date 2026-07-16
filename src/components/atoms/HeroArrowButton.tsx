@@ -15,7 +15,7 @@ export function HeroArrowButton({ label, onClick, path }: HeroArrowButtonProps) 
       style={{
         width:         48,
         height:        48,
-        borderRadius:  "50%",
+        borderRadius:  12,
         background:    THEME.arrowBtnBg,
         border:        `1px solid ${THEME.arrowBtnBorder}`,
         cursor:        "pointer",
