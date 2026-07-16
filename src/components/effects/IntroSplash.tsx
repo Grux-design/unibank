@@ -54,7 +54,7 @@ export function IntroSplash({ onExitComplete: _ }: IntroSplashProps) {
           animate={{ opacity: 1, filter: "blur(0px)" }}
           transition={{
             duration: 0.65,
-            delay: 1.0,
+            delay: 0.92,
             ease: EASE.premium,
           }}
           style={{ willChange: "filter, opacity" }}

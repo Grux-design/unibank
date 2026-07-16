@@ -46,11 +46,10 @@ function SplashPill({
   return (
     <motion.g
       style={{ transformOrigin: origin, transformBox: "fill-box" }}
-      initial={{ scale: 0.94, opacity: 0 }}
+      initial={{ scale: 0.96, opacity: 1 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{
-        scale: { duration: 0.55, delay: delay + 0.55, ease: EASE.premium },
-        opacity: { duration: 0.25, delay, ease: EASE.premium },
+        scale: { duration: 0.5, delay: delay + 0.48, ease: EASE.premium },
       }}
     >
       <mask id={maskId} fill="white">
@@ -69,7 +68,7 @@ function SplashPill({
         animate={{ pathLength: 1, opacity: 0 }}
         transition={{
           pathLength: { duration: 0.9, delay, ease: EASE.cinematic },
-          opacity: { duration: 0.18, delay: delay + 0.72, ease: "easeOut" },
+          opacity: { duration: 0.18, delay: delay + 0.64, ease: "easeOut" },
         }}
       />
 
@@ -81,7 +80,7 @@ function SplashPill({
         animate={{ fillOpacity: 1 }}
         transition={{
           duration: 0.42,
-          delay: delay + 0.62,
+          delay: delay + 0.54,
           ease: EASE.premium,
         }}
       />
@@ -95,7 +94,7 @@ function SplashPill({
         animate={{ opacity: 1 }}
         transition={{
           duration: 0.28,
-          delay: delay + 0.82,
+          delay: delay + 0.74,
           ease: EASE.premium,
         }}
       />
@@ -117,9 +116,9 @@ export function IsotipoSplashMark() {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden
-      initial={reducedMotion ? false : { opacity: 0, scale: 0.92, filter: "blur(6px)" }}
+      initial={reducedMotion ? false : { opacity: 1, scale: 0.96, filter: "blur(3px)" }}
       animate={reducedMotion ? undefined : { opacity: 1, scale: 1, filter: "blur(0px)" }}
-      transition={{ duration: 0.65, ease: EASE.premium }}
+      transition={{ duration: 0.45, ease: EASE.premium }}
     >
       <SplashPill
         fill={RIGHT_FILL}
@@ -134,7 +133,7 @@ export function IsotipoSplashMark() {
         stroke={LEFT_STROKE}
         maskId={leftMaskId}
         origin="12px 23px"
-        delay={0.18}
+        delay={0.14}
         reducedMotion={reducedMotion}
       />
     </motion.svg>
