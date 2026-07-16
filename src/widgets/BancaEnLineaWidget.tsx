@@ -1,12 +1,16 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { useNavigate } from "react-router-dom";
 import { Lock, X, User, Building2, ChevronRight } from "@/lib/icons";
 import type { HeaderLayout } from "@/hooks/useHeaderLayout";
+import {
+  BANCA_EN_LINEA_EMPRESAS_URL,
+  BANCA_EN_LINEA_PERSONAS_URL,
+  openBancaEnLinea,
+} from "@/constants/bancaEnLinea";
 
 const options = [
-  { label: "Personas", href: "/login", icon: <User     size={15} color="#484746" /> },
-  { label: "Empresas", href: "/login", icon: <Building2 size={15} color="#484746" /> },
+  { label: "Personas", href: BANCA_EN_LINEA_PERSONAS_URL, icon: <User     size={15} color="#484746" /> },
+  { label: "Empresas", href: BANCA_EN_LINEA_EMPRESAS_URL, icon: <Building2 size={15} color="#484746" /> },
 ];
 
 const OPEN_W = 280;
@@ -24,7 +28,6 @@ interface BancaEnLineaWidgetProps {
 export function BancaEnLineaWidget({ layout = "full" }: BancaEnLineaWidgetProps) {
   const [open, setOpen] = useState(false);
   const ref             = useRef<HTMLDivElement>(null);
-  const navigate        = useNavigate();
   const styles          = LAYOUT_STYLES[layout];
 
   useEffect(() => {
@@ -88,7 +91,7 @@ export function BancaEnLineaWidget({ layout = "full" }: BancaEnLineaWidgetProps)
               {options.map((opt, i) => (
                 <button
                   key={i}
-                  onClick={() => { setOpen(false); navigate(opt.href); }}
+                  onClick={() => { setOpen(false); openBancaEnLinea(opt.href); }}
                   style={{
                     display: "flex", alignItems: "center", justifyContent: "space-between",
                     padding: "11px 12px", border: "none", cursor: "pointer", borderRadius: 11,

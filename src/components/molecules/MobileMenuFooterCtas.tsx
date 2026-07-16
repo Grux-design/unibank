@@ -12,6 +12,12 @@ import {
 } from "@/lib/icons";
 import type { Lang } from "@/components/layout/SiteLayout";
 import { useHeaderLayout } from "@/hooks/useHeaderLayout";
+import {
+  BANCA_EN_LINEA_EMPRESAS_URL,
+  BANCA_EN_LINEA_PERSONAS_URL,
+  openBancaEnLinea,
+} from "@/constants/bancaEnLinea";
+import { ABRE_CUENTA_AHORROS_URL, openAbreCuenta } from "@/constants/abreCuenta";
 
 type ExpandedPanel = "abre" | "banca" | null;
 
@@ -19,20 +25,22 @@ const ABRE_OPTIONS = [
   {
     label: "Cuenta de Ahorros",
     description: "Para personas Naturales",
-    href: "/cuenta-ahorros",
+    href: ABRE_CUENTA_AHORROS_URL,
+    external: true,
     icon: PiggyBank,
   },
   {
     label: "Cuenta Jurídica",
     description: "Para empresas y Negocios",
     href: "/cuenta-juridica",
+    external: false,
     icon: Building2,
   },
 ] as const;
 
 const BANCA_OPTIONS = [
-  { label: "Personas", href: "/login", icon: User },
-  { label: "Empresas", href: "/login", icon: Building2 },
+  { label: "Personas", href: BANCA_EN_LINEA_PERSONAS_URL, icon: User },
+  { label: "Empresas", href: BANCA_EN_LINEA_EMPRESAS_URL, icon: Building2 },
 ] as const;
 
 interface MobileMenuFooterCtasProps {
@@ -45,10 +53,17 @@ export function MobileMenuFooterCtas({ lang, onClose }: MobileMenuFooterCtasProp
   const navigate = useNavigate();
   const isTablet = useHeaderLayout() === "compact";
 
-  const handleSelect = (href: string) => {
+  const handleAbreSelect = (href: string, external: boolean) => {
     setExpanded(null);
     onClose();
-    navigate(href);
+    if (external) openAbreCuenta(href);
+    else navigate(href);
+  };
+
+  const handleBancaSelect = (href: string) => {
+    setExpanded(null);
+    onClose();
+    openBancaEnLinea(href);
   };
 
   const abreLabel = lang === "es" ? "Abre tu cuenta" : "Open account";
@@ -114,7 +129,7 @@ export function MobileMenuFooterCtas({ lang, onClose }: MobileMenuFooterCtasProp
                   <button
                     key={opt.href}
                     type="button"
-                    onClick={() => handleSelect(opt.href)}
+                    onClick={() => handleAbreSelect(opt.href, opt.external)}
                     style={{
                       display: "flex",
                       alignItems: "center",
@@ -241,7 +256,7 @@ export function MobileMenuFooterCtas({ lang, onClose }: MobileMenuFooterCtasProp
                   <button
                     key={opt.label}
                     type="button"
-                    onClick={() => handleSelect(opt.href)}
+                    onClick={() => handleBancaSelect(opt.href)}
                     style={{
                       display: "flex",
                       alignItems: "center",

@@ -3,10 +3,11 @@ import { motion, AnimatePresence } from "motion/react";
 import { useNavigate } from "react-router-dom";
 import { Plus, X, ChevronRight } from "@/lib/icons";
 import type { HeaderLayout } from "@/hooks/useHeaderLayout";
+import { ABRE_CUENTA_AHORROS_URL, openAbreCuenta } from "@/constants/abreCuenta";
 
 const options = [
-  { label: "Cuenta de Ahorros", description: "Para personas Naturales", href: "/cuenta-ahorros"  },
-  { label: "Cuenta Jurídica",   description: "Para empresas y Negocios", href: "/cuenta-juridica" },
+  { label: "Cuenta de Ahorros", description: "Para personas Naturales", href: ABRE_CUENTA_AHORROS_URL, external: true },
+  { label: "Cuenta Jurídica",   description: "Para empresas y Negocios", href: "/cuenta-juridica", external: false },
 ];
 
 const OPEN_W = 300;
@@ -86,7 +87,11 @@ export function AbreCuentaWidget({ layout = "full" }: AbreCuentaWidgetProps) {
               {options.map((opt, i) => (
                 <button
                   key={i}
-                  onClick={() => { setOpen(false); navigate(opt.href); }}
+                  onClick={() => {
+                    setOpen(false);
+                    if (opt.external) openAbreCuenta(opt.href);
+                    else navigate(opt.href);
+                  }}
                   style={{
                     display: "flex", alignItems: "center", justifyContent: "space-between",
                     padding: "14px 14px", border: "none", cursor: "pointer",
