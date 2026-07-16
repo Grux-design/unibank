@@ -26,7 +26,7 @@ const suplentes: Person[] = [
 
 const lideres: Person[] = [
   { name: "John Rozo Uribe", role: "Gerente General", highlight: true, avatar: "/images/leadership/john.jpg" },
-  { name: "Mariela Arze", role: "VP de Tesorería, Instituciones y Alianzas Estratégicas" },
+  { name: "Mariela Arze", role: "VP de Tesorería, Instituciones y Alianzas Estratégicas", avatar: "/images/leadership/mariela.jpg" },
   { name: "Jazmín Pérez", role: "VP de Personas, Pasivos y Gestión Patrimonial", avatar: "/images/leadership/jazmin.jpg" },
   { name: "Alexis Aizpurúa", role: "VP de Crecimiento de Negocios", avatar: "/images/leadership/alexis.jpg" },
   { name: "Maricel de González", role: "VP de Finanzas", avatar: "/images/leadership/maricel.jpg" },
