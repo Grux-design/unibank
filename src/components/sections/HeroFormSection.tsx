@@ -142,7 +142,7 @@ export function HeroFormSection({ section }: Props) {
                     justifyContent: "center",
                     height: 52,
                     padding: "0 32px",
-                    borderRadius: 16,
+                    borderRadius: 12,
                     background: "hsl(var(--primary))",
                     color: "hsl(var(--primary-foreground))",
                     fontSize: 15,
@@ -254,7 +254,7 @@ export function HeroFormSection({ section }: Props) {
                 <button
                   style={{
                     height: 52,
-                    borderRadius: 16,
+                    borderRadius: 12,
                     background: "hsl(var(--primary))",
                     color: "hsl(var(--primary-foreground))",
                     border: "none",

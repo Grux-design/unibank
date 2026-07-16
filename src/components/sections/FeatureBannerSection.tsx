@@ -50,7 +50,7 @@ export function FeatureBannerSection({ section }: Props) {
               </div>
             )}
             <div>
-              <Button size="lg" className="rounded-full px-8">
+              <Button size="lg" className="px-8">
                 {section.secondaryCta || "Conocer más"}
               </Button>
             </div>

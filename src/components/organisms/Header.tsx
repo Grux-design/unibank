@@ -12,12 +12,9 @@ interface HeaderProps {
   onToggleLang: () => void;
 }
 
-const CLOSE_DELAY = 450;
-
 export function Header({ lang, onToggleLang }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const headerRef = useRef<HTMLElement>(null);
 
   const navLinks = [
@@ -52,20 +49,7 @@ export function Header({ lang, onToggleLang }: HeaderProps) {
     return () => { document.body.style.overflow = ""; };
   }, [mobileOpen]);
 
-  const cancelClose = () => {
-    if (closeTimer.current) clearTimeout(closeTimer.current);
-  };
-
-  const openMenu = () => {
-    cancelClose();
-    setMenuOpen(true);
-  };
-
-  const scheduleClose = () => {
-    closeTimer.current = setTimeout(() => {
-      setMenuOpen(false);
-    }, CLOSE_DELAY);
-  };
+  const toggleMenu = () => setMenuOpen((open) => !open);
 
   return (
     <>
@@ -74,7 +58,8 @@ export function Header({ lang, onToggleLang }: HeaderProps) {
         className="relative sticky top-0 z-50 pt-4"
         style={{
           background: menuOpen ? "#ffffff" : "transparent",
-          borderBottom: menuOpen ? "1px solid #E0DDD9" : "1px solid transparent",
+          borderBottom: "1px solid transparent",
+          boxShadow: menuOpen ? "none" : undefined,
           transition: "background 0.2s ease, border-color 0.2s ease",
         }}
       >
@@ -88,9 +73,7 @@ export function Header({ lang, onToggleLang }: HeaderProps) {
               <LeftHeaderPill
                 menuOpen={menuOpen}
                 lang={lang}
-                onToggle={() => (menuOpen ? setMenuOpen(false) : openMenu())}
-                onMouseEnter={openMenu}
-                onMouseLeave={scheduleClose}
+                onToggle={toggleMenu}
               />
             </div>
 
@@ -123,16 +106,11 @@ export function Header({ lang, onToggleLang }: HeaderProps) {
         </div>
 
         {/* Mega menu — full-width, anchored below the bar */}
-        <div
-          onMouseEnter={cancelClose}
-          onMouseLeave={scheduleClose}
-        >
-          <AnimatePresence>
-            {menuOpen && (
-              <MegaMenu onClose={() => setMenuOpen(false)} />
-            )}
-          </AnimatePresence>
-        </div>
+        <AnimatePresence>
+          {menuOpen && (
+            <MegaMenu onClose={() => setMenuOpen(false)} />
+          )}
+        </AnimatePresence>
 
         {/* Mobile nav drawer */}
         {mobileOpen && (

@@ -27,7 +27,7 @@ export function AudienceToggle({ value, onChange }: AudienceToggleProps) {
           display: "inline-flex",
           alignItems: "center",
           border: "1.5px solid #E7E4E1",
-          borderRadius: 999,
+          borderRadius: 12,
           padding: 4,
           gap: 2,
           background: "#fff",
@@ -47,7 +47,7 @@ export function AudienceToggle({ value, onChange }: AudienceToggleProps) {
                 position: "relative",
                 border: "none",
                 background: "transparent",
-                borderRadius: 999,
+                borderRadius: 8,
                 padding: "10px 28px",
                 fontSize: 15,
                 fontWeight: 600,
@@ -67,7 +67,7 @@ export function AudienceToggle({ value, onChange }: AudienceToggleProps) {
                   style={{
                     position: "absolute",
                     inset: 0,
-                    borderRadius: 999,
+                    borderRadius: 8,
                     background: "var(--fun-orange)",
                     zIndex: -1,
                   }}
