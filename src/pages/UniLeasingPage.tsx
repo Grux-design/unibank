@@ -1,7 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { useState } from "react";
 import {
-  ChevronRight,
   Mail,
   Sparkles,
   Package,
@@ -18,7 +17,6 @@ import {
   Zap,
   Leaf,
   Lightbulb,
-  Sprout,
   Rocket,
   type Icon,
 } from "@/lib/icons";
@@ -117,14 +115,14 @@ function SectionHeader({
   description?: string;
 }) {
   return (
-    <div className="mb-10 flex flex-col items-start gap-3">
+    <div className="mb-8 md:mb-10 flex flex-col items-start gap-3">
       <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary">
         <Icon className="h-3.5 w-3.5" />
         {eyebrow}
       </span>
-      <h2 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">{title}</h2>
+      <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight text-foreground">{title}</h2>
       {description && (
-        <p className="max-w-3xl text-base leading-relaxed text-muted-foreground">{description}</p>
+        <p className="max-w-3xl text-sm md:text-base leading-relaxed text-muted-foreground">{description}</p>
       )}
     </div>
   );
@@ -134,19 +132,17 @@ function PrimaryCTA({ label = "Solicite su financiamiento" }: { label?: string }
   return (
     <a
       href={MAILTO_HREF}
-      className="group inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg"
+      className="inline-flex w-full max-w-sm sm:w-auto items-center justify-center rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg"
     >
-      <Mail className="h-4 w-4" />
       {label}
-      <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
     </a>
   );
 }
 
 function FeatureCard({ icon: Icon, title, body }: Item) {
   return (
-    <div className="group relative overflow-hidden rounded-2xl border border-border bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg">
-      <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+    <div className="group relative overflow-hidden rounded-2xl border border-border bg-card p-5 md:p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg">
+      <div className="mb-4 md:mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
         <Icon className="h-6 w-6" />
       </div>
       <h3 className="text-base font-semibold leading-snug text-foreground">{title}</h3>
@@ -176,20 +172,28 @@ function FlipCard({ frontIcon: Front, backIcon: Back, label, backLabel }: FlipCa
       className="group h-32 [perspective:1000px]"
       onMouseEnter={() => setFlipped(true)}
       onMouseLeave={() => setFlipped(false)}
+      onClick={() => setFlipped((value) => !value)}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          setFlipped((value) => !value);
+        }
+      }}
+      role="button"
+      tabIndex={0}
+      aria-pressed={flipped}
     >
       <div
         className={`relative h-full w-full transition-transform duration-500 [transform-style:preserve-3d] ${
           flipped ? "[transform:rotateY(180deg)]" : ""
         }`}
       >
-        {/* Front */}
         <div className="absolute inset-0 flex flex-col items-start gap-3 rounded-2xl border border-border bg-card/80 p-5 backdrop-blur-sm [backface-visibility:hidden]">
           <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
             <Front className="h-5 w-5" />
           </div>
           <span className="text-sm font-semibold leading-snug text-foreground">{label}</span>
         </div>
-        {/* Back */}
         <div className="absolute inset-0 flex flex-col items-start justify-between rounded-2xl border border-primary/40 bg-primary p-5 text-primary-foreground [transform:rotateY(180deg)] [backface-visibility:hidden]">
           <Back className="h-7 w-7" />
           <span className="text-sm font-semibold leading-snug">{backLabel}</span>
@@ -212,24 +216,16 @@ export default function UniLeasingPage() {
 
       <article className="min-h-screen bg-background">
         {/* Hero */}
-        <section className="relative overflow-hidden border-b border-border bg-background">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute -top-32 -right-32 h-96 w-96 rounded-full bg-primary/10 blur-3xl"
-          />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute -bottom-40 -left-32 h-96 w-96 rounded-full bg-primary/5 blur-3xl"
-          />
-          <div className="relative site-container py-24 md:py-32">
+        <section className="relative overflow-hidden border-b border-border bg-background pt-20 pb-10 md:pt-28 md:pb-16 lg:pt-32 lg:pb-20">
+          <div className="relative site-container">
             <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary">
               <Sparkles className="h-3.5 w-3.5" />
-              Leasing
+              Grupo UniBank · Leasing
             </span>
-            <h1 className="mt-5 max-w-3xl text-5xl font-extrabold leading-tight tracking-tight text-foreground md:text-7xl">
+            <h1 className="mt-5 max-w-3xl text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-extrabold leading-tight tracking-tight text-foreground">
               Uni Leasing
             </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground md:text-xl">
+            <p className="mt-6 max-w-2xl text-base md:text-lg lg:text-xl leading-relaxed text-muted-foreground">
               Adquiera los activos que su empresa necesita, con financiamiento flexible y atención
               personalizada.
             </p>
@@ -240,70 +236,70 @@ export default function UniLeasingPage() {
         </section>
 
         {/* ¿Qué puedo adquirir? */}
-        <section className="site-container py-20">
-          <SectionHeader
-            icon={Package}
-            eyebrow="¿Qué puedo adquirir?"
-            title="Activos que impulsan su empresa"
-            description="Uni Leasing financia una amplia variedad de bienes para potenciar la operación y el crecimiento de su negocio."
-          />
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {acquisitions.map((item) => (
-              <FeatureCard key={item.title} {...item} />
-            ))}
+        <section className="py-12 md:py-20">
+          <div className="site-container">
+            <SectionHeader
+              icon={Package}
+              eyebrow="¿Qué puedo adquirir?"
+              title="Activos que impulsan su empresa"
+              description="Uni Leasing financia una amplia variedad de bienes para potenciar la operación y el crecimiento de su negocio."
+            />
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 sm:gap-5">
+              {acquisitions.map((item) => (
+                <FeatureCard key={item.title} {...item} />
+              ))}
+            </div>
           </div>
         </section>
 
         {/* Ventajas */}
-        <section className="border-t border-border bg-muted/30">
-          <div className="site-container py-20">
+        <section className="border-t border-border bg-muted/30 py-12 md:py-20">
+          <div className="site-container">
             <SectionHeader
               icon={CheckCircle2}
               eyebrow="Ventajas del Leasing"
               title="Beneficios pensados para su negocio"
               description="Optimice su flujo de caja y proteja su capital con una estructura financiera diseñada para empresas."
             />
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 sm:gap-5">
               {advantages.map((item) => (
                 <FeatureCard key={item.title} {...item} />
               ))}
             </div>
-            <p className="mt-8 text-xs text-muted-foreground">
+            <p className="mt-6 md:mt-8 text-xs text-muted-foreground">
               *Sujeto a evaluación crediticia y a las condiciones del producto.
             </p>
           </div>
         </section>
 
         {/* Sostenibilidad */}
-        <section className="site-container py-20">
-          <div className="mb-10 flex flex-col items-start gap-3">
-            <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary">
-              <Leaf className="h-3.5 w-3.5" />
-              Sostenibilidad
-            </span>
-            <h2 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">
-              Uni Leasing promoviendo la sostenibilidad
-            </h2>
-          </div>
-          <div className="relative overflow-hidden rounded-3xl border border-border bg-orange-50 p-10 md:p-14">
-            <div
-              aria-hidden
-              className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-primary/15 blur-3xl"
-            />
-            <div className="relative grid gap-10 md:grid-cols-5 md:items-center">
-              <div className="md:col-span-3">
-                <p className="text-base leading-relaxed text-muted-foreground md:text-lg">
-                  A través del financiamiento de paneles solares, autos eléctricos e híbridos y
-                  préstamos para proyectos verdes, impulsamos el uso de fuentes de energía
-                  renovables, fomentamos la competitividad de empresas verdes e invertimos en
-                  innovación y desarrollo de proyectos sostenibles.
-                </p>
-              </div>
-              <div className="md:col-span-2">
-                <div className="grid grid-cols-2 gap-4">
-                  {sustainabilityCards.map((card) => (
-                    <FlipCard key={card.label} {...card} />
-                  ))}
+        <section className="py-12 md:py-20">
+          <div className="site-container">
+            <div className="mb-8 md:mb-10 flex flex-col items-start gap-3">
+              <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary">
+                <Leaf className="h-3.5 w-3.5" />
+                Sostenibilidad
+              </span>
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight text-foreground">
+                Uni Leasing promoviendo la sostenibilidad
+              </h2>
+            </div>
+            <div className="relative overflow-hidden rounded-2xl md:rounded-3xl border border-border bg-orange-50 p-6 md:p-10 lg:p-14">
+              <div className="relative grid grid-cols-1 gap-8 min-[1200px]:grid-cols-5 min-[1200px]:items-center min-[1200px]:gap-10">
+                <div className="order-2 min-[1200px]:order-1 min-[1200px]:col-span-3">
+                  <p className="text-sm md:text-base lg:text-lg leading-relaxed text-muted-foreground">
+                    A través del financiamiento de paneles solares, autos eléctricos e híbridos y
+                    préstamos para proyectos verdes, impulsamos el uso de fuentes de energía
+                    renovables, fomentamos la competitividad de empresas verdes e invertimos en
+                    innovación y desarrollo de proyectos sostenibles.
+                  </p>
+                </div>
+                <div className="order-1 min-[1200px]:order-2 min-[1200px]:col-span-2">
+                  <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                    {sustainabilityCards.map((card) => (
+                      <FlipCard key={card.label} {...card} />
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
@@ -311,16 +307,16 @@ export default function UniLeasingPage() {
         </section>
 
         {/* CTA final */}
-        <section className="border-t border-border bg-orange-50">
-          <div className="site-container py-20 text-center">
+        <section className="border-t border-border bg-orange-50 py-12 md:py-20">
+          <div className="site-container text-center">
             <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary">
               <Mail className="h-3.5 w-3.5" />
               Hablemos
             </span>
-            <h2 className="mt-5 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
+            <h2 className="mt-5 text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight text-foreground">
               ¿Listo para impulsar el crecimiento de su empresa?
             </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
+            <p className="mx-auto mt-4 max-w-2xl text-sm md:text-base leading-relaxed text-muted-foreground lg:text-lg">
               Nuestro equipo de Uni Leasing le brindará una propuesta a la medida de sus necesidades.
             </p>
             <div className="mt-8 flex justify-center">
