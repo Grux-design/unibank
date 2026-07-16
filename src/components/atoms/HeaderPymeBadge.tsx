@@ -77,7 +77,7 @@ export function HeaderPymeBadge({
           textOverflow: "ellipsis",
         }}
       >
-        {lang === "es" ? "Mi Negocio" : "My Business"}
+        PYME
       </span>
       {isMenu && (
         <ChevronRight size={16} color={colors.accent} strokeWidth={2.25} style={{ flexShrink: 0 }} />
