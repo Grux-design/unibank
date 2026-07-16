@@ -16,7 +16,6 @@ import {
   Briefcase,
   Users,
   TrendingUp,
-  ChevronRight,
   Sparkles,
   
   X,
@@ -247,14 +246,13 @@ export default function TrabajaConNosotrosPage() {
               <div className="mt-10 flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 sm:gap-4">
                 <a
                   href="#aplicar"
-                  className="group inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+                  className="inline-flex items-center justify-center rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
                 >
                   Aplicar ahora
-                  <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                 </a>
                 <a
                   href="#cultura"
-                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-border px-6 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-muted/50"
+                  className="inline-flex items-center justify-center rounded-xl border border-border px-6 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-muted/50"
                 >
                   Conoce nuestra cultura
                 </a>
@@ -340,9 +338,9 @@ export default function TrabajaConNosotrosPage() {
 
         {/* ── Application form ──────────────────────────────── */}
         <section id="aplicar" className="bg-background py-12 md:py-20">
-          <div className="site-container grid gap-10 lg:gap-12 lg:grid-cols-12">
+          <div className="site-container grid gap-8 lg:gap-12 lg:grid-cols-12">
             {/* Left col */}
-            <aside className="lg:col-span-5">
+            <aside className="lg:col-span-5 order-last lg:order-none">
               <div className="lg:sticky lg:top-28">
                 <div className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
                   Aplica ahora
@@ -387,8 +385,8 @@ export default function TrabajaConNosotrosPage() {
             </aside>
 
             {/* Right col — form */}
-            <div className="lg:col-span-7">
-              <div className="rounded-3xl border border-border bg-card p-6 shadow-sm sm:p-10">
+            <div className="lg:col-span-7 order-first lg:order-none">
+              <div className="rounded-2xl sm:rounded-3xl border border-border bg-card p-5 shadow-sm sm:p-6 lg:p-10">
                 <Form {...form}>
                   <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                     <FormField
@@ -473,7 +471,7 @@ export default function TrabajaConNosotrosPage() {
                           }}
                           onDragLeave={() => setDragActive(false)}
                           onDrop={handleDrop}
-                          className={`group cursor-pointer rounded-2xl border-2 border-dashed p-8 text-center transition-all ${
+                          className={`group cursor-pointer rounded-2xl border-2 border-dashed p-6 sm:p-8 text-center transition-all ${
                             dragActive
                               ? "border-primary bg-primary/5"
                               : "border-border hover:border-primary/50 hover:bg-muted/40"
@@ -555,8 +553,8 @@ export default function TrabajaConNosotrosPage() {
 
                     <ReCaptcha ref={recaptchaRef} onChange={setRecaptchaToken} />
 
-                    <div className="flex flex-col items-start gap-4 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between">
-                      <p className="text-xs text-muted-foreground">
+                    <div className="flex flex-col-reverse gap-4 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between">
+                      <p className="text-xs text-muted-foreground sm:max-w-[55%]">
                         Al enviar aceptas que tus datos sean usados únicamente para procesos de
                         selección.
                       </p>
@@ -567,7 +565,6 @@ export default function TrabajaConNosotrosPage() {
                         className="w-full rounded-xl px-8 sm:w-auto"
                       >
                         {sending ? "Enviando…" : "Enviar aplicación"}
-                        {!sending && <ChevronRight className="ml-2 h-4 w-4" />}
                       </Button>
                     </div>
                   </form>
