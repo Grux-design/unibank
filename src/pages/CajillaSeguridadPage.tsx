@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import {
   ChevronRight,
@@ -20,13 +19,6 @@ const HERO_IMAGE =
   "https://images.unsplash.com/photo-1601597111158-2fceff292cdc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1400";
 const VAULT_IMAGE =
   "https://images.unsplash.com/photo-1565514020179-026b92b84bb6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200";
-
-const breadcrumbs = [
-  { label: "Inicio", href: "/" },
-  { label: "Personas", href: "/personas" },
-  { label: "Otros Servicios", href: "/personas" },
-  { label: "Cajilla de Seguridad", href: "" },
-];
 
 const benefits = [
   {
@@ -86,29 +78,6 @@ export default function CajillaSeguridadPage() {
         }}
       >
         <div style={{ width: "100%" }}>
-          {/* Breadcrumbs */}
-          <nav aria-label="Breadcrumb" className="mb-8">
-            <ol className="flex flex-wrap items-center gap-1 text-sm">
-              {breadcrumbs.map((crumb, i) => {
-                const isLast = i === breadcrumbs.length - 1;
-                return (
-                  <li key={i} className="flex items-center gap-1">
-                    {i > 0 && (
-                      <ChevronRight size={14} className="text-muted-foreground/50 flex-shrink-0" />
-                    )}
-                    {isLast ? (
-                      <span className="font-semibold text-foreground">{crumb.label}</span>
-                    ) : (
-                      <Link to={crumb.href} className="text-muted-foreground hover:text-primary transition-colors">
-                        {crumb.label}
-                      </Link>
-                    )}
-                  </li>
-                );
-              })}
-            </ol>
-          </nav>
-
           <div className="grid gap-12 md:grid-cols-2 md:items-center">
             <div>
               <span

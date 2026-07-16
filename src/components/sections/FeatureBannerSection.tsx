@@ -22,12 +22,12 @@ export function FeatureBannerSection({ section }: Props) {
   })();
 
   return (
-    <section className="w-full bg-muted py-[80px]">
+    <section className="w-full bg-muted py-12 md:py-20">
       <div className="site-container">
-        <div className="bg-background rounded-3xl overflow-hidden flex flex-col md:flex-row p-16 gap-12">
+        <div className="bg-background rounded-2xl md:rounded-3xl overflow-hidden flex flex-col md:flex-row p-5 sm:p-8 md:p-16 gap-6 md:gap-12">
           {/* Image */}
           {imageUrl && (
-            <div className="md:w-1/2 relative min-h-[260px] md:min-h-[320px] rounded-2xl overflow-hidden">
+            <div className="md:w-1/2 relative min-h-[200px] sm:min-h-[260px] md:min-h-[320px] rounded-xl md:rounded-2xl overflow-hidden">
               <img
                 src={imageUrl}
                 alt={section.title || ""}
@@ -40,12 +40,12 @@ export function FeatureBannerSection({ section }: Props) {
           {/* Text */}
           <div className="md:w-1/2 flex flex-col justify-center">
             {section.title && (
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-3 md:mb-4">
                 {section.title}
               </h2>
             )}
             {copyContent && (
-              <div className="text-muted-foreground text-lg mb-8">
+              <div className="text-muted-foreground text-base md:text-lg mb-6 md:mb-8">
                 {copyContent}
               </div>
             )}
