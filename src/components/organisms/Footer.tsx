@@ -10,9 +10,8 @@ export function Footer() {
   return (
     <footer role="contentinfo">
       {/* Section 1: Brand + Nav */}
-      <div style={{ background: "white", borderTop: `1px solid ${BORDER}`, padding: "56px 32px 40px", position: "relative", overflow: "hidden" }}>
-        <div style={{
-          maxWidth: 1200, margin: "0 auto",
+      <div style={{ background: "white", borderTop: `1px solid ${BORDER}`, padding: "56px 0 40px", position: "relative", overflow: "hidden" }}>
+        <div className="site-container" style={{
           display: "grid", gridTemplateColumns: "260px 1fr", gap: 64,
           position: "relative", zIndex: 1,
         }}>
@@ -39,8 +38,10 @@ export function Footer() {
       </div>
 
       {/* Section 2: App stores + legal */}
-      <div style={{ background: "white", borderTop: `1px solid ${BORDER}`, padding: "20px 32px" }}>
-        <FooterAppsBar />
+      <div style={{ background: "white", borderTop: `1px solid ${BORDER}`, padding: "20px 0" }}>
+        <div className="site-container">
+          <FooterAppsBar />
+        </div>
       </div>
 
       {/* Section 3: Credits bar */}

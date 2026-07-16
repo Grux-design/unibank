@@ -1,14 +1,16 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import type { Lang } from "@/components/layout/SiteLayout";
-import { slides, THEME, SLIDE_DURATION } from "@/data/heroSlides";
+import { slides, THEME, SLIDE_DURATION, HERO_LAYOUT } from "@/data/heroSlides";
 import { HeroSlideContent } from "@/components/molecules/HeroSlideContent";
 import { HeroPhotoFrame }   from "@/components/molecules/HeroPhotoFrame";
-
+import { HeroGlassCard }    from "@/components/molecules/HeroGlassCard";
 import { HeroControls }     from "@/components/molecules/HeroControls";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 interface HeroCarouselProps { lang: Lang }
 
 export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
+  const isMobile = useIsMobile();
   const [current, setCurrent] = useState(0);
   const [dir,     setDir]     = useState(1);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -24,42 +26,65 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
   const goPrev = () => advance((current - 1 + slides.length) % slides.length, -1);
 
   const slide     = slides[current];
+  const nextSlide = slides[(current + 1) % slides.length];
   const t         = THEME;
+  const layout    = isMobile ? HERO_LAYOUT.mobile : HERO_LAYOUT.desktop;
 
   return (
-    <section style={{
+    <section className="site-container-hero" style={{
       background: "#FFFFFF",
-      paddingTop: 80, paddingBottom: 32,
-      paddingLeft: 24, paddingRight: 24,
+      paddingTop: layout.sectionPaddingTop,
+      paddingBottom: layout.sectionPaddingBottom,
       fontFamily: '"Inter", -apple-system, sans-serif',
     }}>
       <div style={{
-        background: t.cardBg, borderRadius: 28, overflow: "hidden",
-        position: "relative", maxWidth: "min(98vw, 1411px)", margin: "0 auto",
-        minHeight: 540, paddingTop: 32, paddingRight: 48,
+        width: "100%",
+        background: t.cardBg,
+        borderRadius: isMobile ? 28 : 36,
+        overflow: "hidden",
+        position: "relative",
+        height: isMobile ? HERO_LAYOUT.mobile.cardHeight : undefined,
+        minHeight: isMobile ? HERO_LAYOUT.mobile.cardHeight : layout.cardMinHeight,
+        display: isMobile ? "flex" : undefined,
+        flexDirection: isMobile ? "column" : undefined,
+        paddingTop: isMobile ? 0 : 32,
+        paddingRight: isMobile ? 0 : 40,
       }}>
-        {/* Decorative concentric circles */}
-        {t.hasPattern && (
-          <svg aria-hidden="true" style={{ position: "absolute", top: "50%", right: "-5%", transform: "translateY(-50%)", width: 500, height: 500, opacity: 1, pointerEvents: "none" }}>
-            {[200, 160, 120, 80, 40].map((r, i) => (
-              <circle key={i} cx="250" cy="250" r={r} fill="none" stroke="rgba(255,129,54,0.10)" strokeWidth="1" />
-            ))}
-          </svg>
-        )}
+        <div style={{
+          display: "flex",
+          flexDirection: isMobile ? "column" : "row",
+          alignItems: isMobile ? "stretch" : "stretch",
+          flex: isMobile ? 1 : undefined,
+          minHeight: isMobile ? 0 : layout.innerMinHeight,
+          gap: 0,
+        }}>
+          {isMobile && (
+            <div style={{
+              position: "relative",
+              width: "100%",
+              flex: `0 0 ${HERO_LAYOUT.mobile.imageFlexBasis}`,
+              minHeight: 0,
+              padding: `${HERO_LAYOUT.mobile.imagePaddingTop}px ${HERO_LAYOUT.mobile.imagePadding}px ${HERO_LAYOUT.mobile.imagePadding}px ${HERO_LAYOUT.mobile.imagePadding}px`,
+              boxSizing: "border-box",
+            }}>
+              <HeroPhotoFrame slide={slide} isMobile />
+            </div>
+          )}
 
-        {/* Two-column row */}
-        <div style={{ display: "flex", flexDirection: "row", alignItems: "stretch", gap: 0, minHeight: 508 }}>
-          <HeroSlideContent slide={slide} dir={dir} />
+          <HeroSlideContent slide={slide} dir={dir} isMobile={isMobile} />
 
-          {/* Right column: photo frame + glass card overlay */}
-          <div style={{
-            flex: "0 0 38%",
-            width: "clamp(260px, 38%, 622px)",
-            position: "relative",
-            height: "100%",
-          }}>
-            <HeroPhotoFrame slide={slide} />
-          </div>
+          {!isMobile && (
+            <div style={{
+              flex: "0 0 40%",
+              width: "clamp(260px, 40%, 640px)",
+              position: "relative",
+              height: "100%",
+              overflow: "visible",
+            }}>
+              <HeroPhotoFrame slide={slide} />
+              <HeroGlassCard nextSlide={nextSlide} />
+            </div>
+          )}
         </div>
 
         <HeroControls
@@ -68,6 +93,7 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
           slide={slide}
           onPrev={goPrev}
           onNext={goNext}
+          isMobile={isMobile}
         />
       </div>
     </section>

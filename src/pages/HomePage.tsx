@@ -7,7 +7,6 @@ import { AudienceToggle, type Audience } from "@/components/atoms/AudienceToggle
 import { ProductsSection } from "@/components/organisms/ProductsSection";
 import { BusinessSection } from "@/components/organisms/BusinessSection";
 import { DigitalBanking } from "@/components/organisms/DigitalBanking";
-import { AmbientBackground } from "@/components/effects/AmbientBackground";
 import { Reveal } from "@/components/effects/Reveal";
 import { IntroSplash } from "@/components/effects/IntroSplash";
 import { useFirstVisit, EASE } from "@/lib/motion";
@@ -81,9 +80,6 @@ export default function HomePage() {
         {splashOpen && <IntroSplash key="splash" />}
       </AnimatePresence>
 
-      {/* Ambient atmospheric backdrop */}
-      <AmbientBackground />
-
       {/* Hero with choreographed entrance (only on first visit) */}
       <motion.div
         style={{ position: "relative", willChange: "transform, filter, opacity" }}
@@ -91,30 +87,19 @@ export default function HomePage() {
         animate={
           heroAnimate
             ? { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }
-            : undefined
+            : playIntro
+              ? { opacity: 0, y: 28, scale: 0.97, filter: "blur(10px)" }
+              : { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }
         }
-        transition={{ duration: 1.0, ease: EASE.premium, delay: playIntro ? 0.15 : 0 }}
-        className={playIntro ? "wow-intro-boost" : undefined}
+        transition={{ duration: 1.0, ease: EASE.premium, delay: playIntro && !heroAnimate ? 0 : playIntro ? 0.15 : 0 }}
       >
         <HeroCarousel lang={lang} />
-        <div className="wow-hero-particles" aria-hidden>
-          <span />
-          <span />
-          <span />
-          <span />
-          <span />
-          <span />
-          <span />
-        </div>
       </motion.div>
-
-      {/* Soft seam fade into the next section */}
-      <div className="wow-hero-fade" aria-hidden />
 
       {/* 1. Audience toggle */}
       <motion.div
         initial={playIntro ? { opacity: 0, y: 20 } : false}
-        animate={heroAnimate ? { opacity: 1, y: 0 } : undefined}
+        animate={heroAnimate ? { opacity: 1, y: 0 } : playIntro ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: EASE.premium, delay: playIntro ? 0.55 : 0 }}
       >
         <Reveal y={20}>

@@ -314,13 +314,12 @@ function BentoMobileStack() {
 /* ── BusinessSection (export) ───────────────────────────── */
 export function BusinessSection() {
   const isMobile = useIsMobile();
-  const px = isMobile ? 16 : "clamp(16px, 3.9vw, 72px)";
   const titleRef = useRef<HTMLDivElement>(null);
   const titleInView = useInView(titleRef, { once: true, margin: "0px 0px -60px 0px" });
 
   return (
     <section style={{ background: "#fff", paddingTop: 40, paddingBottom: 64 }}>
-      <div style={{ maxWidth: 1440, margin: "0 auto", paddingLeft: px, paddingRight: px }}>
+      <div className="site-container">
         <motion.div
           ref={titleRef}
           initial={{ opacity: 0, y: 24 }}

@@ -9,9 +9,8 @@ function PageSkeleton() {
   return (
     <div
       style={{
-        padding: "clamp(48px, 8vw, 96px) clamp(16px, 3.9vw, 72px)",
-        maxWidth: 1200,
-        margin: "0 auto",
+        padding: "clamp(48px, 8vw, 96px) 16px",
+        width: "100%",
       }}
     >
       {/* Hero skeleton */}

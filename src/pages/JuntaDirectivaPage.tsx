@@ -142,7 +142,7 @@ export default function JuntaDirectivaPage() {
             aria-hidden
             className="pointer-events-none absolute -bottom-40 -left-32 h-96 w-96 rounded-full bg-primary/5 blur-3xl"
           />
-          <div className="relative mx-auto max-w-6xl px-6 py-24 md:py-32">
+          <div className="relative site-container py-24 md:py-32">
             <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary">
               Gobierno Corporativo
             </span>
@@ -157,7 +157,7 @@ export default function JuntaDirectivaPage() {
         </section>
 
         {/* Misión & Visión */}
-        <section className="mx-auto max-w-6xl px-6 py-20">
+        <section className="site-container py-20">
           <div className="grid gap-6 md:grid-cols-2">
             <div className="group relative overflow-hidden rounded-3xl border border-border bg-card p-10 transition-all hover:border-primary/40 hover:shadow-lg">
               <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
@@ -183,7 +183,7 @@ export default function JuntaDirectivaPage() {
 
         {/* Directores Principales */}
         <section className="border-t border-border bg-muted/30">
-          <div className="mx-auto max-w-6xl px-6 py-20">
+          <div className="site-container py-20">
             <SectionHeader icon={Crown} eyebrow="Directores Principales" title="Nuestra Junta Directiva" />
             <p className="mb-10 max-w-3xl text-base leading-relaxed text-muted-foreground">
               Profesionales de amplia trayectoria que guían la estrategia institucional de UniBank
@@ -199,7 +199,7 @@ export default function JuntaDirectivaPage() {
 
         {/* Directores Suplentes */}
         <section>
-          <div className="mx-auto max-w-6xl px-6 py-20">
+          <div className="site-container py-20">
             <SectionHeader icon={Users2} eyebrow="Directores Suplentes" title="Suplentes" />
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {suplentes.map((p) => (
@@ -211,7 +211,7 @@ export default function JuntaDirectivaPage() {
 
         {/* Equipo Gerencial */}
         <section className="border-t border-border bg-muted/30">
-          <div className="mx-auto max-w-6xl px-6 py-20">
+          <div className="site-container py-20">
             <SectionHeader icon={Briefcase} eyebrow="UniLíderes" title="Equipo Gerencial" />
             <p className="mb-10 max-w-3xl text-base leading-relaxed text-muted-foreground">
               UniLíderes está conformado por un equipo gerencial diverso y experimentado que impulsa

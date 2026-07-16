@@ -1,18 +1,20 @@
 import type { HeadlinePart } from "@/data/heroSlides";
 import { THEME } from "@/data/heroSlides";
 
-interface HeroHeadlineProps { parts: HeadlinePart[] }
+interface HeroHeadlineProps {
+  parts: HeadlinePart[];
+  isMobile?: boolean;
+}
 
-export function HeroHeadline({ parts }: HeroHeadlineProps) {
+export function HeroHeadline({ parts, isMobile = false }: HeroHeadlineProps) {
   return (
     <h1
       style={{
-        fontSize:   "clamp(2rem, 4vw, 3.25rem)",
+        fontSize:   isMobile ? "clamp(2rem, 9vw, 2.5rem)" : "clamp(2.75rem, 5vw, 4.25rem)",
         fontWeight: 700,
-        lineHeight: 1.1,
+        lineHeight: isMobile ? 1.1 : 1.08,
         margin:     0,
         color:      THEME.headlineColor,
-        whiteSpace: "pre-line",
       }}
     >
       {parts.map((part, i) => (

@@ -76,6 +76,12 @@
     --sidebar-accent-foreground: 0 0% 10%;
     --sidebar-border: 0 0% 91%;
     --sidebar-ring: 20 100% 60%;
+
+    /* Site layout — matches unibank-design.figma.site measured gutters */
+    --site-gutter-nav: 24px;
+    --site-gutter-hero: 16px;
+    --site-gutter: clamp(24px, 3vw, 56px);
+    --site-max-width: 1680px;
   }
 }
 
@@ -108,6 +114,34 @@
    ================================================ */
 
 @layer components {
+  .site-container-nav,
+  .site-container-hero,
+  .site-container {
+    box-sizing: border-box;
+    width: 100%;
+    margin-inline: auto;
+  }
+
+  .site-container-nav {
+    padding-inline: var(--site-gutter-nav);
+  }
+
+  .site-container-hero {
+    padding-inline: var(--site-gutter-hero);
+  }
+
+  .site-container {
+    max-width: var(--site-max-width);
+    padding-inline: var(--site-gutter);
+  }
+
+  @media (max-width: 767px) {
+    :root {
+      --site-gutter-nav: 16px;
+      --site-gutter-hero: 16px;
+    }
+  }
+
   /* Smooth page entry */
   #main-content > * {
     animation: fadeSlideIn 0.25s ease-out;

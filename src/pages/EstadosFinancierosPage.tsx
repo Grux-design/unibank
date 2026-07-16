@@ -147,7 +147,7 @@ export default function EstadosFinancierosPage() {
       </Helmet>
 
       <section className="bg-muted/30 py-20 md:py-28">
-        <div className="container mx-auto px-6 max-w-6xl">
+        <div className="site-container">
           <h1 className="text-4xl md:text-5xl font-bold text-foreground tracking-tight">
             Estados Financieros
           </h1>
@@ -160,7 +160,7 @@ export default function EstadosFinancierosPage() {
 
       {/* Auditados */}
       <section className="py-16 md:py-20">
-        <div className="container mx-auto px-6 max-w-6xl">
+        <div className="site-container">
           <div className="flex items-baseline justify-between mb-2 flex-wrap gap-2">
             <h2 className="text-2xl md:text-3xl font-semibold text-foreground">
               Estados Financieros Auditados
@@ -265,7 +265,7 @@ export default function EstadosFinancierosPage() {
 
       {/* Regulatoria */}
       <section className="py-16 md:py-20 bg-muted/20">
-        <div className="container mx-auto px-6 max-w-6xl">
+        <div className="site-container">
           <div className="flex items-baseline justify-between mb-2 flex-wrap gap-2">
             <h2 className="text-2xl md:text-3xl font-semibold text-foreground">
               Información Regulatoria
@@ -424,7 +424,7 @@ export default function EstadosFinancierosPage() {
 
       {/* Internos */}
       <section className="py-16 md:py-20">
-        <div className="container mx-auto px-6 max-w-6xl">
+        <div className="site-container">
           <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-2">
             Estados Financieros Internos
           </h2>

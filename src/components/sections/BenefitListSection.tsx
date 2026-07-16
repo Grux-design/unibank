@@ -8,8 +8,8 @@ export function BenefitListSection({ section }: Props) {
   const items = section.items ?? [];
 
   return (
-    <section className="w-full bg-muted py-[80px] px-4 md:px-8">
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-10 md:gap-16">
+    <section className="w-full bg-muted py-[80px]">
+      <div className="site-container flex flex-col md:flex-row gap-10 md:gap-16">
         {/* Left: Title */}
         <div className="md:w-2/5 flex items-start pt-4">
           {section.title && (
