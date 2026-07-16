@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { FileText, Search, X, Download, ShieldCheck } from "lucide-react";
+import { FileText, Search, X, Download, ShieldCheck } from "@/lib/icons";
 import {
   Table,
   TableBody,

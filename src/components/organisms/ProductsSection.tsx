@@ -2,10 +2,13 @@ import { useRef, useState, useLayoutEffect } from "react";
 import React from "react";
 import { motion, useInView } from "motion/react";
 import { useNavigate } from "react-router-dom";
-import { TrendingUp, Home, ArrowRight, Plus, Car } from "lucide-react";
+import { TrendingUp, Home, ChevronRight, Card, Car } from "@/lib/icons";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { SectionTag, SectionHeading } from "@/components/ui/atoms";
 import { CTA_BUTTON_COLORS, CTA_BUTTON_SIZE } from "@/constants/ctaButtons";
+import { TAG_PILL_HUG } from "@/constants/tagPill";
+import { HeroCtaButton } from "@/components/atoms/HeroCtaButton";
+import { OrangeBlobBackground } from "@/components/atoms/OrangeBlobBackground";
 
 const CUENTA_AHORROS_ROUTE = "/personas/cuentas/cuenta-de-ahorros";
 
@@ -15,6 +18,8 @@ const SOFT = "var(--uni-dark-soft)";
 const CARD_H = 480;
 const G = 8;
 const DELTA = 20;
+/** Mobile bento — all cards match the orange featured banner height */
+const MOBILE_BENTO_CARD_H = 512;
 
 /* ── Images ────────────────────────────────────────────── */
 const IMG_PORTRAIT = "/5ca273f3-86ff-4e66-a9f7-ae25d492fce4.png";
@@ -170,7 +175,7 @@ function CtaLink({ children, href }: { children: React.ReactNode; href?: string 
   const inner = (
     <>
       {children}
-      <ArrowRight size={13} strokeWidth={2.5} />
+      <ChevronRight size={13} strokeWidth={2.5} />
     </>
   );
   if (href) {
@@ -203,8 +208,7 @@ function CategoryTag({ icon: Icon, label }: { icon: React.ElementType; label: st
   return (
     <span
       style={{
-        display: "inline-flex",
-        alignItems: "center",
+        ...TAG_PILL_HUG,
         gap: 5,
         padding: "3px 10px",
         borderRadius: 99,
@@ -237,40 +241,131 @@ function FeaturedBanner({ isMobile }: { isMobile: boolean }) {
         overflow: "hidden",
         borderRadius: isMobile ? 32 : 0,
         background: "#FF8136",
-        display: "flex",
-        flexDirection: isMobile ? "column" : "row",
+        display: isMobile ? "block" : "flex",
+        flexDirection: isMobile ? undefined : "row",
         alignItems: "stretch",
-        height: isMobile ? "auto" : "100%",
+        height: isMobile ? MOBILE_BENTO_CARD_H : "100%",
         width: "100%",
-        minHeight: isMobile ? 360 : undefined,
+        minHeight: isMobile ? MOBILE_BENTO_CARD_H : undefined,
         cursor: "pointer",
       }}
     >
-      {/* ── Blob SVG background ── */}
-      <svg
-        aria-hidden
-        style={{
-          position: "absolute",
-          inset: 0,
-          width: "100%",
-          height: "100%",
-          pointerEvents: "none",
-          zIndex: 0,
-        }}
-        viewBox="0 0 1336 460"
-        preserveAspectRatio="xMidYMid slice"
-        fill="none"
-      >
-        <circle cx="1060" cy="230" r="340" fill="#FF9A52" fillOpacity="0.55" />
-        <circle cx="1180" cy="140" r="220" fill="#FFB273" fillOpacity="0.35" />
-        <ellipse cx="120" cy="480" rx="260" ry="200" fill="#E8721F" fillOpacity="0.35" />
-      </svg>
+      <OrangeBlobBackground />
 
+      {isMobile ? (
+        <>
+          {/* Mobile: portrait as background — bottom-right, full figure visible */}
+          <img
+            src={IMG_PORTRAIT}
+            alt=""
+            aria-hidden
+            style={{
+              position: "absolute",
+              right: -4,
+              bottom: 0,
+              height: "94%",
+              width: "auto",
+              maxWidth: "62%",
+              objectFit: "contain",
+              objectPosition: "bottom right",
+              pointerEvents: "none",
+              zIndex: 1,
+            }}
+          />
+
+          {/* Mobile: content overlay */}
+          <div
+            style={{
+              position: "relative",
+              zIndex: 2,
+              height: "100%",
+              padding: "28px 24px 24px",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              gap: 20,
+              boxSizing: "border-box",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "flex-start",
+                gap: 12,
+                maxWidth: "58%",
+              }}
+            >
+              <div
+                style={{
+                  ...TAG_PILL_HUG,
+                  border: "1px solid rgba(255,255,255,0.45)",
+                  borderRadius: 9999,
+                  padding: "5px 14px",
+                }}
+              >
+                <span
+                  style={{
+                    fontSize: 11,
+                    fontWeight: 700,
+                    letterSpacing: "0.08em",
+                    textTransform: "uppercase",
+                    color: "rgba(255,255,255,0.9)",
+                  }}
+                >
+                  100% Digital
+                </span>
+              </div>
+              <p
+                style={{
+                  margin: 0,
+                  color: "#fff",
+                  fontSize: 28,
+                  fontWeight: 700,
+                  lineHeight: 1.15,
+                  letterSpacing: "-0.02em",
+                }}
+              >
+                Cuenta de ahorros digital
+              </p>
+              <p
+                style={{
+                  margin: 0,
+                  color: "#fff",
+                  fontSize: 18,
+                  fontWeight: 600,
+                  lineHeight: 1.35,
+                }}
+              >
+                Aprobación en minutos!
+              </p>
+              <p
+                style={{
+                  margin: 0,
+                  color: "rgba(255,255,255,0.88)",
+                  fontSize: 14,
+                  fontWeight: 400,
+                  lineHeight: 1.55,
+                }}
+              >
+                Abre tu cuenta 100% digital sin filas ni papeleos. Accede a todos los servicios de UniBank desde donde estés.
+              </p>
+            </div>
+
+            <div onClick={(e) => e.stopPropagation()} style={{ width: "100%" }}>
+              <HeroCtaButton to={CUENTA_AHORROS_ROUTE} variant="secondary" fullWidth>
+                Abrir mi cuenta ahora
+              </HeroCtaButton>
+            </div>
+          </div>
+        </>
+      ) : (
+        <>
       {/* ── Left panel: badge + title ── */}
       <div
         style={{
           flex: 1,
-          padding: isMobile ? "32px 24px 20px" : 48,
+          padding: 48,
           display: "flex",
           flexDirection: "column",
           justifyContent: "flex-start",
@@ -283,10 +378,10 @@ function FeaturedBanner({ isMobile }: { isMobile: boolean }) {
         {/* Badge */}
         <div
           style={{
+            ...TAG_PILL_HUG,
             border: "1px solid rgba(255,255,255,0.45)",
             borderRadius: 9999,
             padding: "5px 14px",
-            display: "inline-flex",
           }}
         >
           <span
@@ -307,18 +402,17 @@ function FeaturedBanner({ isMobile }: { isMobile: boolean }) {
           style={{
             margin: 0,
             color: "#fff",
-            fontSize: isMobile ? 32 : 48,
+            fontSize: 48,
             fontWeight: 700,
-            lineHeight: isMobile ? "40px" : "58px",
+            lineHeight: "58px",
           }}
         >
-          Cuenta<br />de<br />ahorros digital
+          Cuenta de ahorros digital
         </p>
       </div>
 
-      {/* ── Center: portrait image (desktop only) ── */}
-      {!isMobile && (
-        <div
+      {/* ── Center: portrait image ── */}
+      <div
           style={{
             width: 300,
             flexShrink: 0,
@@ -344,13 +438,12 @@ function FeaturedBanner({ isMobile }: { isMobile: boolean }) {
             }}
           />
         </div>
-      )}
 
       {/* ── Right panel: subtitle + body + CTAs ── */}
       <div
         style={{
           flex: 1,
-          padding: isMobile ? "0 24px 32px" : 48,
+          padding: 48,
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
@@ -364,7 +457,7 @@ function FeaturedBanner({ isMobile }: { isMobile: boolean }) {
           style={{
             margin: 0,
             color: "#fff",
-            fontSize: isMobile ? 20 : 24,
+            fontSize: 24,
             fontWeight: 600,
             lineHeight: "32px",
           }}
@@ -399,20 +492,11 @@ function FeaturedBanner({ isMobile }: { isMobile: boolean }) {
             }}
           >
             Abrir mi cuenta ahora
-            <ArrowRight size={13} strokeWidth={2.5} />
+            <ChevronRight size={13} strokeWidth={2.5} />
           </span>
         </div>
       </div>
-
-      {/* ── Mobile image ── */}
-      {isMobile && (
-        <div style={{ width: "100%", height: 200, overflow: "hidden", position: "relative", zIndex: 1 }}>
-          <img
-            src={IMG_PORTRAIT}
-            alt="Cuenta de Ahorros"
-            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top", display: "block" }}
-          />
-        </div>
+        </>
       )}
     </div>
   );
@@ -420,7 +504,7 @@ function FeaturedBanner({ isMobile }: { isMobile: boolean }) {
 
 /* ── MastercardCard ─────────────────────────────────────── */
 const mastercardData = {
-  icon: Plus,
+  icon: Card,
   tag: "Tarjetas",
   title: "Tarjeta Mastercard Black Débito",
   body: "Exclusividad y control en tus manos. Beneficios premium globales.",
@@ -456,7 +540,7 @@ function MastercardCard() {
         />
       </div>
       {/* Content */}
-      <div style={{ padding: "20px 20px 24px", display: "flex", flexDirection: "column", gap: 10, flex: "0 0 auto" }}>
+      <div style={{ padding: "20px 20px 24px", display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 10, flex: "0 0 auto" }}>
         <CategoryTag icon={mastercardData.icon} label={mastercardData.tag} />
         <h4 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: DARK, letterSpacing: "-0.01em", lineHeight: 1.3 }}>
           {mastercardData.title}
@@ -496,7 +580,7 @@ function SmallProductCard({ item, index }: { item: typeof invertisData; index: n
         />
       </div>
       {/* Content */}
-      <div style={{ padding: "20px 20px 24px", display: "flex", flexDirection: "column", gap: 10, flex: "0 0 auto" }}>
+      <div style={{ padding: "20px 20px 24px", display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 10, flex: "0 0 auto" }}>
         <CategoryTag icon={item.icon} label={item.tag} />
         <h4 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: DARK, letterSpacing: "-0.01em", lineHeight: 1.3 }}>
           {item.title}
@@ -512,6 +596,55 @@ function SmallProductCard({ item, index }: { item: typeof invertisData; index: n
 function AutoLoanCard({ isMobile }: { isMobile: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "0px 0px -80px 0px" });
+
+  const imageBlock = (
+    <div style={{ flex: isMobile ? "1 1 auto" : "1 1 50%", minHeight: isMobile ? 160 : undefined, overflow: "hidden" }}>
+      <img
+        src={IMG_AUTO}
+        alt="Auto loan"
+        style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+      />
+    </div>
+  );
+
+  const contentBlock = (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 20 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      style={{
+        flex: isMobile ? "0 0 auto" : "1 1 50%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        gap: 16,
+        padding: isMobile ? "24px 20px 20px" : "32px 28px",
+        background: "#fff",
+      }}
+    >
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 10 }}>
+        <CategoryTag icon={Car} label="Crédito de Auto" />
+        <h4
+          style={{
+            margin: 0,
+            fontSize: "clamp(18px, 2vw, 24px)",
+            fontWeight: 800,
+            color: DARK,
+            letterSpacing: "-0.02em",
+            lineHeight: 1.15,
+          }}
+        >
+          Préstamo de Auto Digital
+        </h4>
+        <p style={{ margin: 0, fontSize: 13, color: SOFT, lineHeight: 1.6 }}>
+          El auto de tus sueños está más cerca. Tasas competitivas y aprobación rápida.
+        </p>
+      </div>
+      <CtaLink href="https://onboardauto.unibank.com.pa/">Solicitar Crédito ahora</CtaLink>
+    </motion.div>
+  );
+
   return (
     <div
       style={{
@@ -521,50 +654,17 @@ function AutoLoanCard({ isMobile }: { isMobile: boolean }) {
         width: "100%",
       }}
     >
-      {/* Left: text */}
-      <motion.div
-        ref={ref}
-        initial={{ opacity: 0, y: 20 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.5, ease: "easeOut" }}
-        style={{
-          flex: isMobile ? undefined : "1 1 50%",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          gap: 16,
-          padding: isMobile ? "24px 20px 20px" : "32px 28px",
-          background: "#fff",
-        }}
-      >
-        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-          <CategoryTag icon={Car} label="Crédito de Auto" />
-          <h4
-            style={{
-              margin: 0,
-              fontSize: "clamp(18px, 2vw, 24px)",
-              fontWeight: 800,
-              color: DARK,
-              letterSpacing: "-0.02em",
-              lineHeight: 1.15,
-            }}
-          >
-            Préstamo de Auto Digital
-          </h4>
-          <p style={{ margin: 0, fontSize: 13, color: SOFT, lineHeight: 1.6 }}>
-            El auto de tus sueños está más cerca. Tasas competitivas y aprobación rápida.
-          </p>
-        </div>
-        <CtaLink href="https://onboardauto.unibank.com.pa/">Solicitar Crédito ahora</CtaLink>
-      </motion.div>
-      {/* Right: image */}
-      <div style={{ flex: isMobile ? undefined : "1 1 50%", minHeight: isMobile ? 200 : undefined, overflow: "hidden" }}>
-        <img
-          src={IMG_AUTO}
-          alt="Auto loan"
-          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-        />
-      </div>
+      {isMobile ? (
+        <>
+          {imageBlock}
+          {contentBlock}
+        </>
+      ) : (
+        <>
+          {contentBlock}
+          {imageBlock}
+        </>
+      )}
     </div>
   );
 }
@@ -630,16 +730,21 @@ function BentoDesktopGrid() {
 }
 
 /* ── Mobile Stack ───────────────────────────────────────── */
+const mobileBentoCardStyle: React.CSSProperties = {
+  borderRadius: 32,
+  overflow: "hidden",
+  border: "1px solid #E7E4E1",
+  height: MOBILE_BENTO_CARD_H,
+};
+
 function BentoMobileStack() {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: G }}>
-      {[
-        <FeaturedBanner isMobile key="featured" />,
-        <div key="mastercard" style={{ borderRadius: 32, overflow: "hidden", border: "1px solid #E7E4E1", height: 300 }}><MastercardCard /></div>,
-        <div key="invertis" style={{ borderRadius: 32, overflow: "hidden", border: "1px solid #E7E4E1" }}><SmallProductCard item={invertisData} index={0} /></div>,
-        <div key="autoLoan" style={{ borderRadius: 32, overflow: "hidden", border: "1px solid #E7E4E1", minHeight: 320 }}><AutoLoanCard isMobile /></div>,
-        <div key="vivienda" style={{ borderRadius: 32, overflow: "hidden", border: "1px solid #E7E4E1" }}><SmallProductCard item={viviendaData} index={1} /></div>,
-      ]}
+      <FeaturedBanner isMobile key="featured" />
+      <div key="mastercard" style={mobileBentoCardStyle}><MastercardCard /></div>
+      <div key="invertis" style={mobileBentoCardStyle}><SmallProductCard item={invertisData} index={0} /></div>
+      <div key="autoLoan" style={mobileBentoCardStyle}><AutoLoanCard isMobile /></div>
+      <div key="vivienda" style={mobileBentoCardStyle}><SmallProductCard item={viviendaData} index={1} /></div>
     </div>
   );
 }
@@ -653,7 +758,7 @@ export function ProductsSection() {
       <div className="site-container">
         <SectionHeading
           tag="Banca para Personas"
-          headline={<>Protegemos y multiplicamos<br />lo que más valoras</>}
+          headline={<>Protegemos y multiplicamos lo que más valoras</>}
           body="Cuentas, tarjetas e inversiones pensados para simplificar tu vida financiera y hacer crecer lo que construyes."
           mb={40}
         />

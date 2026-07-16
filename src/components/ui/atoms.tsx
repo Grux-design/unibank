@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { ArrowRight } from "lucide-react";
+import { ChevronRight } from "@/lib/icons";
+import { TAG_PILL_HUG } from "@/constants/tagPill";
 
 /* ── SectionTag ─────────────────────────────────────────── */
 export function SectionTag({ children }: { children: React.ReactNode }) {
   return (
     <span
       style={{
-        display: "inline-flex",
-        alignItems: "center",
+        ...TAG_PILL_HUG,
         gap: 6,
         padding: "4px 12px",
         borderRadius: 99,
@@ -19,15 +19,6 @@ export function SectionTag({ children }: { children: React.ReactNode }) {
         textTransform: "uppercase",
       }}
     >
-      <span
-        style={{
-          width: 6,
-          height: 6,
-          borderRadius: "50%",
-          background: "var(--fun-orange)",
-          flexShrink: 0,
-        }}
-      />
       {children}
     </span>
   );
@@ -115,7 +106,7 @@ export function LinkArrow({ children, href = "#" }: { children: React.ReactNode;
       }}
     >
       {children}
-      <ArrowRight size={13} strokeWidth={2.5} />
+      <ChevronRight size={13} strokeWidth={2.5} />
     </a>
   );
 }

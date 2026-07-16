@@ -1,9 +1,9 @@
-import type { LucideIcon } from "lucide-react";
+import type { Icon } from "@/lib/icons";
 
 const ORANGE = "#FF8136";
 
 interface FooterSocialIconProps {
-  icon:  LucideIcon;
+  icon:  Icon;
   label: string;
   href:  string;
 }

@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { Button } from "@/components/ui/button";
-import { Download, FileText } from "lucide-react";
+import { Download, FileText } from "@/lib/icons";
 
 const PDF_URL = "https://unibank.com.pa/sites/default/files/attachment/tarifario_-enero.2026v2.0.pdf";
 

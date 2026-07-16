@@ -26,11 +26,11 @@ import {
   CalendarDays,
   Clock,
   Search,
-  ArrowRight,
+  ChevronRight,
   Newspaper,
   X,
   Mail,
-} from "lucide-react";
+} from "@/lib/icons";
 import { useContentfulBlogList } from "@/hooks/useContentfulBlog";
 import type { ResolvedBlog } from "@/integrations/contentful/types";
 
@@ -277,7 +277,7 @@ export default function BlogPage() {
                         </span>
                       </div>
                       <span className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-primary group-hover:gap-2 transition-all">
-                        Leer artículo <ArrowRight className="w-4 h-4" />
+                        Leer artículo <ChevronRight className="w-4 h-4" />
                       </span>
                     </CardContent>
                   </Card>

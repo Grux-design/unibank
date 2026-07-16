@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { useState, useRef, useEffect, useCallback } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { LeftHeaderPill } from "@/components/molecules/LeftHeaderPill";
 import { RightHeaderPill } from "@/components/molecules/RightHeaderPill";
 import { MegaMenu } from "@/components/organisms/MegaMenu";
@@ -19,26 +19,38 @@ interface HeaderProps {
 export function Header({ lang, onToggleLang }: HeaderProps) {
   const layout = useHeaderLayout();
   const isMobile = layout === "mobile";
+  const prefersReduced = useReducedMotion();
 
   const [menuOpen, setMenuOpen] = useState(false);
+  const [menuChromeOpen, setMenuChromeOpen] = useState(false);
   const [mobilePanel, setMobilePanel] = useState<MobilePanel>(null);
   const headerRef = useRef<HTMLElement>(null);
+
+  const closeMenu = useCallback(() => setMenuOpen(false), []);
+  const openMenu = useCallback(() => {
+    setMenuOpen(true);
+    setMenuChromeOpen(true);
+  }, []);
+  const toggleMenu = useCallback(() => {
+    if (menuOpen) closeMenu();
+    else openMenu();
+  }, [menuOpen, closeMenu, openMenu]);
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
-        setMenuOpen(false);
+        closeMenu();
       }
     };
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
-  }, []);
+  }, [closeMenu]);
 
   useEffect(() => {
-    const handler = () => setMenuOpen(false);
+    const handler = () => closeMenu();
     window.addEventListener("scroll", handler, { passive: true });
     return () => window.removeEventListener("scroll", handler);
-  }, []);
+  }, [closeMenu]);
 
   useEffect(() => {
     document.body.style.overflow = mobilePanel ? "hidden" : "";
@@ -49,7 +61,6 @@ export function Header({ lang, onToggleLang }: HeaderProps) {
     if (!isMobile) setMobilePanel(null);
   }, [isMobile]);
 
-  const toggleMenu = () => setMenuOpen((open) => !open);
   const openMobilePanel = (panel: MobilePanel) => setMobilePanel(panel);
   const closeMobilePanel = () => setMobilePanel(null);
 
@@ -64,9 +75,9 @@ export function Header({ lang, onToggleLang }: HeaderProps) {
         className="relative sticky top-0 z-50"
         style={{
           paddingTop: 10,
-          background: menuOpen && !isMobile ? "#ffffff" : "transparent",
+          background: menuChromeOpen && !isMobile ? "#ffffff" : "transparent",
           borderBottom: "1px solid transparent",
-          boxShadow: menuOpen && !isMobile ? "none" : undefined,
+          boxShadow: menuChromeOpen && !isMobile ? "none" : undefined,
           transition: "background 0.2s ease, border-color 0.2s ease",
         }}
       >
@@ -99,8 +110,8 @@ export function Header({ lang, onToggleLang }: HeaderProps) {
         </div>
 
         {!isMobile && (
-          <AnimatePresence>
-            {menuOpen && <MegaMenu onClose={() => setMenuOpen(false)} />}
+          <AnimatePresence onExitComplete={() => setMenuChromeOpen(false)}>
+            {menuOpen && <MegaMenu onClose={closeMenu} />}
           </AnimatePresence>
         )}
       </header>
@@ -110,10 +121,19 @@ export function Header({ lang, onToggleLang }: HeaderProps) {
           <motion.div
             key="backdrop"
             initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            onClick={() => setMenuOpen(false)}
+            animate={{
+              opacity: 1,
+              transition: prefersReduced
+                ? { duration: 0.15 }
+                : { duration: 0.2, ease: [0.32, 0.72, 0, 1] },
+            }}
+            exit={{
+              opacity: 0,
+              transition: prefersReduced
+                ? { duration: 0.12 }
+                : { duration: 0.14, ease: [0.4, 0, 1, 1] },
+            }}
+            onClick={closeMenu}
             style={{
               position: "fixed",
               inset: 0,

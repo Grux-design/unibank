@@ -4,6 +4,7 @@
  */
 
 import React, { useState, useEffect, useCallback } from "react";
+import { Cookie, ChevronDown, X } from "@/lib/icons";
 
 const T = {
   orange500: "#FF8136",
@@ -80,29 +81,21 @@ const CATEGORIES: CategoryConfig[] = [
   },
 ];
 
-// SVG Icons
 const IconCookie = ({ size = 24 }: { size?: number }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="12" cy="12" r="10" fill={T.orange100} stroke={T.orange500} strokeWidth="1.5"/>
-    <circle cx="8" cy="9" r="1.5" fill={T.orange500}/>
-    <circle cx="14" cy="7" r="1" fill={T.orange500}/>
-    <circle cx="10" cy="14" r="1.2" fill={T.orange500}/>
-    <circle cx="15" cy="13" r="1" fill={T.orange500}/>
-    <circle cx="16" cy="17" r="0.8" fill={T.orange500}/>
-    <circle cx="7" cy="16" r="0.8" fill={T.orange500}/>
-  </svg>
+  <Cookie size={size} color={T.orange500} strokeWidth={1.5} />
 );
 
 const IconClose = ({ size = 20 }: { size?: number }) => (
-  <svg width={size} height={size} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M15 5L5 15M5 5l10 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-  </svg>
+  <X size={size} color="currentColor" strokeWidth={1.5} />
 );
 
 const IconChevron = ({ size = 16, open }: { size?: number; open: boolean }) => (
-  <svg width={size} height={size} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ transition: "transform 200ms ease", transform: open ? "rotate(180deg)" : "rotate(0deg)" }}>
-    <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-  </svg>
+  <ChevronDown
+    size={size}
+    color="currentColor"
+    strokeWidth={1.5}
+    style={{ transition: "transform 200ms ease", transform: open ? "rotate(180deg)" : "rotate(0deg)" }}
+  />
 );
 
 // Toggle Switch

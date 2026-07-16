@@ -9,12 +9,11 @@ import {
   Landmark,
   Check,
   Box,
-  ArrowRight,
   KeyRound,
   Eye,
   Sparkles,
   Mail,
-} from "lucide-react";
+} from "@/lib/icons";
 import { Button } from "@/components/ui/button";
 
 const HERO_IMAGE =
@@ -138,7 +137,7 @@ export default function CajillaSeguridadPage() {
                 <a href="#contacto">
                   <Button size="lg" className="px-7 h-12 text-base font-semibold">
                     Solicitar información
-                    <ArrowRight className="ml-2 h-4 w-4" />
+                    <ChevronRight className="ml-2 h-4 w-4" />
                   </Button>
                 </a>
               </div>
@@ -435,7 +434,7 @@ export default function CajillaSeguridadPage() {
             >
               <Mail className="h-4 w-4" />
               Solicitar información
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </a>
           </div>
         </div>

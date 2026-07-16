@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import {
-  ArrowRight,
+  ChevronRight,
   Mail,
   Landmark,
   Sparkles,
@@ -14,8 +14,8 @@ import {
   Building2,
   ShieldCheck,
   KeyRound,
-  type LucideIcon,
-} from "lucide-react";
+  type Icon,
+} from "@/lib/icons";
 
 const MAIL_TO = "unitrust@unibank.com.pa";
 const MAIL_SUBJECT = "Solicitud de asesoría — UniTrust";
@@ -37,7 +37,7 @@ const MAILTO_HREF = `mailto:${MAIL_TO}?subject=${encodeURIComponent(
 )}&body=${encodeURIComponent(MAIL_BODY)}`;
 
 interface Commitment {
-  icon: LucideIcon;
+  icon: Icon;
   title: string;
   body: string;
 }
@@ -66,7 +66,7 @@ const commitments: Commitment[] = [
 ];
 
 interface Product {
-  icon: LucideIcon;
+  icon: Icon;
   name: string;
   body: string;
 }
@@ -110,7 +110,7 @@ function SectionHeader({
   title,
   description,
 }: {
-  icon: LucideIcon;
+  icon: Icon;
   eyebrow: string;
   title: string;
   description?: string;
@@ -137,7 +137,7 @@ function PrimaryCTA({ label = "Solicite su asesoría fiduciaria" }: { label?: st
     >
       <Mail className="h-4 w-4" />
       {label}
-      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+      <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
     </a>
   );
 }

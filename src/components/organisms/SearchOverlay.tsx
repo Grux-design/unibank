@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import {
   Search, X, Home, Users, Briefcase, FileText, Phone,
   PiggyBank, Building2, Lock, SearchX, Loader2, CircleStop
-} from "lucide-react";
+} from "@/lib/icons";
 import { cn } from "@/lib/utils";
 
 interface SiteEntry {

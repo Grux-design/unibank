@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
-import type { LucideIcon } from "lucide-react";
+import type { Icon } from "@/lib/icons";
 
 interface MenuItem {
   label: string;
   description: string;
   href: string;
-  Icon: LucideIcon;
+  Icon: Icon;
 }
 
 interface MegaMenuColumnProps {

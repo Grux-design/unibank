@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import { ChevronRight } from "@/lib/icons";
 import { NavPill } from "@/components/atoms/NavPill";
 
 interface HeroCTAGroupProps {
@@ -22,7 +22,7 @@ export function HeroCTAGroup({
         className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-bold text-primary-foreground shadow-sm hover:bg-primary/90 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
       >
         {primaryLabel}
-        <ArrowRight size={16} />
+        <ChevronRight size={16} />
       </Link>
       <Link
         to={secondaryHref}

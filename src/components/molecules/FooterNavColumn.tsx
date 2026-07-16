@@ -1,4 +1,4 @@
-import { MessageCircle, MapPin, Mail } from "lucide-react";
+import { MessageCircle, MapPin, Mail } from "@/lib/icons";
 import { Link } from "react-router-dom";
 import type { FooterColumn } from "@/data/footerData";
 import { FooterInvertisBadge } from "@/components/atoms/FooterInvertisBadge";

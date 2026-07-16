@@ -1,55 +1,95 @@
 import type { Slide } from "@/data/heroSlides";
-import { THEME, HERO_LAYOUT } from "@/data/heroSlides";
+import { THEME, getHeroLayout, type HeroLayoutTier } from "@/data/heroSlides";
 import { HeroProgressBar } from "@/components/atoms/HeroProgressBar";
-import { HeroArrowButton }  from "@/components/atoms/HeroArrowButton";
+import { HeroArrowButton } from "@/components/atoms/HeroArrowButton";
 
 interface HeroControlsProps {
-  current:  number;
-  total:    number;
-  slide:    Slide;
-  onPrev:   () => void;
-  onNext:   () => void;
-  isMobile?: boolean;
+  current: number;
+  total: number;
+  slide: Slide;
+  onPrev: () => void;
+  onNext: () => void;
+  layoutTier?: HeroLayoutTier;
 }
 
-export function HeroControls({ current, total, slide, onPrev, onNext, isMobile = false }: HeroControlsProps) {
+export function HeroControls({
+  current,
+  total,
+  slide,
+  onPrev,
+  onNext,
+  layoutTier = "full",
+}: HeroControlsProps) {
   const t = THEME;
+  const layout = getHeroLayout(layoutTier);
+  const isStacked = layout.stackLayout;
+  const progressWidth = layoutTier === "mobile" ? 56 : layoutTier === "compact" ? 64 : 80;
 
   return (
-    <div style={{
-      display: "flex", alignItems: "center", justifyContent: "space-between",
-      flexShrink: isMobile ? 0 : undefined,
-      padding: isMobile ? HERO_LAYOUT.mobile.controlsPadding : "16px 48px 24px 48px",
-    }}>
-      {/* Counter + progress dash + tag */}
-      <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-        <span style={{
-          fontSize: 13, fontWeight: 700, color: t.mutedColor,
-          fontVariantNumeric: "tabular-nums", fontFamily: "monospace",
-        }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: isStacked ? "column" : "row",
+        alignItems: isStacked ? "stretch" : "center",
+        justifyContent: "space-between",
+        gap: isStacked ? 12 : 0,
+        flexShrink: 0,
+        padding: layout.controlsPadding,
+        minWidth: 0,
+        position: "relative",
+        zIndex: 3,
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: isStacked ? 10 : 14,
+          flexWrap: isStacked ? "wrap" : "nowrap",
+          minWidth: 0,
+          flex: isStacked ? undefined : 1,
+        }}
+      >
+        <span
+          style={{
+            fontSize: 13,
+            fontWeight: 700,
+            color: t.mutedColor,
+            fontVariantNumeric: "tabular-nums",
+            fontFamily: "monospace",
+            flexShrink: 0,
+          }}
+        >
           {String(current + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
         </span>
-        <HeroProgressBar animKey={current + "-bar"} width={80} />
-        <span style={{
-          fontSize: 12, fontWeight: 600, letterSpacing: "0.06em",
-          textTransform: "uppercase", color: t.eyebrowColor,
-        }}>
+        <HeroProgressBar animKey={current + "-bar"} width={progressWidth} />
+        <span
+          style={{
+            fontSize: isStacked ? 11 : 12,
+            fontWeight: 600,
+            letterSpacing: "0.06em",
+            textTransform: "uppercase",
+            color: t.eyebrowColor,
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            minWidth: 0,
+          }}
+        >
           {slide.tag}
         </span>
       </div>
 
-      {/* Arrows */}
-      <div style={{ display: "flex", gap: 8 }}>
-        <HeroArrowButton
-          label="Anterior"
-          onClick={onPrev}
-          path="M15.833 10H4.167M4.167 10L10 15.833M4.167 10L10 4.167"
-        />
-        <HeroArrowButton
-          label="Siguiente"
-          onClick={onNext}
-          path="M4.167 10H15.833M15.833 10L10 4.167M15.833 10L10 15.833"
-        />
+      <div
+        style={{
+          display: "flex",
+          gap: 8,
+          flexShrink: 0,
+          alignSelf: isStacked ? "flex-end" : undefined,
+        }}
+      >
+        <HeroArrowButton label="Anterior" onClick={onPrev} direction="left" />
+        <HeroArrowButton label="Siguiente" onClick={onNext} direction="right" />
       </div>
     </div>
   );

@@ -1,10 +1,11 @@
 import { useState, useRef, useLayoutEffect } from "react";
 import React from "react";
 import { motion, useInView } from "motion/react";
-import { Building2, Truck, BarChart3, ArrowRight } from "lucide-react";
+import { Building2, Truck, BarChart3, ChevronRight } from "@/lib/icons";
 import { Link } from "react-router-dom";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { SectionHeading, LinkArrow } from "@/components/ui/atoms";
+import { TAG_PILL_HUG } from "@/constants/tagPill";
 
 const OR = "var(--fun-orange)";
 const DARK = "var(--uni-dark)";
@@ -60,8 +61,7 @@ function CategoryTag({ icon: Icon, label }: { icon: React.ElementType; label: st
   return (
     <span
       style={{
-        display: "inline-flex",
-        alignItems: "center",
+        ...TAG_PILL_HUG,
         gap: 5,
         padding: "3px 10px",
         borderRadius: 99,
@@ -97,7 +97,7 @@ function CtaLink({ children, href }: { children: React.ReactNode; href?: string 
   const inner = (
     <>
       {children}
-      <ArrowRight size={13} strokeWidth={2.5} />
+      <ChevronRight size={13} strokeWidth={2.5} />
     </>
   );
   if (href) {
@@ -163,7 +163,7 @@ function LargeCard({ service, isMobile }: { service: typeof services[0]; isMobil
           gap: 16,
         }}
       >
-        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 10 }}>
           <CategoryTag icon={service.icon} label={service.label} />
           <h3
             style={{
@@ -214,7 +214,7 @@ function SmallCard({ service, index }: { service: typeof services[0]; index: num
         />
       </div>
       {/* Content */}
-      <div style={{ padding: "20px 20px 24px", display: "flex", flexDirection: "column", gap: 10, flex: "0 0 auto" }}>
+      <div style={{ padding: "20px 20px 24px", display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 10, flex: "0 0 auto" }}>
         <CategoryTag icon={service.icon} label={service.label} />
         <h4 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: DARK, letterSpacing: "-0.01em", lineHeight: 1.3 }}>
           {service.title}
@@ -328,7 +328,7 @@ export function BusinessSection() {
         >
           <SectionHeading
             tag="Banca Empresarial"
-            headline={<>Financiamos el futuro<br />y la visión de tu negocio</>}
+            headline={<>Financiamos el futuro y la visión de tu negocio</>}
             body="Crédito comercial, planilla empresarial, Leasing, bonos verdes y soluciones financieras adaptadas a cada etapa y sector de tu negocio."
             
             mb={40}

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
-import { Menu, X } from "lucide-react";
+import { Menu, X } from "@/lib/icons";
 import { Logo } from "@/components/atoms/Logo";
 import { HEADER_PILL } from "@/constants/headerPill";
 import type { Lang } from "@/components/layout/SiteLayout";
