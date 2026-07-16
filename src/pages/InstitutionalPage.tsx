@@ -15,25 +15,25 @@ export default function InstitutionalPage() {
         <meta name="description" content={page.metaDescription} />
       </Helmet>
 
-      <section className="bg-muted/30 py-20 md:py-28">
+      <section className="bg-muted/30 pt-20 pb-10 md:pt-28 md:pb-16 lg:pt-32">
         <div className="site-container">
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground tracking-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground tracking-tight">
             {page.title}
           </h1>
         </div>
       </section>
 
-      <section className="py-16 md:py-24">
-        <div className="container mx-auto px-6 max-w-3xl space-y-10">
+      <section className="py-12 md:py-20">
+        <div className="site-container max-w-3xl space-y-8 md:space-y-10">
           {page.sections.map((s, i) => (
             <div key={i}>
               {s.heading && (
-                <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">
+                <h2 className="text-xl md:text-2xl lg:text-3xl font-semibold text-foreground mb-3 md:mb-4">
                   {s.heading}
                 </h2>
               )}
               <p
-                className="text-base md:text-lg text-muted-foreground leading-relaxed [&_strong]:font-semibold [&_strong]:text-foreground"
+                className="text-sm md:text-base lg:text-lg text-muted-foreground leading-relaxed [&_strong]:font-semibold [&_strong]:text-foreground"
                 dangerouslySetInnerHTML={{ __html: s.body }}
               />
             </div>

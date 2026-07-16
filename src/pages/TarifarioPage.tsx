@@ -14,39 +14,39 @@ export default function TarifarioPage() {
       </Helmet>
 
       <article className="min-h-screen">
-        <div className="bg-muted/30 border-b border-border">
-          <div className="site-container py-20 text-center">
-            <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-foreground">
+        <div className="bg-muted/30 border-b border-border pt-20 pb-10 md:pt-28 md:pb-16 lg:pt-32">
+          <div className="site-container text-center">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-foreground">
               Tarifario
             </h1>
-            <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="mt-4 text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
               Consulta nuestras tasas, comisiones y tarifas vigentes.
             </p>
           </div>
         </div>
 
-        <section className="bg-background py-16">
+        <section className="bg-background py-12 md:py-20">
           <div className="site-container">
-            {/* Download bar */}
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8 p-4 rounded-xl border border-border/60 bg-muted/20">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 mb-6 md:mb-8 p-4 rounded-xl border border-border/60 bg-muted/20">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
                   <FileText className="w-5 h-5 text-primary" />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <p className="font-semibold text-foreground text-sm">Tarifario – Enero 2026 v2.0</p>
                   <p className="text-xs text-muted-foreground">Documento PDF</p>
                 </div>
               </div>
-              <Button asChild>
+              <Button asChild className="w-full sm:w-auto flex-shrink-0">
                 <a href={PDF_URL} target="_blank" rel="noopener noreferrer">
                   <Download className="w-4 h-4 mr-2" /> Descargar PDF
                 </a>
               </Button>
             </div>
 
-            {/* PDF viewer */}
-            <div className="w-full rounded-xl overflow-hidden border border-border/60" style={{ height: "80vh" }}>
+            <div
+              className="w-full rounded-xl overflow-hidden border border-border/60 h-[55vh] md:h-[75vh] lg:h-[80vh]"
+            >
               <iframe
                 src={PDF_URL}
                 title="Tarifario UniBank"

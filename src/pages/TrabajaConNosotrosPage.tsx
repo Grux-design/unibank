@@ -238,7 +238,7 @@ export default function TrabajaConNosotrosPage() {
             className="absolute -bottom-40 -left-20 h-[420px] w-[420px] rounded-full bg-primary/18 blur-3xl"
           />
 
-          <div className="relative site-container pt-32 pb-24 md:pt-40 md:pb-32">
+          <div className="relative site-container pt-20 pb-12 md:pt-28 md:pb-20 lg:pt-32 lg:pb-24">
             <div className="max-w-3xl">
               <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-medium uppercase tracking-wider text-white/80 backdrop-blur">
                 <Sparkles className="h-3.5 w-3.5 text-primary" />
@@ -282,7 +282,7 @@ export default function TrabajaConNosotrosPage() {
         </section>
 
         {/* ── Perks ──────────────────────────────────────────── */}
-        <section id="cultura" className="border-b border-border bg-background py-20 px-6">
+        <section id="cultura" className="border-b border-border bg-background py-12 md:py-20">
           <div className="site-container">
             <div className="max-w-2xl">
               <div className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
@@ -297,11 +297,11 @@ export default function TrabajaConNosotrosPage() {
               </p>
             </div>
 
-            <div className="mt-12 grid gap-6 md:grid-cols-3">
+            <div className="mt-10 md:mt-12 grid gap-4 md:gap-6 md:grid-cols-3">
               {perks.map((p) => (
                 <div
                   key={p.title}
-                  className="group rounded-2xl border border-border bg-card p-7 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"
+                  className="group rounded-2xl border border-border bg-card p-5 md:p-7 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"
                 >
                   <div
                     className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl"
@@ -321,7 +321,7 @@ export default function TrabajaConNosotrosPage() {
         </section>
 
         {/* ── Process ────────────────────────────────────────── */}
-        <section className="border-b border-border bg-muted/30 py-20 px-6">
+        <section className="border-b border-border bg-muted/30 py-12 md:py-20">
           <div className="site-container">
             <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
               <div className="max-w-xl">
@@ -352,8 +352,8 @@ export default function TrabajaConNosotrosPage() {
         </section>
 
         {/* ── Application form ──────────────────────────────── */}
-        <section id="aplicar" className="bg-background py-24 px-6">
-          <div className="site-container grid gap-12 lg:grid-cols-12">
+        <section id="aplicar" className="bg-background py-12 md:py-20">
+          <div className="site-container grid gap-10 lg:gap-12 lg:grid-cols-12">
             {/* Left col */}
             <aside className="lg:col-span-5">
               <div className="lg:sticky lg:top-28">
