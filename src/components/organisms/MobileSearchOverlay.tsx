@@ -52,12 +52,11 @@ export function MobileSearchOverlay({ lang, onClose }: MobileSearchOverlayProps)
       }}
     >
       <div
-        className="site-container-nav"
+        className="site-container-nav shell-safe-top"
         style={{
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          paddingTop: 16,
           paddingBottom: 12,
           flexShrink: 0,
         }}
@@ -124,7 +123,7 @@ export function MobileSearchOverlay({ lang, onClose }: MobileSearchOverlayProps)
       </div>
 
       <div style={{ flex: 1, overflowY: "auto", WebkitOverflowScrolling: "touch" }}>
-        <div className="site-container-nav" style={{ paddingBottom: 32 }}>
+        <div className="site-container-nav shell-safe-bottom" style={{ paddingBottom: 16 }}>
           {filtered.length === 0 ? (
             <p
               style={{

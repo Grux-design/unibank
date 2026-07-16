@@ -156,12 +156,8 @@ const CategoryItem: React.FC<{ config: CategoryConfig; checked: boolean; onChang
   );
 };
 
-// Floating panel style
-const floatCard: React.CSSProperties = {
-  position: "fixed",
-  bottom: 24,
-  right: 24,
-  zIndex: 10000,
+// Floating panel base (positioning via .ub-cookie-float)
+const floatCardBase: React.CSSProperties = {
   backgroundColor: T.white,
   borderRadius: T.radiusLg,
   border: `1px solid ${T.ivory200}`,
@@ -192,7 +188,7 @@ const PreferencesPanel: React.FC<{
   if (!open) return null;
 
   return (
-    <div style={{ ...floatCard, width: 420, maxHeight: "80vh", display: "flex", flexDirection: "column", overflow: "hidden" }}>
+    <div className="ub-cookie-float ub-cookie-panel" style={{ ...floatCardBase, display: "flex", flexDirection: "column", overflow: "hidden" }}>
       {/* Header */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "18px 20px 14px", borderBottom: `1px solid ${T.ivory200}` }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
@@ -267,7 +263,7 @@ const BannerToast: React.FC<{ onAcceptAll: () => void; onCustomize: () => void }
   const [configHover, setConfigHover] = useState(false);
 
   return (
-    <div style={{ ...floatCard, width: 380, padding: "20px" }}>
+    <div className="ub-cookie-float ub-cookie-toast" style={{ ...floatCardBase, padding: "20px" }}>
       {/* Header row */}
       <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
         <div style={{ width: 40, height: 40, borderRadius: 12, backgroundColor: T.orange100, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
@@ -334,6 +330,35 @@ function injectKeyframes() {
     @keyframes ub-slide-up {
       from { opacity: 0; transform: translateY(24px); }
       to   { opacity: 1; transform: translateY(0); }
+    }
+    .ub-cookie-float {
+      position: fixed;
+      z-index: 55;
+      bottom: 24px;
+      right: 24px;
+      left: auto;
+    }
+    .ub-cookie-toast {
+      width: 380px;
+    }
+    .ub-cookie-panel {
+      width: 420px;
+      max-height: 80vh;
+    }
+    @media (max-width: 767px) {
+      .ub-cookie-float {
+        left: var(--site-gutter, 16px);
+        right: var(--site-gutter, 16px);
+        bottom: max(16px, env(safe-area-inset-bottom, 0px));
+      }
+      .ub-cookie-toast,
+      .ub-cookie-panel {
+        width: auto;
+        max-width: none;
+      }
+      .ub-cookie-panel {
+        max-height: min(80vh, calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 32px));
+      }
     }
     .ub-scroll::-webkit-scrollbar { width: 4px; }
     .ub-scroll::-webkit-scrollbar-track { background: transparent; }
