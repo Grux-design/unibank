@@ -239,7 +239,7 @@ export default function BlogPage() {
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         />
                       ) : (
-                        <div className="w-full h-full bg-gradient-to-br from-primary/20 to-primary/5" />
+                        <div className="w-full h-full bg-primary/10" />
                       )}
                     </div>
                     <CardContent className="p-6 md:p-8">
@@ -297,7 +297,7 @@ export default function BlogPage() {
                               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                             />
                           ) : (
-                            <div className="w-full h-full bg-gradient-to-br from-primary/20 to-primary/5" />
+                            <div className="w-full h-full bg-primary/10" />
                           )}
                         </div>
                         <CardContent className="p-5 flex flex-col flex-1">
@@ -422,7 +422,7 @@ export default function BlogPage() {
                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                               />
                             ) : (
-                              <div className="w-full h-full bg-gradient-to-br from-primary/20 to-primary/5" />
+                              <div className="w-full h-full bg-primary/10" />
                             )}
                             {post.category && (
                               <span className="absolute top-3 left-3 text-[10px] font-semibold uppercase tracking-wider text-primary bg-background/90 backdrop-blur-sm rounded-full px-2.5 py-1">

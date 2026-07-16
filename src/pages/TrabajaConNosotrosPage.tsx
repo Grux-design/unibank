@@ -231,22 +231,11 @@ export default function TrabajaConNosotrosPage() {
           {/* decorative grid + glow */}
           <div
             aria-hidden
-            className="absolute inset-0 opacity-[0.06]"
-            style={{
-              backgroundImage:
-                "linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px)",
-              backgroundSize: "56px 56px",
-            }}
+            className="absolute -top-40 -right-32 h-[520px] w-[520px] rounded-full bg-primary/35 blur-3xl"
           />
           <div
             aria-hidden
-            className="absolute -top-40 -right-32 h-[520px] w-[520px] rounded-full blur-3xl"
-            style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.35), transparent 70%)" }}
-          />
-          <div
-            aria-hidden
-            className="absolute -bottom-40 -left-20 h-[420px] w-[420px] rounded-full blur-3xl"
-            style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.18), transparent 70%)" }}
+            className="absolute -bottom-40 -left-20 h-[420px] w-[420px] rounded-full bg-primary/18 blur-3xl"
           />
 
           <div className="relative site-container pt-32 pb-24 md:pt-40 md:pb-32">

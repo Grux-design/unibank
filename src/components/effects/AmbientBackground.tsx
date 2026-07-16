@@ -2,7 +2,7 @@ import { motion, useScroll, useTransform, useReducedMotion } from "motion/react"
 
 /**
  * AmbientBackground — fixed atmospheric layer behind the entire page.
- * Two slow-drifting brand blobs + faint grid + film grain.
+ * Two slow-drifting brand blobs + film grain.
  * GPU-accelerated, pointer-events: none, respects prefers-reduced-motion.
  */
 export function AmbientBackground() {
@@ -28,21 +28,6 @@ export function AmbientBackground() {
         background: "transparent",
       }}
     >
-      {/* Soft grid */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          backgroundImage:
-            "linear-gradient(to right, rgba(0,0,0,0.035) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,0,0,0.035) 1px, transparent 1px)",
-          backgroundSize: "56px 56px",
-          maskImage:
-            "radial-gradient(ellipse 80% 60% at 50% 40%, #000 40%, transparent 90%)",
-          WebkitMaskImage:
-            "radial-gradient(ellipse 80% 60% at 50% 40%, #000 40%, transparent 90%)",
-        }}
-      />
-
       {/* Orange blob */}
       <motion.div
         style={{
@@ -52,8 +37,7 @@ export function AmbientBackground() {
           width: 720,
           height: 720,
           borderRadius: "50%",
-          background:
-            "radial-gradient(circle at 50% 50%, rgba(255,129,54,0.18), rgba(255,129,54,0) 65%)",
+          background: "rgba(255,129,54,0.18)",
           filter: "blur(20px)",
           willChange: "transform",
           x: x1,
@@ -78,8 +62,7 @@ export function AmbientBackground() {
           width: 820,
           height: 820,
           borderRadius: "50%",
-          background:
-            "radial-gradient(circle at 50% 50%, rgba(128,31,255,0.14), rgba(128,31,255,0) 65%)",
+          background: "rgba(128,31,255,0.14)",
           filter: "blur(20px)",
           willChange: "transform",
           x: x2,
