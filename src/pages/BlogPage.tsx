@@ -145,17 +145,16 @@ export default function BlogPage() {
 
       <article className="min-h-screen">
         {/* ── Hero ── */}
-        <header className="bg-muted/30 border-b border-border">
-          <div className="site-container py-16 md:py-20">
-            <div className="flex flex-col items-center text-center">
-              <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-primary bg-primary/10 rounded-full px-3 py-1">
-                <Newspaper className="w-3.5 h-3.5" />
-                Sala de Prensa · Blog Unibank
-              </span>
-              <h1 className="mt-5 text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-foreground">
-                Noticias y Blog
-              </h1>
-              <p className="mt-4 text-lg text-muted-foreground max-w-2xl">
+        <header className="bg-muted/30 border-b border-border pt-20 pb-10 md:pt-28 md:pb-16 lg:pt-32">
+          <div className="site-container text-center">
+            <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-primary bg-primary/10 rounded-full px-3 py-1">
+              <Newspaper className="w-3.5 h-3.5" />
+              Sala de Prensa · Blog Unibank
+            </span>
+            <h1 className="mt-5 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-foreground">
+              Noticias y Blog
+            </h1>
+            <p className="mt-4 text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
                 Mantente informado con las últimas noticias, consejos
                 financieros y novedades de UniBank.
               </p>
@@ -176,7 +175,6 @@ export default function BlogPage() {
                   )}
                 </div>
               )}
-            </div>
           </div>
         </header>
 
@@ -197,8 +195,9 @@ export default function BlogPage() {
 
         {/* ── Empty state ── */}
         {!isLoading && posts.length === 0 && (
-          <section className="bg-background py-20 px-6">
-            <div className="max-w-xl mx-auto text-center border border-dashed border-border rounded-2xl py-16 px-6">
+          <section className="bg-background py-12 md:py-20">
+            <div className="site-container">
+              <div className="max-w-xl mx-auto text-center border border-dashed border-border rounded-2xl py-12 md:py-16 px-4 sm:px-6">
               <Newspaper className="w-12 h-12 mx-auto text-muted-foreground/60" />
               <h2 className="mt-4 text-xl font-semibold text-foreground">
                 Aún no hay artículos publicados
@@ -206,6 +205,7 @@ export default function BlogPage() {
               <p className="mt-2 text-sm text-muted-foreground">
                 Vuelve pronto para descubrir nuestras novedades.
               </p>
+              </div>
             </div>
           </section>
         )}
@@ -361,13 +361,13 @@ export default function BlogPage() {
                     )}
                   </div>
 
-                  <div className="flex items-center justify-between sm:justify-end gap-3 sm:ml-auto">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-3 w-full sm:w-auto sm:ml-auto">
                     <span className="text-xs text-muted-foreground hidden md:inline">
                       <strong className="text-foreground">{filtered.length}</strong>{" "}
                       de {gridPool.length} artículos
                     </span>
                     <Select value={sort} onValueChange={(v) => setSort(v as typeof sort)}>
-                      <SelectTrigger className="w-[170px] h-11 rounded-full" aria-label="Ordenar">
+                      <SelectTrigger className="w-full sm:w-[170px] h-11 rounded-full" aria-label="Ordenar">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -531,22 +531,22 @@ export default function BlogPage() {
 
         {/* ── Newsletter CTA ── */}
         {!isLoading && posts.length > 0 && (
-          <section className="bg-primary/5 border-t border-border mt-16 md:mt-24">
-            <div className="site-container py-16 grid grid-cols-1 md:grid-cols-5 gap-8 items-center">
+          <section className="bg-primary/5 border-t border-border mt-12 md:mt-16 lg:mt-24">
+            <div className="site-container py-12 md:py-16 lg:py-20 grid grid-cols-1 md:grid-cols-5 gap-6 md:gap-8 items-center">
               <div className="md:col-span-3">
                 <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
                   <Mail className="w-3.5 h-3.5" /> Newsletter
                 </span>
-                <h2 className="mt-3 text-2xl md:text-3xl font-bold text-foreground">
+                <h2 className="mt-3 text-xl sm:text-2xl md:text-3xl font-bold text-foreground">
                   Recibe nuestras novedades
                 </h2>
-                <p className="mt-2 text-muted-foreground">
+                <p className="mt-2 text-sm md:text-base text-muted-foreground">
                   Artículos, análisis y noticias del sector financiero
                   directamente en tu correo. Sin spam.
                 </p>
               </div>
               <form
-                className="md:col-span-2 flex flex-col sm:flex-row gap-3"
+                className="md:col-span-2 flex flex-col sm:flex-row gap-3 w-full"
                 onSubmit={(e) => e.preventDefault()}
               >
                 <Input
@@ -554,9 +554,11 @@ export default function BlogPage() {
                   required
                   placeholder="tu@correo.com"
                   aria-label="Correo electrónico"
-                  className="flex-1"
+                  className="flex-1 w-full"
                 />
-                <Button type="submit">Suscribirme</Button>
+                <Button type="submit" className="w-full sm:w-auto shrink-0">
+                  Suscribirme
+                </Button>
               </form>
             </div>
           </section>
