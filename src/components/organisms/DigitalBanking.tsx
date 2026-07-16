@@ -11,10 +11,10 @@ import {
   Card,
   Smartphone,
   ShieldCheck,
-  Clock,
 } from "@/lib/icons";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { OrangeBlobBackground } from "@/components/atoms/OrangeBlobBackground";
+import { AuthorityLineDecor } from "@/components/atoms/AuthorityLineDecor";
 import { BtnPrimary, SectionHeading } from "@/components/ui/atoms";
 import { CTA_BUTTON_COLORS, CTA_BUTTON_SIZE } from "@/constants/ctaButtons";
 import { TAG_PILL_HUG, TAG_STACK_HUG } from "@/constants/tagPill";
@@ -766,44 +766,97 @@ export function DigitalBanking() {
         {/* Authority quote */}
         <div
           style={{
+            boxSizing: "border-box",
+            position: "relative",
+            isolation: "isolate",
+            overflow: "hidden",
             margin: "64px 0 0",
-            padding: isMobile ? "48px 28px" : "72px 96px",
-            background: "#f5f0ec",
-            borderRadius: 28,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            padding: isMobile ? "48px 32px" : "64px 96px",
+            gap: 20,
+            minHeight: isMobile ? 300 : 340,
+            background: "#F5F0EC",
             border: `1px solid ${BORDER}`,
+            borderRadius: 28,
             textAlign: "center",
           }}
         >
-          <p
+          <div
+            aria-hidden
             style={{
-              margin: "0 0 20px",
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 8,
-              fontSize: 12,
-              fontWeight: 700,
-              color: OR,
-              letterSpacing: "0.1em",
-              textTransform: "uppercase" as const,
+              position: "absolute",
+              width: 506,
+              height: 506,
+              left: isMobile ? -220 : -152,
+              top: isMobile ? 80 : 42,
+              pointerEvents: "none",
+              zIndex: 0,
             }}
           >
-            <ShieldCheck size={15} strokeWidth={2.25} />
-            Liderazgo y ética comprobada
-          </p>
+            <AuthorityLineDecor variant="bottom-left" width={506} height={506} />
+          </div>
+          <div
+            aria-hidden
+            style={{
+              position: "absolute",
+              width: 442,
+              height: 442,
+              right: isMobile ? -220 : -157,
+              top: isMobile ? -200 : -272,
+              pointerEvents: "none",
+              zIndex: 0,
+            }}
+          >
+            <AuthorityLineDecor variant="top-right" width={442} height={442} />
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 8,
+              position: "relative",
+              zIndex: 1,
+            }}
+          >
+            <ShieldCheck size={15} color="#FF7733" strokeWidth={2.25} />
+            <span
+              style={{
+                fontFamily: "Inter, sans-serif",
+                fontWeight: 700,
+                fontSize: 12,
+                lineHeight: "18px",
+                letterSpacing: "1.2px",
+                textTransform: "uppercase",
+                color: "#FF7733",
+              }}
+            >
+              Liderazgo y ética comprobada
+            </span>
+          </div>
           <p
             style={{
               margin: 0,
-              fontSize: isMobile ? 18 : 22,
-              lineHeight: 1.7,
-              color: "#726f6e",
+              maxWidth: 700,
+              position: "relative",
+              zIndex: 1,
+              fontFamily: "Inter, sans-serif",
               fontWeight: 400,
+              fontSize: isMobile ? 18 : 22,
+              lineHeight: isMobile ? "30px" : "37px",
+              textAlign: "center",
+              color: "#726F6E",
             }}
           >
             Somos una entidad enfocada en la{" "}
-            <strong style={{ color: "#1f1e1e" }}>innovación y la sostenibilidad</strong> —
+            <strong style={{ fontWeight: 700 }}>innovación y la sostenibilidad</strong> —
             incluyendo la emisión de{" "}
-            <strong style={{ color: "#1f1e1e" }}>Bonos Verdes</strong> — regulada y supervisada por
-            la <strong style={{ color: "#1f1e1e" }}>Superintendencia de Bancos de Panamá</strong>.
+            <strong style={{ fontWeight: 700 }}>Bonos Verdes</strong> — regulada y supervisada por
+            la <strong style={{ fontWeight: 700 }}>Superintendencia de Bancos de Panamá</strong>.
           </p>
         </div>
 
@@ -815,28 +868,31 @@ export function DigitalBanking() {
             background: "#FF8136",
             overflow: "hidden",
             position: "relative",
-            boxShadow: "var(--shadow-orange)",
-            minHeight: isMobile ? 320 : 280,
+            display: "flex",
+            flexDirection: "column",
+            minHeight: "68vh",
           }}
         >
-          <OrangeBlobBackground objectPosition={isMobile ? "62% center" : "center 42%"} />
+          <OrangeBlobBackground />
           <div
             style={{
               position: "relative",
               zIndex: 1,
               display: "flex",
-              flexDirection: isMobile ? "column" : "row",
-              alignItems: isMobile ? "flex-start" : "center",
-              justifyContent: "space-between",
-              gap: isMobile ? 40 : 64,
-              padding: isMobile ? "52px 28px" : "72px 80px",
+              flexDirection: "column",
+              alignItems: "center",
+              flex: 1,
+              justifyContent: "center",
+              textAlign: "center",
+              gap: isMobile ? 28 : 32,
+              padding: isMobile ? "56px 28px" : "72px 80px",
+              boxSizing: "border-box",
             }}
           >
-            {/* Left column */}
-            <div style={{ flex: 1, maxWidth: isMobile ? undefined : "52%" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 720 }}>
               <p
                 style={{
-                  margin: "0 0 16px",
+                  margin: 0,
                   fontSize: 13,
                   fontWeight: 600,
                   color: "rgba(255,255,255,0.85)",
@@ -860,68 +916,60 @@ export function DigitalBanking() {
               </h3>
             </div>
 
-            {/* Right column */}
             <div
               style={{
-                flexShrink: 0,
                 display: "flex",
-                flexDirection: "column",
-                gap: 20,
+                flexDirection: isMobile ? "column" : "row",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 12,
                 width: isMobile ? "100%" : undefined,
-                alignSelf: isMobile ? "stretch" : undefined,
               }}
             >
-              <div
+              <CtaWhiteBtn
+                href="https://wa.me/50763280229"
+                icon={<MessageCircle size={16} />}
+                fullWidth={isMobile}
+              >
+                WhatsApp 6328-0229
+              </CtaWhiteBtn>
+              <CtaWhiteBtn
+                href="tel:+50722976000"
+                icon={<Phone size={16} />}
+                fullWidth={isMobile}
+              >
+                297-6000
+              </CtaWhiteBtn>
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 8,
+                maxWidth: 640,
+              }}
+            >
+              <p
                 style={{
-                  display: "flex",
-                  flexDirection: isMobile ? "column" : "row",
-                  gap: 12,
-                  width: isMobile ? "100%" : undefined,
+                  margin: 0,
+                  fontSize: 14,
+                  color: "rgba(255,255,255,0.82)",
+                  lineHeight: 1.5,
                 }}
               >
-                <CtaWhiteBtn
-                  href="tel:+50722976000"
-                  icon={<Phone size={16} />}
-                  fullWidth={isMobile}
-                >
-                  297-6000
-                </CtaWhiteBtn>
-                <CtaWhiteBtn
-                  href="https://wa.me/50763280229"
-                  icon={<MessageCircle size={16} />}
-                  fullWidth={isMobile}
-                >
-                  WhatsApp 6328-0229
-                </CtaWhiteBtn>
-              </div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                <span
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: 8,
-                    fontSize: 14,
-                    color: "rgba(255,255,255,0.82)",
-                    lineHeight: 1.5,
-                  }}
-                >
-                  <Clock size={14} strokeWidth={2} />
-                  Lunes a viernes 8:00 a.m. – 4:00 p.m. · Sábados 9:00 a.m. – 12:00 p.m.
-                </span>
-                <span
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: 8,
-                    fontSize: 14,
-                    color: "rgba(255,255,255,0.72)",
-                    lineHeight: 1.5,
-                    paddingLeft: 22,
-                  }}
-                >
-                  Cajero automático disponible 24 horas
-                </span>
-              </div>
+                Lunes a viernes 8:00 a.m. – 4:00 p.m. - Sábados 9:00 a.m. – 12:00 p.m.
+              </p>
+              <p
+                style={{
+                  margin: 0,
+                  fontSize: 14,
+                  color: "rgba(255,255,255,0.72)",
+                  lineHeight: 1.5,
+                }}
+              >
+                Cajero automático disponible 24 horas
+              </p>
             </div>
           </div>
         </div>
