@@ -16,6 +16,7 @@ import {
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { OrangeBlobBackground } from "@/components/atoms/OrangeBlobBackground";
 import { BtnPrimary, SectionHeading } from "@/components/ui/atoms";
+import { CTA_BUTTON_COLORS, CTA_BUTTON_SIZE } from "@/constants/ctaButtons";
 import { TAG_PILL_HUG, TAG_STACK_HUG } from "@/constants/tagPill";
 
 const OR = "var(--fun-orange)";
@@ -197,7 +198,7 @@ function FeatureBoxBody({
 }
 
 /* ── Ghost CTA button ───────────────────────────────────── */
-function CtaGhostBtn({
+function CtaWhiteBtn({
   href,
   children,
   icon,
@@ -209,28 +210,43 @@ function CtaGhostBtn({
   fullWidth?: boolean;
 }) {
   const [hov, setHov] = useState(false);
+  const [active, setActive] = useState(false);
+  const colors = CTA_BUTTON_COLORS.lightSolid;
+  const bg = active ? colors.bgActive : hov ? colors.bgHover : colors.bg;
+
   return (
     <a
       href={href}
       onMouseEnter={() => setHov(true)}
-      onMouseLeave={() => setHov(false)}
+      onMouseLeave={() => {
+        setHov(false);
+        setActive(false);
+      }}
+      onMouseDown={() => setActive(true)}
+      onMouseUp={() => setActive(false)}
       style={{
+        boxSizing: "border-box",
         display: "inline-flex",
         alignItems: "center",
         justifyContent: "center",
         gap: 9,
-        padding: "14px 28px",
-        borderRadius: 14,
-        background: hov ? "rgba(255,255,255,0.22)" : "rgba(255,255,255,0.15)",
-        color: "#fff",
-        border: "1px solid rgba(255,255,255,0.28)",
+        height: CTA_BUTTON_SIZE.height,
+        minHeight: CTA_BUTTON_SIZE.minHeight,
+        padding: `0 ${CTA_BUTTON_SIZE.paddingX}px`,
+        borderRadius: CTA_BUTTON_SIZE.borderRadius,
+        background: bg,
+        color: colors.color,
+        border: "none",
         textDecoration: "none",
-        fontSize: "var(--btn-font-size)",
-        fontWeight: "var(--btn-font-weight)",
-        transition: "background 0.18s, border-color 0.18s",
+        fontSize: CTA_BUTTON_SIZE.fontSize,
+        fontWeight: CTA_BUTTON_SIZE.fontWeight,
+        lineHeight: CTA_BUTTON_SIZE.lineHeight,
+        fontFamily: "Inter, sans-serif",
+        transition: "background 0.18s ease",
         whiteSpace: "nowrap",
         width: fullWidth ? "100%" : undefined,
         alignSelf: fullWidth ? "stretch" : undefined,
+        flexShrink: 0,
       }}
     >
       {icon}
@@ -751,9 +767,9 @@ export function DigitalBanking() {
         <div
           style={{
             margin: "64px 0 0",
-            padding: isMobile ? "40px 24px" : "56px 80px",
+            padding: isMobile ? "48px 28px" : "72px 96px",
             background: "#f5f0ec",
-            borderRadius: 24,
+            borderRadius: 28,
             border: `1px solid ${BORDER}`,
             textAlign: "center",
           }}
@@ -794,15 +810,16 @@ export function DigitalBanking() {
         {/* Orange CTA banner */}
         <div
           style={{
-            margin: "32px 0 64px",
-            borderRadius: 28,
+            margin: "40px 0 80px",
+            borderRadius: 32,
             background: "#FF8136",
             overflow: "hidden",
             position: "relative",
             boxShadow: "var(--shadow-orange)",
+            minHeight: isMobile ? 320 : 280,
           }}
         >
-          <OrangeBlobBackground />
+          <OrangeBlobBackground objectPosition={isMobile ? "62% center" : "center 42%"} />
           <div
             style={{
               position: "relative",
@@ -811,15 +828,15 @@ export function DigitalBanking() {
               flexDirection: isMobile ? "column" : "row",
               alignItems: isMobile ? "flex-start" : "center",
               justifyContent: "space-between",
-              gap: isMobile ? 32 : 48,
-              padding: isMobile ? "36px 20px" : "56px 64px",
+              gap: isMobile ? 40 : 64,
+              padding: isMobile ? "52px 28px" : "72px 80px",
             }}
           >
             {/* Left column */}
-            <div style={{ flex: 1 }}>
+            <div style={{ flex: 1, maxWidth: isMobile ? undefined : "52%" }}>
               <p
                 style={{
-                  margin: "0 0 12px",
+                  margin: "0 0 16px",
                   fontSize: 13,
                   fontWeight: 600,
                   color: "rgba(255,255,255,0.85)",
@@ -836,7 +853,7 @@ export function DigitalBanking() {
                   fontWeight: 800,
                   color: "#fff",
                   letterSpacing: "-0.02em",
-                  lineHeight: 1.1,
+                  lineHeight: 1.12,
                 }}
               >
                 Contáctanos hoy mismo.
@@ -849,7 +866,7 @@ export function DigitalBanking() {
                 flexShrink: 0,
                 display: "flex",
                 flexDirection: "column",
-                gap: 16,
+                gap: 20,
                 width: isMobile ? "100%" : undefined,
                 alignSelf: isMobile ? "stretch" : undefined,
               }}
@@ -862,22 +879,22 @@ export function DigitalBanking() {
                   width: isMobile ? "100%" : undefined,
                 }}
               >
-                <CtaGhostBtn
+                <CtaWhiteBtn
                   href="tel:+50722976000"
                   icon={<Phone size={16} />}
                   fullWidth={isMobile}
                 >
                   297-6000
-                </CtaGhostBtn>
-                <CtaGhostBtn
+                </CtaWhiteBtn>
+                <CtaWhiteBtn
                   href="https://wa.me/50763280229"
                   icon={<MessageCircle size={16} />}
                   fullWidth={isMobile}
                 >
                   WhatsApp 6328-0229
-                </CtaGhostBtn>
+                </CtaWhiteBtn>
               </div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 <span
                   style={{
                     display: "inline-flex",

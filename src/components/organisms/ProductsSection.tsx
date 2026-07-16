@@ -15,12 +15,12 @@ const CUENTA_AHORROS_ROUTE = "/personas/cuentas/cuenta-de-ahorros";
 const OR = "var(--fun-orange)";
 const DARK = "var(--uni-dark)";
 const SOFT = "var(--uni-dark-soft)";
-const CARD_H = 480;
+const CARD_H = 520;
 const COMPACT_CARD_H = 400;
 const G = 8;
 const DELTA = 20;
 /** Mobile bento — all cards match the orange featured banner height */
-const MOBILE_BENTO_CARD_H = 512;
+const MOBILE_BENTO_CARD_H = 560;
 
 /* ── Images ────────────────────────────────────────────── */
 const IMG_PORTRAIT = "/5ca273f3-86ff-4e66-a9f7-ae25d492fce4.png";
@@ -283,11 +283,11 @@ function FeaturedBanner({ layout, wide = false }: { layout: FeaturedBannerLayout
               position: "relative",
               zIndex: 2,
               height: "100%",
-              padding: wide ? "32px 32px 28px" : "28px 24px 24px",
+              padding: wide ? "44px 40px 40px" : "40px 32px 36px",
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-between",
-              gap: 20,
+              gap: 28,
               boxSizing: "border-box",
             }}
           >
@@ -296,7 +296,7 @@ function FeaturedBanner({ layout, wide = false }: { layout: FeaturedBannerLayout
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "flex-start",
-                gap: 12,
+                gap: 16,
                 maxWidth: wide ? "52%" : "58%",
               }}
             >
@@ -369,14 +369,14 @@ function FeaturedBanner({ layout, wide = false }: { layout: FeaturedBannerLayout
       <div
         style={{
           flex: 1,
-          padding: 48,
+          padding: "56px 56px",
           display: "flex",
           flexDirection: "column",
           justifyContent: "flex-start",
           alignItems: "flex-start",
           position: "relative",
           zIndex: 1,
-          gap: 16,
+          gap: 20,
         }}
       >
         {/* Badge */}
@@ -447,14 +447,14 @@ function FeaturedBanner({ layout, wide = false }: { layout: FeaturedBannerLayout
       <div
         style={{
           flex: 1,
-          padding: 48,
+          padding: "56px 56px",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "flex-start",
           position: "relative",
           zIndex: 1,
-          gap: 12,
+          gap: 16,
         }}
       >
         <p
@@ -482,22 +482,10 @@ function FeaturedBanner({ layout, wide = false }: { layout: FeaturedBannerLayout
           de UniBank desde donde estés.
         </p>
 
-        {/* CTA */}
-        <div style={{ paddingTop: 12 }}>
-          <span
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 6,
-              color: "#fff",
-              fontSize: 13,
-              fontWeight: 600,
-              userSelect: "none",
-            }}
-          >
+        <div style={{ paddingTop: 8 }} onClick={(e) => e.stopPropagation()}>
+          <HeroCtaButton to={CUENTA_AHORROS_ROUTE} variant="secondary">
             Abrir mi cuenta ahora
-            <ChevronRight size={13} strokeWidth={2.5} />
-          </span>
+          </HeroCtaButton>
         </div>
       </div>
         </>
