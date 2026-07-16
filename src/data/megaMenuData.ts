@@ -81,10 +81,9 @@ export const empresasData: MenuSection = {
       name: "Cuentas",
       categorySlug: "cuentas",
       items: [
-        { label: "Mi Negocio", slug: "mi-negocio" },
-        { label: "Cuenta de Ahorros", slug: "cuenta-de-ahorros", to: "/personas/cuentas/cuenta-de-ahorros" },
-        { label: "Cuenta Corriente", slug: "cuenta-corriente", to: "/personas/cuentas/cuenta-corriente" },
-        { label: "Depósito a Plazo Fijo", slug: "deposito-a-plazo-fijo", to: "/personas/cuentas/deposito-a-plazo-fijo" },
+        { label: "Mi Negocio",         slug: "mi-negocio" },
+        { label: "Cuenta de Ahorros",  slug: "cuenta-de-ahorros" },
+        { label: "Cuenta Corriente",   slug: "cuenta-corriente" },
       ],
     },
     {
@@ -102,7 +101,7 @@ export const empresasData: MenuSection = {
       categorySlug: "otros-servicios",
       items: [
         { label: "Emisión de Valores",      slug: "emision-de-valores" },
-        { label: "Planilla",                slug: "planilla" },
+        { label: "Planilla",                slug: "pago-de-planilla" },
         { label: "Mastercard Black Débito", slug: "mastercard-black-debito" },
       ],
     },

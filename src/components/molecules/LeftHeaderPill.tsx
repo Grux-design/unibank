@@ -117,7 +117,7 @@ export function LeftHeaderPill({
 
       {/* Novedad link */}
       <Link
-        to="/empresas/cuentas/cuenta-juridica-digital"
+        to="/empresas/cuentas/mi-negocio"
         style={{
           display: "flex",
           alignItems: "center",
@@ -160,7 +160,7 @@ export function LeftHeaderPill({
             whiteSpace: "nowrap",
           }}
         >
-          {lang === "es" ? "Cuenta PYME Digital" : "Digital SME Account"}
+          {lang === "es" ? "Mi Negocio" : "My Business"}
         </span>
       </Link>
 
