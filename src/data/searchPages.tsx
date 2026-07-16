@@ -1,23 +1,471 @@
 import type { ReactNode } from "react";
 import {
-  Home, Users, Briefcase, FileText, Phone, PiggyBank, Building2, Card, Smartphone,
+  Home,
+  Users,
+  FileText,
+  Phone,
+  PiggyBank,
+  Card,
+  Smartphone,
+  Briefcase,
+  MapPin,
+  Shield,
+  Leaf,
+  ChartBar,
+  Award,
+  Lock,
+  Car,
+  Landmark,
+  Monitor,
+  Wallet,
+  Receipt,
+  Cookie,
+  UserPlus,
+  Newspaper,
+  Bank,
+  Package,
 } from "@/lib/icons";
+import type { SearchableEntry } from "@/lib/search";
 
-export interface SearchPage {
+export type SearchCategory =
+  | "inicio"
+  | "personas"
+  | "empresas"
+  | "institucional"
+  | "grupo"
+  | "canales"
+  | "legal"
+  | "empleo"
+  | "utilidad";
+
+export interface SearchPage extends SearchableEntry {
   icon: ReactNode;
-  label: string;
-  desc: string;
-  href: string;
+  category: SearchCategory;
+  tags: string[];
+  synonyms: string[];
+  priority: number;
 }
 
+const icon = (node: ReactNode) => node;
+const stroke = { size: 18 as const, color: "#484746", strokeWidth: 1.8 };
+
 export const searchPages: SearchPage[] = [
-  { icon: <Home size={18} color="#484746" strokeWidth={1.8} />, label: "Inicio", desc: "Página principal", href: "/" },
-  { icon: <Users size={18} color="#484746" strokeWidth={1.8} />, label: "Nosotros", desc: "Quiénes somos", href: "/about" },
-  { icon: <Briefcase size={18} color="#484746" strokeWidth={1.8} />, label: "Servicios", desc: "Productos y soluciones", href: "/services" },
-  { icon: <FileText size={18} color="#484746" strokeWidth={1.8} />, label: "Blog", desc: "Artículos y noticias", href: "/blog" },
-  { icon: <Phone size={18} color="#484746" strokeWidth={1.8} />, label: "Contacto", desc: "Escríbenos o llámanos", href: "/contact" },
-  { icon: <PiggyBank size={18} color="#484746" strokeWidth={1.8} />, label: "Cuenta de Ahorros", desc: "Para personas naturales", href: "/cuenta-ahorros" },
-  { icon: <Building2 size={18} color="#484746" strokeWidth={1.8} />, label: "Cuenta Jurídica", desc: "Para empresas y negocios", href: "/cuenta-juridica" },
-  { icon: <Card size={18} color="#484746" strokeWidth={1.8} />, label: "Tarjetas", desc: "Débito y crédito", href: "/tarjetas" },
-  { icon: <Smartphone size={18} color="#484746" strokeWidth={1.8} />, label: "Banca Móvil", desc: "Tu banco en el bolsillo", href: "/banca-movil" },
+  // ── General ──────────────────────────────────────────────
+  {
+    icon: icon(<Home {...stroke} />),
+    label: "Inicio",
+    desc: "Página principal de UniBank",
+    href: "/",
+    category: "inicio",
+    tags: ["home", "principal", "inicio"],
+    synonyms: ["home", "portada", "pagina principal", "banco"],
+    priority: 100,
+  },
+  {
+    icon: icon(<Newspaper {...stroke} />),
+    label: "Blog / Noticias",
+    desc: "Artículos, novedades y prensa UniBank",
+    href: "/blog",
+    category: "utilidad",
+    tags: ["blog", "noticias", "prensa", "novedades"],
+    synonyms: ["noticias", "articulos", "prensa", "novedades", "news"],
+    priority: 70,
+  },
+  {
+    icon: icon(<Phone {...stroke} />),
+    label: "Contacto",
+    desc: "Escríbenos o llámanos",
+    href: "/contact",
+    category: "utilidad",
+    tags: ["contacto", "soporte", "ayuda"],
+    synonyms: ["telefono", "whatsapp", "escribir", "ayuda", "soporte", "atencion", "llamar"],
+    priority: 85,
+  },
+  {
+    icon: icon(<MapPin {...stroke} />),
+    label: "Sucursales",
+    desc: "Ubicaciones, horarios y mapa de agencias",
+    href: "/sucursales",
+    category: "utilidad",
+    tags: ["sucursales", "agencias", "mapa", "horarios"],
+    synonyms: ["agencia", "oficina", "horario", "ubicacion", "mapa", "atm", "cajero", "donde estamos"],
+    priority: 90,
+  },
+  {
+    icon: icon(<Receipt {...stroke} />),
+    label: "Tarifario",
+    desc: "Tarifas, tasas y comisiones",
+    href: "/tarifario",
+    category: "utilidad",
+    tags: ["tarifario", "tarifas", "tasas", "comisiones"],
+    synonyms: ["precios", "costos", "comision", "tasa", "tarifa", "cargos"],
+    priority: 80,
+  },
+  {
+    icon: icon(<UserPlus {...stroke} />),
+    label: "Trabaja con nosotros",
+    desc: "Vacantes y oportunidades laborales",
+    href: "/trabaja-con-nosotros",
+    category: "empleo",
+    tags: ["empleo", "vacantes", "carrera", "rrhh"],
+    synonyms: ["trabajo", "empleo", "vacante", "carrera", "recursos humanos", "aplicar", "curriculum", "cv", "job"],
+    priority: 75,
+  },
+  {
+    icon: icon(<Shield {...stroke} />),
+    label: "Canal de denuncias",
+    desc: "Reporta irregularidades de forma segura",
+    href: "/canal-de-denuncias",
+    category: "utilidad",
+    tags: ["denuncias", "etica", "compliance"],
+    synonyms: ["denuncia", "etica", "fraude", "whistleblower", "irregularidad", "anonimo", "reportar"],
+    priority: 70,
+  },
+
+  // ── Personas · Cuentas ───────────────────────────────────
+  {
+    icon: icon(<PiggyBank {...stroke} />),
+    label: "Cuenta de Ahorros",
+    desc: "Cuenta de ahorros digital para personas",
+    href: "/personas/cuentas/cuenta-de-ahorros",
+    category: "personas",
+    tags: ["cuenta", "ahorros", "personas", "digital"],
+    synonyms: ["ahorro", "ahorros", "abrir cuenta", "cuenta personal", "persona natural", "cuenta digital"],
+    priority: 95,
+  },
+  {
+    icon: icon(<Wallet {...stroke} />),
+    label: "Cuenta Corriente",
+    desc: "Cuenta corriente para personas",
+    href: "/personas/cuentas/cuenta-corriente",
+    category: "personas",
+    tags: ["cuenta", "corriente", "personas"],
+    synonyms: ["chequera", "checking", "cuenta corriente personal"],
+    priority: 88,
+  },
+  {
+    icon: icon(<Landmark {...stroke} />),
+    label: "Depósito a Plazo Fijo",
+    desc: "Invierte a plazo fijo con tasas competitivas",
+    href: "/personas/cuentas/deposito-a-plazo-fijo",
+    category: "personas",
+    tags: ["deposito", "plazo fijo", "inversion", "personas"],
+    synonyms: ["dpf", "plazo fijo", "inversion", "ahorrar a plazo", "certificado", "interes"],
+    priority: 86,
+  },
+
+  // ── Personas · Crédito ───────────────────────────────────
+  {
+    icon: icon(<Car {...stroke} />),
+    label: "Préstamo de Auto Digital",
+    desc: "Financia tu vehículo 100% digital",
+    href: "/personas/credito/prestamo-de-auto-digital",
+    category: "personas",
+    tags: ["prestamo", "auto", "credito", "digital"],
+    synonyms: ["carro", "vehiculo", "credito auto", "prestamo auto", "financiamiento auto", "auto digital"],
+    priority: 90,
+  },
+  {
+    icon: icon(<Home {...stroke} />),
+    label: "Préstamo de Vivienda",
+    desc: "Hipoteca y crédito de vivienda",
+    href: "/personas/credito/prestamo-de-vivienda",
+    category: "personas",
+    tags: ["prestamo", "vivienda", "hipoteca", "credito"],
+    synonyms: ["hipoteca", "casa", "hogar", "credito hipotecario", "vivienda", "apartamento"],
+    priority: 90,
+  },
+
+  // ── Personas · Canales ───────────────────────────────────
+  {
+    icon: icon(<Smartphone {...stroke} />),
+    label: "Banca Móvil UniBank",
+    desc: "App móvil para personas",
+    href: "/personas/canales-digitales/banca-movil-unibank",
+    category: "canales",
+    tags: ["banca movil", "app", "personas", "digital"],
+    synonyms: ["app", "aplicacion", "movil", "celular", "unibank app", "banca movil"],
+    priority: 88,
+  },
+  {
+    icon: icon(<Monitor {...stroke} />),
+    label: "Banca en Línea",
+    desc: "Banca por internet para personas",
+    href: "/personas/canales-digitales/banca-en-linea",
+    category: "canales",
+    tags: ["banca en linea", "online", "personas", "web"],
+    synonyms: ["online", "internet banking", "web", "login", "ebanking", "banca digital", "portal"],
+    priority: 88,
+  },
+
+  // ── Personas · Otros ─────────────────────────────────────
+  {
+    icon: icon(<Card {...stroke} />),
+    label: "Mastercard Black Débito",
+    desc: "Tarjeta de débito premium para personas",
+    href: "/personas/otros-servicios/mastercard-black-debito",
+    category: "personas",
+    tags: ["tarjeta", "debito", "mastercard", "black"],
+    synonyms: ["tarjeta", "debito", "mastercard", "black", "plastico", "card"],
+    priority: 84,
+  },
+  {
+    icon: icon(<Lock {...stroke} />),
+    label: "Cajilla de Seguridad",
+    desc: "Cajillas de seguridad en sucursal",
+    href: "/personas/otros-servicios/cajilla-de-seguridad",
+    category: "personas",
+    tags: ["cajilla", "seguridad", "boveda"],
+    synonyms: ["caja fuerte", "cajilla", "seguridad", "boveda", "safe deposit", "locker"],
+    priority: 82,
+  },
+
+  // ── Empresas · Cuentas ───────────────────────────────────
+  {
+    icon: icon(<Briefcase {...stroke} />),
+    label: "Mi Negocio",
+    desc: "Cuenta empresarial digital para PYMEs",
+    href: "/empresas/cuentas/mi-negocio",
+    category: "empresas",
+    tags: ["mi negocio", "pyme", "empresas", "cuenta"],
+    synonyms: [
+      "empresa", "pyme", "negocio", "cuenta empresarial", "juridica",
+      "cuenta juridica", "cuenta pyme", "pyme digital", "mi negocio",
+      "abrir cuenta empresa", "banca empresas",
+    ],
+    priority: 96,
+  },
+  {
+    icon: icon(<PiggyBank {...stroke} />),
+    label: "Cuenta de Ahorros Empresas",
+    desc: "Ahorros para empresas y negocios",
+    href: "/empresas/cuentas/cuenta-de-ahorros",
+    category: "empresas",
+    tags: ["cuenta", "ahorros", "empresas"],
+    synonyms: ["ahorro empresarial", "cuenta ahorros empresa", "ahorros pyme"],
+    priority: 82,
+  },
+  {
+    icon: icon(<Wallet {...stroke} />),
+    label: "Cuenta Corriente Empresas",
+    desc: "Cuenta corriente empresarial",
+    href: "/empresas/cuentas/cuenta-corriente",
+    category: "empresas",
+    tags: ["cuenta", "corriente", "empresas"],
+    synonyms: ["cuenta corriente empresa", "chequera empresarial"],
+    priority: 82,
+  },
+
+  // ── Empresas · Financiamiento ────────────────────────────
+  {
+    icon: icon(<Bank {...stroke} />),
+    label: "Préstamo Comercial",
+    desc: "Financiamiento comercial para empresas",
+    href: "/empresas/financiamiento/prestamo-comercial",
+    category: "empresas",
+    tags: ["prestamo", "comercial", "financiamiento", "empresas"],
+    synonyms: ["credito comercial", "prestamo empresa", "financiamiento comercial", "capital de trabajo"],
+    priority: 86,
+  },
+  {
+    icon: icon(<Package {...stroke} />),
+    label: "Leasing (UniLeasing)",
+    desc: "Arrendamiento financiero para equipar tu empresa",
+    href: "/empresas/financiamiento/unileasing",
+    category: "empresas",
+    tags: ["leasing", "unileasing", "arrendamiento", "financiamiento"],
+    synonyms: ["leasing", "arrendamiento", "equipo", "financiamiento leasing", "renta con opcion"],
+    priority: 86,
+  },
+  {
+    icon: icon(<ChartBar {...stroke} />),
+    label: "Líneas de Crédito",
+    desc: "Línea de crédito revolvente para empresas",
+    href: "/empresas/financiamiento/linea-de-credito",
+    category: "empresas",
+    tags: ["linea de credito", "credito", "empresas"],
+    synonyms: ["linea", "revolvente", "credito empresarial", "facility"],
+    priority: 84,
+  },
+  {
+    icon: icon(<Leaf {...stroke} />),
+    label: "Préstamo Agroindustrial",
+    desc: "Financiamiento para el sector agroindustrial",
+    href: "/empresas/financiamiento/prestamo-agroindustrial",
+    category: "empresas",
+    tags: ["agroindustrial", "prestamo", "agro", "empresas"],
+    synonyms: ["agro", "agricola", "campo", "agroindustria", "credito agricola"],
+    priority: 80,
+  },
+
+  // ── Empresas · Otros / Canales ───────────────────────────
+  {
+    icon: icon(<FileText {...stroke} />),
+    label: "Emisión de Valores",
+    desc: "Emisión de valores para empresas",
+    href: "/empresas/otros-servicios/emision-de-valores",
+    category: "empresas",
+    tags: ["valores", "emision", "mercado de capitales"],
+    synonyms: ["bonos", "valores", "emision", "mercado de capitales", "titulos"],
+    priority: 72,
+  },
+  {
+    icon: icon(<Users {...stroke} />),
+    label: "Pago de Planilla",
+    desc: "Servicio de planilla para empresas",
+    href: "/empresas/otros-servicios/pago-de-planilla",
+    category: "empresas",
+    tags: ["planilla", "nomina", "pago", "empresas"],
+    synonyms: ["planilla", "nomina", "payroll", "pago de salarios", "empleados"],
+    priority: 84,
+  },
+  {
+    icon: icon(<Card {...stroke} />),
+    label: "Mastercard Black Débito Empresas",
+    desc: "Tarjeta de débito empresarial",
+    href: "/empresas/otros-servicios/mastercard-black-debito",
+    category: "empresas",
+    tags: ["tarjeta", "debito", "empresas", "mastercard"],
+    synonyms: ["tarjeta empresa", "debito empresarial", "mastercard empresas"],
+    priority: 78,
+  },
+  {
+    icon: icon(<Monitor {...stroke} />),
+    label: "Banca en Línea Empresarial",
+    desc: "Portal digital para empresas",
+    href: "/empresas/canales-digitales/banca-en-linea-empresarial",
+    category: "canales",
+    tags: ["banca en linea", "empresas", "portal"],
+    synonyms: ["banca empresarial", "online empresas", "portal empresas", "ebanking empresas"],
+    priority: 86,
+  },
+  {
+    icon: icon(<Smartphone {...stroke} />),
+    label: "Banca Móvil Empresas",
+    desc: "App móvil para banca empresas",
+    href: "/empresas/canales-digitales/banca-movil",
+    category: "canales",
+    tags: ["banca movil", "app", "empresas"],
+    synonyms: ["app empresas", "movil empresas", "banca movil empresarial"],
+    priority: 82,
+  },
+
+  // ── Grupo ────────────────────────────────────────────────
+  {
+    icon: icon(<Landmark {...stroke} />),
+    label: "UniTrust",
+    desc: "Fideicomisos y servicios fiduciarios del grupo",
+    href: "/grupo/unitrust",
+    category: "grupo",
+    tags: ["unitrust", "fideicomiso", "grupo"],
+    synonyms: ["trust", "fideicomiso", "fiduciario", "unitrust", "grupo unibank"],
+    priority: 88,
+  },
+  {
+    icon: icon(<Package {...stroke} />),
+    label: "Uni Leasing",
+    desc: "Arrendamiento financiero del Grupo UniBank",
+    href: "/grupo/unileasing",
+    category: "grupo",
+    tags: ["unileasing", "leasing", "grupo"],
+    synonyms: ["uni leasing", "arrendamiento financiero", "leasing grupo", "equipamiento"],
+    priority: 88,
+  },
+
+  // ── Institucional ────────────────────────────────────────
+  {
+    icon: icon(<Users {...stroke} />),
+    label: "Junta Directiva / Nuestro Equipo",
+    desc: "Conoce al equipo y la junta directiva",
+    href: "/institucional/junta-directiva",
+    category: "institucional",
+    tags: ["junta", "equipo", "directiva", "institucional"],
+    synonyms: ["nuestro equipo", "directores", "junta directiva", "gobierno", "liderazgo", "quienes somos"],
+    priority: 78,
+  },
+  {
+    icon: icon(<Leaf {...stroke} />),
+    label: "Sostenibilidad / RSE",
+    desc: "Compromiso social y ambiental de UniBank",
+    href: "/institucional/sostenibilidad",
+    category: "institucional",
+    tags: ["sostenibilidad", "rse", "esg", "ambiente"],
+    synonyms: ["rse", "esg", "verde", "ambiente", "social", "responsabilidad social", "sostenible"],
+    priority: 76,
+  },
+  {
+    icon: icon(<FileText {...stroke} />),
+    label: "Estados Financieros",
+    desc: "Estados financieros y reportes auditados",
+    href: "/institucional/estados-financieros",
+    category: "institucional",
+    tags: ["estados financieros", "auditoria", "reportes"],
+    synonyms: ["balance", "auditoria", "estados", "finanzas", "reportes", "estados financieros"],
+    priority: 80,
+  },
+  {
+    icon: icon(<Award {...stroke} />),
+    label: "Calificación de Riesgo",
+    desc: "Calificaciones de riesgo crediticio",
+    href: "/institucional/calificacion-de-riesgo",
+    category: "institucional",
+    tags: ["calificacion", "riesgo", "rating"],
+    synonyms: ["rating", "riesgo", "calificadora", "credit rating", "riesgo crediticio"],
+    priority: 78,
+  },
+  {
+    icon: icon(<Shield {...stroke} />),
+    label: "Cumplimiento Normativo",
+    desc: "Prevención de blanqueo y cumplimiento",
+    href: "/institucional/cumplimiento-normativo",
+    category: "institucional",
+    tags: ["cumplimiento", "normativo", "aml", "compliance"],
+    synonyms: ["compliance", "aml", "blanqueo", "lavado", "debida diligencia", "kyc", "normativa"],
+    priority: 74,
+  },
+  {
+    icon: icon(<Award {...stroke} />),
+    label: "UniLíderes",
+    desc: "Programa de liderazgo y desarrollo de talento",
+    href: "/institucional/unilideres",
+    category: "institucional",
+    tags: ["unilideres", "liderazgo", "talento"],
+    synonyms: ["liderazgo", "talento", "programa lideres", "desarrollo profesional", "unilideres"],
+    priority: 68,
+  },
+
+  // ── Legal ────────────────────────────────────────────────
+  {
+    icon: icon(<Lock {...stroke} />),
+    label: "Aviso de Privacidad",
+    desc: "Cómo protegemos tus datos personales",
+    href: "/aviso-de-privacidad",
+    category: "legal",
+    tags: ["privacidad", "datos", "legal"],
+    synonyms: ["privacidad", "datos personales", "proteccion de datos", "privacy"],
+    priority: 60,
+  },
+  {
+    icon: icon(<FileText {...stroke} />),
+    label: "Términos y Condiciones",
+    desc: "Políticas de privacidad y seguridad",
+    href: "/terminos-y-condiciones",
+    category: "legal",
+    tags: ["terminos", "condiciones", "legal"],
+    synonyms: ["terminos", "condiciones", "tyc", "terminos de uso", "seguridad"],
+    priority: 60,
+  },
+  {
+    icon: icon(<Cookie {...stroke} />),
+    label: "Política de Cookies",
+    desc: "Uso de cookies en el sitio",
+    href: "/politica-de-cookies",
+    category: "legal",
+    tags: ["cookies", "legal"],
+    synonyms: ["cookies", "politica de cookies", "rastreo"],
+    priority: 55,
+  },
 ];
+
+/** Unique hrefs for quick coverage checks / tests. */
+export const searchPageHrefs = searchPages.map((page) => page.href);

@@ -3,6 +3,10 @@ import { motion, AnimatePresence } from "motion/react";
 import { useNavigate } from "react-router-dom";
 import { Search, X } from "@/lib/icons";
 import { searchPages } from "@/data/searchPages";
+import { searchEntries } from "@/lib/search";
+
+const EMPTY_RESULT_LIMIT = 12;
+const QUERY_RESULT_LIMIT = 20;
 
 export function SearchWidget() {
   const [open,    setOpen]    = useState(false);
@@ -31,11 +35,9 @@ export function SearchWidget() {
     return () => document.removeEventListener("mousedown", onOutside);
   }, [open]);
 
-  const filtered = query.trim()
-    ? searchPages.filter(p =>
-        p.label.toLowerCase().includes(query.toLowerCase()) ||
-        p.desc.toLowerCase().includes(query.toLowerCase()))
-    : searchPages;
+  const filtered = searchEntries(searchPages, query, {
+    limit: query.trim() ? QUERY_RESULT_LIMIT : EMPTY_RESULT_LIMIT,
+  });
 
   return (
     <div ref={wrapperRef} style={{ position: "relative", flexShrink: 0 }}>
@@ -101,9 +103,9 @@ export function SearchWidget() {
                 <div style={{ padding: "28px 16px", textAlign: "center", fontFamily: "Inter, sans-serif", fontSize: 14, color: "#908E8D" }}>
                   Sin resultados para &ldquo;<strong>{query}</strong>&rdquo;
                 </div>
-              ) : filtered.map((page, i) => (
+              ) : filtered.map((page) => (
                 <button
-                  key={i}
+                  key={page.href}
                   onClick={() => { handleClose(); navigate(page.href); }}
                   style={{
                     display: "flex", alignItems: "center", gap: 14,
@@ -117,7 +119,7 @@ export function SearchWidget() {
                   <div style={{ width: 44, height: 44, borderRadius: 12, flexShrink: 0, background: "#F2EFED", display: "flex", alignItems: "center", justifyContent: "center" }}>
                     {page.icon}
                   </div>
-                  <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 2, minWidth: 0 }}>
                     <span style={{ fontFamily: "Inter, sans-serif", fontWeight: 600, fontSize: 15, color: "#1C1917" }}>{page.label}</span>
                     <span style={{ fontFamily: "Inter, sans-serif", fontSize: 13, color: "#908E8D" }}>{page.desc}</span>
                   </div>

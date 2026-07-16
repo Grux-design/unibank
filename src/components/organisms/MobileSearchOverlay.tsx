@@ -5,6 +5,7 @@ import { Search, X } from "@/lib/icons";
 import { Logo } from "@/components/atoms/Logo";
 import { HEADER_PILL } from "@/constants/headerPill";
 import { searchPages } from "@/data/searchPages";
+import { searchEntries } from "@/lib/search";
 import type { Lang } from "@/components/layout/SiteLayout";
 
 interface MobileSearchOverlayProps {
@@ -28,13 +29,9 @@ export function MobileSearchOverlay({ lang, onClose }: MobileSearchOverlayProps)
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
 
-  const filtered = query.trim()
-    ? searchPages.filter(
-        (p) =>
-          p.label.toLowerCase().includes(query.toLowerCase()) ||
-          p.desc.toLowerCase().includes(query.toLowerCase()),
-      )
-    : searchPages;
+  const filtered = searchEntries(searchPages, query, {
+    limit: query.trim() ? 30 : 16,
+  });
 
   return (
     <motion.div
@@ -134,7 +131,11 @@ export function MobileSearchOverlay({ lang, onClose }: MobileSearchOverlayProps)
                 color: "#908E8D",
               }}
             >
-              {lang === "es" ? "Sin resultados" : "No results"}
+              {lang === "es" ? (
+                <>Sin resultados para &ldquo;<strong>{query}</strong>&rdquo;</>
+              ) : (
+                <>No results for &ldquo;<strong>{query}</strong>&rdquo;</>
+              )}
             </p>
           ) : (
             filtered.map((page) => (
