@@ -126,7 +126,7 @@ export function HeroFormSection({ section }: Props) {
                     cursor: "pointer",
                     transition: "background 0.18s, transform 0.18s, box-shadow 0.18s",
                     boxShadow: "0 4px 12px rgba(255, 129, 54, 0.2)",
-                    width: isStacked ? "100%" : "fit-content",
+                    width: isMobile ? "100%" : "fit-content",
                   };
 
                   const onEnter = (e: React.MouseEvent<HTMLAnchorElement>) => {

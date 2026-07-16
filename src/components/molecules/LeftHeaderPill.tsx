@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import { Menu, X } from "@/lib/icons";
 import { Logo } from "@/components/atoms/Logo";
+import { HeaderPymeBadge } from "@/components/atoms/HeaderPymeBadge";
 import { HEADER_PILL } from "@/constants/headerPill";
 import type { Lang } from "@/components/layout/SiteLayout";
 import type { HeaderLayout } from "@/hooks/useHeaderLayout";
@@ -21,8 +22,6 @@ export function LeftHeaderPill({
   onToggle,
   layout = "full",
 }: LeftHeaderPillProps) {
-  const showPymeBadge = layout === "full";
-
   return (
     <div
       style={{
@@ -122,55 +121,7 @@ export function LeftHeaderPill({
         <Logo variant="full-color" height={HEADER_PILL.logoHeight} priority />
       </Link>
 
-      {showPymeBadge && (
-        <Link
-          to="/empresas/cuentas/cuenta-juridica-digital"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-            height: 40,
-            padding: "0 12px 0 8px",
-            borderRadius: 10,
-            background: "#F5F0FF",
-            border: "0.5px solid #E4D9FF",
-            textDecoration: "none",
-            flexShrink: 0,
-            transition: "background 0.15s ease",
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.background = "#ECE1FF"; }}
-          onMouseLeave={(e) => { e.currentTarget.style.background = "#F5F0FF"; }}
-        >
-          <span
-            style={{
-              fontFamily: "Inter, sans-serif",
-              fontWeight: 600,
-              fontSize: 10,
-              lineHeight: 1,
-              letterSpacing: 0.4,
-              textTransform: "uppercase",
-              color: "#ffffff",
-              background: "#801FFF",
-              padding: "4px 6px",
-              borderRadius: 6,
-            }}
-          >
-            {lang === "es" ? "Nuevo" : "New"}
-          </span>
-          <span
-            style={{
-              fontFamily: "Inter, sans-serif",
-              fontWeight: 500,
-              fontSize: 13,
-              lineHeight: "20px",
-              color: "#000000F5",
-              whiteSpace: "nowrap",
-            }}
-          >
-            {lang === "es" ? "Cuenta PYME Digital" : "Digital SME Account"}
-          </span>
-        </Link>
-      )}
+      <HeaderPymeBadge lang={lang} />
     </div>
   );
 }

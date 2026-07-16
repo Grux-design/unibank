@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import type { Slide } from "@/data/heroSlides";
 import { getHeroLayout, type HeroLayoutTier } from "@/data/heroSlides";
@@ -9,14 +8,12 @@ interface HeroPhotoFrameProps {
 }
 
 export function HeroPhotoFrame({ slide, layoutTier = "full" }: HeroPhotoFrameProps) {
-  const [loaded, setLoaded] = useState(false);
   const layout = getHeroLayout(layoutTier);
   const isStacked = layout.stackLayout;
   const equalColumns = "equalColumns" in layout && layout.equalColumns;
+  const isCompact = layoutTier === "compact";
 
-  useEffect(() => {
-    setLoaded(false);
-  }, [slide.image]);
+  const imageScale = isStacked ? "118%" : isCompact ? "112%" : "108%";
 
   return (
     <div
@@ -24,7 +21,7 @@ export function HeroPhotoFrame({ slide, layoutTier = "full" }: HeroPhotoFramePro
         position: "relative",
         width: "100%",
         height: "100%",
-        minHeight: isStacked || equalColumns ? 0 : layout.imageMinHeight,
+        minHeight: isStacked ? 0 : layout.imageMinHeight,
         overflow: "hidden",
       }}
     >
@@ -46,16 +43,14 @@ export function HeroPhotoFrame({ slide, layoutTier = "full" }: HeroPhotoFramePro
           <img
             src={slide.image}
             alt={slide.cardTitle}
-            onLoad={() => setLoaded(true)}
             style={{
-              width: isStacked || equalColumns ? "100%" : "108%",
-              height: isStacked || equalColumns ? "100%" : "108%",
+              width: imageScale,
+              height: imageScale,
               objectFit: "contain",
-              objectPosition: isStacked ? "center center" : equalColumns ? "center center" : "left center",
-              opacity: loaded ? 1 : 0,
-              transition: "opacity 600ms ease",
+              objectPosition: isStacked ? "center center" : "left center",
+              display: "block",
             }}
-            loading="lazy"
+            loading="eager"
             decoding="async"
           />
         </motion.div>

@@ -22,12 +22,18 @@ export function HeroSlideContent({ slide, dir, layoutTier = "full" }: HeroSlideC
   const layout = getHeroLayout(layoutTier);
   const isStacked = layout.stackLayout;
   const equalColumns = "equalColumns" in layout && layout.equalColumns;
-  const ctaFullWidth = layout.ctaFullWidth;
+  const ctaFullWidth = layout.ctaFullWidth && (layoutTier !== "mobile" || slide.id === "hipoteca");
 
   return (
     <div
       style={{
-        flex: isStacked ? 1 : equalColumns ? "1 1 0" : "1 1 60%",
+        flex: isStacked
+          ? 1
+          : equalColumns
+            ? "1 1 0"
+            : "contentFlex" in layout
+              ? layout.contentFlex
+              : "1 1 60%",
         minHeight: isStacked ? 0 : undefined,
         padding: layout.contentPadding,
         display: "flex",
@@ -70,7 +76,7 @@ export function HeroSlideContent({ slide, dir, layoutTier = "full" }: HeroSlideC
               display: "flex",
               flexDirection: ctaFullWidth ? "column" : "row",
               flexWrap: ctaFullWidth ? "nowrap" : "wrap",
-              alignItems: ctaFullWidth ? "stretch" : "center",
+              alignItems: ctaFullWidth ? "stretch" : "flex-start",
               gap: 10,
               marginTop: 4,
               width: ctaFullWidth ? "100%" : undefined,
