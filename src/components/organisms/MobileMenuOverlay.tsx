@@ -3,10 +3,12 @@ import { Link } from "react-router-dom";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { X, Globe } from "@/lib/icons";
 import { Logo } from "@/components/atoms/Logo";
+import { HeaderPymeBadge } from "@/components/atoms/HeaderPymeBadge";
 import { SegmentedToggle } from "@/components/atoms/SegmentedToggle";
 import { MobileMegaMenuList } from "@/components/molecules/MobileMegaMenuList";
 import { MobileMenuFooterCtas } from "@/components/molecules/MobileMenuFooterCtas";
 import { HEADER_PILL } from "@/constants/headerPill";
+import { useHeaderLayout } from "@/hooks/useHeaderLayout";
 import { personasData, empresasData } from "@/data/megaMenuData";
 import type { Lang } from "@/components/layout/SiteLayout";
 
@@ -32,6 +34,7 @@ export function MobileMenuOverlay({ lang, onClose, onLangChange }: MobileMenuOve
   const [activeTab, setActiveTab] = useState<Tab>("personas");
   const data = activeTab === "personas" ? personasData : empresasData;
   const prefersReduced = useReducedMotion();
+  const isMobile = useHeaderLayout() === "mobile";
 
   return (
     <motion.div
@@ -56,51 +59,60 @@ export function MobileMenuOverlay({ lang, onClose, onLangChange }: MobileMenuOve
       <div
         className="site-container-nav shell-safe-top"
         style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          paddingBottom: 12,
           flexShrink: 0,
+          paddingBottom: isMobile ? 20 : 12,
+          borderBottom: isMobile ? "1px solid #E8E4E0" : undefined,
         }}
       >
-        <Link
-          to="/"
-          onClick={onClose}
-          aria-label="UniBank – Inicio"
-          style={{ display: "flex", alignItems: "center", lineHeight: 0 }}
-        >
-          <Logo variant="full-color" height={HEADER_PILL.logoHeight} />
-        </Link>
-        <button
-          type="button"
-          onClick={onClose}
-          aria-label={lang === "es" ? "Cerrar menú" : "Close menu"}
+        <div
           style={{
             display: "flex",
             alignItems: "center",
-            justifyContent: "center",
-            width: 40,
-            height: 40,
-            borderRadius: 12,
-            border: "none",
-            background: "#F2EFED",
-            cursor: "pointer",
+            justifyContent: "space-between",
+            paddingBottom: isMobile ? 16 : 0,
           }}
         >
-          <X size={18} color="#484746" strokeWidth={2.5} />
-        </button>
-      </div>
+          <Link
+            to="/"
+            onClick={onClose}
+            aria-label="UniBank – Inicio"
+            style={{ display: "flex", alignItems: "center", lineHeight: 0 }}
+          >
+            <Logo variant="full-color" height={HEADER_PILL.logoHeight} />
+          </Link>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label={lang === "es" ? "Cerrar menú" : "Close menu"}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: 40,
+              height: 40,
+              borderRadius: 12,
+              border: "none",
+              background: "#F2EFED",
+              cursor: "pointer",
+            }}
+          >
+            <X size={18} color="#484746" strokeWidth={2.5} />
+          </button>
+        </div>
 
-      <div className="site-container-nav" style={{ flexShrink: 0, paddingBottom: 4 }}>
         <SegmentedToggle
           value={activeTab}
           onChange={setActiveTab}
           options={TAB_OPTIONS}
           layoutId="mobile-menu-segment-pill"
           align="left"
-          stretch
-          wrapperStyle={{ padding: "16px 0 12px" }}
+          stretch={isMobile}
+          wrapperStyle={{ padding: isMobile ? "0 0 12px" : "16px 0 12px" }}
         />
+
+        {isMobile && (
+          <HeaderPymeBadge lang={lang} variant="menu" onNavigate={onClose} />
+        )}
       </div>
 
       <div style={{ flex: 1, overflowY: "auto", WebkitOverflowScrolling: "touch" }}>

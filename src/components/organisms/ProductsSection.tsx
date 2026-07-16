@@ -3,7 +3,7 @@ import React from "react";
 import { motion, useInView } from "motion/react";
 import { useNavigate } from "react-router-dom";
 import { TrendingUp, Home, ChevronRight, Card, Car } from "@/lib/icons";
-import { useIsMobile } from "@/hooks/useIsMobile";
+import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { SectionTag, SectionHeading } from "@/components/ui/atoms";
 import { CTA_BUTTON_COLORS, CTA_BUTTON_SIZE } from "@/constants/ctaButtons";
 import { TAG_PILL_HUG } from "@/constants/tagPill";
@@ -16,6 +16,7 @@ const OR = "var(--fun-orange)";
 const DARK = "var(--uni-dark)";
 const SOFT = "var(--uni-dark-soft)";
 const CARD_H = 480;
+const COMPACT_CARD_H = 400;
 const G = 8;
 const DELTA = 20;
 /** Mobile bento — all cards match the orange featured banner height */
@@ -227,7 +228,10 @@ function CategoryTag({ icon: Icon, label }: { icon: React.ElementType; label: st
 }
 
 /* ── FeaturedBanner ─────────────────────────────────────── */
-function FeaturedBanner({ isMobile }: { isMobile: boolean }) {
+type FeaturedBannerLayout = "stack" | "desktop";
+
+function FeaturedBanner({ layout, wide = false }: { layout: FeaturedBannerLayout; wide?: boolean }) {
+  const isStacked = layout === "stack";
   const navigate = useNavigate();
   const go = () => navigate(CUENTA_AHORROS_ROUTE);
   return (
@@ -239,20 +243,20 @@ function FeaturedBanner({ isMobile }: { isMobile: boolean }) {
       style={{
         position: "relative",
         overflow: "hidden",
-        borderRadius: isMobile ? 32 : 0,
+        borderRadius: isStacked ? 32 : 0,
         background: "#FF8136",
-        display: isMobile ? "block" : "flex",
-        flexDirection: isMobile ? undefined : "row",
+        display: isStacked ? "block" : "flex",
+        flexDirection: isStacked ? undefined : "row",
         alignItems: "stretch",
-        height: isMobile ? MOBILE_BENTO_CARD_H : "100%",
+        height: isStacked ? (wide ? "100%" : MOBILE_BENTO_CARD_H) : "100%",
         width: "100%",
-        minHeight: isMobile ? MOBILE_BENTO_CARD_H : undefined,
+        minHeight: isStacked && !wide ? MOBILE_BENTO_CARD_H : undefined,
         cursor: "pointer",
       }}
     >
       <OrangeBlobBackground />
 
-      {isMobile ? (
+      {isStacked ? (
         <>
           {/* Mobile: portrait as background — bottom-right, full figure visible */}
           <img
@@ -263,9 +267,9 @@ function FeaturedBanner({ isMobile }: { isMobile: boolean }) {
               position: "absolute",
               right: -4,
               bottom: 0,
-              height: "94%",
+              height: wide ? "96%" : "94%",
               width: "auto",
-              maxWidth: "62%",
+              maxWidth: wide ? "48%" : "62%",
               objectFit: "contain",
               objectPosition: "bottom right",
               pointerEvents: "none",
@@ -279,7 +283,7 @@ function FeaturedBanner({ isMobile }: { isMobile: boolean }) {
               position: "relative",
               zIndex: 2,
               height: "100%",
-              padding: "28px 24px 24px",
+              padding: wide ? "32px 32px 28px" : "28px 24px 24px",
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-between",
@@ -293,7 +297,7 @@ function FeaturedBanner({ isMobile }: { isMobile: boolean }) {
                 flexDirection: "column",
                 alignItems: "flex-start",
                 gap: 12,
-                maxWidth: "58%",
+                maxWidth: wide ? "52%" : "58%",
               }}
             >
               <div
@@ -320,7 +324,7 @@ function FeaturedBanner({ isMobile }: { isMobile: boolean }) {
                 style={{
                   margin: 0,
                   color: "#fff",
-                  fontSize: 28,
+                  fontSize: wide ? 34 : 28,
                   fontWeight: 700,
                   lineHeight: 1.15,
                   letterSpacing: "-0.02em",
@@ -332,7 +336,7 @@ function FeaturedBanner({ isMobile }: { isMobile: boolean }) {
                 style={{
                   margin: 0,
                   color: "#fff",
-                  fontSize: 18,
+                  fontSize: wide ? 20 : 18,
                   fontWeight: 600,
                   lineHeight: 1.35,
                 }}
@@ -352,8 +356,8 @@ function FeaturedBanner({ isMobile }: { isMobile: boolean }) {
               </p>
             </div>
 
-            <div onClick={(e) => e.stopPropagation()} style={{ width: "100%" }}>
-              <HeroCtaButton to={CUENTA_AHORROS_ROUTE} variant="secondary" fullWidth>
+            <div onClick={(e) => e.stopPropagation()}>
+              <HeroCtaButton to={CUENTA_AHORROS_ROUTE} variant="secondary">
                 Abrir mi cuenta ahora
               </HeroCtaButton>
             </div>
@@ -717,13 +721,47 @@ function BentoDesktopGrid() {
   return (
     <div ref={containerRef} style={{ display: "flex", flexDirection: "column", gap: G }}>
       <div style={{ display: "flex", gap: G }}>
-        {card("featured", wFeatured, <FeaturedBanner isMobile={false} />)}
+        {card("featured", wFeatured, <FeaturedBanner layout="desktop" />)}
         {card("mastercard", wMastercard, <MastercardCard />)}
       </div>
       <div style={{ display: "flex", gap: G }}>
         {card("invertis", wInvertis, <SmallProductCard item={invertisData} index={0} />)}
         {card("autoLoan", wAutoLoan, <AutoLoanCard isMobile={false} />)}
         {card("vivienda", wVivienda, <SmallProductCard item={viviendaData} index={1} />)}
+      </div>
+    </div>
+  );
+}
+
+const compactBentoCardStyle: React.CSSProperties = {
+  borderRadius: 32,
+  overflow: "hidden",
+  border: "1px solid #E7E4E1",
+  height: COMPACT_CARD_H,
+  flex: 1,
+  minWidth: 0,
+};
+
+function BentoCompactGrid() {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: G }}>
+      <div
+        style={{
+          borderRadius: 32,
+          overflow: "hidden",
+          border: "1px solid #E7E4E1",
+          height: 420,
+        }}
+      >
+        <FeaturedBanner layout="stack" wide />
+      </div>
+      <div style={{ display: "flex", gap: G }}>
+        <div style={compactBentoCardStyle}><MastercardCard /></div>
+        <div style={compactBentoCardStyle}><SmallProductCard item={invertisData} index={0} /></div>
+      </div>
+      <div style={{ display: "flex", gap: G }}>
+        <div style={{ ...compactBentoCardStyle, flex: 1.2 }}><AutoLoanCard isMobile={false} /></div>
+        <div style={{ ...compactBentoCardStyle, flex: 0.8 }}><SmallProductCard item={viviendaData} index={1} /></div>
       </div>
     </div>
   );
@@ -740,7 +778,7 @@ const mobileBentoCardStyle: React.CSSProperties = {
 function BentoMobileStack() {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: G }}>
-      <FeaturedBanner isMobile key="featured" />
+      <FeaturedBanner layout="stack" key="featured" />
       <div key="mastercard" style={mobileBentoCardStyle}><MastercardCard /></div>
       <div key="invertis" style={mobileBentoCardStyle}><SmallProductCard item={invertisData} index={0} /></div>
       <div key="autoLoan" style={mobileBentoCardStyle}><AutoLoanCard isMobile /></div>
@@ -751,7 +789,7 @@ function BentoMobileStack() {
 
 /* ── ProductsSection (export) ───────────────────────────── */
 export function ProductsSection() {
-  const isMobile = useIsMobile();
+  const breakpoint = useBreakpoint();
 
   return (
     <section style={{ background: "#fff", paddingTop: 40, paddingBottom: 64 }}>
@@ -762,7 +800,13 @@ export function ProductsSection() {
           body="Cuentas, tarjetas e inversiones pensados para simplificar tu vida financiera y hacer crecer lo que construyes."
           mb={40}
         />
-        {isMobile ? <BentoMobileStack /> : <BentoDesktopGrid />}
+        {breakpoint === "mobile" ? (
+          <BentoMobileStack />
+        ) : breakpoint === "compact" ? (
+          <BentoCompactGrid />
+        ) : (
+          <BentoDesktopGrid />
+        )}
       </div>
     </section>
   );
