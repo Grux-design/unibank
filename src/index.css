@@ -165,4 +165,59 @@
 @layer utilities {
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  .intro-splash {
+    background-position: center 42%;
+    position: fixed;
+    inset: 0;
+    z-index: 100000;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    box-sizing: border-box;
+    padding:
+      env(safe-area-inset-top, 0px)
+      env(safe-area-inset-right, 0px)
+      env(safe-area-inset-bottom, 0px)
+      env(safe-area-inset-left, 0px);
+  }
+
+  .intro-splash__brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: clamp(8px, 2vmin, 16px);
+    width: max-content;
+    max-width: calc(100% - 2rem);
+  }
+
+  .intro-splash__isotipo {
+    display: block;
+    width: 42px;
+    height: auto;
+    aspect-ratio: 48 / 53;
+    flex-shrink: 0;
+  }
+
+  .intro-splash__wordmark {
+    display: block;
+    font-family: "Inter", -apple-system, sans-serif;
+    font-size: clamp(1.25rem, 4vmin, 1.75rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 768px) {
+    .intro-splash {
+      background-position: 62% center;
+    }
+  }
 }
