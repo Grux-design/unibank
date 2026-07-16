@@ -36,7 +36,7 @@ export function MobileMegaMenuList({ data, isPersonas, onClose }: MobileMegaMenu
   const segment = isPersonas ? "personas" : "empresas";
 
   return (
-    <div className="site-container-nav" style={{ paddingBottom: 24 }}>
+    <div className="site-container-nav" style={{ paddingTop: 20, paddingBottom: 24 }}>
       {data.categories.map((cat, catIndex) => (
         <div
           key={cat.name}

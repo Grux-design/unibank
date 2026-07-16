@@ -7,7 +7,7 @@ import { MobileMenuOverlay } from "@/components/organisms/MobileMenuOverlay";
 import { MobileSearchOverlay } from "@/components/organisms/MobileSearchOverlay";
 import { MobileHeaderBar } from "@/components/molecules/MobileHeaderBar";
 import type { Lang } from "@/components/layout/SiteLayout";
-import { useHeaderLayout } from "@/hooks/useHeaderLayout";
+import { useHeaderLayout, isMobileNavLayout } from "@/hooks/useHeaderLayout";
 
 type MobilePanel = "menu" | "search" | null;
 
@@ -18,7 +18,7 @@ interface HeaderProps {
 
 export function Header({ lang, onToggleLang }: HeaderProps) {
   const layout = useHeaderLayout();
-  const isMobile = layout === "mobile";
+  const useMobileNav = isMobileNavLayout(layout);
   const prefersReduced = useReducedMotion();
 
   const [menuOpen, setMenuOpen] = useState(false);
@@ -58,8 +58,8 @@ export function Header({ lang, onToggleLang }: HeaderProps) {
   }, [mobilePanel]);
 
   useEffect(() => {
-    if (!isMobile) setMobilePanel(null);
-  }, [isMobile]);
+    if (!useMobileNav) setMobilePanel(null);
+  }, [useMobileNav]);
 
   const openMobilePanel = (panel: MobilePanel) => setMobilePanel(panel);
   const closeMobilePanel = () => setMobilePanel(null);
@@ -74,15 +74,15 @@ export function Header({ lang, onToggleLang }: HeaderProps) {
         ref={headerRef}
         className="relative sticky top-0 z-50"
         style={{
-          paddingTop: isMobile ? "max(10px, env(safe-area-inset-top, 0px))" : 10,
-          background: menuChromeOpen && !isMobile ? "#ffffff" : "transparent",
+          paddingTop: useMobileNav ? "max(10px, env(safe-area-inset-top, 0px))" : 10,
+          background: menuChromeOpen && !useMobileNav ? "#ffffff" : "transparent",
           borderBottom: "1px solid transparent",
-          boxShadow: menuChromeOpen && !isMobile ? "none" : undefined,
+          boxShadow: menuChromeOpen && !useMobileNav ? "none" : undefined,
           transition: "background 0.2s ease, border-color 0.2s ease",
         }}
       >
         <div className="site-container-nav flex items-center justify-between gap-3">
-          {isMobile ? (
+          {useMobileNav ? (
             <MobileHeaderBar
               lang={lang}
               menuOpen={mobilePanel === "menu"}
@@ -109,7 +109,7 @@ export function Header({ lang, onToggleLang }: HeaderProps) {
           )}
         </div>
 
-        {!isMobile && (
+        {!useMobileNav && (
           <AnimatePresence onExitComplete={() => setMenuChromeOpen(false)}>
             {menuOpen && <MegaMenu onClose={closeMenu} />}
           </AnimatePresence>
@@ -117,7 +117,7 @@ export function Header({ lang, onToggleLang }: HeaderProps) {
       </header>
 
       <AnimatePresence>
-        {menuOpen && !isMobile && (
+        {menuOpen && !useMobileNav && (
           <motion.div
             key="backdrop"
             initial={{ opacity: 0 }}
@@ -146,7 +146,7 @@ export function Header({ lang, onToggleLang }: HeaderProps) {
       </AnimatePresence>
 
       <AnimatePresence>
-        {isMobile && mobilePanel === "menu" && (
+        {useMobileNav && mobilePanel === "menu" && (
           <MobileMenuOverlay
             key="mobile-menu"
             lang={lang}
@@ -154,7 +154,7 @@ export function Header({ lang, onToggleLang }: HeaderProps) {
             onLangChange={handleLangChange}
           />
         )}
-        {isMobile && mobilePanel === "search" && (
+        {useMobileNav && mobilePanel === "search" && (
           <MobileSearchOverlay
             key="mobile-search"
             lang={lang}

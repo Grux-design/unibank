@@ -63,17 +63,18 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
           display: isStacked || layoutTier === "full" ? "flex" : undefined,
           flexDirection: isStacked || layoutTier === "full" ? "column" : undefined,
           paddingTop: isStacked ? 0 : layoutTier === "full" ? 32 : 24,
-          paddingRight: isStacked ? 0 : layoutTier === "full" ? 40 : 28,
+          paddingInline: isStacked ? 0 : layoutTier === "compact" ? 28 : undefined,
+          paddingRight: isStacked ? 0 : layoutTier === "full" ? 40 : undefined,
         }}
       >
         <div
           style={{
-            display: "flex",
+            display: layoutTier === "compact" ? "grid" : "flex",
+            gridTemplateColumns: layoutTier === "compact" ? "1fr 1fr" : undefined,
             flexDirection: isStacked ? "column" : "row",
             alignItems: "stretch",
             flex: isStacked || layoutTier === "full" ? 1 : undefined,
             minHeight: isStacked || layoutTier === "full" ? 0 : layout.innerMinHeight,
-            overflow: layoutTier === "full" ? "hidden" : undefined,
             gap: !isStacked ? layout.columnGap : 0,
           }}
         >
@@ -84,11 +85,12 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
                 width: "100%",
                 flex: `0 0 ${HERO_LAYOUT.mobile.imageFlexBasis}`,
                 minHeight: 0,
+                overflow: "hidden",
                 padding: `${HERO_LAYOUT.mobile.imagePaddingTop}px ${HERO_LAYOUT.mobile.imagePadding}px ${HERO_LAYOUT.mobile.imagePadding}px`,
                 boxSizing: "border-box",
               }}
             >
-              <HeroPhotoFrame slide={slide} layoutTier={layoutTier} />
+              <HeroPhotoFrame slide={slide} />
             </div>
           )}
 
@@ -100,16 +102,22 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
                 flex: equalColumns ? "1 1 0" : `0 0 ${"imageColumnWidth" in layout ? layout.imageColumnWidth : "40%"}`,
                 width: equalColumns ? undefined : "imageColumnWidth" in layout ? layout.imageColumnWidth : undefined,
                 position: "relative",
-                height: "100%",
-                overflow: "hidden",
+                minHeight: 0,
                 minWidth: 0,
+                alignSelf: "stretch",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
-              <HeroPhotoFrame slide={slide} layoutTier={layoutTier} />
-              {layout.showGlassCard && <HeroGlassCard nextSlide={nextSlide} />}
+              <HeroPhotoFrame slide={slide} />
             </div>
           )}
         </div>
+
+        {layout.showGlassCard && (
+          <HeroGlassCard nextSlide={nextSlide} layoutTier={layoutTier} />
+        )}
 
         <HeroControls
           current={current}

@@ -6,6 +6,39 @@ import type { Breakpoint } from "@/constants/breakpoints";
 
 export type HeroLayoutTier = Breakpoint;
 
+/** Hero carousel arrow buttons — shared with glass card offset math */
+export const HERO_ARROW_BUTTON = {
+  size: 48,
+  gap: 8,
+} as const;
+
+function controlsPaddingBottom(controlsPadding: string): number {
+  const parts = controlsPadding.trim().split(/\s+/);
+  if (parts.length === 1) return Number.parseInt(parts[0], 10);
+  if (parts.length === 2) return Number.parseInt(parts[0], 10);
+  return Number.parseInt(parts[2], 10);
+}
+
+function controlsPaddingRight(controlsPadding: string): number {
+  const parts = controlsPadding.trim().split(/\s+/);
+  if (parts.length === 1) return Number.parseInt(parts[0], 10);
+  if (parts.length === 2) return Number.parseInt(parts[1], 10);
+  return Number.parseInt(parts[1], 10);
+}
+
+/** Glass preview card sits above arrow buttons with a fixed gap */
+export function getHeroGlassCardInset(controlsPadding: string) {
+  const bottom =
+    controlsPaddingBottom(controlsPadding) +
+    HERO_ARROW_BUTTON.size +
+    HERO_ARROW_BUTTON.gap;
+
+  return {
+    right: controlsPaddingRight(controlsPadding),
+    bottom,
+  };
+}
+
 /** Shared sizing for hero CTA buttons across all slides */
 export const HERO_CTA_BUTTON = {
   height:       CTA_BUTTON_SIZE.height,
@@ -19,7 +52,7 @@ export const HERO_CTA_BUTTON = {
 } as const;
 
 /** Responsive hero layout tokens — mobile ≤767 · compact 768–1199 · full ≥1200
- *  Rule: when ctaFullWidth is true (mobile + compact), hero CTAs always span 100% width.
+ *  Rule: ctaFullWidth is true only on mobile; tablet and desktop use inline CTAs.
  */
 export const HERO_LAYOUT = {
   full: {
@@ -43,27 +76,26 @@ export const HERO_LAYOUT = {
     sectionPaddingTop: 32,
     sectionPaddingBottom: 24,
     cardBorderRadius: 28,
-    cardMinHeight: 460,
-    innerMinHeight: 400,
-    imageMinHeight: 380,
+    cardMinHeight: 520,
+    innerMinHeight: 460,
+    imageMinHeight: 440,
     contentPadding: "20px 28px 24px",
     contentGap: 20,
     controlsPadding: "14px 28px 20px",
-    imageColumnWidth: "clamp(220px, 36%, 420px)",
-    columnGap: 0,
-    equalColumns: false,
-    showGlassCard: false,
+    columnGap: 32,
+    equalColumns: true,
+    showGlassCard: true,
     stackLayout: false,
-    ctaFullWidth: true,
+    ctaFullWidth: false,
   },
   mobile: {
     sectionPaddingTop: 16,
     sectionPaddingBottom: 16,
     cardBorderRadius: 28,
     cardHeight: "98vh",
-    imageFlexBasis: "40%",
-    imagePadding: 16,
-    imagePaddingTop: 64,
+    imageFlexBasis: "52%",
+    imagePadding: 12,
+    imagePaddingTop: 28,
     contentPadding: "20px 20px 4px",
     contentGap: 16,
     controlsPadding: "12px 20px 16px",

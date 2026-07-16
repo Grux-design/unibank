@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import { Menu, Search } from "@/lib/icons";
 import { Logo } from "@/components/atoms/Logo";
+import { HeaderPymeBadge } from "@/components/atoms/HeaderPymeBadge";
 import { HEADER_PILL, headerPillShellStyle } from "@/constants/headerPill";
+import { useHeaderLayout } from "@/hooks/useHeaderLayout";
 import type { Lang } from "@/components/layout/SiteLayout";
 
 interface MobileHeaderBarProps {
@@ -17,12 +19,16 @@ export function MobileHeaderBar({
   onOpenSearch,
   onOpenMenu,
 }: MobileHeaderBarProps) {
+  const layout = useHeaderLayout();
+  const isTablet = layout === "compact";
+
   return (
     <>
       <div
         style={{
           ...headerPillShellStyle,
-          paddingInline: HEADER_PILL.mobileLogoPaddingInline,
+          paddingInline: isTablet ? "12px 16px" : HEADER_PILL.mobileLogoPaddingInline,
+          gap: isTablet ? 12 : 0,
         }}
       >
         <Link
@@ -37,8 +43,13 @@ export function MobileHeaderBar({
           }}
           aria-label="UniBank – Inicio"
         >
-          <Logo variant="responsive" height={HEADER_PILL.logoHeight} priority />
+          <Logo
+            variant={isTablet ? "full-color" : "responsive"}
+            height={HEADER_PILL.logoHeight}
+            priority
+          />
         </Link>
+        {isTablet && <HeaderPymeBadge lang={lang} />}
       </div>
 
       <div

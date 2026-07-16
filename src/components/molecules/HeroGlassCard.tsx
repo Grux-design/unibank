@@ -1,18 +1,24 @@
 import type { Slide } from "@/data/heroSlides";
+import { getHeroGlassCardInset, getHeroLayout, type HeroLayoutTier } from "@/data/heroSlides";
 
 interface HeroGlassCardProps {
   nextSlide: Slide;
+  layoutTier?: HeroLayoutTier;
 }
 
-export function HeroGlassCard({ nextSlide }: HeroGlassCardProps) {
+export function HeroGlassCard({ nextSlide, layoutTier = "full" }: HeroGlassCardProps) {
+  const layout = getHeroLayout(layoutTier);
+  const inset = getHeroGlassCardInset(layout.controlsPadding);
+
   return (
     <div
       style={{
         boxSizing: "border-box",
         position: "absolute",
-        right: 0,
-        bottom: 0,
+        right: inset.right,
+        bottom: inset.bottom,
         zIndex: 2,
+        pointerEvents: "none",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",

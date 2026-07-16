@@ -60,8 +60,8 @@ export function HeroCtaButton({
     ...baseStyle,
     background: colors.bg,
     color: colors.color,
-    width: fullWidth ? "100%" : undefined,
-    alignSelf: fullWidth ? "stretch" : undefined,
+    width: fullWidth ? "100%" : "fit-content",
+    alignSelf: fullWidth ? "stretch" : "flex-start",
   };
 
   const setBg = (el: InteractiveEl, bg: string) => {

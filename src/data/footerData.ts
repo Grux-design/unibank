@@ -29,7 +29,7 @@ export const footerColumns: FooterColumn[] = [
       
       { label: "Gestión de Riesgo Operativo", href: "/documents/gestion-de-riesgo-operativo.pdf" },
       { label: "Cumplimiento Normativo", href: "/institucional/cumplimiento-normativo" },
-      { label: "Manual de Gobierno Corporativo", href: "/documents/manual-de-gobierno-corporativo.pdf" },
+      { label: "Gobierno Corporativo", href: "/documents/manual-de-gobierno-corporativo.pdf" },
       { label: "RSE – Responsabilidad Social", href: "/institucional/sostenibilidad" },
     ],
   },
@@ -46,7 +46,7 @@ export const footerColumns: FooterColumn[] = [
       
       { label: "Tarifario", href: "/tarifario" },
       { label: "Trabaja con nosotros", href: "/trabaja-con-nosotros" },
-      { label: "Portal Inmobiliario", href: "https://bienesenventa.unibank.com.pa/" },
+      { label: "Bienes Reposeídos", href: "https://bienesenventa.unibank.com.pa/" },
       { label: "Noticias", href: "/blog" },
       { label: "Canal de denuncias", href: "/canal-de-denuncias" },
     ],

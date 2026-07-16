@@ -11,6 +11,7 @@ import {
   User,
 } from "@/lib/icons";
 import type { Lang } from "@/components/layout/SiteLayout";
+import { useHeaderLayout } from "@/hooks/useHeaderLayout";
 
 type ExpandedPanel = "abre" | "banca" | null;
 
@@ -42,6 +43,7 @@ interface MobileMenuFooterCtasProps {
 export function MobileMenuFooterCtas({ lang, onClose }: MobileMenuFooterCtasProps) {
   const [expanded, setExpanded] = useState<ExpandedPanel>(null);
   const navigate = useNavigate();
+  const isTablet = useHeaderLayout() === "compact";
 
   const handleSelect = (href: string) => {
     setExpanded(null);
@@ -294,18 +296,19 @@ export function MobileMenuFooterCtas({ lang, onClose }: MobileMenuFooterCtasProp
         )}
       </AnimatePresence>
 
-      <div style={{ display: "flex", gap: 10 }}>
+      <div style={{ display: "flex", gap: 10, flexWrap: isTablet ? "wrap" : undefined }}>
         {expanded !== "banca" && (
           <button
             type="button"
             onClick={() => setExpanded(expanded === "abre" ? null : "abre")}
             style={{
-              flex: 1,
+              flex: isTablet ? "0 0 auto" : 1,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               gap: 6,
               height: 48,
+              padding: isTablet ? "0 20px" : undefined,
               border: "none",
               borderRadius: 12,
               background: "hsl(var(--primary))",
@@ -327,12 +330,13 @@ export function MobileMenuFooterCtas({ lang, onClose }: MobileMenuFooterCtasProp
             type="button"
             onClick={() => setExpanded(expanded === "banca" ? null : "banca")}
             style={{
-              flex: 1,
+              flex: isTablet ? "0 0 auto" : 1,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               gap: 6,
               height: 48,
+              padding: isTablet ? "0 20px" : undefined,
               border: "none",
               borderRadius: 12,
               background: "#F2EFED",
