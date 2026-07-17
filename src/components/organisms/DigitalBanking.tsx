@@ -14,6 +14,7 @@ import { AuthorityLineDecor } from "@/components/atoms/AuthorityLineDecor";
 import { BtnPrimary } from "@/components/ui/atoms";
 import { CTA_BUTTON_COLORS, CTA_BUTTON_SIZE } from "@/constants/ctaButtons";
 import { TAG_PILL_HUG, TAG_STACK_HUG } from "@/constants/tagPill";
+import { TYPO } from "@/constants/typography";
 
 const OR = "var(--fun-orange)";
 const DARK = "var(--uni-dark)";
@@ -60,24 +61,76 @@ const FEATURES = [
 ];
 
 const LEFT_COLUMN = {
-  headlineSize: "clamp(36px, 3.6vw, 56px)",
-  headlineWeight: 500,
-  headlineLineHeight: 1.14,
-  headlineTracking: "-0.03em",
+  headlineSize: TYPO.sectionHeadline.desktop.fontSize,
+  headlineWeight: TYPO.sectionHeadline.desktop.fontWeight,
+  headlineLineHeight: TYPO.sectionHeadline.desktop.lineHeight,
+  headlineTracking: TYPO.sectionHeadline.desktop.letterSpacing,
   rowPaddingBlock: 26,
-  titleActive: { fontSize: 22, fontWeight: 600, lineHeight: 1.25 },
+  titleActive: { fontSize: 22, fontWeight: TYPO.cardTitle.fontWeight, lineHeight: 1.25 },
   titleInactive: { fontSize: 20, fontWeight: 500, lineHeight: 1.3 },
 } as const;
 
 const LEFT_COLUMN_MOBILE = {
-  headlineSize: "clamp(30px, 8vw, 38px)",
-  headlineWeight: 500,
-  headlineLineHeight: 1.14,
-  headlineTracking: "-0.03em",
+  headlineSize: TYPO.sectionHeadline.mobile.fontSize,
+  headlineWeight: TYPO.sectionHeadline.mobile.fontWeight,
+  headlineLineHeight: TYPO.sectionHeadline.mobile.lineHeight,
+  headlineTracking: TYPO.sectionHeadline.mobile.letterSpacing,
   rowPaddingBlock: 22,
-  titleActive: { fontSize: 20, fontWeight: 600, lineHeight: 1.3 },
+  titleActive: { fontSize: 20, fontWeight: TYPO.cardTitle.fontWeight, lineHeight: 1.3 },
   titleInactive: { fontSize: 18, fontWeight: 500, lineHeight: 1.35 },
 } as const;
+
+const MOBILE_SCROLL = {
+  /** Finger-scroll (vh) required between each item change while the panel stays pinned. */
+  scrollPerItemVh: 68,
+  /** Short release scroll after the last item before the next section. */
+  releaseVh: 20,
+  /** Scroll down: advance to next item when float crosses idx + this (0.58 ≈ 58% into step). */
+  indexAdvanceAt: 0.58,
+  /** Scroll up: retreat to previous item when float drops below idx - 1 + this (0.42 ≈ 42%). */
+  indexRetreatAt: 0.42,
+  stickyTop: 64,
+  imageHeight: 168,
+  panelPaddingBottom: 40,
+  bottomStackPadding: 28,
+  layoutEase: [0.4, 0, 0.2, 1] as const,
+  layoutSpring: { type: "spring" as const, stiffness: 260, damping: 32, mass: 0.85 },
+} as const;
+
+function mobileScrollTotalVh(n: number): number {
+  if (n <= 1) return 100 + MOBILE_SCROLL.releaseVh;
+  return 100 + MOBILE_SCROLL.scrollPerItemVh * (n - 1) + MOBILE_SCROLL.releaseVh;
+}
+
+function mobileStepFloat(prog: number, n: number): number {
+  if (n <= 1) return 0;
+  return Math.min(Math.max(prog, 0) * (n - 1), n - 1);
+}
+
+function updateMobileActiveIndex(
+  stepFloat: number,
+  n: number,
+  indexRef: React.MutableRefObject<number>,
+): number {
+  let idx = indexRef.current;
+
+  while (idx < n - 1 && stepFloat >= idx + MOBILE_SCROLL.indexAdvanceAt) {
+    idx += 1;
+  }
+  while (idx > 0 && stepFloat <= idx - 1 + MOBILE_SCROLL.indexRetreatAt) {
+    idx -= 1;
+  }
+
+  indexRef.current = idx;
+  return idx;
+}
+
+function mobileScrollOffset(totalScrollable: number, index: number, n: number): number {
+  if (n <= 1 || totalScrollable <= 0) return 0;
+  const travelSteps = n - 1;
+  const targetProg = index >= travelSteps ? 1 : index / travelSteps;
+  return targetProg * totalScrollable;
+}
 
 /** Shared spacing for desktop accordion + mobile feature cards */
 const FEATURE_BOX = {
@@ -117,9 +170,9 @@ function BancaDigitalLabel({ light = false, showDot = false }: { light?: boolean
         alignItems: "center",
         gap: 8,
         fontSize: 11,
-        fontWeight: 700,
+        fontWeight: TYPO.tag.fontWeight,
         color: light ? "hsl(20 80% 92%)" : OR,
-        letterSpacing: "0.1em",
+        letterSpacing: TYPO.tag.letterSpacing,
         textTransform: "uppercase",
       }}
     >
@@ -171,8 +224,8 @@ function DigitalBankingLeftHeading({ mobile = false }: { mobile?: boolean }) {
       <p
         style={{
           margin: 0,
-          fontSize: mobile ? 15 : 17,
-          lineHeight: 1.65,
+          fontSize: mobile ? TYPO.sectionBody.mobile.fontSize : TYPO.sectionBody.desktop.fontSize,
+          lineHeight: TYPO.sectionBody.desktop.lineHeight,
           color: SOFT,
           maxWidth: mobile ? undefined : 480,
         }}
@@ -430,58 +483,6 @@ function FeaturePreviewImage({
   );
 }
 
-const MOBILE_SCROLL = {
-  /** Finger-scroll (vh) required between each item change while the panel stays pinned. */
-  scrollPerItemVh: 68,
-  /** Short release scroll after the last item before the next section. */
-  releaseVh: 20,
-  /** Scroll down: advance to next item when float crosses idx + this (0.58 ≈ 58% into step). */
-  indexAdvanceAt: 0.58,
-  /** Scroll up: retreat to previous item when float drops below idx - 1 + this (0.42 ≈ 42%). */
-  indexRetreatAt: 0.42,
-  stickyTop: 64,
-  imageHeight: 168,
-  panelPaddingBottom: 40,
-  bottomStackPadding: 28,
-  layoutEase: [0.4, 0, 0.2, 1] as const,
-  layoutSpring: { type: "spring" as const, stiffness: 260, damping: 32, mass: 0.85 },
-} as const;
-
-function mobileScrollTotalVh(n: number): number {
-  if (n <= 1) return 100 + MOBILE_SCROLL.releaseVh;
-  return 100 + MOBILE_SCROLL.scrollPerItemVh * (n - 1) + MOBILE_SCROLL.releaseVh;
-}
-
-function mobileStepFloat(prog: number, n: number): number {
-  if (n <= 1) return 0;
-  return Math.min(Math.max(prog, 0) * (n - 1), n - 1);
-}
-
-function updateMobileActiveIndex(
-  stepFloat: number,
-  n: number,
-  indexRef: React.MutableRefObject<number>,
-): number {
-  let idx = indexRef.current;
-
-  while (idx < n - 1 && stepFloat >= idx + MOBILE_SCROLL.indexAdvanceAt) {
-    idx += 1;
-  }
-  while (idx > 0 && stepFloat <= idx - 1 + MOBILE_SCROLL.indexRetreatAt) {
-    idx -= 1;
-  }
-
-  indexRef.current = idx;
-  return idx;
-}
-
-function mobileScrollOffset(totalScrollable: number, index: number, n: number): number {
-  if (n <= 1 || totalScrollable <= 0) return 0;
-  const travelSteps = n - 1;
-  const targetProg = index >= travelSteps ? 1 : index / travelSteps;
-  return targetProg * totalScrollable;
-}
-
 function MobileScrollProgress({
   activeIndex,
   stepFloat,
@@ -730,7 +731,7 @@ function StickyScrollFeatures({ features }: { features: typeof FEATURES }) {
           initial={{ opacity: 0, y: 16 }}
           animate={headInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.45, ease: "easeOut" }}
-          style={{ paddingTop: 48, paddingBottom: 28 }}
+          style={{ paddingTop: 28, paddingBottom: 24 }}
         >
           <DigitalBankingLeftHeading mobile />
         </motion.div>
@@ -1036,11 +1037,11 @@ export function DigitalBanking() {
               <h3
                 style={{
                   margin: 0,
-                  fontSize: isMobile ? 32 : 48,
-                  fontWeight: 800,
+                  fontSize: isMobile ? TYPO.sectionHeadline.mobile.fontSize : 48,
+                  fontWeight: TYPO.sectionHeadline.desktop.fontWeight,
                   color: "#fff",
-                  letterSpacing: "-0.02em",
-                  lineHeight: 1.12,
+                  letterSpacing: TYPO.sectionHeadline.desktop.letterSpacing,
+                  lineHeight: TYPO.sectionHeadline.desktop.lineHeight,
                 }}
               >
                 Contáctanos hoy mismo.

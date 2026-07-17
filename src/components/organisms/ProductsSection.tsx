@@ -4,9 +4,10 @@ import { motion, useInView } from "motion/react";
 import { useNavigate } from "react-router-dom";
 import { TrendingUp, Home, ChevronRight, Card, Car } from "@/lib/icons";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
-import { SectionTag, SectionHeading } from "@/components/ui/atoms";
+import { SectionTag, SectionHeading, HeadlineAccent } from "@/components/ui/atoms";
 import { CTA_BUTTON_COLORS, CTA_BUTTON_SIZE } from "@/constants/ctaButtons";
 import { TAG_PILL_HUG } from "@/constants/tagPill";
+import { TYPO } from "@/constants/typography";
 import { HeroCtaButton } from "@/components/atoms/HeroCtaButton";
 import { OrangeBlobBackground } from "@/components/atoms/OrangeBlobBackground";
 
@@ -216,8 +217,8 @@ function CategoryTag({ icon: Icon, label }: { icon: React.ElementType; label: st
         background: "rgba(255,129,54,0.10)",
         color: OR,
         fontSize: 11,
-        fontWeight: 700,
-        letterSpacing: "0.06em",
+        fontWeight: TYPO.tag.fontWeight,
+        letterSpacing: TYPO.tag.letterSpacing,
         textTransform: "uppercase",
       }}
     >
@@ -325,9 +326,9 @@ function FeaturedBanner({ layout, wide = false }: { layout: FeaturedBannerLayout
                   margin: 0,
                   color: "#fff",
                   fontSize: wide ? 34 : 28,
-                  fontWeight: 700,
+                  fontWeight: TYPO.cardTitle.fontWeight,
                   lineHeight: 1.15,
-                  letterSpacing: "-0.02em",
+                  letterSpacing: TYPO.cardTitle.letterSpacing,
                 }}
               >
                 Cuenta de ahorros digital
@@ -407,7 +408,7 @@ function FeaturedBanner({ layout, wide = false }: { layout: FeaturedBannerLayout
             margin: 0,
             color: "#fff",
             fontSize: 48,
-            fontWeight: 700,
+            fontWeight: TYPO.cardTitle.fontWeight,
             lineHeight: "58px",
           }}
         >
@@ -534,7 +535,7 @@ function MastercardCard() {
       {/* Content */}
       <div style={{ padding: "20px 20px 24px", display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 10, flex: "0 0 auto" }}>
         <CategoryTag icon={mastercardData.icon} label={mastercardData.tag} />
-        <h4 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: DARK, letterSpacing: "-0.01em", lineHeight: 1.3 }}>
+        <h4 style={{ margin: 0, ...TYPO.itemTitleSm, color: DARK }}>
           {mastercardData.title}
         </h4>
         <p style={{ margin: 0, fontSize: 13, color: SOFT, lineHeight: 1.6 }}>{mastercardData.body}</p>
@@ -574,7 +575,7 @@ function SmallProductCard({ item, index }: { item: typeof invertisData; index: n
       {/* Content */}
       <div style={{ padding: "20px 20px 24px", display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 10, flex: "0 0 auto" }}>
         <CategoryTag icon={item.icon} label={item.tag} />
-        <h4 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: DARK, letterSpacing: "-0.01em", lineHeight: 1.3 }}>
+        <h4 style={{ margin: 0, ...TYPO.itemTitleSm, color: DARK }}>
           {item.title}
         </h4>
         <p style={{ margin: 0, fontSize: 13, color: SOFT, lineHeight: 1.6 }}>{item.body}</p>
@@ -620,11 +621,8 @@ function AutoLoanCard({ isMobile }: { isMobile: boolean }) {
         <h4
           style={{
             margin: 0,
-            fontSize: "clamp(18px, 2vw, 24px)",
-            fontWeight: 800,
+            ...TYPO.cardTitle,
             color: DARK,
-            letterSpacing: "-0.02em",
-            lineHeight: 1.15,
           }}
         >
           Préstamo de Auto Digital
@@ -778,13 +776,20 @@ function BentoMobileStack() {
 /* ── ProductsSection (export) ───────────────────────────── */
 export function ProductsSection() {
   const breakpoint = useBreakpoint();
+  const isMobile = breakpoint === "mobile";
 
   return (
-    <section style={{ background: "#fff", paddingTop: 40, paddingBottom: 64 }}>
+    <section
+      style={{
+        background: "#fff",
+        paddingTop: isMobile ? 32 : 40,
+        paddingBottom: isMobile ? 36 : 64,
+      }}
+    >
       <div className="site-container">
         <SectionHeading
           tag="Banca para Personas"
-          headline={<>Protegemos y multiplicamos lo que más valoras</>}
+          headline={<>Protegemos y multiplicamos lo que <HeadlineAccent>más valoras</HeadlineAccent></>}
           body="Cuentas, tarjetas e inversiones pensados para simplificar tu vida financiera y hacer crecer lo que construyes."
           mb={40}
         />

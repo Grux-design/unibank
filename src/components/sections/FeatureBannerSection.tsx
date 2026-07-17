@@ -40,7 +40,7 @@ export function FeatureBannerSection({ section }: Props) {
           {/* Text */}
           <div className="md:w-1/2 flex flex-col justify-center">
             {section.title && (
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-3 md:mb-4">
+              <h2 className="type-section-headline mb-3 md:mb-4">
                 {section.title}
               </h2>
             )}

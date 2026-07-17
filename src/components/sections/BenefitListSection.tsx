@@ -14,7 +14,7 @@ export function BenefitListSection({ section }: Props) {
         {/* Left: Title */}
         <div className="md:w-2/5 flex items-start pt-0 md:pt-4">
           {section.title && (
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground leading-tight">
+            <h2 className="type-section-headline leading-tight">
               {section.title}
             </h2>
           )}
@@ -29,7 +29,7 @@ export function BenefitListSection({ section }: Props) {
             >
               <BenefitIconTile title={item.title} />
               <div className="min-w-0">
-                <h3 className="font-bold text-foreground mb-1 text-xl md:text-2xl">
+                <h3 className="type-item-title mb-1">
                   {item.title}
                 </h3>
                 {item.description && (

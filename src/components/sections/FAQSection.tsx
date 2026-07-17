@@ -24,7 +24,7 @@ export function FAQSection({ section }: Props) {
         {/* Left column */}
         <div className="md:w-2/5">
           {section.title && (
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-3 md:mb-4 leading-tight">
+            <h2 className="type-section-headline mb-3 md:mb-4 leading-tight">
               {section.title}
             </h2>
           )}

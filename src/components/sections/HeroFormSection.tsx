@@ -78,7 +78,7 @@ export function HeroFormSection({ section }: Props) {
                 style={{
                   margin: 0,
                   fontSize: "clamp(30px, 4.5vw, 56px)",
-                  fontWeight: 800,
+                  fontWeight: 700,
                   lineHeight: 1.08,
                   letterSpacing: "-0.03em",
                   color: "hsl(var(--foreground))",

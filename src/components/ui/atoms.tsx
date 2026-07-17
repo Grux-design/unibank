@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import { ChevronRight } from "@/lib/icons";
 import { TAG_PILL_HUG } from "@/constants/tagPill";
+import { TYPO } from "@/constants/typography";
+
+/* ── HeadlineAccent ─────────────────────────────────────── */
+/** Orange accent span for mixed-color section headlines */
+export function HeadlineAccent({ children }: { children: React.ReactNode }) {
+  return <span style={{ color: TYPO.colors.accent }}>{children}</span>;
+}
 
 /* ── SectionTag ─────────────────────────────────────────── */
 export function SectionTag({ children }: { children: React.ReactNode }) {
@@ -12,11 +19,8 @@ export function SectionTag({ children }: { children: React.ReactNode }) {
         padding: "4px 12px",
         borderRadius: 99,
         background: "hsl(20 100% 95%)",
-        color: "var(--fun-orange)",
-        fontSize: 11,
-        fontWeight: 700,
-        letterSpacing: "0.08em",
-        textTransform: "uppercase",
+        color: TYPO.colors.tag,
+        ...TYPO.tag,
       }}
     >
       {children}
@@ -38,6 +42,8 @@ interface SectionHeadingProps {
 export function SectionHeading({ tag, headline, body, cta, px = 0, mb = 40, align = "left" }: SectionHeadingProps) {
   const textAlign = align === "center" ? "center" : "left";
   const alignItems = align === "center" ? "center" : "flex-start";
+  const headlineStyle = TYPO.sectionHeadline.desktop;
+
   return (
     <div
       style={{
@@ -54,11 +60,11 @@ export function SectionHeading({ tag, headline, body, cta, px = 0, mb = 40, alig
       <h2
         style={{
           margin: 0,
-          fontSize: "clamp(28px, 4vw, 52px)",
-          fontWeight: 800,
-          lineHeight: 1.08,
-          letterSpacing: "-0.03em",
-          color: "var(--uni-dark)",
+          fontSize: headlineStyle.fontSize,
+          fontWeight: headlineStyle.fontWeight,
+          lineHeight: headlineStyle.lineHeight,
+          letterSpacing: headlineStyle.letterSpacing,
+          color: TYPO.colors.headline,
           textAlign,
         }}
       >
@@ -68,9 +74,9 @@ export function SectionHeading({ tag, headline, body, cta, px = 0, mb = 40, alig
         <p
           style={{
             margin: 0,
-            fontSize: "clamp(14px, 1.5vw, 17px)",
-            lineHeight: 1.65,
-            color: "var(--uni-dark-soft)",
+            fontSize: TYPO.sectionBody.desktop.fontSize,
+            lineHeight: TYPO.sectionBody.desktop.lineHeight,
+            color: TYPO.colors.body,
             maxWidth: 580,
             textAlign,
           }}
@@ -95,7 +101,7 @@ export function LinkArrow({ children, href = "#" }: { children: React.ReactNode;
         display: "inline-flex",
         alignItems: "center",
         gap: 6,
-        color: "var(--fun-orange)",
+        color: TYPO.colors.accent,
         fontSize: 14,
         fontWeight: 600,
         letterSpacing: "0.004em",

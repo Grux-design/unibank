@@ -4,8 +4,8 @@ import { motion, useInView } from "motion/react";
 import { Building2, Truck, BarChart3, ChevronRight } from "@/lib/icons";
 import { Link } from "react-router-dom";
 import { useIsMobile } from "@/hooks/useIsMobile";
-import { SectionHeading, LinkArrow } from "@/components/ui/atoms";
-import { TAG_PILL_HUG } from "@/constants/tagPill";
+import { SectionHeading, LinkArrow, HeadlineAccent } from "@/components/ui/atoms";
+import { TYPO } from "@/constants/typography";
 
 const OR = "var(--fun-orange)";
 const DARK = "var(--uni-dark)";
@@ -68,8 +68,8 @@ function CategoryTag({ icon: Icon, label }: { icon: React.ElementType; label: st
         background: "rgba(255,129,54,0.10)",
         color: OR,
         fontSize: 11,
-        fontWeight: 700,
-        letterSpacing: "0.06em",
+        fontWeight: TYPO.tag.fontWeight,
+        letterSpacing: TYPO.tag.letterSpacing,
         textTransform: "uppercase",
       }}
     >
@@ -168,11 +168,8 @@ function LargeCard({ service, isMobile }: { service: typeof services[0]; isMobil
           <h3
             style={{
               margin: 0,
-              fontSize: "clamp(18px, 2vw, 24px)",
-              fontWeight: 800,
+              ...TYPO.cardTitle,
               color: DARK,
-              letterSpacing: "-0.02em",
-              lineHeight: 1.15,
             }}
           >
             {service.title}
@@ -216,7 +213,7 @@ function SmallCard({ service, index }: { service: typeof services[0]; index: num
       {/* Content */}
       <div style={{ padding: "20px 20px 24px", display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 10, flex: "0 0 auto" }}>
         <CategoryTag icon={service.icon} label={service.label} />
-        <h4 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: DARK, letterSpacing: "-0.01em", lineHeight: 1.3 }}>
+        <h4 style={{ margin: 0, ...TYPO.itemTitleSm, color: DARK }}>
           {service.title}
         </h4>
         <p style={{ margin: 0, fontSize: 13, color: SOFT, lineHeight: 1.6 }}>{service.body}</p>
@@ -318,7 +315,13 @@ export function BusinessSection() {
   const titleInView = useInView(titleRef, { once: true, margin: "0px 0px -60px 0px" });
 
   return (
-    <section style={{ background: "#fff", paddingTop: 40, paddingBottom: 64 }}>
+    <section
+      style={{
+        background: "#fff",
+        paddingTop: isMobile ? 32 : 40,
+        paddingBottom: isMobile ? 36 : 64,
+      }}
+    >
       <div className="site-container">
         <motion.div
           ref={titleRef}
@@ -328,7 +331,7 @@ export function BusinessSection() {
         >
           <SectionHeading
             tag="Banca Empresarial"
-            headline={<>Financiamos el futuro y la visión de tu negocio</>}
+            headline={<>Financiamos el futuro y <HeadlineAccent>la visión de tu negocio</HeadlineAccent></>}
             body="Crédito comercial, planilla empresarial, Leasing, bonos verdes y soluciones financieras adaptadas a cada etapa y sector de tu negocio."
             
             mb={40}

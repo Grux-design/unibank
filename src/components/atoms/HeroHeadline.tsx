@@ -1,6 +1,7 @@
 import type { HeadlinePart } from "@/data/heroSlides";
 import { THEME } from "@/data/heroSlides";
 import type { HeroLayoutTier } from "@/data/heroSlides";
+import { TYPO } from "@/constants/typography";
 
 interface HeroHeadlineProps {
   parts: HeadlinePart[];
@@ -20,8 +21,8 @@ export function HeroHeadline({ parts, layoutTier, isMobile }: HeroHeadlineProps)
           : layoutTier === "compact"
             ? "clamp(2.25rem, 4.5vw, 3.25rem)"
             : "clamp(2.75rem, 5vw, 4.25rem)",
-        fontWeight: 700,
-        lineHeight: stacked ? 1.1 : 1.08,
+        fontWeight: TYPO.hero.fontWeight,
+        lineHeight: stacked ? 1.1 : TYPO.hero.lineHeight,
         margin: 0,
         color: THEME.headlineColor,
         whiteSpace: "normal",

@@ -56,6 +56,16 @@
     --btn-font-size: 0.9375rem;
     --btn-font-weight: 600;
 
+    /* Editorial typography scale */
+    --type-section-weight: 500;
+    --type-card-weight: 600;
+    --type-hero-weight: 700;
+    --type-section-size: clamp(30px, 3.6vw, 56px);
+    --type-section-leading: 1.14;
+    --type-section-tracking: -0.03em;
+    --type-body-size: clamp(15px, 1.5vw, 17px);
+    --type-body-leading: 1.65;
+
     /* Brand solids (gradients deprecated — use solid colors only) */
     --gradient-brand: hsl(20 100% 60%);
     --gradient-dark: hsl(0 0% 6%);
@@ -102,10 +112,28 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1 {
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    font-weight: 700;
+    font-weight: var(--type-hero-weight);
     letter-spacing: -0.02em;
+  }
+
+  h2 {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-weight: var(--type-section-weight);
+    letter-spacing: var(--type-section-tracking);
+  }
+
+  h3, h4 {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-weight: var(--type-card-weight);
+    letter-spacing: -0.02em;
+  }
+
+  h5, h6 {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-weight: var(--type-card-weight);
+    letter-spacing: -0.01em;
   }
 }
 
@@ -159,6 +187,61 @@
   @keyframes fadeSlideIn {
     from { opacity: 0; transform: translateY(6px); }
     to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Editorial typography utilities */
+  .type-section-headline {
+    margin: 0;
+    font-size: var(--type-section-size);
+    font-weight: var(--type-section-weight);
+    line-height: var(--type-section-leading);
+    letter-spacing: var(--type-section-tracking);
+    color: var(--uni-dark);
+  }
+
+  .type-section-body {
+    margin: 0;
+    font-size: var(--type-body-size);
+    line-height: var(--type-body-leading);
+    color: var(--uni-dark-soft);
+  }
+
+  .type-card-title {
+    margin: 0;
+    font-size: clamp(18px, 2vw, 24px);
+    font-weight: var(--type-card-weight);
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    color: var(--uni-dark);
+  }
+
+  .type-item-title {
+    margin: 0;
+    font-size: clamp(20px, 2vw, 26px);
+    font-weight: var(--type-card-weight);
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    color: var(--uni-dark);
+  }
+
+  .type-accent {
+    color: var(--fun-orange);
+  }
+
+  /* Soften legacy Tailwind font-bold on headings site-wide */
+  h2.font-bold {
+    font-weight: var(--type-section-weight);
+    letter-spacing: var(--type-section-tracking);
+    line-height: var(--type-section-leading);
+  }
+
+  h3.font-bold {
+    font-weight: var(--type-card-weight);
+    letter-spacing: -0.02em;
+  }
+
+  h4.font-bold {
+    font-weight: var(--type-card-weight);
   }
 }
 
