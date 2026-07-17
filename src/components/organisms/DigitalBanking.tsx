@@ -889,7 +889,7 @@ export function DigitalBanking() {
   const isMobile = useIsMobile();
 
   return (
-    <section style={{ background: "#fff" }}>
+    <section id="banca-digital" style={{ background: "#fff" }}>
       <div className="site-container">
         <div style={{ paddingTop: isMobile ? 0 : 64 }}>
           <StickyScrollFeatures features={FEATURES} />
