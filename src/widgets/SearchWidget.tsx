@@ -106,7 +106,14 @@ export function SearchWidget() {
               ) : filtered.map((page) => (
                 <button
                   key={page.href}
-                  onClick={() => { handleClose(); navigate(page.href); }}
+                  onClick={() => {
+                    handleClose();
+                    if (/^https?:\/\//i.test(page.href)) {
+                      window.open(page.href, "_blank", "noopener,noreferrer");
+                    } else {
+                      navigate(page.href);
+                    }
+                  }}
                   style={{
                     display: "flex", alignItems: "center", gap: 14,
                     padding: "11px 12px", borderRadius: 14, width: "100%",

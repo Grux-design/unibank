@@ -7,10 +7,13 @@ import {
   Car as PhCar,
   ChartBar as PhChartBar,
   ChartLineUp as PhChartLineUp,
+  ChartPie as PhChartPie,
   Checks as PhChecks,
+  CheckCircle as PhCheckCircle,
   ClipboardText as PhClipboardText,
   Clock as PhClock,
   CloudCheck as PhCloudCheck,
+  Coins as PhCoins,
   CreditCard as PhCreditCard,
   CurrencyCircleDollar as PhCurrencyCircleDollar,
   Drop as PhDrop,
@@ -23,13 +26,16 @@ import {
   Globe as PhGlobe,
   Handshake as PhHandshake,
   House as PhHouse,
+  IdentificationCard as PhIdentificationCard,
   Leaf as PhLeaf,
   Lightning as PhLightning,
   LockKey as PhLockKey,
+  Medal as PhMedal,
   NotePencil as PhNotePencil,
   Package as PhPackage,
   Percent as PhPercent,
   PresentationChart as PhPresentationChart,
+  RocketLaunch as PhRocketLaunch,
   Shield as PhShield,
   ShieldCheck as PhShieldCheck,
   Sparkle as PhSparkle,
@@ -42,23 +48,6 @@ import {
   Wallet as PhWallet,
   Wrench as PhWrench,
 } from "@phosphor-icons/react";
-import {
-  Award as DuoAward,
-  Bank as DuoBank,
-  Briefcase as DuoBriefcase,
-  Building as DuoBuilding,
-  ChartPie as DuoChartPie,
-  CheckCircle as DuoCheckCircle,
-  Clipboard as DuoClipboard,
-  Clock as DuoClock,
-  CoinStack as DuoCoinStack,
-  CreditCard as DuoCreditCard,
-  IdCard as DuoIdCard,
-  Rocket as DuoRocket,
-  Target as DuoTarget,
-  UserCard as DuoUserCard,
-  World as DuoWorld,
-} from "@duo-icons/react";
 
 type IconProps = SVGProps<SVGSVGElement> & {
   size?: number | string;
@@ -80,15 +69,6 @@ function phosphor(Icon: PhosphorIcon): BenefitIconComponent {
   return PhosphorBenefitIcon;
 }
 
-/** Normalize Duo icons to the same props shape (no weight prop). */
-function duo(Icon: ComponentType<IconProps>): BenefitIconComponent {
-  function DuoBenefitIcon({ size = 28, color = "currentColor", ...props }: IconProps) {
-    return <Icon size={size} color={color} {...props} />;
-  }
-  DuoBenefitIcon.displayName = `Benefit(${Icon.displayName ?? "DuoIcon"})`;
-  return DuoBenefitIcon;
-}
-
 function normalizeTitle(value: string): string {
   return value
     .normalize("NFD")
@@ -98,7 +78,10 @@ function normalizeTitle(value: string): string {
     .trim();
 }
 
-/** Explicit title → icon (Phosphor preferred; Duo when it’s a better fit). */
+/**
+ * Explicit title → icon.
+ * Phosphor only: @duo-icons/react requires React 19 and crashes this React 18 app.
+ */
 const TITLE_ICON_MAP: Record<string, BenefitIconComponent> = {
   // Personas · Cuenta de Ahorros
   "sin tramites presenciales": phosphor(PhCloudCheck),
@@ -111,8 +94,8 @@ const TITLE_ICON_MAP: Record<string, BenefitIconComponent> = {
 
   // Personas · Depósito a Plazo Fijo
   "tasa de interes inalterable": phosphor(PhPercent),
-  "ideal para metas definidas": duo(DuoTarget),
-  "disponibilidad para clientes": duo(DuoClock),
+  "ideal para metas definidas": phosphor(PhTarget),
+  "disponibilidad para clientes": phosphor(PhClock),
 
   // Personas · Vivienda
   "seguridad y transparencia": phosphor(PhShieldCheck),
@@ -121,13 +104,13 @@ const TITLE_ICON_MAP: Record<string, BenefitIconComponent> = {
 
   // Personas · Auto
   "accesible a mas perfiles": phosphor(PhUsersThree),
-  "desembolso eficiente": duo(DuoRocket),
+  "desembolso eficiente": phosphor(PhRocketLaunch),
   "control total": phosphor(PhChecks),
 
   // Personas · Mastercard
   "comodidad y control": phosphor(PhCreditCard),
   "asistencia 24 7": phosphor(PhClock),
-  "respaldo internacional": duo(DuoWorld),
+  "respaldo internacional": phosphor(PhGlobe),
 
   // Empresas · Cuenta Jurídica Digital
   "control de flujo de caja": phosphor(PhChartLineUp),
@@ -137,7 +120,7 @@ const TITLE_ICON_MAP: Record<string, BenefitIconComponent> = {
   // Empresas · Préstamo Comercial
   "sectores diversos": phosphor(PhBuildings),
   "vision estrategica": phosphor(PhEye),
-  "ecosistema unibank": duo(DuoBank),
+  "ecosistema unibank": phosphor(PhBank),
 
   // Empresas · Línea de Crédito
   "liquidez permanente": phosphor(PhDrop),
@@ -160,7 +143,7 @@ const TITLE_ICON_MAP: Record<string, BenefitIconComponent> = {
   "comodidad para el equipo": phosphor(PhUsersThree),
 
   // Empresas · UniLeasing
-  "impulso a la competitividad": duo(DuoRocket),
+  "impulso a la competitividad": phosphor(PhRocketLaunch),
   "flexibilidad en equipos": phosphor(PhWrench),
   "eficiencia operativa": phosphor(PhLightning),
 };
@@ -176,18 +159,18 @@ const KEYWORD_ICONS: Array<{ keywords: string[]; icon: BenefitIconComponent }> =
   { keywords: ["leasing", "equipo", "maquina"], icon: phosphor(PhPackage) },
   { keywords: ["vivienda", "casa", "hipotec"], icon: phosphor(PhHouse) },
   { keywords: ["auto", "vehiculo", "carro"], icon: phosphor(PhCar) },
-  { keywords: ["tarjeta", "mastercard", "debito"], icon: duo(DuoCreditCard) },
-  { keywords: ["tasa", "interes", "rendimiento", "inversion"], icon: duo(DuoCoinStack) },
+  { keywords: ["tarjeta", "mastercard", "debito"], icon: phosphor(PhCreditCard) },
+  { keywords: ["tasa", "interes", "rendimiento", "inversion"], icon: phosphor(PhCoins) },
   { keywords: ["digital", "tramite", "online", "app"], icon: phosphor(PhCloudCheck) },
-  { keywords: ["empresa", "comercial", "negocio"], icon: duo(DuoBriefcase) },
-  { keywords: ["control", "gestion", "financ"], icon: duo(DuoChartPie) },
+  { keywords: ["empresa", "comercial", "negocio"], icon: phosphor(PhBriefcase) },
+  { keywords: ["control", "gestion", "financ"], icon: phosphor(PhChartPie) },
   { keywords: ["mercado", "valores", "perfil"], icon: phosphor(PhPresentationChart) },
-  { keywords: ["certificado", "aprob"], icon: duo(DuoCheckCircle) },
-  { keywords: ["documento", "clipboard"], icon: duo(DuoClipboard) },
-  { keywords: ["id", "carnet"], icon: duo(DuoIdCard) },
-  { keywords: ["cliente", "user", "persona"], icon: duo(DuoUserCard) },
-  { keywords: ["premio", "exito"], icon: duo(DuoAward) },
-  { keywords: ["edificio", "sector"], icon: duo(DuoBuilding) },
+  { keywords: ["certificado", "aprob"], icon: phosphor(PhCheckCircle) },
+  { keywords: ["documento", "clipboard"], icon: phosphor(PhClipboardText) },
+  { keywords: ["id", "carnet"], icon: phosphor(PhIdentificationCard) },
+  { keywords: ["cliente", "user", "persona"], icon: phosphor(PhIdentificationCard) },
+  { keywords: ["premio", "exito"], icon: phosphor(PhMedal) },
+  { keywords: ["edificio", "sector"], icon: phosphor(PhBuildings) },
   { keywords: ["fabrica", "industria"], icon: phosphor(PhFactory) },
   { keywords: ["banco", "unibank"], icon: phosphor(PhBank) },
   { keywords: ["dinero", "moneda", "dolar"], icon: phosphor(PhCurrencyCircleDollar) },

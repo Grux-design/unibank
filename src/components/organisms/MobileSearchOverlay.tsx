@@ -142,7 +142,14 @@ export function MobileSearchOverlay({ lang, onClose }: MobileSearchOverlayProps)
               <button
                 key={page.href + page.label}
                 type="button"
-                onClick={() => { onClose(); navigate(page.href); }}
+                onClick={() => {
+                  onClose();
+                  if (/^https?:\/\//i.test(page.href)) {
+                    window.open(page.href, "_blank", "noopener,noreferrer");
+                  } else {
+                    navigate(page.href);
+                  }
+                }}
                 style={{
                   display: "flex",
                   alignItems: "center",

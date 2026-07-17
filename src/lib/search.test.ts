@@ -42,7 +42,7 @@ describe("searchEntries", () => {
 
   it("requires all tokens for multi-word queries", () => {
     const results = searchEntries(searchPages, "banca movil empresas");
-    expect(results.some((p) => p.href === "/empresas/canales-digitales/banca-movil")).toBe(true);
+    expect(results.some((p) => p.href === "/#banca-digital")).toBe(true);
   });
 
   it("indexes real product hrefs instead of legacy stubs", () => {
@@ -52,6 +52,7 @@ describe("searchEntries", () => {
     expect(searchPageHrefs).not.toContain("/cuenta-ahorros");
     expect(searchPageHrefs).not.toContain("/tarjetas");
     expect(searchPageHrefs).not.toContain("/banca-movil");
+    expect(searchPageHrefs).toContain("/#banca-digital");
   });
 
   it("covers key site surfaces", () => {
