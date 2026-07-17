@@ -3,6 +3,14 @@ import { Link } from "react-router-dom";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 import type { CmsSectionProps } from "@/components/organisms/PageBuilder";
 import { PageMasthead } from "@/components/organisms/PageMasthead";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { CTA_BUTTON_LAYOUT_CLASS } from "@/constants/ctaButtons";
+import { ChevronRight } from "@/lib/icons";
+
+function isExternalHref(href: string) {
+  return href.startsWith("http") || href.startsWith("mailto");
+}
 
 export function HeroFormSection({ section }: CmsSectionProps) {
   const { title, headline, subheadline, mainImage, showForm } = section;
@@ -11,6 +19,7 @@ export function HeroFormSection({ section }: CmsSectionProps) {
   const isMobile = bp === "mobile";
 
   const imgSrc = mainImage?.fields?.file?.url;
+  const ctaItems = section.items?.filter((item) => item.link) ?? [];
 
   return (
     <PageMasthead
@@ -21,146 +30,52 @@ export function HeroFormSection({ section }: CmsSectionProps) {
       imageSrc={imgSrc}
       imageAlt={mainImage?.fields?.title ?? headline ?? ""}
     >
-      {section.items && section.items.length > 0 && (
-        <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 4 }}>
-          {section.items.map((item) => {
-            if (!item.link) return null;
-            const isExternal = item.link.startsWith("http") || item.link.startsWith("mailto");
-            const buttonStyle: React.CSSProperties = {
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              height: 52,
-              padding: "0 32px",
-              borderRadius: 12,
-              background: "hsl(var(--primary))",
-              color: "hsl(var(--primary-foreground))",
-              fontSize: 15,
-              fontWeight: 600,
-              textDecoration: "none",
-              cursor: "pointer",
-              transition: "background 0.18s, transform 0.18s",
-              width: isMobile ? "100%" : "fit-content",
-            };
-
-            const onEnter = (e: React.MouseEvent<HTMLAnchorElement>) => {
-              e.currentTarget.style.background = "hsl(var(--primary-hover))";
-              e.currentTarget.style.transform = "translateY(-1px)";
-            };
-
-            const onLeave = (e: React.MouseEvent<HTMLAnchorElement>) => {
-              e.currentTarget.style.background = "hsl(var(--primary))";
-              e.currentTarget.style.transform = "translateY(0)";
-            };
-
-            if (isExternal) {
-              return (
-                <a
-                  key={item.sys.id}
-                  href={item.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={buttonStyle}
-                  onMouseEnter={onEnter}
-                  onMouseLeave={onLeave}
-                >
-                  {item.title}
-                </a>
-              );
-            }
-
+      {ctaItems.length > 0 && (
+        <div className="flex flex-col md:flex-row flex-wrap gap-3 mt-2 w-full">
+          {ctaItems.map((item) => {
+            const external = isExternalHref(item.link!);
             return (
-              <Link
+              <Button
                 key={item.sys.id}
-                to={item.link}
-                style={buttonStyle}
-                onMouseEnter={onEnter}
-                onMouseLeave={onLeave}
+                asChild
+                size="lg"
+                className={`h-[52px] px-8 text-[15px] group/btn ${CTA_BUTTON_LAYOUT_CLASS}`}
               >
-                {item.title}
-              </Link>
+                {external ? (
+                  <a href={item.link} target="_blank" rel="noopener noreferrer">
+                    {item.title}
+                    <ChevronRight className="w-4 h-4 transition-transform duration-300 group-hover/btn:translate-x-0.5" />
+                  </a>
+                ) : (
+                  <Link to={item.link!}>
+                    {item.title}
+                    <ChevronRight className="w-4 h-4 transition-transform duration-300 group-hover/btn:translate-x-0.5" />
+                  </Link>
+                )}
+              </Button>
             );
           })}
         </div>
       )}
 
       {showForm && (
-        <div
-          className="page-section-card"
-          style={{
-            borderRadius: 20,
-            padding: "28px 24px",
-            display: "flex",
-            flexDirection: "column",
-            gap: 16,
-            maxWidth: isMobile ? "100%" : 420,
-            width: "100%",
-          }}
-        >
-          <p
-            style={{
-              margin: 0,
-              fontSize: 15,
-              fontWeight: 600,
-              color: "hsl(var(--foreground))",
-            }}
-          >
-            Abre tu cuenta hoy
-          </p>
-          <p
-            style={{
-              margin: 0,
-              fontSize: 13,
-              color: "hsl(var(--muted-foreground))",
-              lineHeight: 1.5,
-            }}
-          >
-            Ingresa tu cédula para comenzar el proceso
-          </p>
-          <input
+        <div className="page-section-card rounded-[20px] p-6 md:p-7 flex flex-col gap-4 w-full max-w-[420px] mt-2">
+          <div>
+            <p className="m-0 text-[15px] font-semibold text-foreground">Abre tu cuenta hoy</p>
+            <p className="m-0 mt-1 text-sm text-muted-foreground leading-relaxed">
+              Ingresa tu cédula para comenzar el proceso
+            </p>
+          </div>
+          <Input
             type="text"
             value={idValue}
             onChange={(e) => setIdValue(e.target.value)}
             placeholder="Ej. 001-1234567-8"
-            style={{
-              height: 48,
-              borderRadius: 12,
-              border: "1px solid hsl(var(--border))",
-              padding: "0 16px",
-              fontSize: 15,
-              color: "hsl(var(--foreground))",
-              background: "var(--surface-page)",
-              outline: "none",
-              width: "100%",
-              boxSizing: "border-box",
-              transition: "border-color 0.18s",
-            }}
-            onFocus={(e) => (e.target.style.borderColor = "hsl(var(--primary))")}
-            onBlur={(e) => (e.target.style.borderColor = "hsl(var(--border))")}
+            className="h-12 rounded-xl"
           />
-          <button
-            type="button"
-            style={{
-              height: 52,
-              borderRadius: 12,
-              background: "hsl(var(--primary))",
-              color: "hsl(var(--primary-foreground))",
-              border: "none",
-              fontSize: 15,
-              fontWeight: 600,
-              cursor: "pointer",
-              transition: "background 0.18s",
-              width: "100%",
-            }}
-            onMouseEnter={(e) =>
-              ((e.target as HTMLElement).style.background = "hsl(var(--primary-hover))")
-            }
-            onMouseLeave={(e) =>
-              ((e.target as HTMLElement).style.background = "hsl(var(--primary))")
-            }
-          >
+          <Button type="button" size="lg" className={`h-[52px] ${CTA_BUTTON_LAYOUT_CLASS}`}>
             Continuar
-          </button>
+          </Button>
         </div>
       )}
     </PageMasthead>

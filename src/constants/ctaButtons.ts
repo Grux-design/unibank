@@ -57,3 +57,6 @@ export const SEGMENTED_TOGGLE = {
   neutralActiveColor: "#1C1917",
   neutralInactiveColor: "#908E8D",
 } as const;
+
+/** Mobile full-width; desktop fit-content. Use with md:self-start inside flex-col. */
+export const CTA_BUTTON_LAYOUT_CLASS = "w-full md:w-auto md:self-start";

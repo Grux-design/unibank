@@ -8,6 +8,9 @@ describe("resolveBenefitIcon", () => {
     expect(resolveBenefitIcon("Autogestión de chequeras")).toBeTruthy();
     expect(resolveBenefitIcon("Sin trámites presenciales")).toBeTruthy();
     expect(resolveBenefitIcon("Respaldo Internacional")).toBeTruthy();
+    expect(resolveBenefitIcon("Compras por Internet")).toBeTruthy();
+    expect(resolveBenefitIcon("Compras Globales")).toBeTruthy();
+    expect(resolveBenefitIcon("Beneficios de Viaje")).toBeTruthy();
     expect(resolveBenefitIcon("Impulso a la competitividad")).toBeTruthy();
   });
 

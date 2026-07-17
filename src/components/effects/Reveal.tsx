@@ -1,5 +1,6 @@
 import { motion, useReducedMotion } from "motion/react";
 import { ReactNode } from "react";
+import { EASE } from "@/lib/motion";
 
 interface RevealProps {
   children: ReactNode;
@@ -7,8 +8,11 @@ interface RevealProps {
   delay?: number;
   duration?: number;
   amount?: number;
+  staggerIndex?: number;
   className?: string;
 }
+
+const STAGGER_STEP = 0.07;
 
 /**
  * Reveal — fades + lifts children into view once.
@@ -20,9 +24,11 @@ export function Reveal({
   delay = 0,
   duration = 0.7,
   amount = 0.15,
+  staggerIndex = 0,
   className,
 }: RevealProps) {
   const prefersReduced = useReducedMotion();
+  const totalDelay = delay + staggerIndex * STAGGER_STEP;
 
   if (prefersReduced) {
     return <div className={className}>{children}</div>;
@@ -36,8 +42,8 @@ export function Reveal({
       viewport={{ once: true, amount }}
       transition={{
         duration,
-        delay,
-        ease: [0.22, 1, 0.36, 1],
+        delay: totalDelay,
+        ease: EASE.cinematic,
       }}
     >
       {children}

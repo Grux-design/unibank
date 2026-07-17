@@ -154,11 +154,12 @@ function PageError({ message }: { message: string }) {
 /* ── Main Page Component ───────────────────────────────────── */
 export default function ProductDetailPage() {
   const { slug } = useParams<{ slug: string }>();
-  const { data, isLoading, error } = useContentfulPage(slug);
+  const { data, isPending, isFetching, isError, error } = useContentfulPage(slug);
 
   const pageTitle = data?.seoMeta?.title ?? data?.title ?? "Producto";
   const pageDescription = data?.seoMeta?.description ?? "";
   const canonicalUrl = data?.seoMeta?.canonicalUrl;
+  const showSkeleton = !slug || isPending || (isFetching && !data);
 
   return (
     <>
@@ -176,9 +177,9 @@ export default function ProductDetailPage() {
         <meta property="og:type" content="website" />
       </Helmet>
 
-      {isLoading && <PageSkeleton />}
+      {showSkeleton && <PageSkeleton />}
 
-      {!isLoading && error && (
+      {!showSkeleton && isError && (
         <PageError
           message={
             error instanceof Error
@@ -188,8 +189,14 @@ export default function ProductDetailPage() {
         />
       )}
 
-      {!isLoading && !error && data && (
-        <PageBuilder sections={data.sections} />
+      {!showSkeleton && !isError && data && (
+        <article className="pb-16 md:pb-24 lg:pb-28">
+          <PageBuilder sections={data.sections} />
+        </article>
+      )}
+
+      {!showSkeleton && !isError && !data && slug && (
+        <PageError message="No pudimos cargar el contenido de esta página." />
       )}
     </>
   );

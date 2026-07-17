@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { THEME } from "@/data/heroSlides";
 import { AuthorityLineDecor } from "@/components/atoms/AuthorityLineDecor";
+import { Reveal } from "@/components/effects/Reveal";
 
 export interface PageMastheadProps {
   /** Contentful `title` / eyebrow label */
@@ -44,6 +45,7 @@ export function PageMasthead({
   return (
     <section className={`page-masthead-shell ${className ?? ""}`.trim()}>
       <div className="site-container">
+        <Reveal y={18} duration={0.55} amount={0.2}>
         <div
           className={`page-masthead-card${showCornerDecor ? " page-masthead-card--decorated" : ""}`}
         >
@@ -62,7 +64,7 @@ export function PageMasthead({
             className={`page-masthead-grid${hasMedia ? " page-masthead-grid--media-right" : ""}`}
           >
             <div
-              className="page-masthead-copy"
+              className={`page-masthead-copy${centered ? " page-masthead-copy--center" : ""}`}
               style={{
                 alignItems: centered ? "center" : "flex-start",
                 textAlign: centered ? "center" : "left",
@@ -111,6 +113,7 @@ export function PageMasthead({
             )}
           </div>
         </div>
+        </Reveal>
       </div>
     </section>
   );
