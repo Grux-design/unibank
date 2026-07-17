@@ -1,16 +1,12 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 import type { CmsSectionProps } from "@/components/organisms/PageBuilder";
 import { PageMasthead } from "@/components/organisms/PageMasthead";
+import { CmsCtaButton } from "@/components/molecules/CmsCtaButton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { CTA_BUTTON_LAYOUT_CLASS } from "@/constants/ctaButtons";
-import { ChevronRight } from "@/lib/icons";
-
-function isExternalHref(href: string) {
-  return href.startsWith("http") || href.startsWith("mailto");
-}
+import { filterCmsCtaItems } from "@/lib/cmsLinks";
 
 export function HeroFormSection({ section }: CmsSectionProps) {
   const { title, headline, subheadline, mainImage, showForm } = section;
@@ -19,7 +15,7 @@ export function HeroFormSection({ section }: CmsSectionProps) {
   const isMobile = bp === "mobile";
 
   const imgSrc = mainImage?.fields?.file?.url;
-  const ctaItems = section.items?.filter((item) => item.link) ?? [];
+  const ctaItems = filterCmsCtaItems(section.items);
 
   return (
     <PageMasthead
@@ -32,29 +28,11 @@ export function HeroFormSection({ section }: CmsSectionProps) {
     >
       {ctaItems.length > 0 && (
         <div className="flex flex-col md:flex-row flex-wrap gap-3 mt-2 w-full">
-          {ctaItems.map((item) => {
-            const external = isExternalHref(item.link!);
-            return (
-              <Button
-                key={item.sys.id}
-                asChild
-                size="lg"
-                className={`h-[52px] px-8 text-[15px] group/btn ${CTA_BUTTON_LAYOUT_CLASS}`}
-              >
-                {external ? (
-                  <a href={item.link} target="_blank" rel="noopener noreferrer">
-                    {item.title}
-                    <ChevronRight className="w-4 h-4 transition-transform duration-300 group-hover/btn:translate-x-0.5" />
-                  </a>
-                ) : (
-                  <Link to={item.link!}>
-                    {item.title}
-                    <ChevronRight className="w-4 h-4 transition-transform duration-300 group-hover/btn:translate-x-0.5" />
-                  </Link>
-                )}
-              </Button>
-            );
-          })}
+          {ctaItems.map((item) => (
+            <CmsCtaButton key={item.sys.id} href={item.link}>
+              {item.title}
+            </CmsCtaButton>
+          ))}
         </div>
       )}
 

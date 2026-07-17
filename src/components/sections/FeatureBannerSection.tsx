@@ -1,19 +1,13 @@
-import { Link } from "react-router-dom";
 import type { CmsSectionProps } from "@/components/organisms/PageBuilder";
 import { PAGE_SURFACE_CLASS } from "@/constants/pageSurfaces";
-import { Button } from "@/components/ui/button";
-import { CTA_BUTTON_LAYOUT_CLASS } from "@/constants/ctaButtons";
-import { ChevronRight } from "@/lib/icons";
+import { CmsCtaButton } from "@/components/molecules/CmsCtaButton";
+import { findCmsCtaItem } from "@/lib/cmsLinks";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import type { Document } from "@contentful/rich-text-types";
 import { Reveal } from "@/components/effects/Reveal";
 
 function isRichText(val: unknown): val is Document {
   return !!val && typeof val === "object" && (val as Document).nodeType === "document";
-}
-
-function isExternalHref(href: string) {
-  return href.startsWith("http") || href.startsWith("mailto");
 }
 
 export function FeatureBannerSection({ section, surface = "white" }: CmsSectionProps) {
@@ -26,25 +20,9 @@ export function FeatureBannerSection({ section, surface = "white" }: CmsSectionP
     return null;
   })();
 
-  const ctaItem = section.items?.find((item) => item.link);
-  const ctaHref = ctaItem?.link;
+  const ctaItem = findCmsCtaItem(section.items);
   const ctaLabel = ctaItem?.title || section.secondaryCta || "Conocer más";
-
-  const ctaButton = ctaHref ? (
-    <Button asChild size="lg" className={`h-[52px] px-8 group/btn ${CTA_BUTTON_LAYOUT_CLASS}`}>
-      {isExternalHref(ctaHref) ? (
-        <a href={ctaHref} target="_blank" rel="noopener noreferrer">
-          {ctaLabel}
-          <ChevronRight className="w-4 h-4 transition-transform duration-300 group-hover/btn:translate-x-0.5" />
-        </a>
-      ) : (
-        <Link to={ctaHref}>
-          {ctaLabel}
-          <ChevronRight className="w-4 h-4 transition-transform duration-300 group-hover/btn:translate-x-0.5" />
-        </Link>
-      )}
-    </Button>
-  ) : null;
+  const ctaButton = ctaItem ? <CmsCtaButton href={ctaItem.link}>{ctaLabel}</CmsCtaButton> : null;
 
   return (
     <section className={`w-full ${PAGE_SURFACE_CLASS[surface]} py-12 md:py-20`}>

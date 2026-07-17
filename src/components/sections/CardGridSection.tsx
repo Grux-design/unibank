@@ -45,7 +45,7 @@ export function CardGridSection({ section, surface = "white" }: CmsSectionProps)
 
                   <div className="min-w-0 flex-1 flex flex-col gap-2 md:gap-2.5 pt-0.5">
                     <span className="text-[11px] font-semibold tracking-[0.14em] uppercase text-muted-foreground/70 tabular-nums">
-                      Paso {stepLabel}
+                      {stepLabel}
                     </span>
                     <h3 className="type-item-title text-[clamp(17px,1.8vw,22px)] leading-snug m-0">
                       {item.title}
