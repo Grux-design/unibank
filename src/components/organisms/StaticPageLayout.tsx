@@ -7,6 +7,10 @@ interface StaticPageShellProps {
   children: ReactNode;
   /** Band index after masthead — 0 = first content section */
   bandIndex?: number;
+  /** Overrides surface derived from bandIndex */
+  surface?: PageSurface;
+  /** Tailwind padding classes for the section shell */
+  paddingClassName?: string;
   className?: string;
   id?: string;
 }
@@ -15,14 +19,16 @@ interface StaticPageShellProps {
 export function StaticPageSection({
   children,
   bandIndex = 0,
+  surface,
+  paddingClassName = "py-12 md:py-20",
   className,
   id,
 }: StaticPageShellProps) {
-  const surface: PageSurface = getContentSectionSurface(bandIndex);
+  const resolvedSurface: PageSurface = surface ?? getContentSectionSurface(bandIndex);
   return (
     <section
       id={id}
-      className={`${PAGE_SURFACE_CLASS[surface]} py-12 md:py-20 ${className ?? ""}`.trim()}
+      className={`${PAGE_SURFACE_CLASS[resolvedSurface]} ${paddingClassName} ${className ?? ""}`.trim()}
     >
       {children}
     </section>

@@ -1,120 +1,32 @@
-import type { ReactNode } from "react";
-import { THEME } from "@/data/heroSlides";
-import { AuthorityLineDecor } from "@/components/atoms/AuthorityLineDecor";
-import { Reveal } from "@/components/effects/Reveal";
+import { useEffect, useState } from "react";
+import { PageMastheadClassic, type PageMastheadProps } from "@/components/organisms/PageMastheadClassic";
+import { PageMastheadEditorial } from "@/components/organisms/PageMastheadEditorial";
+import {
+  getPageMastheadVariant,
+  PAGE_MASTHEAD_VARIANT_EVENT,
+} from "@/constants/pageMastheadVariant";
 
-export interface PageMastheadProps {
-  /** Contentful `title` / eyebrow label */
-  eyebrow?: ReactNode;
-  /** h1 — string or HTML (Contentful *accent* markers) */
-  title: ReactNode;
-  titleHtml?: string;
-  subtitle?: ReactNode;
-  /** Accent line between title and body (product taglines) */
-  highlight?: ReactNode;
-  imageSrc?: string;
-  imageAlt?: string;
-  children?: ReactNode;
-  /** Centered variant for form / legal pages */
-  align?: "left" | "center";
-  className?: string;
-}
+export type { PageMastheadProps };
 
 /**
- * Internal-page masthead — beige card matching the homepage hero shell.
- * Contentful fields map 1:1 via HeroFormSection.
+ * Internal-page masthead router.
+ * - `editorial` (default on cursor/masthead-editorial): open warm band, typography-first
+ * - `classic`: beige card shell (previous iteration)
  *
- * Without `imageSrc`: corner line decor (FormasLinealesGris) on all alignments.
+ * In dev, toggle via the badge bottom-left or localStorage key `dev-page-masthead-variant`.
  */
-export function PageMasthead({
-  eyebrow,
-  title,
-  titleHtml,
-  subtitle,
-  highlight,
-  imageSrc,
-  imageAlt,
-  children,
-  align = "left",
-  className,
-}: PageMastheadProps) {
-  const centered = align === "center";
-  const hasMedia = Boolean(imageSrc);
-  const showCornerDecor = !hasMedia;
+export function PageMasthead(props: PageMastheadProps) {
+  const [variant, setVariant] = useState(getPageMastheadVariant);
 
-  return (
-    <section className={`page-masthead-shell ${className ?? ""}`.trim()}>
-      <div className="site-container">
-        <Reveal y={18} duration={0.55} amount={0.2}>
-        <div
-          className={`page-masthead-card${showCornerDecor ? " page-masthead-card--decorated" : ""}`}
-        >
-          {showCornerDecor && (
-            <>
-              <div className="page-masthead-decor page-masthead-decor--bl" aria-hidden>
-                <AuthorityLineDecor variant="bottom-left" width={420} height={420} />
-              </div>
-              <div className="page-masthead-decor page-masthead-decor--tr" aria-hidden>
-                <AuthorityLineDecor variant="top-right" width={360} height={360} />
-              </div>
-            </>
-          )}
+  useEffect(() => {
+    const sync = () => setVariant(getPageMastheadVariant());
+    window.addEventListener(PAGE_MASTHEAD_VARIANT_EVENT, sync);
+    return () => window.removeEventListener(PAGE_MASTHEAD_VARIANT_EVENT, sync);
+  }, []);
 
-          <div
-            className={`page-masthead-grid${hasMedia ? " page-masthead-grid--media-right" : ""}`}
-          >
-            <div
-              className={`page-masthead-copy${centered ? " page-masthead-copy--center" : ""}`}
-              style={{
-                alignItems: centered ? "center" : "flex-start",
-                textAlign: centered ? "center" : "left",
-                maxWidth: centered && !hasMedia ? 446 : undefined,
-                marginInline: centered && !hasMedia ? "auto" : undefined,
-              }}
-            >
-              {eyebrow && <div className="type-eyebrow">{eyebrow}</div>}
+  if (variant === "editorial") {
+    return <PageMastheadEditorial {...props} />;
+  }
 
-              {titleHtml ? (
-                <h1
-                  className="type-page-title text-foreground"
-                  dangerouslySetInnerHTML={{
-                    __html: titleHtml.replace(
-                      /\*(.*?)\*/g,
-                      `<span style="color:${THEME.highlightColor}">$1</span>`
-                    ),
-                  }}
-                />
-              ) : title ? (
-                <h1 className="type-page-title text-foreground">{title}</h1>
-              ) : null}
-
-              {highlight && (
-                <p className="type-content-section-headline text-primary m-0">{highlight}</p>
-              )}
-
-              {subtitle && (
-                <p
-                  className="type-lead"
-                  style={{
-                    maxWidth: centered ? 347 : showCornerDecor ? 640 : 322,
-                  }}
-                >
-                  {subtitle}
-                </p>
-              )}
-
-              {children}
-            </div>
-
-            {hasMedia && (
-              <div className="page-masthead-media">
-                <img src={imageSrc} alt={imageAlt ?? ""} loading="eager" />
-              </div>
-            )}
-          </div>
-        </div>
-        </Reveal>
-      </div>
-    </section>
-  );
+  return <PageMastheadClassic {...props} />;
 }

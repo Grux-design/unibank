@@ -7,6 +7,8 @@ interface BenefitLineDecorProps {
 }
 
 export function BenefitLineDecor({ variant, width, height }: BenefitLineDecorProps) {
+  const isTopRight = variant === "top-right";
+
   return (
     <img
       src={textureLinesOrange}
@@ -14,7 +16,8 @@ export function BenefitLineDecor({ variant, width, height }: BenefitLineDecorPro
       aria-hidden
       className="block h-full w-full object-fill"
       style={{
-        transform: variant === "top-right" ? "scale(-1, -1)" : undefined,
+        transform: isTopRight ? "scale(-1, -1)" : undefined,
+        transformOrigin: isTopRight ? "top right" : "bottom left",
       }}
       width={width}
       height={height}
