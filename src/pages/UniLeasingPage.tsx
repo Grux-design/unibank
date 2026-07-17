@@ -20,6 +20,7 @@ import {
   Rocket,
   type Icon,
 } from "@/lib/icons";
+import { PageMasthead, StaticPageSection } from "@/components/organisms/StaticPageLayout";
 
 const MAIL_TO = "unileasing@unibank.com.pa";
 const MAIL_SUBJECT = "Solicitud de información — Uni Leasing";
@@ -132,7 +133,7 @@ function PrimaryCTA({ label = "Solicite su financiamiento" }: { label?: string }
   return (
     <a
       href={MAILTO_HREF}
-      className="inline-flex w-full max-w-sm sm:w-auto items-center justify-center rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg"
+      className="inline-flex w-full max-w-sm sm:w-auto items-center justify-center rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:-translate-y-0.5"
     >
       {label}
     </a>
@@ -215,28 +216,20 @@ export default function UniLeasingPage() {
       </Helmet>
 
       <article className="min-h-screen bg-background">
-        {/* Hero */}
-        <section className="relative overflow-hidden border-b border-border bg-background pt-20 pb-10 md:pt-28 md:pb-16 lg:pt-32 lg:pb-20">
-          <div className="relative site-container">
-            <span className="type-section-tag gap-2">
+        <PageMasthead
+          eyebrow={
+            <>
               <Sparkles className="h-3.5 w-3.5" />
               Grupo UniBank · Leasing
-            </span>
-            <h1 className="mt-5 max-w-3xl type-page-title text-foreground">
-              Uni Leasing
-            </h1>
-            <p className="mt-6 max-w-2xl text-base md:text-lg lg:text-xl leading-relaxed text-muted-foreground">
-              Adquiera los activos que su empresa necesita, con financiamiento flexible y atención
-              personalizada.
-            </p>
-            <div className="mt-8">
-              <PrimaryCTA />
-            </div>
-          </div>
-        </section>
+            </>
+          }
+          title="Uni Leasing"
+          subtitle="Adquiera los activos que su empresa necesita, con financiamiento flexible y atención personalizada."
+        >
+          <PrimaryCTA />
+        </PageMasthead>
 
-        {/* ¿Qué puedo adquirir? */}
-        <section className="py-12 md:py-20">
+        <StaticPageSection bandIndex={0}>
           <div className="site-container">
             <SectionHeader
               icon={Package}
@@ -250,10 +243,9 @@ export default function UniLeasingPage() {
               ))}
             </div>
           </div>
-        </section>
+        </StaticPageSection>
 
-        {/* Ventajas */}
-        <section className="border-t border-border bg-muted/30 py-12 md:py-20">
+        <StaticPageSection bandIndex={1}>
           <div className="site-container">
             <SectionHeader
               icon={CheckCircle2}
@@ -270,10 +262,9 @@ export default function UniLeasingPage() {
               *Sujeto a evaluación crediticia y a las condiciones del producto.
             </p>
           </div>
-        </section>
+        </StaticPageSection>
 
-        {/* Sostenibilidad */}
-        <section className="py-12 md:py-20">
+        <StaticPageSection bandIndex={2}>
           <div className="site-container">
             <div className="mb-8 md:mb-10 flex flex-col items-start gap-3">
               <span className="type-section-tag gap-2">
@@ -304,10 +295,9 @@ export default function UniLeasingPage() {
               </div>
             </div>
           </div>
-        </section>
+        </StaticPageSection>
 
-        {/* CTA final */}
-        <section className="border-t border-border bg-orange-50 py-12 md:py-20">
+        <StaticPageSection bandIndex={3} className="bg-orange-50">
           <div className="site-container text-center">
             <span className="type-section-tag gap-2">
               <Mail className="h-3.5 w-3.5" />
@@ -323,7 +313,7 @@ export default function UniLeasingPage() {
               <PrimaryCTA label="Solicite su financiamiento" />
             </div>
           </div>
-        </section>
+        </StaticPageSection>
       </article>
     </>
   );

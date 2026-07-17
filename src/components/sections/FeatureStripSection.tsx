@@ -1,38 +1,29 @@
 import { LayoutGrid } from "@/lib/icons";
-import type { ResolvedSection } from "@/integrations/contentful/types";
+import type { CmsSectionProps } from "@/components/organisms/PageBuilder";
+import { PAGE_SURFACE_CLASS } from "@/constants/pageSurfaces";
 
-interface Props {
-  section: ResolvedSection;
-}
-
-export function FeatureStripSection({ section }: Props) {
+export function FeatureStripSection({ section, surface = "white" }: CmsSectionProps) {
   const { headline, items = [] } = section;
 
   return (
     <section
-      className="bg-orange-50"
-      style={{
-        padding: "clamp(40px, 7vw, 88px) 0",
-      }}
+      className={`${PAGE_SURFACE_CLASS[surface]} py-12 md:py-20`}
     >
       <div className="site-container">
-        {/* Header */}
         {headline && (
-          <h2 className="type-content-section-headline text-center my-0 mb-6 md:mb-[24px] pb-6 md:pb-[24px]">
+          <h2 className="type-content-section-headline text-center my-0 mb-6 md:mb-8">
             {headline}
           </h2>
         )}
 
-        {/* Feature grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
           {items.map((item) => {
             const iconSrc = item.icon?.fields?.file?.url;
             return (
               <div
                 key={item.sys.id}
-                className="flex flex-col gap-4 p-5 sm:p-7 md:p-8 bg-background rounded-[20px] md:rounded-[28px]"
+                className="page-section-card flex flex-col gap-4 p-5 sm:p-7 md:p-8 rounded-[20px] md:rounded-[28px]"
               >
-                {/* Icon — bare, no background wrapper */}
                 <div style={{ flexShrink: 0 }}>
                   {iconSrc ? (
                     <img
@@ -48,20 +39,10 @@ export function FeatureStripSection({ section }: Props) {
                   )}
                 </div>
 
-                {/* Text */}
                 <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                  <p className="type-item-title">
-                    {item.title}
-                  </p>
+                  <p className="type-item-title">{item.title}</p>
                   {item.description && (
-                    <p
-                      style={{
-                        margin: 0,
-                        fontSize: 15,
-                        lineHeight: 1.6,
-                        color: "hsl(var(--muted-foreground))",
-                      }}
-                    >
+                    <p className="m-0 text-[15px] leading-relaxed text-muted-foreground">
                       {item.description}
                     </p>
                   )}

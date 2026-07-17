@@ -20,7 +20,7 @@ export const NavPill = forwardRef<HTMLButtonElement, NavPillProps>(
             outline:
               "border border-foreground/20 bg-transparent text-foreground hover:border-foreground/40 hover:bg-foreground/5",
             filled:
-              "bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm font-semibold",
+              "bg-primary text-primary-foreground hover:bg-primary/90 font-semibold",
             ghost:
               "border border-foreground/15 bg-transparent text-foreground hover:bg-foreground/5",
             tinted:

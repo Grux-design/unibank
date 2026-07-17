@@ -15,6 +15,7 @@ import {
   KeyRound,
   type Icon,
 } from "@/lib/icons";
+import { PageMasthead, StaticPageSection } from "@/components/organisms/StaticPageLayout";
 
 const MAIL_TO = "unitrust@unibank.com.pa";
 const MAIL_SUBJECT = "Solicitud de asesoría — UniTrust";
@@ -132,7 +133,7 @@ function PrimaryCTA({ label = "Solicite su asesoría fiduciaria" }: { label?: st
   return (
     <a
       href={MAILTO_HREF}
-      className="inline-flex w-full max-w-sm sm:w-auto items-center justify-center rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg"
+      className="inline-flex w-full max-w-sm sm:w-auto items-center justify-center rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:-translate-y-0.5"
     >
       {label}
     </a>
@@ -151,28 +152,20 @@ export default function UniTrustPage() {
       </Helmet>
 
       <article className="min-h-screen bg-background">
-        {/* Hero */}
-        <section className="relative overflow-hidden border-b border-border bg-background pt-20 pb-10 md:pt-28 md:pb-16 lg:pt-32 lg:pb-20">
-          <div className="relative site-container">
-            <span className="type-section-tag gap-2">
+        <PageMasthead
+          eyebrow={
+            <>
               <Sparkles className="h-3.5 w-3.5" />
               Grupo UniBank · Fiduciaria
-            </span>
-            <h1 className="mt-5 max-w-3xl type-page-title text-foreground">
-              UniTrust
-            </h1>
-            <p className="mt-6 max-w-2xl text-base md:text-lg lg:text-xl leading-relaxed text-muted-foreground">
-              Socio estratégico para la gestión y planificación de su patrimonio personal y
-              empresarial.
-            </p>
-            <div className="mt-8">
-              <PrimaryCTA />
-            </div>
-          </div>
-        </section>
+            </>
+          }
+          title="UniTrust"
+          subtitle="Socio estratégico para la gestión y planificación de su patrimonio personal y empresarial."
+        >
+          <PrimaryCTA />
+        </PageMasthead>
 
-        {/* ¿Qué es UniTrust? */}
-        <section className="py-12 md:py-20">
+        <StaticPageSection bandIndex={0}>
           <div className="site-container">
             <div className="grid grid-cols-1 gap-8 min-[1200px]:grid-cols-5 min-[1200px]:items-center min-[1200px]:gap-10">
               <div className="order-2 min-[1200px]:order-1 min-[1200px]:col-span-3">
@@ -189,7 +182,7 @@ export default function UniTrustPage() {
                 </p>
               </div>
               <div className="order-1 min-[1200px]:order-2 min-[1200px]:col-span-2">
-                <div className="group relative overflow-hidden rounded-2xl md:rounded-3xl border border-border bg-card p-6 md:p-10 transition-all hover:border-primary/40 hover:shadow-lg">
+                <div className="group page-section-card relative overflow-hidden rounded-2xl md:rounded-3xl p-6 md:p-10 transition-all hover:border-primary/40 hover:shadow-lg">
                   <div className="relative">
                     <div className="mb-5 md:mb-6 inline-flex h-12 w-12 md:h-14 md:w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
                       <ShieldCheck className="h-6 w-6 md:h-7 md:w-7" />
@@ -205,10 +198,9 @@ export default function UniTrustPage() {
               </div>
             </div>
           </div>
-        </section>
+        </StaticPageSection>
 
-        {/* Nuestro Compromiso */}
-        <section className="border-t border-border bg-muted/30 py-12 md:py-20">
+        <StaticPageSection bandIndex={1}>
           <div className="site-container">
             <SectionHeader
               icon={Handshake}
@@ -220,7 +212,7 @@ export default function UniTrustPage() {
               {commitments.map(({ icon: Icon, title, body }) => (
                 <div
                   key={title}
-                  className="group relative rounded-2xl border border-border bg-card p-5 md:p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"
+                  className="group page-section-card relative rounded-2xl p-5 md:p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"
                 >
                   <div className="mb-4 md:mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
                     <Icon className="h-6 w-6" />
@@ -231,10 +223,9 @@ export default function UniTrustPage() {
               ))}
             </div>
           </div>
-        </section>
+        </StaticPageSection>
 
-        {/* Productos */}
-        <section className="py-12 md:py-20">
+        <StaticPageSection bandIndex={2}>
           <div className="site-container">
             <SectionHeader
               icon={Briefcase}
@@ -246,7 +237,7 @@ export default function UniTrustPage() {
               {products.map(({ icon: Icon, name, body }) => (
                 <div
                   key={name}
-                  className="group relative overflow-hidden rounded-2xl border border-border bg-card p-5 md:p-7 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"
+                  className="group page-section-card relative overflow-hidden rounded-2xl p-5 md:p-7 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"
                 >
                   <div className="mb-4 md:mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
                     <Icon className="h-6 w-6" />
@@ -257,10 +248,9 @@ export default function UniTrustPage() {
               ))}
             </div>
           </div>
-        </section>
+        </StaticPageSection>
 
-        {/* CTA final */}
-        <section className="border-t border-border bg-orange-50 py-12 md:py-20">
+        <StaticPageSection bandIndex={3}>
           <div className="site-container text-center">
             <span className="type-section-tag gap-2">
               <Mail className="h-3.5 w-3.5" />
@@ -277,7 +267,7 @@ export default function UniTrustPage() {
               <PrimaryCTA label="Solicite su asesoría fiduciaria" />
             </div>
           </div>
-        </section>
+        </StaticPageSection>
       </article>
     </>
   );

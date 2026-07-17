@@ -37,8 +37,11 @@ export default function HomePage() {
       setSplashOpen(false);
     }, 3000);
     return () => window.clearTimeout(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [splashOpen]);
+
+  useEffect(() => {
+    if (!splashOpen) dismissSplashBoot();
+  }, [splashOpen]);
 
   // Lock body scroll only while splash is visible; always restore on close/unmount
   useEffect(() => {
@@ -81,7 +84,12 @@ export default function HomePage() {
       </Helmet>
 
       {/* First-visit cinematic splash */}
-      <AnimatePresence onExitComplete={() => { document.body.style.overflow = ""; }}>
+      <AnimatePresence
+        onExitComplete={() => {
+          document.body.style.overflow = "";
+          dismissSplashBoot();
+        }}
+      >
         {splashOpen && <IntroSplash key="splash" />}
       </AnimatePresence>
 

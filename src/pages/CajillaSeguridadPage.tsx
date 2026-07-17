@@ -14,6 +14,7 @@ import {
   Mail,
 } from "@/lib/icons";
 import { Button } from "@/components/ui/button";
+import { PageMasthead, StaticPageSection } from "@/components/organisms/StaticPageLayout";
 
 const HERO_IMAGE =
   "https://images.unsplash.com/photo-1601597111158-2fceff292cdc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1400";
@@ -70,55 +71,28 @@ export default function CajillaSeguridadPage() {
         <meta property="og:type" content="website" />
       </Helmet>
 
-      {/* ── Hero ────────────────────────────────────────────── */}
-      <section className="bg-background pt-20 pb-10 md:pt-28 md:pb-16 lg:pt-32">
-        <div className="site-container">
-          <div className="grid grid-cols-1 gap-8 min-[1200px]:grid-cols-2 min-[1200px]:items-center min-[1200px]:gap-12">
-            <div className="order-2 min-[1200px]:order-1">
-              <span className="type-section-tag gap-2">
-                <ShieldCheck size={14} />
-                Servicio exclusivo
-              </span>
-              <h1 className="mt-5 type-page-title text-foreground">
-                Cajillas de Seguridad
-              </h1>
-              <p className="mt-5 type-content-section-headline text-primary">
-                Protege lo que más valoras
-              </p>
-              <p className="mt-6 text-base md:text-lg text-muted-foreground leading-relaxed">
-                En UniBank entendemos que tus pertenencias más valiosas merecen el más alto nivel de
-                protección. Por eso, ponemos a tu disposición nuestro servicio de Cajillas de Seguridad,
-                diseñado para resguardar documentos importantes, joyas y objetos de valor con total
-                confidencialidad y seguridad.
-              </p>
-              <div className="mt-8 flex flex-wrap gap-3">
-                <a href="#contacto" className="w-full sm:w-auto">
-                  <Button size="lg" className="w-full sm:w-auto px-7 h-12 text-base font-semibold">
-                    Solicitar información
-                    <ChevronRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </a>
-              </div>
-            </div>
-            <div className="relative order-1 min-[1200px]:order-2">
-              <div
-                className="overflow-hidden rounded-[20px] md:rounded-[28px] shadow-xl"
-                style={{ aspectRatio: "4 / 3" }}
-              >
-                <img
-                  src={HERO_IMAGE}
-                  alt="Bóveda de seguridad bancaria UniBank"
-                  className="h-full w-full object-cover"
-                  loading="eager"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <PageMasthead
+        eyebrow={
+          <>
+            <ShieldCheck size={14} />
+            Servicio exclusivo
+          </>
+        }
+        title="Cajillas de Seguridad"
+        highlight="Protege lo que más valoras"
+        subtitle="En UniBank entendemos que tus pertenencias más valiosas merecen el más alto nivel de protección. Por eso, ponemos a tu disposición nuestro servicio de Cajillas de Seguridad, diseñado para resguardar documentos importantes, joyas y objetos de valor con total confidencialidad y seguridad."
+        imageSrc={HERO_IMAGE}
+        imageAlt="Bóveda de seguridad bancaria UniBank"
+      >
+        <a href="#contacto" className="w-full sm:w-auto">
+          <Button size="lg" className="w-full sm:w-auto px-7 h-12 text-base font-semibold">
+            Solicitar información
+            <ChevronRight className="ml-2 h-4 w-4" />
+          </Button>
+        </a>
+      </PageMasthead>
 
-      {/* ── ¿Qué es? ────────────────────────────────────────── */}
-      <section className="bg-background py-12 md:py-20">
+      <StaticPageSection bandIndex={0}>
         <div className="site-container grid gap-10 md:gap-16 md:grid-cols-12 items-center">
           <div className="md:col-span-5 relative">
             <div
@@ -205,10 +179,9 @@ export default function CajillaSeguridadPage() {
             </div>
           </div>
         </div>
-      </section>
+      </StaticPageSection>
 
-      {/* ── Beneficios ──────────────────────────────────────── */}
-      <section className="bg-orange-50 py-12 md:py-20">
+      <StaticPageSection bandIndex={1}>
         <div className="site-container">
           <div className="text-center mb-8 md:mb-12">
             <h2 className="type-content-section-headline text-foreground">
@@ -223,7 +196,7 @@ export default function CajillaSeguridadPage() {
             {benefits.map(({ icon: Icon, title, desc }) => (
               <div
                 key={title}
-                className="flex flex-col gap-4 p-5 sm:p-6 md:p-8 bg-background rounded-[20px] md:rounded-[28px] hover:shadow-lg transition-shadow"
+                className="flex flex-col gap-4 p-5 sm:p-6 md:p-8 page-section-card rounded-[20px] md:rounded-[28px] hover:shadow-lg transition-shadow"
               >
                 <div
                   className="flex items-center justify-center rounded-2xl"
@@ -242,10 +215,9 @@ export default function CajillaSeguridadPage() {
             ))}
           </div>
         </div>
-      </section>
+      </StaticPageSection>
 
-      {/* ── Tamaños disponibles ─────────────────────────────── */}
-      <section className="bg-muted py-12 md:py-20">
+      <StaticPageSection bandIndex={2}>
         <div className="site-container flex flex-col md:flex-row gap-8 md:gap-16 items-start">
           <div className="md:w-2/5 md:sticky md:top-28">
             <h2 className="type-content-section-headline text-foreground">
@@ -267,7 +239,7 @@ export default function CajillaSeguridadPage() {
             {sizes.map((s) => (
               <div
                 key={s.dims}
-                className="bg-background rounded-2xl p-5 md:p-7 flex flex-col sm:flex-row items-start gap-4 sm:gap-5 w-full"
+                className="page-section-card rounded-2xl p-5 md:p-7 flex flex-col sm:flex-row items-start gap-4 sm:gap-5 w-full"
               >
                 <div
                   className="flex items-center justify-center rounded-xl flex-shrink-0"
@@ -291,10 +263,9 @@ export default function CajillaSeguridadPage() {
             ))}
           </div>
         </div>
-      </section>
+      </StaticPageSection>
 
-      {/* ── Requisitos ──────────────────────────────────────── */}
-      <section className="bg-background py-12 md:py-20">
+      <StaticPageSection bandIndex={3}>
         <div className="site-container">
           <div className="text-center mb-8 md:mb-10">
             <h2 className="type-content-section-headline text-foreground">
@@ -308,7 +279,7 @@ export default function CajillaSeguridadPage() {
             ].map((req) => (
               <div
                 key={req}
-                className="flex items-start gap-4 p-5 md:p-6 rounded-2xl border border-border bg-background"
+                className="page-section-card flex items-start gap-4 p-5 md:p-6 rounded-2xl"
               >
                 <div
                   className="flex items-center justify-center rounded-full flex-shrink-0"
@@ -326,11 +297,10 @@ export default function CajillaSeguridadPage() {
             ))}
           </div>
         </div>
-      </section>
+      </StaticPageSection>
 
-      {/* ── CTA final ───────────────────────────────────────── */}
-      <section id="contacto" className="border-t border-border bg-orange-50 py-12 md:py-20">
-        <div className="site-container text-center">
+      <StaticPageSection bandIndex={4} className="!scroll-mt-24" >
+        <div id="contacto" className="site-container text-center">
           <span className="type-section-tag gap-2">
             <Mail className="h-3.5 w-3.5" />
             Hablemos
@@ -347,13 +317,13 @@ export default function CajillaSeguridadPage() {
               href="https://api.whatsapp.com/send?phone=50763280229&text=%C2%A1Hola!,%20Tengo%20una%20Consulta%20sobre%20Cajillas%20de%20Seguridad"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex w-full max-w-sm sm:w-auto items-center justify-center rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg"
+              className="inline-flex w-full max-w-sm sm:w-auto items-center justify-center rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:-translate-y-0.5"
             >
               Solicitar información
             </a>
           </div>
         </div>
-      </section>
+      </StaticPageSection>
     </>
   );
 }

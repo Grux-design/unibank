@@ -23,6 +23,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
+import { PageMasthead, StaticPageSection } from "@/components/organisms/StaticPageLayout";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
@@ -146,20 +147,12 @@ export default function EstadosFinancierosPage() {
         />
       </Helmet>
 
-      <section className="bg-muted/30 pt-20 pb-10 md:pt-28 md:pb-16 lg:pt-32">
-        <div className="site-container">
-          <h1 className="type-page-title text-foreground">
-            Estados Financieros
-          </h1>
-          <p className="mt-4 text-sm md:text-base lg:text-lg text-muted-foreground max-w-2xl">
-            Consulta y descarga nuestros informes financieros auditados, formularios
-            regulatorios y reportes internos.
-          </p>
-        </div>
-      </section>
+      <PageMasthead
+        title="Estados Financieros"
+        subtitle="Consulta y descarga nuestros informes financieros auditados, formularios regulatorios y reportes internos."
+      />
 
-      {/* Auditados */}
-      <section className="py-12 md:py-20">
+      <StaticPageSection bandIndex={0}>
         <div className="site-container">
           <div className="flex items-baseline justify-between mb-2 flex-wrap gap-2">
             <h2 className="type-content-section-headline text-foreground">
@@ -288,10 +281,9 @@ export default function EstadosFinancierosPage() {
             )}
           </div>
         </div>
-      </section>
+      </StaticPageSection>
 
-      {/* Regulatoria */}
-      <section className="py-12 md:py-20 bg-muted/20">
+      <StaticPageSection bandIndex={1}>
         <div className="site-container">
           <div className="flex items-baseline justify-between mb-2 flex-wrap gap-2">
             <h2 className="type-content-section-headline text-foreground">
@@ -484,10 +476,9 @@ export default function EstadosFinancierosPage() {
             )}
           </div>
         </div>
-      </section>
+      </StaticPageSection>
 
-      {/* Internos */}
-      <section className="py-12 md:py-20">
+      <StaticPageSection bandIndex={2}>
         <div className="site-container">
           <h2 className="type-content-section-headline text-foreground mb-2">
             Estados Financieros Internos
@@ -535,7 +526,7 @@ export default function EstadosFinancierosPage() {
             ))}
           </div>
         </div>
-      </section>
+      </StaticPageSection>
     </>
   );
 }

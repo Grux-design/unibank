@@ -2,6 +2,7 @@ import { Helmet } from "react-helmet-async";
 import { MapPin, Phone, Clock, Map } from "@/lib/icons";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { PageMasthead, StaticPageSection } from "@/components/organisms/StaticPageLayout";
 import avenidaBalboaImg from "@/assets/branches/avenida-balboa.jpeg";
 import costaDelEsteImg from "@/assets/branches/costa-del-este.png";
 
@@ -57,18 +58,13 @@ export default function SucursalesPage() {
       </Helmet>
 
       <article className="min-h-screen">
-        <div className="bg-muted/30 border-b border-border pt-20 pb-10 md:pt-28 md:pb-16 lg:pt-32">
-          <div className="site-container text-center">
-            <h1 className="type-page-title text-foreground">
-              Nuestras Sucursales
-            </h1>
-            <p className="mt-4 text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
-              Visítanos en cualquiera de nuestras oficinas. Estamos aquí para atenderte.
-            </p>
-          </div>
-        </div>
+        <PageMasthead
+          align="center"
+          title="Nuestras Sucursales"
+          subtitle="Visítanos en cualquiera de nuestras oficinas. Estamos aquí para atenderte."
+        />
 
-        <section className="bg-background py-12 md:py-20">
+        <StaticPageSection bandIndex={0}>
           <div className="site-container grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
             {branches.map((b) => (
               <Card
@@ -144,7 +140,7 @@ export default function SucursalesPage() {
               </Card>
             ))}
           </div>
-        </section>
+        </StaticPageSection>
       </article>
     </>
   );

@@ -28,6 +28,7 @@
       }
 
       #splash-boot {
+        display: none;
         position: fixed;
         inset: 0;
         z-index: 100000;
@@ -37,6 +38,10 @@
         background-repeat: no-repeat;
         background-position: center 42%;
         pointer-events: none;
+      }
+
+      html.splash-pending #splash-boot {
+        display: block;
       }
 
       @media (max-width: 768px) {

@@ -6,6 +6,7 @@ import type { Document } from "@contentful/rich-text-types";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Helmet } from "react-helmet-async";
 import { TerminosContent } from "@/components/legal/TerminosContent";
+import { PageMasthead, StaticPageSection } from "@/components/organisms/StaticPageLayout";
 
 const SLUG_MAP: Record<string, string> = {
   "aviso-de-privacidad": "aviso-de-privacidad-unibank",
@@ -93,30 +94,22 @@ export default function LegalPage() {
       </Helmet>
 
       <article className="min-h-screen">
-        {/* Title hero section */}
-        <div className="bg-muted/30 border-b border-border pt-20 pb-10 md:pt-28 md:pb-16 lg:pt-32">
-          <div className="site-container text-center">
-            <h1 className="type-page-title text-foreground">
-              {displayTitle}
-            </h1>
-          </div>
-        </div>
+        <PageMasthead title={displayTitle} align="center" />
 
-        {/* Content section */}
         {content && !isTerminos && (
-          <div className="bg-background py-12 md:py-20">
+          <StaticPageSection bandIndex={0}>
             <div className="site-container max-w-3xl">
               <div className="prose prose-neutral max-w-none">
                 {documentToReactComponents(content, richTextOptions)}
               </div>
             </div>
-          </div>
+          </StaticPageSection>
         )}
 
         {isTerminos && (
-          <div className="bg-background">
+          <StaticPageSection bandIndex={0} className="!py-0">
             <TerminosContent />
-          </div>
+          </StaticPageSection>
         )}
       </article>
     </>

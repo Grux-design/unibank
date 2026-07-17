@@ -23,6 +23,7 @@ import {
   Mail,
   CheckCircle2,
 } from "@/lib/icons";
+import { PageMasthead, StaticPageSection } from "@/components/organisms/StaticPageLayout";
 
 /* ─── Constants ────────────────────────────────────────────── */
 
@@ -225,49 +226,44 @@ export default function TrabajaConNosotrosPage() {
       </Helmet>
 
       <article className="min-h-screen bg-background">
-        {/* ── Hero ───────────────────────────────────────────── */}
-        <section className="bg-muted/30 border-b border-border pt-20 pb-10 md:pt-28 md:pb-16 lg:pt-32">
-          <div className="site-container">
-            <div className="max-w-3xl">
-              <span className="type-section-tag gap-2">
-                <Sparkles className="h-3.5 w-3.5" />
-                Carreras en UniBank
-              </span>
-              <h1 className="mt-6 type-page-title text-foreground">
-                Construye el futuro
-                <br />
-                de la banca <span className="text-primary">con nosotros</span>.
-              </h1>
-              <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
-                ¿Deseas formar parte del equipo UniBank? Llena los datos del formulario y serás
-                añadido a nuestra base de datos de Recursos Humanos.
-              </p>
-
-              <div className="mt-10 flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 sm:gap-4">
-                <a
-                  href="#aplicar"
-                  className="inline-flex items-center justify-center rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
-                >
-                  Aplicar ahora
-                </a>
-                <a
-                  href="#cultura"
-                  className="inline-flex items-center justify-center rounded-xl border border-border px-6 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-muted/50"
-                >
-                  Conoce nuestra cultura
-                </a>
-              </div>
-
-              <div className="mt-10 md:mt-14 max-w-xl border-t border-border pt-6 md:pt-8">
-                <div className="type-stat-display text-foreground">+30 años</div>
-                <div className="mt-1 text-sm text-muted-foreground">creando oportunidades en Panamá</div>
-              </div>
-            </div>
+        <PageMasthead
+          eyebrow={
+            <>
+              <Sparkles className="h-3.5 w-3.5" />
+              Carreras en UniBank
+            </>
+          }
+          title={
+            <>
+              Construye el futuro
+              <br />
+              de la banca <span className="text-primary">con nosotros</span>.
+            </>
+          }
+          subtitle="¿Deseas formar parte del equipo UniBank? Llena los datos del formulario y serás añadido a nuestra base de datos de Recursos Humanos."
+        >
+          <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 sm:gap-4">
+            <a
+              href="#aplicar"
+              className="inline-flex items-center justify-center rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+            >
+              Aplicar ahora
+            </a>
+            <a
+              href="#cultura"
+              className="inline-flex items-center justify-center rounded-xl border border-border px-6 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-muted/50"
+            >
+              Conoce nuestra cultura
+            </a>
           </div>
-        </section>
 
-        {/* ── Perks ──────────────────────────────────────────── */}
-        <section id="cultura" className="border-b border-border bg-background py-12 md:py-20">
+          <div className="w-full max-w-xl border-t border-[var(--surface-border)] pt-6 md:pt-8">
+            <div className="type-stat-display text-foreground">+30 años</div>
+            <div className="mt-1 text-sm text-muted-foreground">creando oportunidades en Panamá</div>
+          </div>
+        </PageMasthead>
+
+        <StaticPageSection bandIndex={0} id="cultura">
           <div className="site-container">
             <div className="max-w-2xl">
               <div className="type-section-tag">
@@ -303,10 +299,9 @@ export default function TrabajaConNosotrosPage() {
               ))}
             </div>
           </div>
-        </section>
+        </StaticPageSection>
 
-        {/* ── Process ────────────────────────────────────────── */}
-        <section className="border-b border-border bg-muted/30 py-12 md:py-20">
+        <StaticPageSection bandIndex={1}>
           <div className="site-container">
             <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
               <div className="max-w-xl">
@@ -334,10 +329,9 @@ export default function TrabajaConNosotrosPage() {
               ))}
             </div>
           </div>
-        </section>
+        </StaticPageSection>
 
-        {/* ── Application form ──────────────────────────────── */}
-        <section id="aplicar" className="bg-background py-12 md:py-20">
+        <StaticPageSection bandIndex={2} id="aplicar">
           <div className="site-container grid gap-8 lg:gap-12 lg:grid-cols-12">
             {/* Left col */}
             <aside className="lg:col-span-5 order-last lg:order-none">
@@ -572,7 +566,7 @@ export default function TrabajaConNosotrosPage() {
               </div>
             </div>
           </div>
-        </section>
+        </StaticPageSection>
       </article>
     </>
   );

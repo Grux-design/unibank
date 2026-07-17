@@ -1,5 +1,5 @@
-import type { ResolvedSection } from "@/integrations/contentful/types";
-import { Button } from "@/components/ui/button";
+import type { CmsSectionProps } from "@/components/organisms/PageBuilder";
+import { PAGE_SURFACE_CLASS } from "@/constants/pageSurfaces";
 import { Plus, X } from "@/lib/icons";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import {
@@ -10,18 +10,13 @@ import {
 } from "@/components/ui/accordion";
 import { useState } from "react";
 
-interface Props {
-  section: ResolvedSection;
-}
-
-export function FAQSection({ section }: Props) {
+export function FAQSection({ section, surface = "white" }: CmsSectionProps) {
   const items = section.items ?? [];
   const [openValue, setOpenValue] = useState<string | undefined>(undefined);
 
   return (
-    <section className="w-full bg-muted py-12 md:py-20">
+    <section className={`w-full ${PAGE_SURFACE_CLASS[surface]} py-12 md:py-20`}>
       <div className="site-container flex flex-col md:flex-row gap-8 md:gap-10 lg:gap-16">
-        {/* Left column */}
         <div className="md:w-2/5">
           {section.title && (
             <h2 className="type-content-section-headline mb-3 md:mb-4 leading-tight">
@@ -35,7 +30,6 @@ export function FAQSection({ section }: Props) {
           )}
         </div>
 
-        {/* Right column: Accordion */}
         <div className="md:w-3/5 min-w-0">
           <Accordion
             type="single"
@@ -52,8 +46,8 @@ export function FAQSection({ section }: Props) {
 
               const renderAnswer = () => {
                 if (!rawAnswer) return null;
-                if (typeof rawAnswer === 'object' && 'nodeType' in (rawAnswer as any)) {
-                  return documentToReactComponents(rawAnswer as any);
+                if (typeof rawAnswer === "object" && rawAnswer !== null && "nodeType" in rawAnswer) {
+                  return documentToReactComponents(rawAnswer as Parameters<typeof documentToReactComponents>[0]);
                 }
                 return String(rawAnswer);
               };
@@ -62,7 +56,7 @@ export function FAQSection({ section }: Props) {
                 <AccordionItem
                   key={item.sys.id}
                   value={itemValue}
-                  className="bg-background rounded-2xl border-0 px-4 md:px-6"
+                  className="page-section-card rounded-2xl border-0 px-4 md:px-6"
                 >
                   <AccordionTrigger className="text-left type-item-title-sm text-foreground hover:no-underline py-5 md:py-8 [&>svg]:hidden">
                     <span className="flex-1 pr-3">{questionText}</span>

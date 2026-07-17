@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { PageMasthead } from "@/components/organisms/StaticPageLayout";
 import {
   Select,
   SelectContent,
@@ -145,38 +146,35 @@ export default function BlogPage() {
 
       <article className="min-h-screen">
         {/* ── Hero ── */}
-        <header className="bg-muted/30 border-b border-border pt-20 pb-10 md:pt-28 md:pb-16 lg:pt-32">
-          <div className="site-container text-center">
-            <span className="type-section-tag gap-2">
+        <PageMasthead
+          align="center"
+          eyebrow={
+            <>
               <Newspaper className="w-3.5 h-3.5" />
               Sala de Prensa · Blog Unibank
-            </span>
-            <h1 className="mt-5 mt-5 type-page-title text-foreground">
-              Noticias y Blog
-            </h1>
-            <p className="mt-4 text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
-                Mantente informado con las últimas noticias, consejos
-                financieros y novedades de UniBank.
-              </p>
-              {!isLoading && posts.length > 0 && (
-                <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-muted-foreground">
+            </>
+          }
+          title="Noticias y Blog"
+          subtitle="Mantente informado con las últimas noticias, consejos financieros y novedades de UniBank."
+        >
+          {!isLoading && posts.length > 0 && (
+            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-muted-foreground">
+              <span>
+                <strong className="text-foreground">{posts.length}</strong>{" "}
+                {posts.length === 1 ? "artículo" : "artículos"}
+              </span>
+              {lastUpdated && (
+                <>
+                  <span className="hidden sm:inline">·</span>
                   <span>
-                    <strong className="text-foreground">{posts.length}</strong>{" "}
-                    {posts.length === 1 ? "artículo" : "artículos"}
+                    Actualizado{" "}
+                    <strong className="text-foreground">{lastUpdated}</strong>
                   </span>
-                  {lastUpdated && (
-                    <>
-                      <span className="hidden sm:inline">·</span>
-                      <span>
-                        Actualizado{" "}
-                        <strong className="text-foreground">{lastUpdated}</strong>
-                      </span>
-                    </>
-                  )}
-                </div>
+                </>
               )}
-          </div>
-        </header>
+            </div>
+          )}
+        </PageMasthead>
 
         {/* ── Loading state ── */}
         {isLoading && (

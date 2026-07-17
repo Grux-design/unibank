@@ -1,6 +1,7 @@
 import { useParams, Navigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { institutionalPages } from "@/data/institutionalPages";
+import { SimplePageHero, StaticPageSection } from "@/components/organisms/StaticPageLayout";
 
 export default function InstitutionalPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -15,15 +16,9 @@ export default function InstitutionalPage() {
         <meta name="description" content={page.metaDescription} />
       </Helmet>
 
-      <section className="bg-muted/30 pt-20 pb-10 md:pt-28 md:pb-16 lg:pt-32">
-        <div className="site-container">
-          <h1 className="type-page-title text-foreground">
-            {page.title}
-          </h1>
-        </div>
-      </section>
+      <SimplePageHero title={page.title} />
 
-      <section className="py-12 md:py-20">
+      <StaticPageSection bandIndex={0}>
         <div className="site-container max-w-3xl space-y-8 md:space-y-10">
           {page.sections.map((s, i) => (
             <div key={i}>
@@ -39,7 +34,7 @@ export default function InstitutionalPage() {
             </div>
           ))}
         </div>
-      </section>
+      </StaticPageSection>
     </>
   );
 }

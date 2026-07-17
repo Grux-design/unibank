@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import ReCaptcha, { type ReCaptchaHandle } from "@/components/atoms/ReCaptcha";
 import type { Lang } from "@/components/layout/SiteLayout";
+import { SimplePageHero, StaticPageSection } from "@/components/organisms/StaticPageLayout";
 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -98,18 +99,11 @@ export default function ContactPage() {
       </Helmet>
 
       <article className="min-h-screen bg-background">
-        <section className="bg-muted/30 border-b border-border pt-20 pb-10 md:pt-28 md:pb-16 lg:pt-32">
-          <div className="site-container max-w-2xl">
-            <h1 className="type-page-title text-foreground">
-              {t.h1}
-            </h1>
-            <p className="mt-4 text-base md:text-lg text-muted-foreground">{t.sub}</p>
-          </div>
-        </section>
+        <SimplePageHero title={t.h1} subtitle={t.sub} />
 
-        <section className="py-12 md:py-16 lg:py-20">
+        <StaticPageSection bandIndex={0}>
           <div className="site-container max-w-2xl">
-            <div className="rounded-2xl border border-border bg-card p-5 shadow-sm sm:p-6 md:p-8">
+            <div className="page-section-card rounded-2xl p-5 shadow-sm sm:p-6 md:p-8">
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 md:space-y-6">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 md:gap-6">
@@ -177,7 +171,7 @@ export default function ContactPage() {
               </Form>
             </div>
           </div>
-        </section>
+        </StaticPageSection>
       </article>
     </>
   );

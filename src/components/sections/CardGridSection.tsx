@@ -1,14 +1,11 @@
-import type { ResolvedSection } from "@/integrations/contentful/types";
+import type { CmsSectionProps } from "@/components/organisms/PageBuilder";
+import { PAGE_SURFACE_CLASS } from "@/constants/pageSurfaces";
 
-interface Props {
-  section: ResolvedSection;
-}
-
-export function CardGridSection({ section }: Props) {
+export function CardGridSection({ section, surface = "white" }: CmsSectionProps) {
   const items = section.items ?? [];
 
   return (
-    <section className="w-full bg-muted py-12 md:py-20">
+    <section className={`w-full ${PAGE_SURFACE_CLASS[surface]} py-12 md:py-20`}>
       <div className="site-container">
         {(section.title || section.headline) && (
           <h2 className="type-content-section-headline text-center mb-6 md:mb-8">
@@ -26,7 +23,7 @@ export function CardGridSection({ section }: Props) {
           return (
             <div
               key={item.sys.id}
-              className="relative md:sticky bg-background rounded-[20px]"
+              className="page-section-card relative md:sticky rounded-[20px]"
               style={{ top: 80 + index * 56, zIndex: index + 1 }}
             >
               {index > 0 && (
@@ -34,9 +31,7 @@ export function CardGridSection({ section }: Props) {
               )}
 
               <div className="p-5 md:p-8 lg:p-10">
-                <h3 className="type-card-title">
-                  {item.title}
-                </h3>
+                <h3 className="type-card-title">{item.title}</h3>
 
                 <div className="flex flex-col md:flex-row gap-5 md:gap-8 mt-5 md:mt-8">
                   {imageUrl && (
