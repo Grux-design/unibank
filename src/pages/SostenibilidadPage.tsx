@@ -16,11 +16,11 @@ export default function SostenibilidadPage() {
         {/* Hero */}
         <section className="relative overflow-hidden border-b border-border bg-background pt-20 pb-10 md:pt-28 md:pb-16 lg:pt-32">
           <div className="relative site-container">
-            <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary">
+            <span className="type-section-tag gap-2">
               <Leaf className="h-3.5 w-3.5" />
               ESG
             </span>
-            <h1 className="mt-5 max-w-3xl text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight text-foreground">
+            <h1 className="mt-5 max-w-3xl type-page-title text-foreground">
               Sostenibilidad
             </h1>
             <p className="mt-5 max-w-2xl text-base md:text-lg leading-relaxed text-muted-foreground">
@@ -34,10 +34,10 @@ export default function SostenibilidadPage() {
         <section className="py-12 md:py-20">
           <div className="site-container">
           <div className="mb-8 md:mb-10">
-            <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary">
+            <span className="type-section-tag gap-2">
               Nuestro compromiso
             </span>
-            <h2 className="mt-4 text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight text-foreground">
+            <h2 className="mt-4 type-content-section-headline text-foreground">
               Decisiones responsables, impacto positivo
             </h2>
           </div>
@@ -78,7 +78,7 @@ export default function SostenibilidadPage() {
                 <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
                   <Icon className="h-6 w-6" />
                 </div>
-                <h3 className="text-lg font-semibold text-foreground">{title}</h3>
+                <h3 className="type-card-title text-foreground">{title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{desc}</p>
               </div>
             ))}
@@ -91,11 +91,11 @@ export default function SostenibilidadPage() {
           <div className="site-container">
             <div className="grid grid-cols-1 gap-8 min-[1200px]:grid-cols-2 min-[1200px]:items-center min-[1200px]:gap-10">
               <div className="order-2 min-[1200px]:order-1">
-                <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary">
+                <span className="type-section-tag gap-2">
                   <BadgeCheck className="h-3.5 w-3.5" />
                   Hito histórico
                 </span>
-                <h2 className="mt-4 text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight text-foreground">
+                <h2 className="mt-4 type-content-section-headline text-foreground">
                   Bonos Verdes
                 </h2>
                 <p className="mt-5 text-sm md:text-base lg:text-lg leading-relaxed text-muted-foreground">
@@ -136,7 +136,7 @@ export default function SostenibilidadPage() {
                     </div>
                   </div>
                   <div className="mt-8">
-                    <div className="text-5xl md:text-6xl font-extrabold tracking-tight text-foreground">1°</div>
+                    <div className="type-stat-display text-foreground">1°</div>
                     <p className="mt-3 text-base leading-relaxed text-muted-foreground">
                       Primer grupo financiero de capital panameño en emitir Bonos Verdes
                       registrados en la Bolsa Latinoamericana de Valores.

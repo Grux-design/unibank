@@ -18,14 +18,7 @@ export function FeatureStripSection({ section }: Props) {
       <div className="site-container">
         {/* Header */}
         {headline && (
-          <h2
-            className="text-center my-0 mb-6 md:mb-[24px] pb-6 md:pb-[24px] text-2xl md:text-4xl"
-            style={{
-              fontWeight: 800,
-              letterSpacing: "-0.025em",
-              color: "hsl(var(--foreground))",
-            }}
-          >
+          <h2 className="type-content-section-headline text-center my-0 mb-6 md:mb-[24px] pb-6 md:pb-[24px]">
             {headline}
           </h2>
         )}
@@ -57,16 +50,7 @@ export function FeatureStripSection({ section }: Props) {
 
                 {/* Text */}
                 <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                  <p
-                    style={{
-                      margin: 0,
-                      fontSize: "clamp(20px, 2vw, 26px)",
-                      fontWeight: 800,
-                      color: "hsl(var(--foreground))",
-                      lineHeight: 1.2,
-                      letterSpacing: "-0.02em",
-                    }}
-                  >
+                  <p className="type-item-title">
                     {item.title}
                   </p>
                   {item.description && (

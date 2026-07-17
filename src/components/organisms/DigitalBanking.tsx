@@ -1,27 +1,24 @@
 import { useRef, useState, useEffect } from "react";
 import React from "react";
-import { motion, AnimatePresence, useInView } from "motion/react";
+import { motion, AnimatePresence, useInView, LayoutGroup } from "motion/react";
 import {
   MessageCircle,
   Phone,
   ChevronRight,
-  ChevronLeft,
-  ArrowSwapHorizontal2,
-  UserPlus,
-  Card,
   Smartphone,
   ShieldCheck,
-  Clock,
 } from "@/lib/icons";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { OrangeBlobBackground } from "@/components/atoms/OrangeBlobBackground";
-import { BtnPrimary, SectionHeading } from "@/components/ui/atoms";
+import { AuthorityLineDecor } from "@/components/atoms/AuthorityLineDecor";
+import { BtnPrimary } from "@/components/ui/atoms";
+import { CTA_BUTTON_COLORS, CTA_BUTTON_SIZE } from "@/constants/ctaButtons";
 import { TAG_PILL_HUG, TAG_STACK_HUG } from "@/constants/tagPill";
+import { TYPO } from "@/constants/typography";
 
 const OR = "var(--fun-orange)";
 const DARK = "var(--uni-dark)";
 const SOFT = "var(--uni-dark-soft)";
-const CARD_BG = "#f2efed";
 const BORDER = "#E7E4E1";
 const MUTED = "var(--uni-muted)";
 const IMG_OVERLAY = "hsl(20 25% 12% / 0.45)";
@@ -63,7 +60,77 @@ const FEATURES = [
   },
 ];
 
-const FEATURE_ICONS = [ArrowSwapHorizontal2, UserPlus, Card];
+const LEFT_COLUMN = {
+  headlineSize: TYPO.sectionHeadline.desktop.fontSize,
+  headlineWeight: TYPO.sectionHeadline.desktop.fontWeight,
+  headlineLineHeight: TYPO.sectionHeadline.desktop.lineHeight,
+  headlineTracking: TYPO.sectionHeadline.desktop.letterSpacing,
+  rowPaddingBlock: 26,
+  titleActive: { fontSize: 22, fontWeight: TYPO.cardTitle.fontWeight, lineHeight: 1.25 },
+  titleInactive: { fontSize: 20, fontWeight: 500, lineHeight: 1.3 },
+} as const;
+
+const LEFT_COLUMN_MOBILE = {
+  headlineSize: TYPO.sectionHeadline.mobile.fontSize,
+  headlineWeight: TYPO.sectionHeadline.mobile.fontWeight,
+  headlineLineHeight: TYPO.sectionHeadline.mobile.lineHeight,
+  headlineTracking: TYPO.sectionHeadline.mobile.letterSpacing,
+  rowPaddingBlock: 22,
+  titleActive: { fontSize: 20, fontWeight: TYPO.cardTitle.fontWeight, lineHeight: 1.3 },
+  titleInactive: { fontSize: 18, fontWeight: 500, lineHeight: 1.35 },
+} as const;
+
+const MOBILE_SCROLL = {
+  /** Finger-scroll (vh) required between each item change while the panel stays pinned. */
+  scrollPerItemVh: 68,
+  /** Short release scroll after the last item before the next section. */
+  releaseVh: 20,
+  /** Scroll down: advance to next item when float crosses idx + this (0.58 ≈ 58% into step). */
+  indexAdvanceAt: 0.58,
+  /** Scroll up: retreat to previous item when float drops below idx - 1 + this (0.42 ≈ 42%). */
+  indexRetreatAt: 0.42,
+  stickyTop: 64,
+  imageHeight: 168,
+  panelPaddingBottom: 40,
+  bottomStackPadding: 28,
+  layoutEase: [0.4, 0, 0.2, 1] as const,
+  layoutSpring: { type: "spring" as const, stiffness: 260, damping: 32, mass: 0.85 },
+} as const;
+
+function mobileScrollTotalVh(n: number): number {
+  if (n <= 1) return 100 + MOBILE_SCROLL.releaseVh;
+  return 100 + MOBILE_SCROLL.scrollPerItemVh * (n - 1) + MOBILE_SCROLL.releaseVh;
+}
+
+function mobileStepFloat(prog: number, n: number): number {
+  if (n <= 1) return 0;
+  return Math.min(Math.max(prog, 0) * (n - 1), n - 1);
+}
+
+function updateMobileActiveIndex(
+  stepFloat: number,
+  n: number,
+  indexRef: React.MutableRefObject<number>,
+): number {
+  let idx = indexRef.current;
+
+  while (idx < n - 1 && stepFloat >= idx + MOBILE_SCROLL.indexAdvanceAt) {
+    idx += 1;
+  }
+  while (idx > 0 && stepFloat <= idx - 1 + MOBILE_SCROLL.indexRetreatAt) {
+    idx -= 1;
+  }
+
+  indexRef.current = idx;
+  return idx;
+}
+
+function mobileScrollOffset(totalScrollable: number, index: number, n: number): number {
+  if (n <= 1 || totalScrollable <= 0) return 0;
+  const travelSteps = n - 1;
+  const targetProg = index >= travelSteps ? 1 : index / travelSteps;
+  return targetProg * totalScrollable;
+}
 
 /** Shared spacing for desktop accordion + mobile feature cards */
 const FEATURE_BOX = {
@@ -71,7 +138,6 @@ const FEATURE_BOX = {
   headerBodyGap: 16,
   bodyGap: 16,
   bodyOffsetLeft: 42,
-  mobileContentPadding: "28px 20px 24px",
 } as const;
 
 const FEATURE_TAG_PILL_BASE: React.CSSProperties = TAG_PILL_HUG;
@@ -96,52 +162,81 @@ const OVERLAY_TAG_STYLE: React.CSSProperties = {
   textTransform: "uppercase",
 };
 
-function FeatureIconBadge({
-  index,
-  isActive,
-  size = 32,
-}: {
-  index: number;
-  isActive: boolean;
-  size?: number;
-}) {
-  const Icon = FEATURE_ICONS[index];
-  return (
-    <span
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        width: size,
-        height: size,
-        borderRadius: 10,
-        background: isActive ? OR : "hsl(20 100% 95%)",
-        transition: "background 0.25s, transform 0.25s",
-        flexShrink: 0,
-      }}
-    >
-      <Icon size={size === 32 ? 16 : 15} strokeWidth={1.75} color={isActive ? "#fff" : OR} />
-    </span>
-  );
-}
-
-function BancaDigitalLabel({ light = false }: { light?: boolean }) {
+function BancaDigitalLabel({ light = false, showDot = false }: { light?: boolean; showDot?: boolean }) {
   return (
     <span
       style={{
         display: "inline-flex",
         alignItems: "center",
-        gap: 6,
-        fontSize: 10,
-        fontWeight: 700,
+        gap: 8,
+        fontSize: 11,
+        fontWeight: TYPO.tag.fontWeight,
         color: light ? "hsl(20 80% 92%)" : OR,
-        letterSpacing: "0.08em",
+        letterSpacing: TYPO.tag.letterSpacing,
         textTransform: "uppercase",
       }}
     >
-      <Smartphone size={12} strokeWidth={2.25} />
+      {showDot ? (
+        <span
+          style={{
+            width: 6,
+            height: 6,
+            borderRadius: "50%",
+            background: OR,
+            flexShrink: 0,
+          }}
+        />
+      ) : (
+        <Smartphone size={12} strokeWidth={2.25} />
+      )}
       Banca Digital
     </span>
+  );
+}
+
+const HEADING_TAG_RESERVE = { mobile: 30, desktop: 34 } as const;
+
+function DigitalBankingLeftHeading({ mobile = false }: { mobile?: boolean }) {
+  const col = mobile ? LEFT_COLUMN_MOBILE : LEFT_COLUMN;
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "flex-start",
+        gap: mobile ? 16 : 20,
+        paddingTop: mobile ? HEADING_TAG_RESERVE.mobile : HEADING_TAG_RESERVE.desktop,
+        paddingBottom: mobile ? 0 : 8,
+        maxWidth: mobile ? TYPO.sectionCopyMaxWidth.mobile : TYPO.sectionCopyMaxWidth.desktop,
+        width: "100%",
+      }}
+    >
+      <h2
+        style={{
+          margin: 0,
+          fontSize: col.headlineSize,
+          fontWeight: col.headlineWeight,
+          lineHeight: col.headlineLineHeight,
+          letterSpacing: col.headlineTracking,
+          color: DARK,
+        }}
+      >
+        Todo tu banco en{" "}
+        <span style={{ color: OR }}>la palma de tu mano.</span>
+      </h2>
+      <p
+        style={{
+          margin: 0,
+          fontSize: mobile ? TYPO.sectionBody.mobile.fontSize : TYPO.sectionBody.desktop.fontSize,
+          lineHeight: TYPO.sectionBody.desktop.lineHeight,
+          color: SOFT,
+        }}
+      >
+        Transfiere en segundos, paga servicios y abre cuentas sin pisar una sucursal. Disponible las
+        24 horas, los 7 días de la semana.
+      </p>
+    </div>
   );
 }
 
@@ -169,17 +264,14 @@ function FeatureBoxBody({
     >
       {showTag && (
         <span
+          className="type-section-tag"
           style={{
             ...FEATURE_TAG_PILL_BASE,
             gap: 5,
             padding: "4px 10px",
-            borderRadius: 99,
-            background: "hsl(20 100% 95%)",
-            color: OR,
             fontSize: 10,
             fontWeight: 700,
             letterSpacing: "0.1em",
-            textTransform: "uppercase",
           }}
         >
           {feature.tag}
@@ -197,7 +289,7 @@ function FeatureBoxBody({
 }
 
 /* ── Ghost CTA button ───────────────────────────────────── */
-function CtaGhostBtn({
+function CtaWhiteBtn({
   href,
   children,
   icon,
@@ -209,28 +301,43 @@ function CtaGhostBtn({
   fullWidth?: boolean;
 }) {
   const [hov, setHov] = useState(false);
+  const [active, setActive] = useState(false);
+  const colors = CTA_BUTTON_COLORS.lightSolid;
+  const bg = active ? colors.bgActive : hov ? colors.bgHover : colors.bg;
+
   return (
     <a
       href={href}
       onMouseEnter={() => setHov(true)}
-      onMouseLeave={() => setHov(false)}
+      onMouseLeave={() => {
+        setHov(false);
+        setActive(false);
+      }}
+      onMouseDown={() => setActive(true)}
+      onMouseUp={() => setActive(false)}
       style={{
+        boxSizing: "border-box",
         display: "inline-flex",
         alignItems: "center",
         justifyContent: "center",
         gap: 9,
-        padding: "14px 28px",
-        borderRadius: 14,
-        background: hov ? "rgba(255,255,255,0.22)" : "rgba(255,255,255,0.15)",
-        color: "#fff",
-        border: "1px solid rgba(255,255,255,0.28)",
+        height: CTA_BUTTON_SIZE.height,
+        minHeight: CTA_BUTTON_SIZE.minHeight,
+        padding: `0 ${CTA_BUTTON_SIZE.paddingX}px`,
+        borderRadius: CTA_BUTTON_SIZE.borderRadius,
+        background: bg,
+        color: colors.color,
+        border: "none",
         textDecoration: "none",
-        fontSize: "var(--btn-font-size)",
-        fontWeight: "var(--btn-font-weight)",
-        transition: "background 0.18s, border-color 0.18s",
+        fontSize: CTA_BUTTON_SIZE.fontSize,
+        fontWeight: CTA_BUTTON_SIZE.fontWeight,
+        lineHeight: CTA_BUTTON_SIZE.lineHeight,
+        fontFamily: "Inter, sans-serif",
+        transition: "background 0.18s ease",
         whiteSpace: "nowrap",
         width: fullWidth ? "100%" : undefined,
         alignSelf: fullWidth ? "stretch" : undefined,
+        flexShrink: 0,
       }}
     >
       {icon}
@@ -245,26 +352,38 @@ function FeatureRow({
   index,
   isActive,
   onClick,
+  isLast = false,
+  mobile = false,
 }: {
   feature: (typeof FEATURES)[0];
   index: number;
   isActive: boolean;
   onClick: () => void;
+  isLast?: boolean;
+  mobile?: boolean;
 }) {
   const [hov, setHov] = useState(false);
+  const col = mobile ? LEFT_COLUMN_MOBILE : LEFT_COLUMN;
+  const titleStyle = isActive ? col.titleActive : col.titleInactive;
 
   return (
-    <article
+    <motion.article
+      layout={mobile ? "position" : false}
+      id={mobile ? `banca-feature-${index}` : undefined}
       onClick={onClick}
-      onMouseEnter={() => setHov(true)}
-      onMouseLeave={() => setHov(false)}
+      onMouseEnter={() => !mobile && setHov(true)}
+      onMouseLeave={() => !mobile && setHov(false)}
+      transition={mobile ? { layout: MOBILE_SCROLL.layoutSpring } : undefined}
       style={{
-        borderTop: `${isActive ? 2 : 1}px solid ${isActive ? OR : BORDER}`,
-        paddingTop: FEATURE_BOX.paddingBlock,
-        paddingBottom: FEATURE_BOX.paddingBlock,
-        background: isActive ? "hsl(20 100% 60% / 0.05)" : hov ? "hsl(0 0% 12% / 0.02)" : "transparent",
+        borderTop: `1px solid ${BORDER}`,
+        borderBottom: isLast ? `1px solid ${BORDER}` : "none",
+        paddingTop: col.rowPaddingBlock,
+        paddingBottom: col.rowPaddingBlock,
+        background: "transparent",
         cursor: isActive ? "default" : "pointer",
-        transition: "background 0.22s ease, border-color 0.22s ease",
+        transition: mobile ? "opacity 0.45s ease, color 0.45s ease" : "opacity 0.22s ease",
+        opacity: mobile ? (isActive ? 1 : 0.72) : !isActive && !hov ? 0.72 : 1,
+        WebkitTapHighlightColor: "transparent",
       }}
     >
       <div
@@ -274,40 +393,18 @@ function FeatureRow({
           gap: isActive ? FEATURE_BOX.headerBodyGap : 0,
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <span
-            style={{
-              fontSize: 11,
-              fontWeight: 700,
-              color: isActive ? OR : MUTED,
-              letterSpacing: "0.06em",
-              minWidth: 24,
-              transition: "color 0.25s",
-            }}
-          >
-            {String(index + 1).padStart(2, "0")}
-          </span>
-          <FeatureIconBadge index={index} isActive={isActive} />
-          <span
-            style={{
-              flex: 1,
-              fontSize: 16,
-              fontWeight: 700,
-              color: isActive ? DARK : hov ? DARK : MUTED,
-              letterSpacing: "-0.01em",
-              transition: "color 0.25s",
-            }}
-          >
-            {feature.title}
-          </span>
-          {!isActive && (
-            <ChevronRight
-              size={16}
-              color={hov ? OR : BORDER}
-              style={{ flexShrink: 0, opacity: hov ? 1 : 0.5, transition: "opacity 0.2s, color 0.2s" }}
-            />
-          )}
-        </div>
+        <span
+          style={{
+            fontSize: titleStyle.fontSize,
+            fontWeight: titleStyle.fontWeight,
+            lineHeight: titleStyle.lineHeight,
+            color: isActive ? DARK : hov ? DARK : MUTED,
+            letterSpacing: "-0.02em",
+            transition: mobile ? "color 0.45s ease, font-size 0.45s ease" : "color 0.25s",
+          }}
+        >
+          {feature.title}
+        </span>
 
         <AnimatePresence initial={false}>
           {isActive && (
@@ -316,57 +413,56 @@ function FeatureRow({
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.32, ease: "easeOut" }}
+              transition={
+                mobile
+                  ? {
+                      opacity: { duration: 0.35, ease: MOBILE_SCROLL.layoutEase },
+                      height: MOBILE_SCROLL.layoutSpring,
+                    }
+                  : { duration: 0.32, ease: "easeOut" }
+              }
               style={{ overflow: "hidden", display: "flex", flexDirection: "column", alignItems: "flex-start" }}
             >
-              <FeatureBoxBody feature={feature} />
+              <FeatureBoxBody feature={feature} indent={false} />
             </motion.div>
           )}
         </AnimatePresence>
       </div>
-    </article>
+    </motion.article>
   );
 }
 
-/* ── Mobile Carousel ────────────────────────────────────── */
-function MobileFeatureCarousel({ features }: { features: typeof FEATURES }) {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const touchStartX = useRef(0);
-  const N = features.length;
-
-  const goTo = (idx: number) => setActiveIndex(idx);
-  const goNext = () => goTo((activeIndex + 1) % N);
-  const goPrev = () => goTo((activeIndex - 1 + N) % N);
-
-  const feature = features[activeIndex];
-
+/* ── Mobile accordion layout ────────────────────────────── */
+function FeaturePreviewImage({
+  features,
+  activeIndex,
+  height = 240,
+}: {
+  features: typeof FEATURES;
+  activeIndex: number;
+  height?: number;
+}) {
   return (
     <div
       style={{
         width: "100%",
-        borderRadius: 28,
+        borderRadius: 24,
         overflow: "hidden",
         position: "relative",
+        height,
         border: `1px solid ${BORDER}`,
-        boxShadow: "var(--shadow-sm)",
-      }}
-      onTouchStart={(e) => {
-        touchStartX.current = e.touches[0].clientX;
-      }}
-      onTouchEnd={(e) => {
-        const dx = touchStartX.current - e.changedTouches[0].clientX;
-        if (Math.abs(dx) > 44) dx > 0 ? goNext() : goPrev();
+        isolation: "isolate",
       }}
     >
-      {/* Image stack */}
-      <div style={{ position: "relative", height: 280, overflow: "hidden" }}>
-        {features.map((f, i) => (
-          <motion.img
+      {features.map((f, i) => {
+        const isActive = i === activeIndex;
+
+        return (
+          <img
             key={f.id}
             src={f.image}
             alt={f.title}
-            animate={{ opacity: i === activeIndex ? 1 : 0, scale: i === activeIndex ? 1 : 1.04 }}
-            transition={{ duration: 0.55, ease: [0.25, 0.1, 0.25, 1] }}
+            draggable={false}
             style={{
               position: "absolute",
               inset: 0,
@@ -374,204 +470,235 @@ function MobileFeatureCarousel({ features }: { features: typeof FEATURES }) {
               height: "100%",
               objectFit: "cover",
               display: "block",
+              opacity: isActive ? 1 : 0,
+              visibility: isActive ? "visible" : "hidden",
+              zIndex: isActive ? 1 : 0,
+              pointerEvents: "none",
+              transform: "translateZ(0)",
             }}
           />
-        ))}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background: IMG_OVERLAY,
-          }}
-        />
-        <div
-          style={{
-            ...IMAGE_OVERLAY_STACK,
-            bottom: 16,
-            left: 16,
-          }}
-        >
-          <BancaDigitalLabel light />
-          <AnimatePresence mode="wait">
-            <motion.span
-              key={`mob-tag-${activeIndex}`}
-              initial={{ opacity: 0, y: 5 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -5 }}
-              transition={{ duration: 0.22 }}
-              style={OVERLAY_TAG_STYLE}
-            >
-              {feature.tag}
-            </motion.span>
-          </AnimatePresence>
-        </div>
-        <div
-          style={{
-            position: "absolute",
-            top: 16,
-            right: 16,
-            padding: "6px 10px",
-            borderRadius: 99,
-            background: "rgba(0,0,0,0.35)",
-            backdropFilter: "blur(6px)",
-            fontSize: 11,
-            fontWeight: 700,
-            color: "#fff",
-            letterSpacing: "0.06em",
-          }}
-        >
-          {String(activeIndex + 1).padStart(2, "0")} / {String(N).padStart(2, "0")}
-        </div>
-      </div>
-
-      {/* Content */}
-      <div style={{ background: CARD_BG, padding: FEATURE_BOX.mobileContentPadding }}>
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={`mob-content-${activeIndex}`}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.28 }}
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "stretch",
-              gap: FEATURE_BOX.headerBodyGap,
-            }}
-          >
-            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-              <FeatureIconBadge index={activeIndex} isActive />
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <h4
-                  style={{
-                    margin: 0,
-                    fontSize: 20,
-                    fontWeight: 800,
-                    color: DARK,
-                    letterSpacing: "-0.02em",
-                  }}
-                >
-                  {feature.title}
-                </h4>
-                <span
-                  style={{
-                    ...FEATURE_TAG_PILL_BASE,
-                    gap: 5,
-                    marginTop: 8,
-                    padding: "3px 10px",
-                    borderRadius: 99,
-                    background: "hsl(20 100% 95%)",
-                    color: OR,
-                    fontSize: 10,
-                    fontWeight: 700,
-                    letterSpacing: "0.1em",
-                    textTransform: "uppercase",
-                  }}
-                >
-                  {feature.tag}
-                </span>
-              </div>
-            </div>
-            <FeatureBoxBody feature={feature} indent={false} showTag={false} />
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Dot nav */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 8,
-            marginTop: 28,
-          }}
-        >
-          <button
-            onClick={goPrev}
-            aria-label="Anterior"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              width: 36,
-              height: 36,
-              borderRadius: 12,
-              border: `1px solid ${BORDER}`,
-              background: "#fff",
-              cursor: "pointer",
-              color: DARK,
-              transition: "border-color 0.18s, color 0.18s",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = OR;
-              e.currentTarget.style.color = OR;
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = BORDER;
-              e.currentTarget.style.color = DARK;
-            }}
-          >
-            <ChevronLeft size={16} />
-          </button>
-          {features.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => goTo(i)}
-              style={{
-                width: i === activeIndex ? 24 : 8,
-                height: 8,
-                borderRadius: 99,
-                border: "none",
-                cursor: "pointer",
-                padding: 0,
-                background: i === activeIndex ? OR : BORDER,
-                transition: "width 0.28s ease, background 0.2s",
-              }}
-            />
-          ))}
-          <button
-            onClick={goNext}
-            aria-label="Siguiente"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              width: 36,
-              height: 36,
-              borderRadius: 12,
-              border: `1px solid ${BORDER}`,
-              background: "#fff",
-              cursor: "pointer",
-              color: DARK,
-              transition: "border-color 0.18s, color 0.18s",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = OR;
-              e.currentTarget.style.color = OR;
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = BORDER;
-              e.currentTarget.style.color = DARK;
-            }}
-          >
-            <ChevronRight size={16} />
-          </button>
-        </div>
-      </div>
+        );
+      })}
     </div>
   );
 }
 
-/* ── Sticky Scroll (desktop) ────────────────────────────── */
+function MobileScrollProgress({
+  activeIndex,
+  stepFloat,
+  total,
+}: {
+  activeIndex: number;
+  stepFloat?: number;
+  total: number;
+}) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        gap: 12,
+      }}
+    >
+      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+        {Array.from({ length: total }, (_, i) => {
+          const fill =
+            stepFloat !== undefined
+              ? Math.max(0, 1 - Math.abs(stepFloat - i))
+              : i === activeIndex
+                ? 1
+                : 0;
+          return (
+            <span
+              key={i}
+              style={{
+                width: 8 + fill * 14,
+                height: 8,
+                borderRadius: 99,
+                background: fill > 0.35 ? OR : BORDER,
+                opacity: fill > 0 ? 0.55 + fill * 0.45 : 1,
+                transition: stepFloat === undefined
+                  ? "width 0.45s ease, background 0.45s ease, opacity 0.45s ease"
+                  : undefined,
+              }}
+            />
+          );
+        })}
+      </div>
+      <span
+        style={{
+          fontSize: 11,
+          fontWeight: 700,
+          color: MUTED,
+          letterSpacing: "0.08em",
+        }}
+      >
+        {String(activeIndex + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+      </span>
+    </div>
+  );
+}
+
+function MobileStickyPanel({
+  features,
+  activeIndex,
+  stepFloat,
+  onSelect,
+}: {
+  features: typeof FEATURES;
+  activeIndex: number;
+  stepFloat: number;
+  onSelect: (index: number) => void;
+}) {
+  const panelRef = useRef<HTMLDivElement>(null);
+  const panelInView = useInView(panelRef, { once: true, margin: "0px 0px -60px 0px" });
+  const topItems = features.slice(0, activeIndex + 1);
+  const bottomItems = features.slice(activeIndex + 1);
+  const isPinnedStack = bottomItems.length > 0;
+  const panelHeight = `calc(100dvh - ${MOBILE_SCROLL.stickyTop}px)`;
+
+  return (
+    <motion.div
+      ref={panelRef}
+      layout
+      initial={{ opacity: 0, y: 12 }}
+      animate={panelInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ layout: MOBILE_SCROLL.layoutSpring, duration: 0.4, ease: "easeOut" }}
+      style={{
+        position: "sticky",
+        top: MOBILE_SCROLL.stickyTop,
+        display: "flex",
+        flexDirection: "column",
+        gap: 14,
+        height: isPinnedStack ? panelHeight : "auto",
+        maxHeight: isPinnedStack ? panelHeight : undefined,
+        paddingTop: 12,
+        paddingBottom: isPinnedStack ? MOBILE_SCROLL.panelPaddingBottom : 20,
+        boxSizing: "border-box",
+      }}
+    >
+      <div
+        style={{
+          flexShrink: 0,
+          display: "flex",
+          flexDirection: "column",
+          gap: 12,
+        }}
+      >
+        <FeaturePreviewImage
+          features={features}
+          activeIndex={activeIndex}
+          height={MOBILE_SCROLL.imageHeight}
+        />
+        <MobileScrollProgress activeIndex={activeIndex} stepFloat={stepFloat} total={features.length} />
+        {bottomItems.length > 0 && activeIndex === 0 && (
+          <p
+            style={{
+              margin: 0,
+              fontSize: 12,
+              lineHeight: 1.5,
+              color: MUTED,
+              textAlign: "center",
+            }}
+          >
+            Desliza para explorar cada servicio
+          </p>
+        )}
+      </div>
+
+      <LayoutGroup id="banca-mobile-stack">
+        <div
+          style={{
+            flex: isPinnedStack ? 1 : undefined,
+            minHeight: isPinnedStack ? 0 : undefined,
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <motion.div
+            layout
+            transition={{ layout: MOBILE_SCROLL.layoutSpring }}
+            style={{
+              flex: isPinnedStack ? 1 : undefined,
+              minHeight: isPinnedStack ? 0 : undefined,
+              overflowY: isPinnedStack ? "auto" : "visible",
+              WebkitOverflowScrolling: "touch",
+            }}
+          >
+            {topItems.map((f, i) => (
+              <FeatureRow
+                key={f.id}
+                feature={f}
+                index={i}
+                isActive={i === activeIndex}
+                onClick={() => onSelect(i)}
+                isLast={bottomItems.length === 0 && i === features.length - 1}
+                mobile
+              />
+            ))}
+          </motion.div>
+
+          {bottomItems.length > 0 && (
+            <motion.div
+              layout
+              transition={{ layout: MOBILE_SCROLL.layoutSpring }}
+              style={{
+                flexShrink: 0,
+                paddingBottom: MOBILE_SCROLL.bottomStackPadding,
+              }}
+            >
+              {bottomItems.map((f, i) => {
+                const index = activeIndex + 1 + i;
+                return (
+                  <FeatureRow
+                    key={f.id}
+                    feature={f}
+                    index={index}
+                    isActive={false}
+                    onClick={() => onSelect(index)}
+                    isLast={index === features.length - 1}
+                    mobile
+                  />
+                );
+              })}
+            </motion.div>
+          )}
+        </div>
+      </LayoutGroup>
+    </motion.div>
+  );
+}
+
+/* ── Sticky Scroll (desktop + mobile) ───────────────────── */
 function StickyScrollFeatures({ features }: { features: typeof FEATURES }) {
   const N = features.length;
   const outerRef = useRef<HTMLDivElement>(null);
+  const headRef = useRef<HTMLDivElement>(null);
+  const headInView = useInView(headRef, { once: true, margin: "0px 0px -60px 0px" });
   const isMobile = useIsMobile();
   const [activeIndex, setActiveIndex] = useState(0);
+  const [stepFloat, setStepFloat] = useState(0);
+  const mobileIndexRef = useRef(0);
+  const stepVh = isMobile ? mobileScrollTotalVh(N) : 100;
+
+  const scrollToStep = (index: number) => {
+    if (!outerRef.current) return;
+    const outerH = outerRef.current.offsetHeight;
+    const viewH = window.innerHeight;
+    const totalScrollable = Math.max(outerH - viewH, 0);
+    const sectionTop = outerRef.current.getBoundingClientRect().top + window.scrollY;
+    const clamped = Math.max(0, Math.min(index, N - 1));
+    const offset = isMobile
+      ? mobileScrollOffset(totalScrollable, clamped, N)
+      : (clamped / N) * totalScrollable;
+    window.scrollTo({ top: sectionTop + offset + 1, behavior: "smooth" });
+    mobileIndexRef.current = clamped;
+    setActiveIndex(clamped);
+    setStepFloat(clamped);
+  };
 
   useEffect(() => {
-    if (isMobile) return;
     const onScroll = () => {
       if (!outerRef.current) return;
       const rect = outerRef.current.getBoundingClientRect();
@@ -581,6 +708,14 @@ function StickyScrollFeatures({ features }: { features: typeof FEATURES }) {
       const totalScrollable = outerH - viewH;
       if (totalScrollable <= 0) return;
       const prog = Math.min(scrolled / totalScrollable, 1);
+
+      if (isMobile) {
+        const float = mobileStepFloat(prog, N);
+        setStepFloat(float);
+        setActiveIndex(updateMobileActiveIndex(float, N, mobileIndexRef));
+        return;
+      }
+
       setActiveIndex(Math.min(Math.floor(prog * N), N - 1));
     };
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -589,13 +724,36 @@ function StickyScrollFeatures({ features }: { features: typeof FEATURES }) {
   }, [isMobile, N]);
 
   if (isMobile) {
-    return <MobileFeatureCarousel features={features} />;
+    return (
+      <>
+        <motion.div
+          ref={headRef}
+          initial={{ opacity: 0, y: 16 }}
+          animate={headInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.45, ease: "easeOut" }}
+          style={{ paddingTop: 28, paddingBottom: 24 }}
+        >
+          <DigitalBankingLeftHeading mobile />
+        </motion.div>
+        <div
+          ref={outerRef}
+          style={{ height: `${stepVh}vh`, position: "relative" }}
+        >
+          <MobileStickyPanel
+            features={features}
+            activeIndex={activeIndex}
+            stepFloat={stepFloat}
+            onSelect={scrollToStep}
+          />
+        </div>
+      </>
+    );
   }
 
   return (
     <div
       ref={outerRef}
-      style={{ height: `${N * 100}vh`, position: "relative" }}
+      style={{ height: `${N * stepVh}vh`, position: "relative" }}
     >
       <div
         style={{
@@ -603,23 +761,35 @@ function StickyScrollFeatures({ features }: { features: typeof FEATURES }) {
           top: 80,
           display: "grid",
           gridTemplateColumns: "1fr 1fr",
-          gap: 40,
+          gap: 56,
           height: "calc(100vh - 160px)",
           maxHeight: 700,
           alignItems: "stretch",
         }}
       >
-        {/* Left: accordion list */}
-        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", height: "100%" }}>
-          {features.map((f, i) => (
-            <FeatureRow
-              key={f.id}
-              feature={f}
-              index={i}
-              isActive={i === activeIndex}
-              onClick={() => setActiveIndex(i)}
-            />
-          ))}
+        {/* Left: heading + accordion list */}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            height: "100%",
+            minHeight: 0,
+          }}
+        >
+          <DigitalBankingLeftHeading />
+          <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
+            {features.map((f, i) => (
+              <FeatureRow
+                key={f.id}
+                feature={f}
+                index={i}
+                isActive={i === activeIndex}
+                onClick={() => scrollToStep(i)}
+                isLast={i === features.length - 1}
+              />
+            ))}
+          </div>
         </div>
 
         {/* Right: image */}
@@ -717,89 +887,122 @@ function StickyScrollFeatures({ features }: { features: typeof FEATURES }) {
 /* ── DigitalBanking (export) ────────────────────────────── */
 export function DigitalBanking() {
   const isMobile = useIsMobile();
-  const headRef = useRef<HTMLDivElement>(null);
-  const headInView = useInView(headRef, { once: true, margin: "0px 0px -80px 0px" });
 
   return (
     <section style={{ background: "#fff" }}>
       <div className="site-container">
-        {/* Section heading */}
-        <motion.div
-          ref={headRef}
-          initial={{ opacity: 0, y: 24 }}
-          animate={headInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.55, ease: "easeOut" }}
-          style={{ paddingTop: 64, paddingBottom: 48 }}
-        >
-          <SectionHeading
-            tag="Banca Digital"
-            headline={
-              <>
-                Todo tu banco en{" "}
-                <span style={{ color: OR }}>la palma de tu mano.</span>
-              </>
-            }
-            body="Transfiere en segundos, paga servicios y abre cuentas sin pisar una sucursal. Disponible las 24 horas, los 7 días de la semana."
-            mb={0}
-          />
-        </motion.div>
-
-        {/* Sticky scroll / mobile carousel */}
-        <StickyScrollFeatures features={FEATURES} />
+        <div style={{ paddingTop: isMobile ? 0 : 64 }}>
+          <StickyScrollFeatures features={FEATURES} />
+        </div>
 
         {/* Authority quote */}
         <div
           style={{
-            margin: "64px 0 0",
-            padding: isMobile ? "40px 24px" : "56px 80px",
-            background: "#f5f0ec",
-            borderRadius: 24,
+            boxSizing: "border-box",
+            position: "relative",
+            isolation: "isolate",
+            overflow: "hidden",
+            margin: isMobile ? "20px 0 0" : "64px 0 0",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            padding: isMobile ? "48px 32px" : "64px 96px",
+            gap: 20,
+            minHeight: isMobile ? 300 : 340,
+            background: "#F5F0EC",
             border: `1px solid ${BORDER}`,
+            borderRadius: 28,
             textAlign: "center",
           }}
         >
-          <p
+          <div
+            aria-hidden
             style={{
-              margin: "0 0 20px",
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 8,
-              fontSize: 12,
-              fontWeight: 700,
-              color: OR,
-              letterSpacing: "0.1em",
-              textTransform: "uppercase" as const,
+              position: "absolute",
+              width: 506,
+              height: 506,
+              left: isMobile ? -220 : -152,
+              top: isMobile ? 80 : 42,
+              pointerEvents: "none",
+              zIndex: 0,
             }}
           >
-            <ShieldCheck size={15} strokeWidth={2.25} />
-            Liderazgo y ética comprobada
-          </p>
+            <AuthorityLineDecor variant="bottom-left" width={506} height={506} />
+          </div>
+          <div
+            aria-hidden
+            style={{
+              position: "absolute",
+              width: 442,
+              height: 442,
+              right: isMobile ? -220 : -157,
+              top: isMobile ? -200 : -272,
+              pointerEvents: "none",
+              zIndex: 0,
+            }}
+          >
+            <AuthorityLineDecor variant="top-right" width={442} height={442} />
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 8,
+              position: "relative",
+              zIndex: 1,
+            }}
+          >
+            <ShieldCheck size={15} color="#FF7733" strokeWidth={2.25} />
+            <span
+              style={{
+                fontFamily: "Inter, sans-serif",
+                fontWeight: 700,
+                fontSize: 12,
+                lineHeight: "18px",
+                letterSpacing: "1.2px",
+                textTransform: "uppercase",
+                color: "#FF7733",
+              }}
+            >
+              Liderazgo y ética comprobada
+            </span>
+          </div>
           <p
             style={{
               margin: 0,
-              fontSize: isMobile ? 18 : 22,
-              lineHeight: 1.7,
-              color: "#726f6e",
+              maxWidth: 700,
+              position: "relative",
+              zIndex: 1,
+              fontFamily: "Inter, sans-serif",
               fontWeight: 400,
+              fontSize: isMobile ? 18 : 22,
+              lineHeight: isMobile ? "30px" : "37px",
+              textAlign: "center",
+              color: "#726F6E",
             }}
           >
             Somos una entidad enfocada en la{" "}
-            <strong style={{ color: "#1f1e1e" }}>innovación y la sostenibilidad</strong> —
+            <strong style={{ fontWeight: 700 }}>innovación y la sostenibilidad</strong> —
             incluyendo la emisión de{" "}
-            <strong style={{ color: "#1f1e1e" }}>Bonos Verdes</strong> — regulada y supervisada por
-            la <strong style={{ color: "#1f1e1e" }}>Superintendencia de Bancos de Panamá</strong>.
+            <strong style={{ fontWeight: 700 }}>Bonos Verdes</strong> — regulada y supervisada por
+            la <strong style={{ fontWeight: 700 }}>Superintendencia de Bancos de Panamá</strong>.
           </p>
         </div>
 
         {/* Orange CTA banner */}
         <div
           style={{
-            margin: "32px 0 64px",
-            borderRadius: 28,
+            margin: "40px 0 80px",
+            borderRadius: 32,
             background: "#FF8136",
             overflow: "hidden",
             position: "relative",
-            boxShadow: "var(--shadow-orange)",
+            display: "flex",
+            flexDirection: "column",
+            minHeight: "68vh",
           }}
         >
           <OrangeBlobBackground />
@@ -808,18 +1011,20 @@ export function DigitalBanking() {
               position: "relative",
               zIndex: 1,
               display: "flex",
-              flexDirection: isMobile ? "column" : "row",
-              alignItems: isMobile ? "flex-start" : "center",
-              justifyContent: "space-between",
-              gap: isMobile ? 32 : 48,
-              padding: isMobile ? "36px 20px" : "56px 64px",
+              flexDirection: "column",
+              alignItems: "center",
+              flex: 1,
+              justifyContent: "center",
+              textAlign: "center",
+              gap: isMobile ? 28 : 32,
+              padding: isMobile ? "56px 28px" : "72px 80px",
+              boxSizing: "border-box",
             }}
           >
-            {/* Left column */}
-            <div style={{ flex: 1 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 720 }}>
               <p
                 style={{
-                  margin: "0 0 12px",
+                  margin: 0,
                   fontSize: 13,
                   fontWeight: 600,
                   color: "rgba(255,255,255,0.85)",
@@ -832,79 +1037,71 @@ export function DigitalBanking() {
               <h3
                 style={{
                   margin: 0,
-                  fontSize: isMobile ? 32 : 48,
-                  fontWeight: 800,
+                  fontSize: isMobile ? TYPO.sectionHeadline.mobile.fontSize : 48,
+                  fontWeight: TYPO.sectionHeadline.desktop.fontWeight,
                   color: "#fff",
-                  letterSpacing: "-0.02em",
-                  lineHeight: 1.1,
+                  letterSpacing: TYPO.sectionHeadline.desktop.letterSpacing,
+                  lineHeight: TYPO.sectionHeadline.desktop.lineHeight,
                 }}
               >
                 Contáctanos hoy mismo.
               </h3>
             </div>
 
-            {/* Right column */}
             <div
               style={{
-                flexShrink: 0,
                 display: "flex",
-                flexDirection: "column",
-                gap: 16,
+                flexDirection: isMobile ? "column" : "row",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 12,
                 width: isMobile ? "100%" : undefined,
-                alignSelf: isMobile ? "stretch" : undefined,
               }}
             >
-              <div
+              <CtaWhiteBtn
+                href="https://wa.me/50763280229"
+                icon={<MessageCircle size={16} />}
+                fullWidth={isMobile}
+              >
+                WhatsApp 6328-0229
+              </CtaWhiteBtn>
+              <CtaWhiteBtn
+                href="tel:+50722976000"
+                icon={<Phone size={16} />}
+                fullWidth={isMobile}
+              >
+                297-6000
+              </CtaWhiteBtn>
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 8,
+                maxWidth: 640,
+              }}
+            >
+              <p
                 style={{
-                  display: "flex",
-                  flexDirection: isMobile ? "column" : "row",
-                  gap: 12,
-                  width: isMobile ? "100%" : undefined,
+                  margin: 0,
+                  fontSize: 14,
+                  color: "rgba(255,255,255,0.82)",
+                  lineHeight: 1.5,
                 }}
               >
-                <CtaGhostBtn
-                  href="tel:+50722976000"
-                  icon={<Phone size={16} />}
-                  fullWidth={isMobile}
-                >
-                  297-6000
-                </CtaGhostBtn>
-                <CtaGhostBtn
-                  href="https://wa.me/50763280229"
-                  icon={<MessageCircle size={16} />}
-                  fullWidth={isMobile}
-                >
-                  WhatsApp 6328-0229
-                </CtaGhostBtn>
-              </div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                <span
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: 8,
-                    fontSize: 14,
-                    color: "rgba(255,255,255,0.82)",
-                    lineHeight: 1.5,
-                  }}
-                >
-                  <Clock size={14} strokeWidth={2} />
-                  Lunes a viernes 8:00 a.m. – 4:00 p.m. · Sábados 9:00 a.m. – 12:00 p.m.
-                </span>
-                <span
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: 8,
-                    fontSize: 14,
-                    color: "rgba(255,255,255,0.72)",
-                    lineHeight: 1.5,
-                    paddingLeft: 22,
-                  }}
-                >
-                  Cajero automático disponible 24 horas
-                </span>
-              </div>
+                Lunes a viernes 8:00 a.m. – 4:00 p.m. - Sábados 9:00 a.m. – 12:00 p.m.
+              </p>
+              <p
+                style={{
+                  margin: 0,
+                  fontSize: 14,
+                  color: "rgba(255,255,255,0.72)",
+                  lineHeight: 1.5,
+                }}
+              >
+                Cajero automático disponible 24 horas
+              </p>
             </div>
           </div>
         </div>

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import {
   Plus,
@@ -12,31 +11,34 @@ import {
 } from "@/lib/icons";
 import type { Lang } from "@/components/layout/SiteLayout";
 import { useHeaderLayout } from "@/hooks/useHeaderLayout";
+import { openAbreCuenta, type AbreCuentaId } from "@/constants/abreCuenta";
 import {
   BANCA_EN_LINEA_EMPRESAS_URL,
   BANCA_EN_LINEA_PERSONAS_URL,
   openBancaEnLinea,
 } from "@/constants/bancaEnLinea";
-import { ABRE_CUENTA_AHORROS_URL, openAbreCuenta } from "@/constants/abreCuenta";
 
 type ExpandedPanel = "abre" | "banca" | null;
 
-const ABRE_OPTIONS = [
+const ABRE_OPTIONS: {
+  label: string;
+  description: string;
+  id: AbreCuentaId;
+  icon: typeof PiggyBank;
+}[] = [
   {
     label: "Cuenta de Ahorros",
     description: "Para personas Naturales",
-    href: ABRE_CUENTA_AHORROS_URL,
-    external: true,
+    id: "ahorros",
     icon: PiggyBank,
   },
   {
     label: "Cuenta Jurídica",
     description: "Para empresas y Negocios",
-    href: "/cuenta-juridica",
-    external: false,
+    id: "juridica",
     icon: Building2,
   },
-] as const;
+];
 
 const BANCA_OPTIONS = [
   { label: "Personas", href: BANCA_EN_LINEA_PERSONAS_URL, icon: User },
@@ -50,14 +52,12 @@ interface MobileMenuFooterCtasProps {
 
 export function MobileMenuFooterCtas({ lang, onClose }: MobileMenuFooterCtasProps) {
   const [expanded, setExpanded] = useState<ExpandedPanel>(null);
-  const navigate = useNavigate();
   const isTablet = useHeaderLayout() === "compact";
 
-  const handleAbreSelect = (href: string, external: boolean) => {
+  const handleAbreSelect = (id: AbreCuentaId) => {
     setExpanded(null);
     onClose();
-    if (external) openAbreCuenta(href);
-    else navigate(href);
+    openAbreCuenta(id);
   };
 
   const handleBancaSelect = (href: string) => {
@@ -127,9 +127,9 @@ export function MobileMenuFooterCtas({ lang, onClose }: MobileMenuFooterCtasProp
                 const Icon = opt.icon;
                 return (
                   <button
-                    key={opt.href}
+                    key={opt.label}
                     type="button"
-                    onClick={() => handleAbreSelect(opt.href, opt.external)}
+                    onClick={() => handleAbreSelect(opt.id)}
                     style={{
                       display: "flex",
                       alignItems: "center",

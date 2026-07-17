@@ -4,9 +4,10 @@ import { motion, useInView } from "motion/react";
 import { useNavigate } from "react-router-dom";
 import { TrendingUp, Home, ChevronRight, Card, Car } from "@/lib/icons";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
-import { SectionTag, SectionHeading } from "@/components/ui/atoms";
+import { SectionTag, SectionHeading, HeadlineAccent } from "@/components/ui/atoms";
 import { CTA_BUTTON_COLORS, CTA_BUTTON_SIZE } from "@/constants/ctaButtons";
 import { TAG_PILL_HUG } from "@/constants/tagPill";
+import { TYPO } from "@/constants/typography";
 import { HeroCtaButton } from "@/components/atoms/HeroCtaButton";
 import { OrangeBlobBackground } from "@/components/atoms/OrangeBlobBackground";
 
@@ -15,12 +16,12 @@ const CUENTA_AHORROS_ROUTE = "/personas/cuentas/cuenta-de-ahorros";
 const OR = "var(--fun-orange)";
 const DARK = "var(--uni-dark)";
 const SOFT = "var(--uni-dark-soft)";
-const CARD_H = 480;
+const CARD_H = 520;
 const COMPACT_CARD_H = 400;
 const G = 8;
 const DELTA = 20;
 /** Mobile bento — all cards match the orange featured banner height */
-const MOBILE_BENTO_CARD_H = 512;
+const MOBILE_BENTO_CARD_H = 560;
 
 /* ── Images ────────────────────────────────────────────── */
 const IMG_PORTRAIT = "/5ca273f3-86ff-4e66-a9f7-ae25d492fce4.png";
@@ -207,21 +208,8 @@ function CtaLink({ children, href }: { children: React.ReactNode; href?: string 
 
 function CategoryTag({ icon: Icon, label }: { icon: React.ElementType; label: string }) {
   return (
-    <span
-      style={{
-        ...TAG_PILL_HUG,
-        gap: 5,
-        padding: "3px 10px",
-        borderRadius: 99,
-        background: "rgba(255,129,54,0.10)",
-        color: OR,
-        fontSize: 11,
-        fontWeight: 700,
-        letterSpacing: "0.06em",
-        textTransform: "uppercase",
-      }}
-    >
-      <Icon size={13} color={OR} strokeWidth={2} />
+    <span className="type-section-tag" style={{ gap: 5, padding: "3px 10px" }}>
+      <Icon size={13} strokeWidth={2} />
       {label}
     </span>
   );
@@ -283,11 +271,11 @@ function FeaturedBanner({ layout, wide = false }: { layout: FeaturedBannerLayout
               position: "relative",
               zIndex: 2,
               height: "100%",
-              padding: wide ? "32px 32px 28px" : "28px 24px 24px",
+              padding: wide ? "44px 40px 40px" : "40px 32px 36px",
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-between",
-              gap: 20,
+              gap: 28,
               boxSizing: "border-box",
             }}
           >
@@ -296,7 +284,7 @@ function FeaturedBanner({ layout, wide = false }: { layout: FeaturedBannerLayout
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "flex-start",
-                gap: 12,
+                gap: 16,
                 maxWidth: wide ? "52%" : "58%",
               }}
             >
@@ -325,9 +313,9 @@ function FeaturedBanner({ layout, wide = false }: { layout: FeaturedBannerLayout
                   margin: 0,
                   color: "#fff",
                   fontSize: wide ? 34 : 28,
-                  fontWeight: 700,
+                  fontWeight: TYPO.cardTitle.fontWeight,
                   lineHeight: 1.15,
-                  letterSpacing: "-0.02em",
+                  letterSpacing: TYPO.cardTitle.letterSpacing,
                 }}
               >
                 Cuenta de ahorros digital
@@ -369,14 +357,14 @@ function FeaturedBanner({ layout, wide = false }: { layout: FeaturedBannerLayout
       <div
         style={{
           flex: 1,
-          padding: 48,
+          padding: "56px 56px",
           display: "flex",
           flexDirection: "column",
           justifyContent: "flex-start",
           alignItems: "flex-start",
           position: "relative",
           zIndex: 1,
-          gap: 16,
+          gap: 20,
         }}
       >
         {/* Badge */}
@@ -407,7 +395,7 @@ function FeaturedBanner({ layout, wide = false }: { layout: FeaturedBannerLayout
             margin: 0,
             color: "#fff",
             fontSize: 48,
-            fontWeight: 700,
+            fontWeight: TYPO.cardTitle.fontWeight,
             lineHeight: "58px",
           }}
         >
@@ -447,14 +435,14 @@ function FeaturedBanner({ layout, wide = false }: { layout: FeaturedBannerLayout
       <div
         style={{
           flex: 1,
-          padding: 48,
+          padding: "56px 56px",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "flex-start",
           position: "relative",
           zIndex: 1,
-          gap: 12,
+          gap: 16,
         }}
       >
         <p
@@ -482,22 +470,10 @@ function FeaturedBanner({ layout, wide = false }: { layout: FeaturedBannerLayout
           de UniBank desde donde estés.
         </p>
 
-        {/* CTA */}
-        <div style={{ paddingTop: 12 }}>
-          <span
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 6,
-              color: "#fff",
-              fontSize: 13,
-              fontWeight: 600,
-              userSelect: "none",
-            }}
-          >
+        <div style={{ paddingTop: 8 }} onClick={(e) => e.stopPropagation()}>
+          <HeroCtaButton to={CUENTA_AHORROS_ROUTE} variant="secondary">
             Abrir mi cuenta ahora
-            <ChevronRight size={13} strokeWidth={2.5} />
-          </span>
+          </HeroCtaButton>
         </div>
       </div>
         </>
@@ -546,7 +522,7 @@ function MastercardCard() {
       {/* Content */}
       <div style={{ padding: "20px 20px 24px", display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 10, flex: "0 0 auto" }}>
         <CategoryTag icon={mastercardData.icon} label={mastercardData.tag} />
-        <h4 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: DARK, letterSpacing: "-0.01em", lineHeight: 1.3 }}>
+        <h4 style={{ margin: 0, ...TYPO.itemTitleSm, color: DARK }}>
           {mastercardData.title}
         </h4>
         <p style={{ margin: 0, fontSize: 13, color: SOFT, lineHeight: 1.6 }}>{mastercardData.body}</p>
@@ -586,7 +562,7 @@ function SmallProductCard({ item, index }: { item: typeof invertisData; index: n
       {/* Content */}
       <div style={{ padding: "20px 20px 24px", display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 10, flex: "0 0 auto" }}>
         <CategoryTag icon={item.icon} label={item.tag} />
-        <h4 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: DARK, letterSpacing: "-0.01em", lineHeight: 1.3 }}>
+        <h4 style={{ margin: 0, ...TYPO.itemTitleSm, color: DARK }}>
           {item.title}
         </h4>
         <p style={{ margin: 0, fontSize: 13, color: SOFT, lineHeight: 1.6 }}>{item.body}</p>
@@ -632,11 +608,8 @@ function AutoLoanCard({ isMobile }: { isMobile: boolean }) {
         <h4
           style={{
             margin: 0,
-            fontSize: "clamp(18px, 2vw, 24px)",
-            fontWeight: 800,
+            ...TYPO.cardTitle,
             color: DARK,
-            letterSpacing: "-0.02em",
-            lineHeight: 1.15,
           }}
         >
           Préstamo de Auto Digital
@@ -790,13 +763,20 @@ function BentoMobileStack() {
 /* ── ProductsSection (export) ───────────────────────────── */
 export function ProductsSection() {
   const breakpoint = useBreakpoint();
+  const isMobile = breakpoint === "mobile";
 
   return (
-    <section style={{ background: "#fff", paddingTop: 40, paddingBottom: 64 }}>
+    <section
+      style={{
+        background: "#fff",
+        paddingTop: isMobile ? 32 : 40,
+        paddingBottom: isMobile ? 36 : 64,
+      }}
+    >
       <div className="site-container">
         <SectionHeading
           tag="Banca para Personas"
-          headline={<>Protegemos y multiplicamos lo que más valoras</>}
+          headline={<>Protegemos y multiplicamos lo que <HeadlineAccent>más valoras</HeadlineAccent></>}
           body="Cuentas, tarjetas e inversiones pensados para simplificar tu vida financiera y hacer crecer lo que construyes."
           mb={40}
         />

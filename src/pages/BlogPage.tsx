@@ -147,11 +147,11 @@ export default function BlogPage() {
         {/* ── Hero ── */}
         <header className="bg-muted/30 border-b border-border pt-20 pb-10 md:pt-28 md:pb-16 lg:pt-32">
           <div className="site-container text-center">
-            <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-primary bg-primary/10 rounded-full px-3 py-1">
+            <span className="type-section-tag gap-2">
               <Newspaper className="w-3.5 h-3.5" />
               Sala de Prensa · Blog Unibank
             </span>
-            <h1 className="mt-5 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-foreground">
+            <h1 className="mt-5 mt-5 type-page-title text-foreground">
               Noticias y Blog
             </h1>
             <p className="mt-4 text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -199,7 +199,7 @@ export default function BlogPage() {
             <div className="site-container">
               <div className="max-w-xl mx-auto text-center border border-dashed border-border rounded-2xl py-12 md:py-16 px-4 sm:px-6">
               <Newspaper className="w-12 h-12 mx-auto text-muted-foreground/60" />
-              <h2 className="mt-4 text-xl font-semibold text-foreground">
+              <h2 className="mt-4 type-card-title text-foreground">
                 Aún no hay artículos publicados
               </h2>
               <p className="mt-2 text-sm text-muted-foreground">
@@ -215,7 +215,7 @@ export default function BlogPage() {
           <section className="bg-background pt-12 md:pt-16">
             <div className="site-container">
               <div className="flex items-end justify-between mb-6">
-                <h2 className="text-2xl md:text-3xl font-bold text-foreground">
+                <h2 className="type-content-section-headline text-foreground">
                   Destacados
                 </h2>
                 <span className="text-xs uppercase tracking-wider text-muted-foreground">
@@ -244,11 +244,11 @@ export default function BlogPage() {
                     </div>
                     <CardContent className="p-6 md:p-8">
                       {heroFeatured.category && (
-                        <Badge className="bg-primary/10 text-primary hover:bg-primary/15 border-0 uppercase tracking-wider text-[10px]">
+                        <Badge className="type-section-tag hover:opacity-90 border-0 text-[10px] px-2.5 py-0.5">
                           {heroFeatured.category}
                         </Badge>
                       )}
-                      <h3 className="mt-4 text-2xl md:text-3xl font-bold text-foreground leading-tight group-hover:text-primary transition-colors">
+                      <h3 className="mt-4 type-content-section-headline text-foreground leading-tight group-hover:text-primary transition-colors">
                         {heroFeatured.title}
                       </h3>
                       {heroFeatured.excerpt && (
@@ -302,11 +302,11 @@ export default function BlogPage() {
                         </div>
                         <CardContent className="p-5 flex flex-col flex-1">
                           {p.category && (
-                            <Badge className="bg-primary/10 text-primary hover:bg-primary/15 border-0 uppercase tracking-wider text-[10px] w-fit">
+                            <Badge className="type-section-tag hover:opacity-90 border-0 text-[10px] px-2.5 py-0.5 w-fit">
                               {p.category}
                             </Badge>
                           )}
-                          <h3 className="mt-3 text-base md:text-lg font-bold text-foreground leading-snug line-clamp-2 group-hover:text-primary transition-colors">
+                          <h3 className="mt-3 type-item-title-sm text-foreground leading-snug line-clamp-2 group-hover:text-primary transition-colors">
                             {p.title}
                           </h3>
                           {p.excerpt && (
@@ -398,7 +398,7 @@ export default function BlogPage() {
                 {paginated.length === 0 ? (
                   <div className="text-center py-20 border border-dashed border-border rounded-2xl">
                     <Newspaper className="w-10 h-10 mx-auto text-muted-foreground/60" />
-                    <h3 className="mt-4 text-lg font-semibold text-foreground">
+                    <h3 className="mt-4 type-item-title-sm text-foreground">
                       No encontramos artículos
                     </h3>
                     <p className="mt-1 text-sm text-muted-foreground">
@@ -425,13 +425,13 @@ export default function BlogPage() {
                               <div className="w-full h-full bg-primary/10" />
                             )}
                             {post.category && (
-                              <span className="absolute top-3 left-3 text-[10px] font-semibold uppercase tracking-wider text-primary bg-background/90 backdrop-blur-sm rounded-full px-2.5 py-1">
+                              <span className="absolute top-3 left-3 type-section-tag text-[10px] px-2.5 py-0.5 bg-background/90 backdrop-blur-sm">
                                 {post.category}
                               </span>
                             )}
                           </div>
                           <CardContent className="p-5 flex flex-col flex-1">
-                            <h2 className="text-lg font-bold text-foreground mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+                            <h2 className="type-card-title text-foreground mb-2 line-clamp-2 group-hover:text-primary transition-colors">
                               {post.title}
                             </h2>
                             {post.excerpt && (
@@ -534,10 +534,10 @@ export default function BlogPage() {
           <section className="bg-primary/5 border-t border-border mt-12 md:mt-16 lg:mt-24">
             <div className="site-container py-12 md:py-16 lg:py-20 grid grid-cols-1 md:grid-cols-5 gap-6 md:gap-8 items-center">
               <div className="md:col-span-3">
-                <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+                <span className="inline-flex items-center gap-2 type-section-tag">
                   <Mail className="w-3.5 h-3.5" /> Newsletter
                 </span>
-                <h2 className="mt-3 text-xl sm:text-2xl md:text-3xl font-bold text-foreground">
+                <h2 className="mt-3 text-xl sm:type-content-section-headline text-foreground">
                   Recibe nuestras novedades
                 </h2>
                 <p className="mt-2 text-sm md:text-base text-muted-foreground">

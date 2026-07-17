@@ -59,30 +59,14 @@ export function HeroFormSection({ section }: Props) {
           {/* Text second on mobile, left column on desktop */}
           <div className="order-2 min-[1200px]:order-1" style={{ display: "flex", flexDirection: "column", gap: 24 }}>
             {title && (
-              <p
-                style={{
-                  margin: 0,
-                  fontSize: "clamp(13px, 1.2vw, 15px)",
-                  fontWeight: 600,
-                  letterSpacing: "0.06em",
-                  textTransform: "uppercase",
-                  color: "hsl(var(--primary))",
-                }}
-              >
+              <p className="type-eyebrow">
                 {title}
               </p>
             )}
 
             {headline && (
               <h1
-                style={{
-                  margin: 0,
-                  fontSize: "clamp(30px, 4.5vw, 56px)",
-                  fontWeight: 800,
-                  lineHeight: 1.08,
-                  letterSpacing: "-0.03em",
-                  color: "hsl(var(--foreground))",
-                }}
+                className="type-page-title text-foreground"
                 dangerouslySetInnerHTML={{
                   __html: headline.replace(
                     /\*(.*?)\*/g,
@@ -93,15 +77,7 @@ export function HeroFormSection({ section }: Props) {
             )}
 
             {subheadline && (
-              <p
-                style={{
-                  margin: 0,
-                  fontSize: "clamp(15px, 1.5vw, 18px)",
-                  lineHeight: 1.65,
-                  color: "hsl(var(--muted-foreground))",
-                  maxWidth: 520,
-                }}
-              >
+              <p className="type-lead max-w-[520px]">
                 {subheadline}
               </p>
             )}

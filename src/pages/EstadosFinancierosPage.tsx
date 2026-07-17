@@ -148,7 +148,7 @@ export default function EstadosFinancierosPage() {
 
       <section className="bg-muted/30 pt-20 pb-10 md:pt-28 md:pb-16 lg:pt-32">
         <div className="site-container">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground tracking-tight">
+          <h1 className="type-page-title text-foreground">
             Estados Financieros
           </h1>
           <p className="mt-4 text-sm md:text-base lg:text-lg text-muted-foreground max-w-2xl">
@@ -162,7 +162,7 @@ export default function EstadosFinancierosPage() {
       <section className="py-12 md:py-20">
         <div className="site-container">
           <div className="flex items-baseline justify-between mb-2 flex-wrap gap-2">
-            <h2 className="text-2xl md:text-3xl font-semibold text-foreground">
+            <h2 className="type-content-section-headline text-foreground">
               Estados Financieros Auditados
             </h2>
             <span className="text-sm text-muted-foreground">
@@ -294,7 +294,7 @@ export default function EstadosFinancierosPage() {
       <section className="py-12 md:py-20 bg-muted/20">
         <div className="site-container">
           <div className="flex items-baseline justify-between mb-2 flex-wrap gap-2">
-            <h2 className="text-2xl md:text-3xl font-semibold text-foreground">
+            <h2 className="type-content-section-headline text-foreground">
               Información Regulatoria
             </h2>
             <span className="text-sm text-muted-foreground">
@@ -489,7 +489,7 @@ export default function EstadosFinancierosPage() {
       {/* Internos */}
       <section className="py-12 md:py-20">
         <div className="site-container">
-          <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-2">
+          <h2 className="type-content-section-headline text-foreground mb-2">
             Estados Financieros Internos
           </h2>
           <p className="text-muted-foreground mb-8">

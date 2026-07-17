@@ -10,6 +10,7 @@ import { DigitalBanking } from "@/components/organisms/DigitalBanking";
 import { Reveal } from "@/components/effects/Reveal";
 import { IntroSplash } from "@/components/effects/IntroSplash";
 import { useFirstVisit, EASE } from "@/lib/motion";
+import { dismissSplashBoot } from "@/lib/splashBoot";
 import type { Lang } from "@/components/layout/SiteLayout";
 
 export default function HomePage() {
@@ -24,6 +25,10 @@ export default function HomePage() {
 
   // Hero choreography starts as soon as the splash begins to exit
   const heroAnimate = !splashOpen;
+
+  useEffect(() => {
+    if (!playIntro) dismissSplashBoot();
+  }, [playIntro]);
 
   // Auto-dismiss splash after 3s
   useEffect(() => {
