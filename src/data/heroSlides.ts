@@ -197,7 +197,7 @@ const RAW_SLIDES: Slide[] = [
     ctaAlt:    "",
     image:     "/images/uni-hero-1.png",
     cardTitle: "Préstamo Auto",
-    cardSub:   "Desde 8.5% EA",
+    cardSub:   "100% digital",
   },
   {
     id:        "naranja",
@@ -214,7 +214,7 @@ const RAW_SLIDES: Slide[] = [
     ctaAlt:    "",
     image:     "/images/uni-hero-2.png",
     cardTitle: "Cuenta de Ahorros",
-    cardSub:   "4.5% TEA anual",
+    cardSub:   "Rendimiento de hasta 4% anual",
   },
   {
     id:        "leasing",
@@ -231,7 +231,7 @@ const RAW_SLIDES: Slide[] = [
     ctaAltHref: "/grupo/unileasing",
     image:     "/images/uni-hero-3.png",
     cardTitle: "Uni Leasing",
-    cardSub:   "$1,850 / mes",
+    cardSub:   "Soluciones pensadas para ti",
   },
   {
     id:        "hipoteca",
@@ -247,8 +247,8 @@ const RAW_SLIDES: Slide[] = [
     ctaAlt:    "Conocer más",
     ctaAltHref: "/personas/credito/prestamo-de-vivienda",
     image:     "/images/uni-hero-new-4.png",
-    cardTitle: "Crédito Hipotecario",
-    cardSub:   "Desde 6.5% EA",
+    cardTitle: "Préstamo de Vivienda",
+    cardSub:   "Asesoría Personalizada",
   },
 ];
 

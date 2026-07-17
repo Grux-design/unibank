@@ -142,7 +142,7 @@ export default function CalificacionRiesgoPage() {
             <ShieldCheck className="h-3.5 w-3.5" />
             Pacific Credit Rating
           </Badge>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground tracking-tight">
+          <h1 className="type-page-title text-foreground">
             Calificación de Riesgo
           </h1>
           <p className="mt-4 text-sm md:text-base lg:text-lg text-muted-foreground max-w-2xl">
@@ -191,7 +191,7 @@ export default function CalificacionRiesgoPage() {
       <section className="py-12 md:py-20">
         <div className="site-container">
           <div className="flex items-baseline justify-between mb-2 flex-wrap gap-2">
-            <h2 className="text-2xl md:text-3xl font-semibold text-foreground">
+            <h2 className="type-content-section-headline text-foreground">
               Documentos Relacionados
             </h2>
             <span className="text-sm text-muted-foreground">

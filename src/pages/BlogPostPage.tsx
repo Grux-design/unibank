@@ -47,16 +47,16 @@ function buildRichTextOptions(assetMap: Map<string, ContentfulAsset>): Options {
         <p className="text-base md:text-lg leading-relaxed text-foreground/90 mb-6">{children}</p>
       ),
       [BLOCKS.HEADING_1]: (_n, c) => (
-        <h1 className="text-3xl md:text-4xl font-extrabold text-foreground mt-12 mb-5 tracking-tight">{c}</h1>
+        <h1 className="type-prose-h1">{c}</h1>
       ),
       [BLOCKS.HEADING_2]: (_n, c) => (
-        <h2 className="text-2xl md:text-3xl font-bold text-foreground mt-12 mb-4 tracking-tight">{c}</h2>
+        <h2 className="type-prose-h2">{c}</h2>
       ),
       [BLOCKS.HEADING_3]: (_n, c) => (
-        <h3 className="text-xl md:text-2xl font-bold text-foreground mt-10 mb-3">{c}</h3>
+        <h3 className="type-prose-h3">{c}</h3>
       ),
       [BLOCKS.HEADING_4]: (_n, c) => (
-        <h4 className="text-lg md:text-xl font-semibold text-foreground mt-8 mb-2">{c}</h4>
+        <h4 className="type-prose-h4">{c}</h4>
       ),
       [BLOCKS.UL_LIST]: (_n, c) => (
         <ul className="list-disc pl-6 mb-6 space-y-2 text-base md:text-lg text-foreground/90">{c}</ul>
@@ -159,7 +159,7 @@ export default function BlogPostPage() {
     return (
       <article className="min-h-screen flex items-center justify-center py-20">
         <div className="site-container max-w-md text-center">
-          <h1 className="text-2xl font-bold text-foreground">Artículo no encontrado</h1>
+          <h1 className="type-page-title text-foreground">Artículo no encontrado</h1>
           <p className="mt-2 text-muted-foreground">
             El artículo que buscas no existe o fue removido.
           </p>
@@ -220,7 +220,7 @@ export default function BlogPostPage() {
                 {post.category}
               </Badge>
             )}
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-white leading-tight tracking-tight">
+            <h1 className="type-page-title text-white leading-tight">
               {post.title}
             </h1>
             {post.excerpt && (

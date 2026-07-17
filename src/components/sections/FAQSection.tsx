@@ -24,7 +24,7 @@ export function FAQSection({ section }: Props) {
         {/* Left column */}
         <div className="md:w-2/5">
           {section.title && (
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-3 md:mb-4 leading-tight">
+            <h2 className="type-content-section-headline mb-3 md:mb-4 leading-tight">
               {section.title}
             </h2>
           )}
@@ -64,8 +64,8 @@ export function FAQSection({ section }: Props) {
                   value={itemValue}
                   className="bg-background rounded-2xl border-0 px-4 md:px-6"
                 >
-                  <AccordionTrigger className="text-left text-base font-semibold text-foreground hover:no-underline py-5 md:py-8 [&>svg]:hidden">
-                    <span className="flex-1 text-base md:text-xl pr-3">{questionText}</span>
+                  <AccordionTrigger className="text-left type-item-title-sm text-foreground hover:no-underline py-5 md:py-8 [&>svg]:hidden">
+                    <span className="flex-1 pr-3">{questionText}</span>
                     <span className="ml-4 flex-shrink-0">
                       {isOpen ? <X className="h-5 w-5" /> : <Plus className="h-5 w-5" />}
                     </span>

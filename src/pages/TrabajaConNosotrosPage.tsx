@@ -229,11 +229,11 @@ export default function TrabajaConNosotrosPage() {
         <section className="bg-muted/30 border-b border-border pt-20 pb-10 md:pt-28 md:pb-16 lg:pt-32">
           <div className="site-container">
             <div className="max-w-3xl">
-              <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary">
+              <span className="type-section-tag gap-2">
                 <Sparkles className="h-3.5 w-3.5" />
                 Carreras en UniBank
               </span>
-              <h1 className="mt-6 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.05] tracking-tight text-foreground">
+              <h1 className="mt-6 type-page-title text-foreground">
                 Construye el futuro
                 <br />
                 de la banca <span className="text-primary">con nosotros</span>.
@@ -259,7 +259,7 @@ export default function TrabajaConNosotrosPage() {
               </div>
 
               <div className="mt-10 md:mt-14 max-w-xl border-t border-border pt-6 md:pt-8">
-                <div className="text-3xl font-bold tracking-tight text-foreground">+30 años</div>
+                <div className="type-stat-display text-foreground">+30 años</div>
                 <div className="mt-1 text-sm text-muted-foreground">creando oportunidades en Panamá</div>
               </div>
             </div>
@@ -270,10 +270,10 @@ export default function TrabajaConNosotrosPage() {
         <section id="cultura" className="border-b border-border bg-background py-12 md:py-20">
           <div className="site-container">
             <div className="max-w-2xl">
-              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+              <div className="type-section-tag">
                 Por qué UniBank
               </div>
-              <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
+              <h2 className="mt-3 type-content-section-headline text-foreground">
                 Un lugar donde crecer y dejar huella
               </h2>
               <p className="mt-4 text-base leading-relaxed text-muted-foreground">
@@ -297,7 +297,7 @@ export default function TrabajaConNosotrosPage() {
                   >
                     <p.icon className="h-6 w-6" />
                   </div>
-                  <h3 className="text-lg font-semibold text-foreground">{p.title}</h3>
+                  <h3 className="type-card-title text-foreground">{p.title}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{p.desc}</p>
                 </div>
               ))}
@@ -310,10 +310,10 @@ export default function TrabajaConNosotrosPage() {
           <div className="site-container">
             <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
               <div className="max-w-xl">
-                <div className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+                <div className="type-section-tag">
                   Cómo funciona
                 </div>
-                <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
+                <h2 className="mt-3 type-content-section-headline text-foreground">
                   Tu camino hacia UniBank, en 3 pasos
                 </h2>
               </div>
@@ -328,7 +328,7 @@ export default function TrabajaConNosotrosPage() {
                   }`}
                 >
                   <div className="text-sm font-mono font-semibold text-primary">{s.num}</div>
-                  <h3 className="mt-3 text-xl font-semibold text-foreground">{s.title}</h3>
+                  <h3 className="mt-3 type-card-title text-foreground">{s.title}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.desc}</p>
                 </div>
               ))}
@@ -342,10 +342,10 @@ export default function TrabajaConNosotrosPage() {
             {/* Left col */}
             <aside className="lg:col-span-5 order-last lg:order-none">
               <div className="lg:sticky lg:top-28">
-                <div className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+                <div className="type-section-tag">
                   Aplica ahora
                 </div>
-                <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
+                <h2 className="mt-3 type-content-section-headline text-foreground">
                   Cuéntanos sobre ti
                 </h2>
                 <p className="mt-4 text-base leading-relaxed text-muted-foreground">

@@ -16,13 +16,13 @@ const SLUG_MAP: Record<string, string> = {
 const richTextOptions = {
   renderNode: {
     [BLOCKS.HEADING_1]: (_node: unknown, children: React.ReactNode) => (
-      <h1 className="text-2xl md:text-3xl font-bold mt-10 mb-4">{children}</h1>
+      <h1 className="type-prose-h1 mt-10 mb-4">{children}</h1>
     ),
     [BLOCKS.HEADING_2]: (_node: unknown, children: React.ReactNode) => (
-      <h2 className="text-xl md:text-2xl font-semibold mt-8 mb-3">{children}</h2>
+      <h2 className="type-prose-h2">{children}</h2>
     ),
     [BLOCKS.HEADING_3]: (_node: unknown, children: React.ReactNode) => (
-      <h3 className="text-lg md:text-xl font-semibold mt-6 mb-2">{children}</h3>
+      <h3 className="type-prose-h3">{children}</h3>
     ),
     [BLOCKS.PARAGRAPH]: (_node: unknown, children: React.ReactNode) => (
       <p className="mb-4 text-sm md:text-base leading-relaxed text-muted-foreground">{children}</p>
@@ -73,7 +73,7 @@ export default function LegalPage() {
   if (error || !page) {
     return (
       <div className="site-container max-w-3xl py-12 md:py-20 text-center">
-        <h1 className="text-xl md:text-2xl font-bold mb-4">Página no encontrada</h1>
+        <h1 className="type-page-title mb-4">Página no encontrada</h1>
         <p className="text-muted-foreground">No pudimos cargar esta página. Intenta de nuevo más tarde.</p>
       </div>
     );
@@ -96,7 +96,7 @@ export default function LegalPage() {
         {/* Title hero section */}
         <div className="bg-muted/30 border-b border-border pt-20 pb-10 md:pt-28 md:pb-16 lg:pt-32">
           <div className="site-container text-center">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-foreground">
+            <h1 className="type-page-title text-foreground">
               {displayTitle}
             </h1>
           </div>

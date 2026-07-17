@@ -11,7 +11,7 @@ export function CardGridSection({ section }: Props) {
     <section className="w-full bg-muted py-12 md:py-20">
       <div className="site-container">
         {(section.title || section.headline) && (
-          <h2 className="text-center text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-6 md:mb-8">
+          <h2 className="type-content-section-headline text-center mb-6 md:mb-8">
             {section.title || section.headline}
           </h2>
         )}
@@ -34,7 +34,7 @@ export function CardGridSection({ section }: Props) {
               )}
 
               <div className="p-5 md:p-8 lg:p-10">
-                <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-foreground">
+                <h3 className="type-card-title">
                   {item.title}
                 </h3>
 

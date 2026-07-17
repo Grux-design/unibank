@@ -79,7 +79,7 @@ function PersonCard({ person, accent = false }: { person: Person; accent?: boole
           )}
         </div>
         <div className="min-w-0 flex-1">
-          <h3 className="text-base font-semibold leading-snug text-foreground">{person.name}</h3>
+          <h3 className="type-item-title-sm text-foreground leading-snug">{person.name}</h3>
           <p className="mt-1 text-sm leading-snug text-muted-foreground">{person.role}</p>
         </div>
       </div>
@@ -98,11 +98,11 @@ function SectionHeader({
 }) {
   return (
     <div className="mb-8 md:mb-10 flex flex-col items-start gap-3">
-      <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary">
+      <span className="type-section-tag gap-2">
         <Icon className="h-3.5 w-3.5" />
         {eyebrow}
       </span>
-      <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight text-foreground">{title}</h2>
+      <h2 className="type-content-section-headline text-foreground">{title}</h2>
     </div>
   );
 }
@@ -122,10 +122,10 @@ export default function JuntaDirectivaPage() {
         {/* Hero */}
         <section className="relative overflow-hidden border-b border-border bg-background pt-20 pb-10 md:pt-28 md:pb-16 lg:pt-32">
           <div className="relative site-container">
-            <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary">
+            <span className="type-section-tag gap-2">
               Gobierno Corporativo
             </span>
-            <h1 className="mt-5 max-w-3xl text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight text-foreground">
+            <h1 className="mt-5 max-w-3xl type-page-title text-foreground">
               Junta Directiva
             </h1>
             <p className="mt-5 max-w-2xl text-base md:text-lg leading-relaxed text-muted-foreground">

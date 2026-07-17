@@ -22,7 +22,7 @@ export function HeroSlideContent({ slide, dir, layoutTier = "full" }: HeroSlideC
   const layout = getHeroLayout(layoutTier);
   const isStacked = layout.stackLayout;
   const equalColumns = "equalColumns" in layout && layout.equalColumns;
-  const ctaFullWidth = layout.ctaFullWidth && (layoutTier !== "mobile" || slide.id === "hipoteca");
+  const ctaFullWidth = layout.ctaFullWidth;
 
   return (
     <div

@@ -100,7 +100,7 @@ export default function ContactPage() {
       <article className="min-h-screen bg-background">
         <section className="bg-muted/30 border-b border-border pt-20 pb-10 md:pt-28 md:pb-16 lg:pt-32">
           <div className="site-container max-w-2xl">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-foreground">
+            <h1 className="type-page-title text-foreground">
               {t.h1}
             </h1>
             <p className="mt-4 text-base md:text-lg text-muted-foreground">{t.sub}</p>
