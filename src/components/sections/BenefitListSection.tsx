@@ -14,7 +14,7 @@ export function BenefitListSection({ section }: Props) {
         {/* Left: Title */}
         <div className="md:w-2/5 flex items-start pt-0 md:pt-4">
           {section.title && (
-            <h2 className="type-section-headline leading-tight">
+            <h2 className="type-content-section-headline leading-tight">
               {section.title}
             </h2>
           )}

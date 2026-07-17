@@ -8,7 +8,7 @@ interface SectionProps {
 function Section({ title, children }: SectionProps) {
   return (
     <section className="mt-10 md:mt-12 first:mt-0">
-      <h2 className="text-xl md:text-2xl font-bold tracking-tight text-foreground mb-3 md:mb-4">{title}</h2>
+      <h2 className="type-content-section-headline text-foreground mb-3 md:mb-4">{title}</h2>
       <div className="space-y-4 text-sm md:text-base text-muted-foreground leading-relaxed">{children}</div>
     </section>
   );

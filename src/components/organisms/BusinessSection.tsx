@@ -59,21 +59,8 @@ const services = [
 /* ── Shared sub-components (matching Personas style) ──── */
 function CategoryTag({ icon: Icon, label }: { icon: React.ElementType; label: string }) {
   return (
-    <span
-      style={{
-        ...TAG_PILL_HUG,
-        gap: 5,
-        padding: "3px 10px",
-        borderRadius: 99,
-        background: "rgba(255,129,54,0.10)",
-        color: OR,
-        fontSize: 11,
-        fontWeight: TYPO.tag.fontWeight,
-        letterSpacing: TYPO.tag.letterSpacing,
-        textTransform: "uppercase",
-      }}
-    >
-      <Icon size={13} color={OR} strokeWidth={2} />
+    <span className="type-section-tag" style={{ gap: 5, padding: "3px 10px" }}>
+      <Icon size={13} strokeWidth={2} />
       {label}
     </span>
   );

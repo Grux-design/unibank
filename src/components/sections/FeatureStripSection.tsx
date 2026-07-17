@@ -18,7 +18,7 @@ export function FeatureStripSection({ section }: Props) {
       <div className="site-container">
         {/* Header */}
         {headline && (
-          <h2 className="type-section-headline text-center my-0 mb-6 md:mb-[24px] pb-6 md:pb-[24px]">
+          <h2 className="type-content-section-headline text-center my-0 mb-6 md:mb-[24px] pb-6 md:pb-[24px]">
             {headline}
           </h2>
         )}

@@ -11,7 +11,7 @@ export function CardGridSection({ section }: Props) {
     <section className="w-full bg-muted py-12 md:py-20">
       <div className="site-container">
         {(section.title || section.headline) && (
-          <h2 className="type-section-headline text-center mb-6 md:mb-8">
+          <h2 className="type-content-section-headline text-center mb-6 md:mb-8">
             {section.title || section.headline}
           </h2>
         )}

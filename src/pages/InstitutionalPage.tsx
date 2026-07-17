@@ -17,7 +17,7 @@ export default function InstitutionalPage() {
 
       <section className="bg-muted/30 pt-20 pb-10 md:pt-28 md:pb-16 lg:pt-32">
         <div className="site-container">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground tracking-tight">
+          <h1 className="type-page-title text-foreground">
             {page.title}
           </h1>
         </div>
@@ -28,7 +28,7 @@ export default function InstitutionalPage() {
           {page.sections.map((s, i) => (
             <div key={i}>
               {s.heading && (
-                <h2 className="text-xl md:text-2xl lg:text-3xl font-semibold text-foreground mb-3 md:mb-4">
+                <h2 className="type-content-section-headline text-foreground mb-3 md:mb-4">
                   {s.heading}
                 </h2>
               )}

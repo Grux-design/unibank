@@ -116,11 +116,11 @@ function SectionHeader({
 }) {
   return (
     <div className="mb-8 md:mb-10 flex flex-col items-start gap-3">
-      <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary">
+      <span className="type-section-tag gap-2">
         <Icon className="h-3.5 w-3.5" />
         {eyebrow}
       </span>
-      <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight text-foreground">{title}</h2>
+      <h2 className="type-content-section-headline text-foreground">{title}</h2>
       {description && (
         <p className="max-w-3xl text-sm md:text-base leading-relaxed text-muted-foreground">{description}</p>
       )}
@@ -154,11 +154,11 @@ export default function UniTrustPage() {
         {/* Hero */}
         <section className="relative overflow-hidden border-b border-border bg-background pt-20 pb-10 md:pt-28 md:pb-16 lg:pt-32 lg:pb-20">
           <div className="relative site-container">
-            <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary">
+            <span className="type-section-tag gap-2">
               <Sparkles className="h-3.5 w-3.5" />
               Grupo UniBank · Fiduciaria
             </span>
-            <h1 className="mt-5 max-w-3xl text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-extrabold leading-tight tracking-tight text-foreground">
+            <h1 className="mt-5 max-w-3xl type-page-title text-foreground">
               UniTrust
             </h1>
             <p className="mt-6 max-w-2xl text-base md:text-lg lg:text-xl leading-relaxed text-muted-foreground">
@@ -225,7 +225,7 @@ export default function UniTrustPage() {
                   <div className="mb-4 md:mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
                     <Icon className="h-6 w-6" />
                   </div>
-                  <h3 className="text-base font-semibold leading-snug text-foreground">{title}</h3>
+                  <h3 className="type-item-title-sm text-foreground leading-snug">{title}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{body}</p>
                 </div>
               ))}
@@ -251,7 +251,7 @@ export default function UniTrustPage() {
                   <div className="mb-4 md:mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
                     <Icon className="h-6 w-6" />
                   </div>
-                  <h3 className="text-base md:text-lg font-semibold leading-snug text-foreground">{name}</h3>
+                  <h3 className="type-item-title-sm leading-snug text-foreground">{name}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{body}</p>
                 </div>
               ))}
@@ -262,11 +262,11 @@ export default function UniTrustPage() {
         {/* CTA final */}
         <section className="border-t border-border bg-orange-50 py-12 md:py-20">
           <div className="site-container text-center">
-            <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary">
+            <span className="type-section-tag gap-2">
               <Mail className="h-3.5 w-3.5" />
               Hablemos
             </span>
-            <h2 className="mt-5 text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight text-foreground">
+            <h2 className="mt-5 type-content-section-headline text-foreground">
               ¿Listo para proteger y planificar su patrimonio?
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-sm md:text-base leading-relaxed text-muted-foreground lg:text-lg">

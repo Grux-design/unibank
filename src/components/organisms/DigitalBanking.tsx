@@ -194,6 +194,8 @@ function BancaDigitalLabel({ light = false, showDot = false }: { light?: boolean
   );
 }
 
+const HEADING_TAG_RESERVE = { mobile: 30, desktop: 34 } as const;
+
 function DigitalBankingLeftHeading({ mobile = false }: { mobile?: boolean }) {
   const col = mobile ? LEFT_COLUMN_MOBILE : LEFT_COLUMN;
 
@@ -204,10 +206,12 @@ function DigitalBankingLeftHeading({ mobile = false }: { mobile?: boolean }) {
         flexDirection: "column",
         alignItems: "flex-start",
         gap: mobile ? 16 : 20,
+        paddingTop: mobile ? HEADING_TAG_RESERVE.mobile : HEADING_TAG_RESERVE.desktop,
         paddingBottom: mobile ? 0 : 8,
+        maxWidth: mobile ? TYPO.sectionCopyMaxWidth.mobile : TYPO.sectionCopyMaxWidth.desktop,
+        width: "100%",
       }}
     >
-      <BancaDigitalLabel showDot />
       <h2
         style={{
           margin: 0,
@@ -227,7 +231,6 @@ function DigitalBankingLeftHeading({ mobile = false }: { mobile?: boolean }) {
           fontSize: mobile ? TYPO.sectionBody.mobile.fontSize : TYPO.sectionBody.desktop.fontSize,
           lineHeight: TYPO.sectionBody.desktop.lineHeight,
           color: SOFT,
-          maxWidth: mobile ? undefined : 480,
         }}
       >
         Transfiere en segundos, paga servicios y abre cuentas sin pisar una sucursal. Disponible las
@@ -261,17 +264,14 @@ function FeatureBoxBody({
     >
       {showTag && (
         <span
+          className="type-section-tag"
           style={{
             ...FEATURE_TAG_PILL_BASE,
             gap: 5,
             padding: "4px 10px",
-            borderRadius: 99,
-            background: "hsl(20 100% 95%)",
-            color: OR,
             fontSize: 10,
             fontWeight: 700,
             letterSpacing: "0.1em",
-            textTransform: "uppercase",
           }}
         >
           {feature.tag}

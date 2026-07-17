@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { ChevronRight } from "@/lib/icons";
-import { TAG_PILL_HUG } from "@/constants/tagPill";
 import { TYPO } from "@/constants/typography";
 
 /* ── HeadlineAccent ─────────────────────────────────────── */
@@ -11,21 +10,7 @@ export function HeadlineAccent({ children }: { children: React.ReactNode }) {
 
 /* ── SectionTag ─────────────────────────────────────────── */
 export function SectionTag({ children }: { children: React.ReactNode }) {
-  return (
-    <span
-      style={{
-        ...TAG_PILL_HUG,
-        gap: 6,
-        padding: "4px 12px",
-        borderRadius: 99,
-        background: "hsl(20 100% 95%)",
-        color: TYPO.colors.tag,
-        ...TYPO.tag,
-      }}
-    >
-      {children}
-    </span>
-  );
+  return <span className="type-section-tag">{children}</span>;
 }
 
 /* ── SectionHeading ─────────────────────────────────────── */
@@ -57,34 +42,43 @@ export function SectionHeading({ tag, headline, body, cta, px = 0, mb = 40, alig
       }}
     >
       {tag && <SectionTag>{tag}</SectionTag>}
-      <h2
+      <div
         style={{
-          margin: 0,
-          fontSize: headlineStyle.fontSize,
-          fontWeight: headlineStyle.fontWeight,
-          lineHeight: headlineStyle.lineHeight,
-          letterSpacing: headlineStyle.letterSpacing,
-          color: TYPO.colors.headline,
-          textAlign,
+          display: "flex",
+          flexDirection: "column",
+          gap: 16,
+          maxWidth: TYPO.sectionCopyMaxWidth.desktop,
+          width: "100%",
         }}
       >
-        {headline}
-      </h2>
-      {body && (
-        <p
+        <h2
           style={{
             margin: 0,
-            fontSize: TYPO.sectionBody.desktop.fontSize,
-            lineHeight: TYPO.sectionBody.desktop.lineHeight,
-            color: TYPO.colors.body,
-            maxWidth: 580,
+            fontSize: headlineStyle.fontSize,
+            fontWeight: headlineStyle.fontWeight,
+            lineHeight: headlineStyle.lineHeight,
+            letterSpacing: headlineStyle.letterSpacing,
+            color: TYPO.colors.headline,
             textAlign,
           }}
         >
-          {body}
-        </p>
-      )}
-      {cta && cta}
+          {headline}
+        </h2>
+        {body && (
+          <p
+            style={{
+              margin: 0,
+              fontSize: TYPO.sectionBody.desktop.fontSize,
+              lineHeight: TYPO.sectionBody.desktop.lineHeight,
+              color: TYPO.colors.body,
+              textAlign,
+            }}
+          >
+            {body}
+          </p>
+        )}
+        {cta && cta}
+      </div>
     </div>
   );
 }

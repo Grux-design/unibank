@@ -75,20 +75,14 @@ export default function CajillaSeguridadPage() {
         <div className="site-container">
           <div className="grid grid-cols-1 gap-8 min-[1200px]:grid-cols-2 min-[1200px]:items-center min-[1200px]:gap-12">
             <div className="order-2 min-[1200px]:order-1">
-              <span
-                className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide"
-                style={{ background: "hsl(var(--primary) / 0.1)", color: "hsl(var(--primary))" }}
-              >
+              <span className="type-section-tag gap-2">
                 <ShieldCheck size={14} />
                 Servicio exclusivo
               </span>
-              <h1
-                className="mt-5 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-foreground"
-                style={{ letterSpacing: "-0.025em", lineHeight: 1.05 }}
-              >
+              <h1 className="mt-5 type-page-title text-foreground">
                 Cajillas de Seguridad
               </h1>
-              <p className="mt-5 text-xl sm:text-2xl md:text-3xl font-semibold text-primary" style={{ letterSpacing: "-0.015em" }}>
+              <p className="mt-5 type-content-section-headline text-primary">
                 Protege lo que más valoras
               </p>
               <p className="mt-6 text-base md:text-lg text-muted-foreground leading-relaxed">
@@ -179,10 +173,7 @@ export default function CajillaSeguridadPage() {
               <Sparkles size={14} />
               El servicio
             </span>
-            <h2
-              className="mt-5 text-2xl sm:text-3xl md:text-5xl font-extrabold text-foreground leading-[1.05]"
-              style={{ letterSpacing: "-0.03em" }}
-            >
+            <h2 className="mt-5 type-content-section-headline text-foreground">
               ¿Qué es una <span className="text-primary">Cajilla de Seguridad</span>?
             </h2>
             <p className="mt-6 text-base md:text-xl text-muted-foreground leading-relaxed">
@@ -203,7 +194,7 @@ export default function CajillaSeguridadPage() {
                   className="rounded-2xl border border-border bg-background p-3 sm:p-4 md:p-5 hover:border-primary/40 transition-colors"
                 >
                   <Icon size={20} className="text-primary mb-2 md:mb-3 md:w-[22px] md:h-[22px]" strokeWidth={2} />
-                  <p className="text-lg sm:text-xl md:text-3xl font-extrabold text-foreground leading-none" style={{ letterSpacing: "-0.02em" }}>
+                  <p className="type-stat-display text-foreground">
                     {value}
                   </p>
                   <p className="mt-1.5 md:mt-2 text-[10px] sm:text-xs md:text-sm text-muted-foreground leading-snug">
@@ -220,10 +211,7 @@ export default function CajillaSeguridadPage() {
       <section className="bg-orange-50 py-12 md:py-20">
         <div className="site-container">
           <div className="text-center mb-8 md:mb-12">
-            <h2
-              className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-foreground"
-              style={{ letterSpacing: "-0.025em" }}
-            >
+            <h2 className="type-content-section-headline text-foreground">
               Beneficios del servicio
             </h2>
             <p className="mt-3 text-sm md:text-base text-muted-foreground max-w-2xl mx-auto">
@@ -248,7 +236,7 @@ export default function CajillaSeguridadPage() {
                 >
                   <Icon size={28} strokeWidth={2} />
                 </div>
-                <h3 className="text-lg md:text-xl font-bold text-foreground">{title}</h3>
+                <h3 className="type-card-title text-foreground">{title}</h3>
                 <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{desc}</p>
               </div>
             ))}
@@ -260,10 +248,7 @@ export default function CajillaSeguridadPage() {
       <section className="bg-muted py-12 md:py-20">
         <div className="site-container flex flex-col md:flex-row gap-8 md:gap-16 items-start">
           <div className="md:w-2/5 md:sticky md:top-28">
-            <h2
-              className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-foreground leading-tight"
-              style={{ letterSpacing: "-0.025em" }}
-            >
+            <h2 className="type-content-section-headline text-foreground">
               Tamaños disponibles
             </h2>
             <p className="mt-4 text-base md:text-lg text-muted-foreground">
@@ -299,7 +284,7 @@ export default function CajillaSeguridadPage() {
                   <p className="text-xs uppercase tracking-wider font-semibold text-primary mb-1">
                     {s.label}
                   </p>
-                  <h3 className="text-xl md:text-2xl font-bold text-foreground mb-2">{s.dims}</h3>
+                  <h3 className="type-card-title text-foreground mb-2">{s.dims}</h3>
                   <p className="text-sm md:text-base text-muted-foreground">{s.desc}</p>
                 </div>
               </div>
@@ -312,10 +297,7 @@ export default function CajillaSeguridadPage() {
       <section className="bg-background py-12 md:py-20">
         <div className="site-container">
           <div className="text-center mb-8 md:mb-10">
-            <h2
-              className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-foreground"
-              style={{ letterSpacing: "-0.025em" }}
-            >
+            <h2 className="type-content-section-headline text-foreground">
               Requisitos
             </h2>
           </div>
@@ -349,11 +331,11 @@ export default function CajillaSeguridadPage() {
       {/* ── CTA final ───────────────────────────────────────── */}
       <section id="contacto" className="border-t border-border bg-orange-50 py-12 md:py-20">
         <div className="site-container text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary">
+          <span className="type-section-tag gap-2">
             <Mail className="h-3.5 w-3.5" />
             Hablemos
           </span>
-          <h2 className="mt-5 text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight text-foreground">
+          <h2 className="mt-5 type-content-section-headline text-foreground">
             ¿Listo para resguardar lo que más valoras?
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-sm md:text-base leading-relaxed text-muted-foreground lg:text-lg">

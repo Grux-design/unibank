@@ -8,7 +8,7 @@ export const TYPO = {
     accent: "var(--fun-orange)",
     body: "var(--uni-dark-soft)",
     muted: "var(--uni-muted)",
-    tag: "var(--fun-orange)",
+    tag: "hsl(var(--muted-foreground))",
   },
 
   /** Uppercase eyebrow / section tag */
@@ -19,19 +19,35 @@ export const TYPO = {
     textTransform: "uppercase" as const,
   },
 
-  /** Primary section h2 — editorial, medium weight */
-  sectionHeadline: {
+  /** Page hero h1 — top of product / inner pages */
+  pageTitle: {
     desktop: {
-      fontSize: "clamp(36px, 3.6vw, 56px)",
-      fontWeight: 500,
-      lineHeight: 1.14,
+      fontSize: "clamp(32px, 5vw, 56px)",
+      fontWeight: 700,
+      lineHeight: 1.08,
       letterSpacing: "-0.03em",
     },
     mobile: {
-      fontSize: "clamp(30px, 8vw, 38px)",
-      fontWeight: 500,
-      lineHeight: 1.14,
+      fontSize: "clamp(30px, 8vw, 42px)",
+      fontWeight: 700,
+      lineHeight: 1.1,
       letterSpacing: "-0.03em",
+    },
+  },
+
+  /** Homepage & major scroll sections (Products, Banca Digital, etc.) */
+  sectionHeadline: {
+    desktop: {
+      fontSize: "clamp(28px, 2.8vw, 44px)",
+      fontWeight: 500,
+      lineHeight: 1.16,
+      letterSpacing: "-0.025em",
+    },
+    mobile: {
+      fontSize: "clamp(26px, 6.5vw, 34px)",
+      fontWeight: 500,
+      lineHeight: 1.18,
+      letterSpacing: "-0.025em",
     },
   },
 
@@ -39,6 +55,12 @@ export const TYPO = {
   sectionBody: {
     desktop: { fontSize: 17, lineHeight: 1.65 },
     mobile: { fontSize: 15, lineHeight: 1.65 },
+  },
+
+  /** Max readable width for section headline + body blocks */
+  sectionCopyMaxWidth: {
+    desktop: 480,
+    mobile: 360,
   },
 
   /** Bento / feature card titles */
@@ -72,12 +94,20 @@ export const TYPO = {
     letterSpacing: "-0.02em",
   },
 
-  /** Contentful section headings (slightly smaller scale) */
+  /** In-page scroll sections on product / Contentful pages */
   contentSectionHeadline: {
-    fontSize: "clamp(30px, 4vw, 44px)",
-    fontWeight: 500,
-    lineHeight: 1.14,
-    letterSpacing: "-0.03em",
+    desktop: {
+      fontSize: "clamp(24px, 2.4vw, 34px)",
+      fontWeight: 500,
+      lineHeight: 1.2,
+      letterSpacing: "-0.02em",
+    },
+    mobile: {
+      fontSize: "clamp(22px, 5.5vw, 28px)",
+      fontWeight: 500,
+      lineHeight: 1.22,
+      letterSpacing: "-0.02em",
+    },
   },
 } as const;
 
