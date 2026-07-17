@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { THEME } from "@/data/heroSlides";
+import { AuthorityLineDecor } from "@/components/atoms/AuthorityLineDecor";
 
 export interface PageMastheadProps {
   /** Contentful `title` / eyebrow label */
@@ -22,8 +23,7 @@ export interface PageMastheadProps {
  * Internal-page masthead — beige card matching the homepage hero shell.
  * Contentful fields map 1:1 via HeroFormSection.
  *
- * Without `imageSrc`: single-column text masthead (Junta Directiva, Sostenibilidad, etc.).
- * Use `children` for CTAs or stat cards instead of a hero photo — see CalificacionRiesgoPage.
+ * Without `imageSrc`: corner line decor (FormasLinealesGris) on all alignments.
  */
 export function PageMasthead({
   eyebrow,
@@ -39,11 +39,25 @@ export function PageMasthead({
 }: PageMastheadProps) {
   const centered = align === "center";
   const hasMedia = Boolean(imageSrc);
+  const showCornerDecor = !hasMedia;
 
   return (
     <section className={`page-masthead-shell ${className ?? ""}`.trim()}>
       <div className="site-container">
-        <div className="page-masthead-card">
+        <div
+          className={`page-masthead-card${showCornerDecor ? " page-masthead-card--decorated" : ""}`}
+        >
+          {showCornerDecor && (
+            <>
+              <div className="page-masthead-decor page-masthead-decor--bl" aria-hidden>
+                <AuthorityLineDecor variant="bottom-left" width={420} height={420} />
+              </div>
+              <div className="page-masthead-decor page-masthead-decor--tr" aria-hidden>
+                <AuthorityLineDecor variant="top-right" width={360} height={360} />
+              </div>
+            </>
+          )}
+
           <div
             className={`page-masthead-grid${hasMedia ? " page-masthead-grid--media-right" : ""}`}
           >
@@ -52,7 +66,7 @@ export function PageMasthead({
               style={{
                 alignItems: centered ? "center" : "flex-start",
                 textAlign: centered ? "center" : "left",
-                maxWidth: centered && !hasMedia ? 720 : undefined,
+                maxWidth: centered && !hasMedia ? 446 : undefined,
                 marginInline: centered && !hasMedia ? "auto" : undefined,
               }}
             >
@@ -79,7 +93,9 @@ export function PageMasthead({
               {subtitle && (
                 <p
                   className="type-lead"
-                  style={{ maxWidth: centered ? 560 : 520 }}
+                  style={{
+                    maxWidth: centered ? 347 : showCornerDecor ? 640 : 322,
+                  }}
                 >
                   {subtitle}
                 </p>

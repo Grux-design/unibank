@@ -12,6 +12,7 @@ export function CardGridSection({ section, surface = "white" }: CmsSectionProps)
             {section.title || section.headline}
           </h2>
         )}
+        <div className="flex flex-col gap-3">
         {items.map((item, index) => {
           const imageUrl = (() => {
             const img = item.image ?? item.icon;
@@ -26,10 +27,6 @@ export function CardGridSection({ section, surface = "white" }: CmsSectionProps)
               className="page-section-card relative md:sticky rounded-[20px]"
               style={{ top: 80 + index * 56, zIndex: index + 1 }}
             >
-              {index > 0 && (
-                <div className="mx-4 md:mx-8 border-t border-border" />
-              )}
-
               <div className="p-5 md:p-8 lg:p-10">
                 <h3 className="type-card-title">{item.title}</h3>
 
@@ -65,6 +62,7 @@ export function CardGridSection({ section, surface = "white" }: CmsSectionProps)
             </div>
           );
         })}
+        </div>
       </div>
     </section>
   );
