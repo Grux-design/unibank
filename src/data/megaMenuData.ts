@@ -50,7 +50,7 @@ export const personasData: MenuSection = {
       categorySlug: "canales-digitales",
       items: [
         // No Contentful page entries for these slugs — route to live surfaces instead.
-        { label: "Banca Móvil",    slug: "banca-movil-unibank", to: "/#banca-digital" },
+        { label: "Banca Móvil",    slug: "banca-movil-unibank", href: "https://uniconnect.unibank.com.pa/banca-movil/" },
         { label: "Banca en Línea", slug: "banca-en-linea", href: "https://ebanking.unibank.com.pa/DIBS_UNIBANK_PANAMA/pages/loginP.jsp" },
       ],
     },
@@ -112,7 +112,7 @@ export const empresasData: MenuSection = {
       items: [
         // No Contentful page entries for these slugs — route to live surfaces instead.
         { label: "Banca en Línea Empresarial", slug: "banca-en-linea-empresarial", href: "https://ebanking.unibank.com.pa/DIBS_UNIBANK_PANAMA/pages/loginC.jsp" },
-        { label: "Banca Móvil",                slug: "banca-movil", to: "/#banca-digital" },
+        { label: "Banca Móvil",                slug: "banca-movil", href: "https://uniconnect.unibank.com.pa/banca-movil/" },
       ],
     },
   ],

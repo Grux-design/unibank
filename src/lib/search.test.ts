@@ -42,7 +42,7 @@ describe("searchEntries", () => {
 
   it("requires all tokens for multi-word queries", () => {
     const results = searchEntries(searchPages, "banca movil empresas");
-    expect(results.some((p) => p.href === "/#banca-digital")).toBe(true);
+    expect(results.some((p) => p.href === "https://uniconnect.unibank.com.pa/banca-movil/")).toBe(true);
   });
 
   it("indexes real product hrefs instead of legacy stubs", () => {
@@ -52,7 +52,7 @@ describe("searchEntries", () => {
     expect(searchPageHrefs).not.toContain("/cuenta-ahorros");
     expect(searchPageHrefs).not.toContain("/tarjetas");
     expect(searchPageHrefs).not.toContain("/banca-movil");
-    expect(searchPageHrefs).toContain("/#banca-digital");
+    expect(searchPageHrefs).toContain("https://uniconnect.unibank.com.pa/banca-movil/");
   });
 
   it("covers key site surfaces", () => {
