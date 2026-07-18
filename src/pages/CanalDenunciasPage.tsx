@@ -6,6 +6,7 @@ import { useState, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import ReCaptcha, { type ReCaptchaHandle } from "@/components/atoms/ReCaptcha";
+import { PageMasthead, StaticPageSection } from "@/components/organisms/StaticPageLayout";
 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -343,29 +344,29 @@ export default function CanalDenunciasPage() {
       </Helmet>
 
       <article className="min-h-screen">
-        {/* Hero */}
-        <div className="bg-muted/30 border-b border-border pt-20 pb-10 md:pt-28 md:pb-16 lg:pt-32">
-          <div className="site-container text-center">
-            <div className="type-section-tag gap-2 mb-4">
+        <PageMasthead
+          align="center"
+          eyebrow={
+            <>
               <ShieldCheck className="w-3.5 h-3.5" /> Canal confidencial
-            </div>
-            <h1 className="type-page-title text-foreground">Canal de Denuncias</h1>
-            <div className="mt-6 max-w-3xl mx-auto space-y-4 text-sm md:text-base text-muted-foreground text-left">
-              <p>
-                Bienvenido al Canal de Denuncias de <strong>Grupo UniBank</strong>. Por este canal usted podrá como Colaborador, Proveedor, Accionista, Miembros de Junta Directiva, Cliente, Estudiante/Practicante, comunidades afectadas y otras partes interesadas.
-              </p>
-              <p>
-                A través de este canal, usted puede reportar acciones que contravengan la ética, la legalidad o nuestras políticas internas, así como riesgos e impactos ambientales y sociales relacionados con operaciones o proyectos financiados por Grupo UniBank.
-              </p>
-              <p>
-                Su información será tratada de manera confidencial, objetiva e imparcial, garantizando la posibilidad de presentar denuncias anónimas y sin represalias.
-              </p>
-            </div>
+            </>
+          }
+          title="Canal de Denuncias"
+        >
+          <div className="max-w-3xl mx-auto space-y-4 text-sm md:text-base text-muted-foreground text-left w-full">
+            <p>
+              Bienvenido al Canal de Denuncias de <strong>Grupo UniBank</strong>. Por este canal usted podrá como Colaborador, Proveedor, Accionista, Miembros de Junta Directiva, Cliente, Estudiante/Practicante, comunidades afectadas y otras partes interesadas.
+            </p>
+            <p>
+              A través de este canal, usted puede reportar acciones que contravengan la ética, la legalidad o nuestras políticas internas, así como riesgos e impactos ambientales y sociales relacionados con operaciones o proyectos financiados por Grupo UniBank.
+            </p>
+            <p>
+              Su información será tratada de manera confidencial, objetiva e imparcial, garantizando la posibilidad de presentar denuncias anónimas y sin represalias.
+            </p>
           </div>
-        </div>
+        </PageMasthead>
 
-        {/* Form */}
-        <section className="bg-background py-12 md:py-16">
+        <StaticPageSection bandIndex={0}>
           <div className="site-container max-w-3xl">
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 md:space-y-5">
@@ -649,7 +650,7 @@ export default function CanalDenunciasPage() {
               </form>
             </Form>
           </div>
-        </section>
+        </StaticPageSection>
       </article>
     </>
   );

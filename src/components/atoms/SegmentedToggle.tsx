@@ -152,7 +152,6 @@ function SegmentedToggleOption({
             inset: 0,
             borderRadius: buttonRadius,
             background: activeBg,
-            boxShadow: isNeutral ? "0 1px 3px rgba(0,0,0,0.08)" : undefined,
             zIndex: -1,
           }}
           transition={{

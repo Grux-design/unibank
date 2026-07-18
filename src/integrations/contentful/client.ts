@@ -22,6 +22,7 @@ export async function contentfulFetch<T>(
       "Content-Type": "application/json",
       "apikey": SUPABASE_KEY,
     },
+    signal: AbortSignal.timeout(15000),
   });
 
   if (!response.ok) {

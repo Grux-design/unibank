@@ -82,17 +82,28 @@ export function HeroSlideContent({ slide, dir, layoutTier = "full" }: HeroSlideC
               width: ctaFullWidth ? "100%" : undefined,
             }}
           >
-            <HeroCtaButton
-              href={slide.ctaHref || "#"}
-              target={slide.ctaHref ? "_blank" : undefined}
-              rel={slide.ctaHref ? "noopener noreferrer" : undefined}
-              fullWidth={ctaFullWidth}
-            >
-              {slide.cta}
-            </HeroCtaButton>
+            {(() => {
+              const primaryInternal = slide.ctaHref?.startsWith("/");
+              return (
+                <HeroCtaButton
+                  {...(primaryInternal
+                    ? { to: slide.ctaHref }
+                    : {
+                        href: slide.ctaHref || "#",
+                        target: slide.ctaHref ? "_blank" : undefined,
+                        rel: slide.ctaHref ? "noopener noreferrer" : undefined,
+                      })}
+                  fullWidth={ctaFullWidth}
+                >
+                  {slide.cta}
+                </HeroCtaButton>
+              );
+            })()}
             {slide.ctaAlt && (
               <HeroCtaButton
-                href={slide.ctaAltHref || "#"}
+                {...(slide.ctaAltHref?.startsWith("/")
+                  ? { to: slide.ctaAltHref }
+                  : { href: slide.ctaAltHref || "#" })}
                 variant="secondary"
                 fullWidth={ctaFullWidth}
               >

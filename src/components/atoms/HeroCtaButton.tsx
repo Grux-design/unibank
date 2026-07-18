@@ -40,6 +40,7 @@ const baseStyle: CSSProperties = {
   border: "none",
   flexShrink: 0,
   transition: "background 0.18s ease",
+  boxShadow: "none",
 };
 
 type InteractiveEl = HTMLAnchorElement;

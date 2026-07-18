@@ -123,6 +123,7 @@ function ProductButton({ children, variant = "primary", fullWidth, href, onClick
     whiteSpace: "nowrap",
     textDecoration: "none",
     boxSizing: "border-box",
+    boxShadow: "none",
   };
 
   const handlers = {

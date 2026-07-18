@@ -54,6 +54,43 @@ function resolveAsset(
   return asset;
 }
 
+function resolveLinkField(
+  value: unknown,
+  entryMap: Map<string, AnyEntry>,
+  seen: Set<string> = new Set(),
+): string | undefined {
+  if (!value) return undefined;
+  if (typeof value === "string") {
+    const trimmed = value.trim();
+    if (!trimmed || trimmed === "#") return undefined;
+    return trimmed;
+  }
+  if (typeof value === "object") {
+    const r = value as { sys?: { id?: string }; fields?: Record<string, unknown> };
+    const id = r.sys?.id;
+    if (id) {
+      if (seen.has(id)) return undefined;
+      seen.add(id);
+    }
+    if (r.fields) {
+      const fromFields =
+        resolveLinkField(r.fields.url, entryMap, seen) ??
+        resolveLinkField(r.fields.link, entryMap, seen);
+      if (fromFields) return fromFields;
+    }
+    if (id) {
+      const entry = entryMap.get(id);
+      if (entry) {
+        return (
+          resolveLinkField(entry.fields.url, entryMap, seen) ??
+          resolveLinkField(entry.fields.link, entryMap, seen)
+        );
+      }
+    }
+  }
+  return undefined;
+}
+
 function resolveFeatureItem(
   ref: unknown,
   entryMap: Map<string, AnyEntry>,
@@ -81,7 +118,9 @@ function resolveFeatureItem(
     image: resolveAsset(f.image, assetMap),
     question: f.question as string | undefined,
     answer: f.answer as string | undefined,
-    link: (f.link as string) ?? (f.url as string) ?? undefined,
+    link:
+      resolveLinkField(f.link, entryMap) ??
+      resolveLinkField(f.url, entryMap),
   };
 }
 
@@ -175,9 +214,11 @@ async function fetchPage(slug: string): Promise<ResolvedPage> {
 
 export function useContentfulPage(slug: string | undefined) {
   return useQuery({
-    queryKey: ["contentful-page", slug],
+    queryKey: ["contentful-page", "v2", slug],
     queryFn: () => fetchPage(slug!),
     enabled: Boolean(slug),
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: 1000 * 60 * 5,
+    retry: 1,
+    refetchOnMount: "always",
   });
 }

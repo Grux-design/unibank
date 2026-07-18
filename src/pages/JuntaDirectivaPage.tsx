@@ -1,5 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { Target, Eye, Crown, Users2, Briefcase } from "@/lib/icons";
+import { PageMasthead, StaticPageSection } from "@/components/organisms/StaticPageLayout";
 
 interface Person {
   name: string;
@@ -119,24 +120,13 @@ export default function JuntaDirectivaPage() {
       </Helmet>
 
       <article className="min-h-screen bg-background">
-        {/* Hero */}
-        <section className="relative overflow-hidden border-b border-border bg-background pt-20 pb-10 md:pt-28 md:pb-16 lg:pt-32">
-          <div className="relative site-container">
-            <span className="type-section-tag gap-2">
-              Gobierno Corporativo
-            </span>
-            <h1 className="mt-5 max-w-3xl type-page-title text-foreground">
-              Junta Directiva
-            </h1>
-            <p className="mt-5 max-w-2xl text-base md:text-lg leading-relaxed text-muted-foreground">
-              Liderazgo comprometido con la excelencia, la transparencia y la cercanía al cliente.
-              Conoce a las personas que guían el rumbo de UniBank.
-            </p>
-          </div>
-        </section>
+        <PageMasthead
+          eyebrow="Gobierno Corporativo"
+          title="Junta Directiva"
+          subtitle="Liderazgo comprometido con la excelencia, la transparencia y la cercanía al cliente. Conoce a las personas que guían el rumbo de UniBank."
+        />
 
-        {/* Misión & Visión */}
-        <section className="py-12 md:py-20">
+        <StaticPageSection bandIndex={0}>
           <div className="site-container">
           <div className="grid gap-4 md:gap-6 md:grid-cols-2">
             <div className="group relative overflow-hidden rounded-2xl md:rounded-3xl border border-border bg-card p-6 md:p-10 transition-all hover:border-primary/40 hover:shadow-lg">
@@ -160,10 +150,9 @@ export default function JuntaDirectivaPage() {
             </div>
           </div>
           </div>
-        </section>
+        </StaticPageSection>
 
-        {/* Directores Principales */}
-        <section className="border-t border-border bg-muted/30 py-12 md:py-20">
+        <StaticPageSection bandIndex={1}>
           <div className="site-container">
             <SectionHeader icon={Crown} eyebrow="Directores Principales" title="Nuestra Junta Directiva" />
             <p className="mb-8 md:mb-10 max-w-3xl text-sm md:text-base leading-relaxed text-muted-foreground">
@@ -176,10 +165,9 @@ export default function JuntaDirectivaPage() {
               ))}
             </div>
           </div>
-        </section>
+        </StaticPageSection>
 
-        {/* Directores Suplentes */}
-        <section className="py-12 md:py-20">
+        <StaticPageSection bandIndex={2}>
           <div className="site-container">
             <SectionHeader icon={Users2} eyebrow="Directores Suplentes" title="Suplentes" />
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 sm:gap-5">
@@ -188,10 +176,9 @@ export default function JuntaDirectivaPage() {
               ))}
             </div>
           </div>
-        </section>
+        </StaticPageSection>
 
-        {/* Equipo Gerencial */}
-        <section className="border-t border-border bg-muted/30 py-12 md:py-20">
+        <StaticPageSection bandIndex={3}>
           <div className="site-container">
             <SectionHeader icon={Briefcase} eyebrow="UniLíderes" title="Equipo Gerencial" />
             <p className="mb-8 md:mb-10 max-w-3xl text-sm md:text-base leading-relaxed text-muted-foreground">
@@ -204,7 +191,7 @@ export default function JuntaDirectivaPage() {
               ))}
             </div>
           </div>
-        </section>
+        </StaticPageSection>
       </article>
     </>
   );

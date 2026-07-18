@@ -41,10 +41,9 @@ export function StoreBadge({ variant, height = 40, className }: StoreBadgeProps)
         display: "inline-block",
         lineHeight: 0,
         borderRadius: 8,
-        transition: "transform 0.18s ease, opacity 0.18s ease, box-shadow 0.18s ease",
+        transition: "transform 0.18s ease, opacity 0.18s ease",
         transform: hovered ? "translateY(-2px) scale(1.02)" : "translateY(0) scale(1)",
         opacity: hovered ? 1 : 0.94,
-        boxShadow: hovered ? "0 6px 16px rgba(28, 25, 23, 0.14)" : "none",
       }}
     >
       <img

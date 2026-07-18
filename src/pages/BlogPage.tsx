@@ -1,11 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link, useLocation } from "react-router-dom";
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { PageMasthead } from "@/components/organisms/StaticPageLayout";
 import {
   Select,
   SelectContent,
@@ -29,13 +28,11 @@ import {
   ChevronRight,
   Newspaper,
   X,
-  Mail,
 } from "@/lib/icons";
 import { useContentfulBlogList } from "@/hooks/useContentfulBlog";
 import type { ResolvedBlog } from "@/integrations/contentful/types";
 
 const PAGE_SIZE = 6;
-const ALL = "Todos";
 
 function formatDate(d?: string) {
   if (!d) return "";
@@ -63,6 +60,96 @@ function estimateReadTime(content: unknown): string {
   return `${minutes} min lectura`;
 }
 
+function thumbnailUrl(post: ResolvedBlog): string | null {
+  const raw = post.thumbnail?.fields?.file?.url;
+  if (!raw) return null;
+  return raw.startsWith("//") ? `https:${raw}` : raw;
+}
+
+function CategoryTag({ label }: { label: string }) {
+  return (
+    <span className="type-section-tag text-[10px] px-2.5 py-0.5 bg-background/95 backdrop-blur-sm">
+      {label}
+    </span>
+  );
+}
+
+function PostMeta({
+  post,
+  compact = false,
+}: {
+  post: ResolvedBlog;
+  compact?: boolean;
+}) {
+  return (
+    <div
+      className={`flex flex-wrap items-center gap-x-4 gap-y-2 text-muted-foreground ${
+        compact ? "text-[11px]" : "text-xs"
+      }`}
+    >
+      {post.author && (
+        <div className="flex items-center gap-2">
+          <span
+            className={`rounded-full bg-primary/10 text-primary font-semibold inline-flex items-center justify-center shrink-0 ${
+              compact ? "w-6 h-6 text-[10px]" : "w-7 h-7 text-[11px]"
+            }`}
+          >
+            {authorInitials(post.author)}
+          </span>
+          <span className="text-foreground/80 font-medium">{post.author}</span>
+        </div>
+      )}
+      <span className="flex items-center gap-1">
+        <CalendarDays className={compact ? "w-3 h-3" : "w-3.5 h-3.5"} />
+        {formatDate(getPostDate(post))}
+      </span>
+      <span className="flex items-center gap-1">
+        <Clock className={compact ? "w-3 h-3" : "w-3.5 h-3.5"} />
+        {estimateReadTime(post.body)}
+      </span>
+    </div>
+  );
+}
+
+function ReadLink({ className = "" }: { className?: string }) {
+  return (
+    <span
+      className={`inline-flex items-center gap-1 text-sm font-semibold text-primary group-hover:gap-2 transition-all duration-300 ${className}`}
+    >
+      Leer artículo
+      <ChevronRight className="w-4 h-4" />
+    </span>
+  );
+}
+
+function BlogThumbnail({
+  post,
+  aspectClass,
+  eager = false,
+}: {
+  post: ResolvedBlog;
+  aspectClass: string;
+  eager?: boolean;
+}) {
+  const src = thumbnailUrl(post);
+  return (
+    <div className={`overflow-hidden bg-muted relative ${aspectClass}`}>
+      {src ? (
+        <img
+          src={src}
+          alt={post.title}
+          loading={eager ? "eager" : "lazy"}
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+        />
+      ) : (
+        <div className="w-full h-full bg-primary/10 flex items-center justify-center">
+          <Newspaper className="w-10 h-10 text-primary/35" />
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function BlogPage() {
   const { data: posts = [], isLoading } = useContentfulBlogList();
   const location = useLocation();
@@ -83,7 +170,6 @@ export default function BlogPage() {
     return formatDate(getPostDate(posts[0]));
   }, [posts]);
 
-  // Posts available for the searchable/sortable grid (exclude the 3 featured)
   const gridPool = useMemo(
     () => posts.filter((p) => !featuredIds.has(p.sys.id)),
     [posts, featuredIds],
@@ -143,189 +229,136 @@ export default function BlogPage() {
         <link rel="canonical" href="https://unibank.com.pa/blog" />
       </Helmet>
 
-      <article className="min-h-screen">
-        {/* ── Hero ── */}
-        <header className="bg-muted/30 border-b border-border pt-20 pb-10 md:pt-28 md:pb-16 lg:pt-32">
-          <div className="site-container text-center">
-            <span className="type-section-tag gap-2">
+      <article className="min-h-screen pb-16 md:pb-24 lg:pb-28 bg-background">
+        <PageMasthead
+          align="center"
+          eyebrow={
+            <>
               <Newspaper className="w-3.5 h-3.5" />
               Sala de Prensa · Blog Unibank
-            </span>
-            <h1 className="mt-5 mt-5 type-page-title text-foreground">
-              Noticias y Blog
-            </h1>
-            <p className="mt-4 text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
-                Mantente informado con las últimas noticias, consejos
-                financieros y novedades de UniBank.
-              </p>
-              {!isLoading && posts.length > 0 && (
-                <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-muted-foreground">
-                  <span>
-                    <strong className="text-foreground">{posts.length}</strong>{" "}
-                    {posts.length === 1 ? "artículo" : "artículos"}
-                  </span>
-                  {lastUpdated && (
-                    <>
-                      <span className="hidden sm:inline">·</span>
-                      <span>
-                        Actualizado{" "}
-                        <strong className="text-foreground">{lastUpdated}</strong>
-                      </span>
-                    </>
-                  )}
-                </div>
+            </>
+          }
+          title="Noticias y Blog"
+          subtitle="Mantente informado con las últimas noticias, consejos financieros y novedades de UniBank."
+        >
+          {!isLoading && posts.length > 0 && (
+            <div className="flex flex-wrap items-center justify-center gap-2 mt-1">
+              <span className="type-section-tag text-[10px] px-3 py-1">
+                <strong className="text-foreground">{posts.length}</strong>
+                &nbsp;{posts.length === 1 ? "artículo" : "artículos"}
+              </span>
+              {lastUpdated && (
+                <span className="type-section-tag text-[10px] px-3 py-1">
+                  Actualizado&nbsp;
+                  <strong className="text-foreground">{lastUpdated}</strong>
+                </span>
               )}
-          </div>
-        </header>
+            </div>
+          )}
+        </PageMasthead>
 
-        {/* ── Loading state ── */}
         {isLoading && (
-          <section className="bg-background py-16">
-            <div className="site-container">
+          <section className="page-surface-white py-12 md:py-16">
+            <div className="site-container space-y-6">
+              <Skeleton className="h-8 w-48 rounded-lg" />
               <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-                <Skeleton className="lg:col-span-3 aspect-[16/10] rounded-lg" />
+                <Skeleton className="lg:col-span-3 aspect-[16/10] rounded-[28px]" />
                 <div className="lg:col-span-2 space-y-6">
-                  <Skeleton className="h-48 rounded-lg" />
-                  <Skeleton className="h-48 rounded-lg" />
+                  <Skeleton className="h-52 rounded-[24px]" />
+                  <Skeleton className="h-52 rounded-[24px]" />
                 </div>
               </div>
             </div>
           </section>
         )}
 
-        {/* ── Empty state ── */}
         {!isLoading && posts.length === 0 && (
-          <section className="bg-background py-12 md:py-20">
+          <section className="page-surface-white py-12 md:py-20">
             <div className="site-container">
-              <div className="max-w-xl mx-auto text-center border border-dashed border-border rounded-2xl py-12 md:py-16 px-4 sm:px-6">
-              <Newspaper className="w-12 h-12 mx-auto text-muted-foreground/60" />
-              <h2 className="mt-4 type-card-title text-foreground">
-                Aún no hay artículos publicados
-              </h2>
-              <p className="mt-2 text-sm text-muted-foreground">
-                Vuelve pronto para descubrir nuestras novedades.
-              </p>
+              <div className="page-section-card max-w-xl mx-auto text-center rounded-[28px] py-14 md:py-16 px-6">
+                <div className="mx-auto w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center">
+                  <Newspaper className="w-7 h-7 text-primary/70" />
+                </div>
+                <h2 className="mt-5 type-card-title text-foreground">
+                  Aún no hay artículos publicados
+                </h2>
+                <p className="mt-2 text-sm text-muted-foreground max-w-sm mx-auto">
+                  Vuelve pronto para descubrir nuestras novedades.
+                </p>
               </div>
             </div>
           </section>
         )}
 
-        {/* ── Featured editorial section ── */}
         {!isLoading && heroFeatured && (
-          <section className="bg-background pt-12 md:pt-16">
+          <section className="page-surface-white pt-10 md:pt-14 pb-12 md:pb-16">
             <div className="site-container">
-              <div className="flex items-end justify-between mb-6">
-                <h2 className="type-content-section-headline text-foreground">
-                  Destacados
-                </h2>
-                <span className="text-xs uppercase tracking-wider text-muted-foreground">
+              <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-8">
+                <div>
+                  <span className="type-section-tag mb-3">Editorial</span>
+                  <h2 className="type-content-section-headline text-foreground mt-3">
+                    Destacados
+                  </h2>
+                </div>
+                <span className="text-xs uppercase tracking-[0.12em] text-muted-foreground font-medium">
                   Lo más reciente
                 </span>
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-                {/* Hero featured */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
                 <Link
                   to={postHref(heroFeatured.slug)}
-                  className="lg:col-span-3 group"
+                  className="lg:col-span-7 group"
                 >
-                  <Card className="h-full border border-border/60 hover:border-primary/40 transition-all duration-300 overflow-hidden">
-                    <div className="aspect-[16/10] overflow-hidden bg-muted">
-                      {heroFeatured.thumbnail?.fields?.file?.url ? (
-                        <img
-                          src={heroFeatured.thumbnail.fields.file.url}
-                          alt={heroFeatured.title}
-                          loading="eager"
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
-                      ) : (
-                        <div className="w-full h-full bg-primary/10" />
-                      )}
-                    </div>
-                    <CardContent className="p-6 md:p-8">
+                  <article className="page-section-card h-full rounded-[28px] overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40">
+                    <BlogThumbnail
+                      post={heroFeatured}
+                      aspectClass="aspect-[16/10]"
+                      eager
+                    />
+                    <div className="p-6 md:p-8">
                       {heroFeatured.category && (
-                        <Badge className="type-section-tag hover:opacity-90 border-0 text-[10px] px-2.5 py-0.5">
-                          {heroFeatured.category}
-                        </Badge>
+                        <CategoryTag label={heroFeatured.category} />
                       )}
                       <h3 className="mt-4 type-content-section-headline text-foreground leading-tight group-hover:text-primary transition-colors">
                         {heroFeatured.title}
                       </h3>
                       {heroFeatured.excerpt && (
-                        <p className="mt-3 text-muted-foreground line-clamp-2">
+                        <p className="mt-3 text-base text-muted-foreground line-clamp-2 leading-relaxed">
                           {heroFeatured.excerpt}
                         </p>
                       )}
-                      <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-muted-foreground">
-                        {heroFeatured.author && (
-                          <div className="flex items-center gap-2">
-                            <span className="w-7 h-7 rounded-full bg-primary/10 text-primary text-[11px] font-semibold inline-flex items-center justify-center">
-                              {authorInitials(heroFeatured.author)}
-                            </span>
-                            <span className="text-foreground/80 font-medium">
-                              {heroFeatured.author}
-                            </span>
-                          </div>
-                        )}
-                        <span className="flex items-center gap-1">
-                          <CalendarDays className="w-3.5 h-3.5" />
-                          {formatDate(getPostDate(heroFeatured))}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Clock className="w-3.5 h-3.5" />
-                          {estimateReadTime(heroFeatured.body)}
-                        </span>
+                      <div className="mt-6 pt-6 border-t border-border/60">
+                        <PostMeta post={heroFeatured} />
+                        <ReadLink className="mt-5" />
                       </div>
-                      <span className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-primary group-hover:gap-2 transition-all">
-                        Leer artículo <ChevronRight className="w-4 h-4" />
-                      </span>
-                    </CardContent>
-                  </Card>
+                    </div>
+                  </article>
                 </Link>
 
-                {/* Side featured */}
-                <div className="lg:col-span-2 grid grid-cols-1 gap-6">
+                <div className="lg:col-span-5 flex flex-col gap-6">
                   {sideFeatured.map((p) => (
-                    <Link key={p.sys.id} to={postHref(p.slug)} className="group">
-                      <Card className="h-full border border-border/60 hover:border-primary/40 transition-all duration-300 overflow-hidden flex flex-col">
-                        <div className="aspect-[16/9] overflow-hidden bg-muted">
-                          {p.thumbnail?.fields?.file?.url ? (
-                            <img
-                              src={p.thumbnail.fields.file.url}
-                              alt={p.title}
-                              loading="lazy"
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                            />
-                          ) : (
-                            <div className="w-full h-full bg-primary/10" />
-                          )}
-                        </div>
-                        <CardContent className="p-5 flex flex-col flex-1">
-                          {p.category && (
-                            <Badge className="type-section-tag hover:opacity-90 border-0 text-[10px] px-2.5 py-0.5 w-fit">
-                              {p.category}
-                            </Badge>
-                          )}
-                          <h3 className="mt-3 type-item-title-sm text-foreground leading-snug line-clamp-2 group-hover:text-primary transition-colors">
+                    <Link key={p.sys.id} to={postHref(p.slug)} className="group flex-1">
+                      <article className="page-section-card h-full rounded-[24px] overflow-hidden flex flex-col sm:flex-row transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40">
+                        <BlogThumbnail
+                          post={p}
+                          aspectClass="sm:w-[42%] shrink-0 aspect-[16/10] sm:aspect-auto sm:min-h-[180px]"
+                        />
+                        <div className="p-5 flex flex-col flex-1 min-w-0">
+                          {p.category && <CategoryTag label={p.category} />}
+                          <h3 className="mt-3 type-item-title-sm text-foreground leading-snug group-hover:text-primary transition-colors">
                             {p.title}
                           </h3>
                           {p.excerpt && (
-                            <p className="mt-2 text-sm text-muted-foreground line-clamp-2">
+                            <p className="mt-2 text-sm text-muted-foreground line-clamp-3 leading-relaxed">
                               {p.excerpt}
                             </p>
                           )}
-                          <div className="mt-auto pt-3 flex items-center gap-3 text-[11px] text-muted-foreground">
-                            <span className="flex items-center gap-1">
-                              <CalendarDays className="w-3 h-3" />
-                              {formatDate(getPostDate(p))}
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <Clock className="w-3 h-3" />
-                              {estimateReadTime(p.body)}
-                            </span>
+                          <div className="mt-auto pt-4">
+                            <PostMeta post={p} compact />
                           </div>
-                        </CardContent>
-                      </Card>
+                        </div>
+                      </article>
                     </Link>
                   ))}
                 </div>
@@ -334,69 +367,78 @@ export default function BlogPage() {
           </section>
         )}
 
-        {/* ── Filters & Grid (only when 4+ posts) ── */}
         {!isLoading && showAdvancedSections && (
           <>
-            <div className="sticky top-20 z-30 bg-background/90 backdrop-blur-md border-y border-border mt-12">
-              <div className="site-container py-4 space-y-3">
-                <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-                  <div className="relative flex-1 sm:max-w-md">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                    <Input
-                      value={query}
-                      onChange={(e) => setQuery(e.target.value)}
-                      placeholder="Buscar artículos, temas o autores..."
-                      className="pl-9 pr-9 h-11 rounded-full bg-muted/40 border-transparent focus-visible:bg-background focus-visible:border-input"
-                      aria-label="Buscar artículos"
-                    />
-                    {query && (
-                      <button
-                        type="button"
-                        onClick={() => setQuery("")}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted"
-                        aria-label="Limpiar búsqueda"
-                      >
-                        <X className="w-3.5 h-3.5" />
-                      </button>
-                    )}
-                  </div>
+            <div className="sticky top-20 z-30 px-4 sm:px-0">
+              <div className="site-container">
+                <div className="page-section-card rounded-2xl md:rounded-full border border-border/80 px-4 py-3 md:px-5 md:py-3.5 bg-[color-mix(in_srgb,var(--surface-warm)_92%,transparent)]">
+                  <div className="flex flex-col md:flex-row md:items-center gap-3">
+                    <div className="relative flex-1 md:max-w-md">
+                      <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                      <Input
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
+                        placeholder="Buscar artículos, temas o autores..."
+                        className="pl-10 pr-10 h-11 rounded-full bg-background/80 border-border/60 focus-visible:bg-background"
+                        aria-label="Buscar artículos"
+                      />
+                      {query && (
+                        <button
+                          type="button"
+                          onClick={() => setQuery("")}
+                          className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted"
+                          aria-label="Limpiar búsqueda"
+                        >
+                          <X className="w-3.5 h-3.5" />
+                        </button>
+                      )}
+                    </div>
 
-                  <div className="flex flex-col sm:flex-row sm:items-center gap-3 w-full sm:w-auto sm:ml-auto">
-                    <span className="text-xs text-muted-foreground hidden md:inline">
-                      <strong className="text-foreground">{filtered.length}</strong>{" "}
-                      de {gridPool.length} artículos
-                    </span>
-                    <Select value={sort} onValueChange={(v) => setSort(v as typeof sort)}>
-                      <SelectTrigger className="w-full sm:w-[170px] h-11 rounded-full" aria-label="Ordenar">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="recent">Más recientes</SelectItem>
-                        <SelectItem value="old">Más antiguos</SelectItem>
-                        <SelectItem value="az">A–Z</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-3 md:ml-auto">
+                      <span className="text-xs text-muted-foreground hidden lg:inline whitespace-nowrap">
+                        <strong className="text-foreground">{filtered.length}</strong> de{" "}
+                        {gridPool.length} en archivo
+                      </span>
+                      <Select value={sort} onValueChange={(v) => setSort(v as typeof sort)}>
+                        <SelectTrigger
+                          className="w-full sm:w-[180px] h-11 rounded-full bg-background/80 border-border/60"
+                          aria-label="Ordenar"
+                        >
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="recent">Más recientes</SelectItem>
+                          <SelectItem value="old">Más antiguos</SelectItem>
+                          <SelectItem value="az">A–Z</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      {hasActiveFilters && (
+                        <button
+                          type="button"
+                          onClick={clearFilters}
+                          className="inline-flex items-center justify-center gap-1 text-xs font-medium text-primary hover:underline whitespace-nowrap"
+                        >
+                          <X className="w-3 h-3" />
+                          Limpiar
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
-
-                {hasActiveFilters && (
-                  <div className="flex justify-end">
-                    <button
-                      type="button"
-                      onClick={clearFilters}
-                      className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
-                    >
-                      <X className="w-3 h-3" /> Limpiar filtros
-                    </button>
-                  </div>
-                )}
               </div>
             </div>
 
-            <section id="blog-grid" className="bg-background py-12 md:py-16">
+            <section id="blog-grid" className="page-surface-warm py-12 md:py-16 mt-8 md:mt-10">
               <div className="site-container">
+                <div className="mb-8">
+                  <span className="type-section-tag">Archivo</span>
+                  <h2 className="mt-3 type-content-section-headline text-foreground">
+                    Todos los artículos
+                  </h2>
+                </div>
+
                 {paginated.length === 0 ? (
-                  <div className="text-center py-20 border border-dashed border-border rounded-2xl">
+                  <div className="page-section-card text-center rounded-[28px] py-16 px-6">
                     <Newspaper className="w-10 h-10 mx-auto text-muted-foreground/60" />
                     <h3 className="mt-4 type-item-title-sm text-foreground">
                       No encontramos artículos
@@ -404,45 +446,35 @@ export default function BlogPage() {
                     <p className="mt-1 text-sm text-muted-foreground">
                       Intenta con otra búsqueda o limpia los filtros.
                     </p>
-                    <Button variant="outline" size="sm" onClick={clearFilters} className="mt-5">
+                    <Button variant="outline" size="sm" onClick={clearFilters} className="mt-5 rounded-full">
                       Limpiar filtros
                     </Button>
                   </div>
                 ) : (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
                     {paginated.map((post) => (
                       <Link key={post.sys.id} to={postHref(post.slug)} className="group">
-                        <Card className="h-full border border-border/60 hover:border-primary/40 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col">
-                          <div className="aspect-[3/2] overflow-hidden bg-muted relative">
-                            {post.thumbnail?.fields?.file?.url ? (
-                              <img
-                                src={post.thumbnail.fields.file.url}
-                                alt={post.title}
-                                loading="lazy"
-                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                              />
-                            ) : (
-                              <div className="w-full h-full bg-primary/10" />
-                            )}
+                        <article className="page-section-card h-full rounded-[24px] overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40">
+                          <div className="relative">
+                            <BlogThumbnail post={post} aspectClass="aspect-[3/2]" />
                             {post.category && (
-                              <span className="absolute top-3 left-3 type-section-tag text-[10px] px-2.5 py-0.5 bg-background/90 backdrop-blur-sm">
-                                {post.category}
-                              </span>
+                              <div className="absolute top-3 left-3">
+                                <CategoryTag label={post.category} />
+                              </div>
                             )}
                           </div>
-                          <CardContent className="p-5 flex flex-col flex-1">
-                            <h2 className="type-card-title text-foreground mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+                          <div className="p-5 md:p-6 flex flex-col flex-1">
+                            <h2 className="type-card-title text-foreground mb-2 leading-snug group-hover:text-primary transition-colors">
                               {post.title}
                             </h2>
                             {post.excerpt && (
-                              <p className="text-sm text-muted-foreground line-clamp-3 mb-4">
+                              <p className="text-sm text-muted-foreground line-clamp-2 mb-5 leading-relaxed">
                                 {post.excerpt}
                               </p>
                             )}
-
-                            <div className="mt-auto pt-4 border-t border-border/60 flex items-center justify-between gap-2">
+                            <div className="mt-auto pt-4 border-t border-border/60 flex items-center justify-between gap-3">
                               <div className="flex items-center gap-2 min-w-0">
-                                <span className="w-7 h-7 rounded-full bg-primary/10 text-primary text-[11px] font-semibold inline-flex items-center justify-center shrink-0">
+                                <span className="w-8 h-8 rounded-full bg-primary/10 text-primary text-[11px] font-semibold inline-flex items-center justify-center shrink-0">
                                   {authorInitials(post.author)}
                                 </span>
                                 <div className="min-w-0">
@@ -459,17 +491,17 @@ export default function BlogPage() {
                                 {estimateReadTime(post.body)}
                               </span>
                             </div>
-                          </CardContent>
-                        </Card>
+                          </div>
+                        </article>
                       </Link>
                     ))}
                   </div>
                 )}
 
                 {filtered.length > PAGE_SIZE && (
-                  <div className="mt-12">
+                  <div className="mt-14 flex justify-center">
                     <Pagination>
-                      <PaginationContent>
+                      <PaginationContent className="gap-1">
                         <PaginationItem>
                           <PaginationPrevious
                             href="#"
@@ -477,7 +509,7 @@ export default function BlogPage() {
                               e.preventDefault();
                               goToPage(page - 1);
                             }}
-                            className={page === 1 ? "pointer-events-none opacity-50" : undefined}
+                            className={`rounded-full ${page === 1 ? "pointer-events-none opacity-50" : ""}`}
                           />
                         </PaginationItem>
                         {Array.from({ length: totalPages }).map((_, i) => {
@@ -502,6 +534,7 @@ export default function BlogPage() {
                                   e.preventDefault();
                                   goToPage(n);
                                 }}
+                                className="rounded-full min-w-9"
                               >
                                 {n}
                               </PaginationLink>
@@ -515,9 +548,9 @@ export default function BlogPage() {
                               e.preventDefault();
                               goToPage(page + 1);
                             }}
-                            className={
-                              page === totalPages ? "pointer-events-none opacity-50" : undefined
-                            }
+                            className={`rounded-full ${
+                              page === totalPages ? "pointer-events-none opacity-50" : ""
+                            }`}
                           />
                         </PaginationItem>
                       </PaginationContent>
@@ -527,41 +560,6 @@ export default function BlogPage() {
               </div>
             </section>
           </>
-        )}
-
-        {/* ── Newsletter CTA ── */}
-        {!isLoading && posts.length > 0 && (
-          <section className="bg-primary/5 border-t border-border mt-12 md:mt-16 lg:mt-24">
-            <div className="site-container py-12 md:py-16 lg:py-20 grid grid-cols-1 md:grid-cols-5 gap-6 md:gap-8 items-center">
-              <div className="md:col-span-3">
-                <span className="inline-flex items-center gap-2 type-section-tag">
-                  <Mail className="w-3.5 h-3.5" /> Newsletter
-                </span>
-                <h2 className="mt-3 text-xl sm:type-content-section-headline text-foreground">
-                  Recibe nuestras novedades
-                </h2>
-                <p className="mt-2 text-sm md:text-base text-muted-foreground">
-                  Artículos, análisis y noticias del sector financiero
-                  directamente en tu correo. Sin spam.
-                </p>
-              </div>
-              <form
-                className="md:col-span-2 flex flex-col sm:flex-row gap-3 w-full"
-                onSubmit={(e) => e.preventDefault()}
-              >
-                <Input
-                  type="email"
-                  required
-                  placeholder="tu@correo.com"
-                  aria-label="Correo electrónico"
-                  className="flex-1 w-full"
-                />
-                <Button type="submit" className="w-full sm:w-auto shrink-0">
-                  Suscribirme
-                </Button>
-              </form>
-            </div>
-          </section>
         )}
       </article>
     </>

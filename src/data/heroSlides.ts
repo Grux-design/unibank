@@ -184,6 +184,22 @@ function normalizeSlide(slide: Slide): Slide {
 
 const RAW_SLIDES: Slide[] = [
   {
+    id:        "mi-negocio",
+    tag:       "Empresas",
+    eyebrow:   "Mi Negocio, UniBank",
+    headline:  [
+      { text: "Tu Caja cambia ", highlight: false },
+      { text: "todos los días",   highlight: true  },
+    ],
+    body:      "Tu banco debe moverse contigo",
+    cta:       "Da el primer paso",
+    ctaHref:   "/empresas/cuentas/cuenta-juridica-digital",
+    ctaAlt:    "",
+    image:     "/images/uni-hero-mi-negocio.png",
+    cardTitle: "Mi Negocio",
+    cardSub:   "Cuenta jurídica digital",
+  },
+  {
     id:        "auto",
     tag:       "Personas",
     eyebrow:   "¡Aprobación en minutos!",

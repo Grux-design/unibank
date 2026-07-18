@@ -1,6 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import { Button } from "@/components/ui/button";
 import { Download, FileText } from "@/lib/icons";
+import { PageMasthead, StaticPageSection } from "@/components/organisms/StaticPageLayout";
 
 const PDF_URL = "https://unibank.com.pa/sites/default/files/attachment/tarifario_-enero.2026v2.0.pdf";
 
@@ -14,20 +15,15 @@ export default function TarifarioPage() {
       </Helmet>
 
       <article className="min-h-screen">
-        <div className="bg-muted/30 border-b border-border pt-20 pb-10 md:pt-28 md:pb-16 lg:pt-32">
-          <div className="site-container text-center">
-            <h1 className="type-page-title text-foreground">
-              Tarifario
-            </h1>
-            <p className="mt-4 text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
-              Consulta nuestras tasas, comisiones y tarifas vigentes.
-            </p>
-          </div>
-        </div>
+        <PageMasthead
+          align="center"
+          title="Tarifario"
+          subtitle="Consulta nuestras tasas, comisiones y tarifas vigentes."
+        />
 
-        <section className="bg-background py-12 md:py-20">
+        <StaticPageSection bandIndex={0}>
           <div className="site-container">
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 mb-6 md:mb-8 p-4 rounded-xl border border-border/60 bg-muted/20">
+            <div className="page-section-card flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 mb-6 md:mb-8 p-4 rounded-xl">
               <div className="flex items-center gap-3 min-w-0">
                 <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
                   <FileText className="w-5 h-5 text-primary" />
@@ -44,9 +40,7 @@ export default function TarifarioPage() {
               </Button>
             </div>
 
-            <div
-              className="w-full rounded-xl overflow-hidden border border-border/60 h-[55vh] md:h-[75vh] lg:h-[80vh]"
-            >
+            <div className="page-section-card w-full rounded-xl overflow-hidden h-[55vh] md:h-[75vh] lg:h-[80vh]">
               <iframe
                 src={PDF_URL}
                 title="Tarifario UniBank"
@@ -55,7 +49,7 @@ export default function TarifarioPage() {
               />
             </div>
           </div>
-        </section>
+        </StaticPageSection>
       </article>
     </>
   );

@@ -1,5 +1,24 @@
 import { Helmet } from "react-helmet-async";
 import { Leaf, Sprout, Recycle, Users, ChevronRight, BadgeCheck } from "@/lib/icons";
+import { PageMasthead, StaticPageSection } from "@/components/organisms/StaticPageLayout";
+
+const pillars = [
+  {
+    icon: Sprout,
+    title: "Finanzas sostenibles",
+    desc: "Productos y prácticas alineadas al desarrollo sostenible.",
+  },
+  {
+    icon: Users,
+    title: "Inclusión social",
+    desc: "Acceso, equidad y bienestar en las comunidades donde operamos.",
+  },
+  {
+    icon: Recycle,
+    title: "Medio ambiente",
+    desc: "Conservación de recursos naturales en cada operación.",
+  },
+] as const;
 
 export default function SostenibilidadPage() {
   return (
@@ -13,25 +32,33 @@ export default function SostenibilidadPage() {
       </Helmet>
 
       <article className="min-h-screen bg-background">
-        {/* Hero */}
-        <section className="relative overflow-hidden border-b border-border bg-background pt-20 pb-10 md:pt-28 md:pb-16 lg:pt-32">
-          <div className="relative site-container">
-            <span className="type-section-tag gap-2">
+        <PageMasthead
+          eyebrow={
+            <>
               <Leaf className="h-3.5 w-3.5" />
               ESG
-            </span>
-            <h1 className="mt-5 max-w-3xl type-page-title text-foreground">
-              Sostenibilidad
-            </h1>
-            <p className="mt-5 max-w-2xl text-base md:text-lg leading-relaxed text-muted-foreground">
-              Nuestro compromiso con el medio ambiente y la sociedad guía cada decisión que tomamos
-              como grupo financiero.
-            </p>
+            </>
+          }
+          title="Sostenibilidad"
+          subtitle="Nuestro compromiso con el medio ambiente y la sociedad guía cada decisión que tomamos como grupo financiero."
+        >
+          <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
+            {pillars.map(({ icon: Icon, title, desc }) => (
+              <div
+                key={title}
+                className="page-section-card flex flex-col gap-2 rounded-xl p-4 sm:p-5"
+              >
+                <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                  <Icon className="h-5 w-5" />
+                </div>
+                <p className="type-item-title-sm text-foreground">{title}</p>
+                <p className="text-xs leading-relaxed text-muted-foreground">{desc}</p>
+              </div>
+            ))}
           </div>
-        </section>
+        </PageMasthead>
 
-        {/* Compromiso */}
-        <section className="py-12 md:py-20">
+        <StaticPageSection bandIndex={0}>
           <div className="site-container">
           <div className="mb-8 md:mb-10">
             <span className="type-section-tag gap-2">
@@ -54,26 +81,10 @@ export default function SostenibilidadPage() {
 
           {/* Pillars */}
           <div className="mt-10 md:mt-12 grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-5">
-            {[
-              {
-                icon: Sprout,
-                title: "Finanzas sostenibles",
-                desc: "Promovemos productos y prácticas financieras alineadas al desarrollo sostenible.",
-              },
-              {
-                icon: Users,
-                title: "Inclusión social",
-                desc: "Fomentamos el acceso, la equidad y el bienestar en las comunidades donde operamos.",
-              },
-              {
-                icon: Recycle,
-                title: "Respeto al medio ambiente",
-                desc: "Buscamos reducir nuestra huella e impulsar la conservación de recursos naturales.",
-              },
-            ].map(({ icon: Icon, title, desc }) => (
+            {pillars.map(({ icon: Icon, title, desc }) => (
               <div
                 key={title}
-                className="group rounded-2xl border border-border bg-card p-5 md:p-6 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"
+                className="group page-section-card rounded-2xl p-5 md:p-6 transition-all hover:-translate-y-1 hover:border-primary/40"
               >
                 <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
                   <Icon className="h-6 w-6" />
@@ -84,10 +95,9 @@ export default function SostenibilidadPage() {
             ))}
           </div>
           </div>
-        </section>
+        </StaticPageSection>
 
-        {/* Bonos Verdes */}
-        <section className="border-t border-border bg-muted/30 py-12 md:py-20">
+        <StaticPageSection bandIndex={1}>
           <div className="site-container">
             <div className="grid grid-cols-1 gap-8 min-[1200px]:grid-cols-2 min-[1200px]:items-center min-[1200px]:gap-10">
               <div className="order-2 min-[1200px]:order-1">
@@ -114,7 +124,7 @@ export default function SostenibilidadPage() {
                   href="https://www.flipsnack.com/unibankpanama/marco-de-referencia-bono-verde-unileasing/full-view.html"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-8 inline-flex w-full max-w-sm sm:w-auto items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:shadow-md hover:opacity-95"
+                  className="mt-8 inline-flex w-full max-w-sm sm:w-auto items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:opacity-95"
                 >
                   Conoce nuestro Marco de Referencia
                   <ChevronRight className="h-4 w-4" />
@@ -164,7 +174,7 @@ export default function SostenibilidadPage() {
               </div>
             </div>
           </div>
-        </section>
+        </StaticPageSection>
       </article>
     </>
   );
