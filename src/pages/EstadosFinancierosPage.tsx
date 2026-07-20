@@ -1,11 +1,10 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { FileText, Search, X, Download } from "@/lib/icons";
 import {
   auditados,
   regulatoria,
   internos,
-  type InternalQuarter,
+  type InternalRow,
 } from "@/data/estadosFinancieros";
 import {
   Table,
@@ -15,53 +14,91 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
 import { StaticPageFrame, StaticPageSection } from "@/components/organisms/StaticPageLayout";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import {
+  DocumentMetaCell,
+  DocumentMobileCard,
+  DocumentTableRow,
+  DocumentTag,
+  DocumentTagsCell,
+  EmptyResults,
+  FilterBar,
+  FilterPill,
+  InternalYearGroup,
+  SectionHeader,
+  DOCUMENT_TABLE_HEAD_CLASS,
+} from "@/components/molecules/documentLibraryUi";
+import {
+  PageSectionTabPanel,
+  PageSectionTabs,
+  type PageSectionTab,
+} from "@/components/molecules/PageSectionTabs";
+import { cn } from "@/lib/utils";
 
 const ALL = "__all__";
+const PERIODS = ["Marzo", "Junio", "Septiembre", "Diciembre"] as const;
 
-function DocLink({ doc }: { doc: { label: string; size: string; url: string } }) {
-  return (
-    <a
-      href={doc.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="group inline-flex items-center gap-2 text-primary hover:underline font-medium"
-    >
-      <FileText className="h-4 w-4 flex-shrink-0" />
-      <span>{doc.label}</span>
-    </a>
-  );
+const FINANCIAL_TABS = [
+  { value: "auditados", label: "Estados Financieros Auditados" },
+  { value: "regulatoria", label: "Información Regulatoria" },
+  { value: "internos", label: "Estados Financieros Internos" },
+] as const satisfies readonly PageSectionTab[];
+
+type FinancialTab = (typeof FINANCIAL_TABS)[number]["value"];
+
+function isFinancialTab(value: string): value is FinancialTab {
+  return FINANCIAL_TABS.some((tab) => tab.value === value);
 }
 
-function FilterField({
+function getTabFromHash(): FinancialTab {
+  const hash = window.location.hash.replace(/^#/, "");
+  return isFinancialTab(hash) ? hash : "auditados";
+}
+
+function getRegForm(label: string) {
+  return label.includes("IN-A") ? "IN-A" : "INT-T";
+}
+
+function getAuditScope(label: string): "unibank" | "grupo" {
+  return label.includes("Grupo UniBank") ? "grupo" : "unibank";
+}
+
+const INTERNAL_QUARTERS = [
+  { key: "marzo" as const, label: "Marzo" },
+  { key: "junio" as const, label: "Junio" },
+  { key: "septiembre" as const, label: "Septiembre" },
+];
+
+function getInternalQuarters(row: InternalRow) {
+  return INTERNAL_QUARTERS.flatMap(({ key, label }) => {
+    const doc = row[key];
+    if (!doc) return [];
+    return [{ period: label, href: doc.url }];
+  });
+}
+
+function countInternalDocs(rows: InternalRow[]) {
+  return rows.reduce((total, row) => total + getInternalQuarters(row).length, 0);
+}
+
+function RegulatoriaTags({
   label,
-  htmlFor,
-  children,
+  entity,
+  period,
+  year,
 }: {
   label: string;
-  htmlFor?: string;
-  children: React.ReactNode;
+  entity: string;
+  period: string;
+  year: number;
 }) {
   return (
-    <div className="flex flex-col gap-1.5">
-      <label
-        htmlFor={htmlFor}
-        className="text-xs font-medium text-muted-foreground uppercase tracking-wide"
-      >
-        {label}
-      </label>
-      {children}
-    </div>
+    <>
+      <DocumentTag className="font-mono">{getRegForm(label)}</DocumentTag>
+      <DocumentTag>{entity}</DocumentTag>
+      <DocumentTag>{period}</DocumentTag>
+      <DocumentTag>{year}</DocumentTag>
+    </>
   );
 }
 
@@ -75,26 +112,43 @@ export default function EstadosFinancierosPage() {
     [],
   );
 
-  // Auditados filters
-  const [auditYear, setAuditYear] = useState<string>(ALL);
-  const [auditSearch, setAuditSearch] = useState("");
+  const [tab, setTab] = useState<FinancialTab>(getTabFromHash);
 
-  // Regulatoria filters
+  const [auditYear, setAuditYear] = useState<string>(ALL);
+  const [auditScope, setAuditScope] = useState<string>(ALL);
+
   const [regYear, setRegYear] = useState<string>(ALL);
   const [regEntity, setRegEntity] = useState<string>(ALL);
   const [regPeriod, setRegPeriod] = useState<string>(ALL);
   const [regForm, setRegForm] = useState<string>(ALL);
-  const [regSearch, setRegSearch] = useState("");
+
+  const [internalYear, setInternalYear] = useState<string>(ALL);
+
+  const internalYears = useMemo(
+    () => internos.map((row) => row.year).sort((a, b) => b - a),
+    [],
+  );
+
+  useEffect(() => {
+    const syncFromHash = () => setTab(getTabFromHash());
+    window.addEventListener("hashchange", syncFromHash);
+    return () => window.removeEventListener("hashchange", syncFromHash);
+  }, []);
+
+  const handleTabChange = (value: string) => {
+    if (!isFinancialTab(value)) return;
+    setTab(value);
+    window.history.replaceState(null, "", `#${value}`);
+  };
 
   const filteredAudit = useMemo(
     () =>
       auditados.filter(
         (d) =>
           (auditYear === ALL || String(d.year) === auditYear) &&
-          (auditSearch === "" ||
-            d.label.toLowerCase().includes(auditSearch.toLowerCase())),
+          (auditScope === ALL || getAuditScope(d.label) === auditScope),
       ),
-    [auditYear, auditSearch],
+    [auditYear, auditScope],
   );
 
   const filteredReg = useMemo(
@@ -104,16 +158,33 @@ export default function EstadosFinancierosPage() {
           (regYear === ALL || String(d.year) === regYear) &&
           (regEntity === ALL || d.entity === regEntity) &&
           (regPeriod === ALL || d.period === regPeriod) &&
-          (regForm === ALL || d.label.includes(regForm)) &&
-          (regSearch === "" ||
-            d.label.toLowerCase().includes(regSearch.toLowerCase())),
+          (regForm === ALL || getRegForm(d.label) === regForm),
       ),
-    [regYear, regEntity, regPeriod, regForm, regSearch],
+    [regYear, regEntity, regPeriod, regForm],
   );
+
+  const auditActive = auditYear !== ALL || auditScope !== ALL;
+  const regActive =
+    regYear !== ALL || regEntity !== ALL || regPeriod !== ALL || regForm !== ALL;
+
+  const filteredInternos = useMemo(
+    () =>
+      internalYear === ALL
+        ? internos
+        : internos.filter((row) => String(row.year) === internalYear),
+    [internalYear],
+  );
+
+  const internalDocCount = useMemo(
+    () => countInternalDocs(filteredInternos),
+    [filteredInternos],
+  );
+
+  const internalActive = internalYear !== ALL;
 
   const clearAudit = () => {
     setAuditYear(ALL);
-    setAuditSearch("");
+    setAuditScope(ALL);
   };
 
   const clearReg = () => {
@@ -121,21 +192,11 @@ export default function EstadosFinancierosPage() {
     setRegEntity(ALL);
     setRegPeriod(ALL);
     setRegForm(ALL);
-    setRegSearch("");
   };
 
-  const auditActive = auditYear !== ALL || auditSearch !== "";
-  const regActive =
-    regYear !== ALL ||
-    regEntity !== ALL ||
-    regPeriod !== ALL ||
-    regForm !== ALL ||
-    regSearch !== "";
-
-  const periods = ["Marzo", "Junio", "Septiembre", "Diciembre"];
-
-  const renderQuarter = (q?: InternalQuarter) =>
-    q ? <DocLink doc={q} /> : <span className="text-sm text-muted-foreground">—</span>;
+  const clearInternal = () => {
+    setInternalYear(ALL);
+  };
 
   return (
     <>
@@ -148,381 +209,245 @@ export default function EstadosFinancierosPage() {
       </Helmet>
 
       <StaticPageFrame page="estados-financieros">
-      <StaticPageSection bandIndex={0}>
-        <div className="site-container">
-          <div className="flex items-baseline justify-between mb-2 flex-wrap gap-2">
-            <h2 className="type-content-section-headline text-foreground">
-              Estados Financieros Auditados
-            </h2>
-            <span className="text-sm text-muted-foreground">
-              {filteredAudit.length} {filteredAudit.length === 1 ? "documento" : "documentos"}
-            </span>
-          </div>
-          <p className="text-muted-foreground mb-6">
-            Informes anuales auditados de UniBank y empresas del Grupo.
-          </p>
+        <StaticPageSection bandIndex={0} surface="white">
+          <div className="site-container">
+            <PageSectionTabs
+              value={tab}
+              onValueChange={handleTabChange}
+              tabs={[...FINANCIAL_TABS]}
+              ariaLabel="Secciones de estados financieros"
+            >
+              <PageSectionTabPanel value="auditados" className="mt-0 flex flex-col gap-10 md:gap-12">
+                <SectionHeader
+                  title="Estados Financieros Auditados"
+                  description="Informes anuales auditados de UniBank y empresas del Grupo."
+                  count={filteredAudit.length}
+                />
 
-          {/* Filters */}
-          <div className="bg-muted/30 border border-border rounded-lg p-4 md:p-5 mb-6">
-            <div className="grid grid-cols-1 md:grid-cols-[200px_1fr_auto] gap-4 items-end">
-              <FilterField label="Año" htmlFor="audit-year">
-                <Select value={auditYear} onValueChange={setAuditYear}>
-                  <SelectTrigger id="audit-year">
-                    <SelectValue placeholder="Todos los años" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value={ALL}>Todos los años</SelectItem>
-                    {auditYears.map((y) => (
-                      <SelectItem key={y} value={String(y)}>
-                        {y}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FilterField>
-
-              <FilterField label="Buscar" htmlFor="audit-search">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    id="audit-search"
-                    value={auditSearch}
-                    onChange={(e) => setAuditSearch(e.target.value)}
-                    placeholder="Buscar por nombre del documento…"
-                    className="pl-9"
+                <FilterBar active={auditActive} onClear={clearAudit}>
+                  <FilterPill
+                    label="Año"
+                    value={auditYear}
+                    displayValue={auditYear === ALL ? undefined : auditYear}
+                    onValueChange={setAuditYear}
+                    options={[
+                      { value: ALL, label: "Todos los años" },
+                      ...auditYears.map((y) => ({ value: String(y), label: String(y) })),
+                    ]}
                   />
-                </div>
-              </FilterField>
-
-              <Button
-                variant="ghost"
-                onClick={clearAudit}
-                disabled={!auditActive}
-                className="h-10"
-              >
-                <X className="h-4 w-4 mr-1" /> Limpiar
-              </Button>
-            </div>
-          </div>
-
-          {/* Table — desktop */}
-          <div className="hidden md:block rounded-lg border border-border overflow-hidden bg-background">
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-muted/40 hover:bg-muted/40">
-                  <TableHead className="font-semibold text-foreground">Documento</TableHead>
-                  <TableHead className="font-semibold text-foreground w-24">Año</TableHead>
-                  <TableHead className="font-semibold text-foreground w-32">Tamaño</TableHead>
-                  <TableHead className="font-semibold text-foreground w-32 text-right">
-                    Descargar
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredAudit.map((doc, i) => (
-                  <TableRow key={i}>
-                    <TableCell>
-                      <DocLink doc={doc} />
-                    </TableCell>
-                    <TableCell className="text-muted-foreground">{doc.year}</TableCell>
-                    <TableCell className="text-muted-foreground">PDF · {doc.size}</TableCell>
-                    <TableCell className="text-right">
-                      <a
-                        href={doc.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={`Descargar ${doc.label}`}
-                        className="inline-flex items-center justify-center h-8 w-8 rounded-md text-muted-foreground hover:text-primary hover:bg-muted transition-colors"
-                      >
-                        <Download className="h-4 w-4" />
-                      </a>
-                    </TableCell>
-                  </TableRow>
-                ))}
-                {filteredAudit.length === 0 && (
-                  <TableRow>
-                    <TableCell colSpan={4} className="text-center text-muted-foreground py-12">
-                      No se encontraron documentos con los filtros aplicados.
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </div>
-
-          <div className="md:hidden space-y-3">
-            {filteredAudit.map((doc, i) => (
-              <div key={i} className="rounded-lg border border-border p-4 bg-background">
-                <DocLink doc={doc} />
-                <div className="mt-3 flex items-center justify-between gap-3 text-sm text-muted-foreground">
-                  <span>
-                    {doc.year} · PDF · {doc.size}
-                  </span>
-                  <a
-                    href={doc.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`Descargar ${doc.label}`}
-                    className="inline-flex items-center justify-center h-8 w-8 rounded-md text-muted-foreground hover:text-primary hover:bg-muted transition-colors"
-                  >
-                    <Download className="h-4 w-4" />
-                  </a>
-                </div>
-              </div>
-            ))}
-            {filteredAudit.length === 0 && (
-              <p className="text-center text-muted-foreground py-12">
-                No se encontraron documentos con los filtros aplicados.
-              </p>
-            )}
-          </div>
-        </div>
-      </StaticPageSection>
-
-      <StaticPageSection bandIndex={1}>
-        <div className="site-container">
-          <div className="flex items-baseline justify-between mb-2 flex-wrap gap-2">
-            <h2 className="type-content-section-headline text-foreground">
-              Información Regulatoria
-            </h2>
-            <span className="text-sm text-muted-foreground">
-              {filteredReg.length} {filteredReg.length === 1 ? "documento" : "documentos"}
-            </span>
-          </div>
-          <p className="text-muted-foreground mb-6">
-            Formularios INT-T e IN-A reportados a la Superintendencia de Bancos de Panamá.
-          </p>
-
-          {/* Filters */}
-          <div className="bg-background border border-border rounded-lg p-4 md:p-5 mb-6">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
-              <FilterField label="Año" htmlFor="reg-year">
-                <Select value={regYear} onValueChange={setRegYear}>
-                  <SelectTrigger id="reg-year">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value={ALL}>Todos</SelectItem>
-                    {regYears.map((y) => (
-                      <SelectItem key={y} value={String(y)}>
-                        {y}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FilterField>
-
-              <FilterField label="Entidad" htmlFor="reg-entity">
-                <Select value={regEntity} onValueChange={setRegEntity}>
-                  <SelectTrigger id="reg-entity">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value={ALL}>Todas</SelectItem>
-                    <SelectItem value="UniBank">UniBank</SelectItem>
-                    <SelectItem value="UniLeasing">UniLeasing</SelectItem>
-                  </SelectContent>
-                </Select>
-              </FilterField>
-
-              <FilterField label="Periodo" htmlFor="reg-period">
-                <Select value={regPeriod} onValueChange={setRegPeriod}>
-                  <SelectTrigger id="reg-period">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value={ALL}>Todos</SelectItem>
-                    {periods.map((p) => (
-                      <SelectItem key={p} value={p}>
-                        {p}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FilterField>
-
-              <FilterField label="Formulario" htmlFor="reg-form">
-                <Select value={regForm} onValueChange={setRegForm}>
-                  <SelectTrigger id="reg-form">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value={ALL}>Todos</SelectItem>
-                    <SelectItem value="INT-T">INT-T</SelectItem>
-                    <SelectItem value="IN-A">IN-A</SelectItem>
-                  </SelectContent>
-                </Select>
-              </FilterField>
-
-              <FilterField label="Buscar" htmlFor="reg-search">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    id="reg-search"
-                    value={regSearch}
-                    onChange={(e) => setRegSearch(e.target.value)}
-                    placeholder="Nombre…"
-                    className="pl-9"
+                  <FilterPill
+                    label="Alcance"
+                    value={auditScope}
+                    displayValue={
+                      auditScope === ALL
+                        ? undefined
+                        : auditScope === "unibank"
+                          ? "UniBank y subsidiarias"
+                          : "Grupo UniBank"
+                    }
+                    onValueChange={setAuditScope}
+                    options={[
+                      { value: ALL, label: "Todos" },
+                      { value: "unibank", label: "UniBank y subsidiarias" },
+                      { value: "grupo", label: "Grupo UniBank" },
+                    ]}
                   />
-                </div>
-              </FilterField>
-            </div>
+                </FilterBar>
 
-            {regActive && (
-              <div className="flex items-center justify-end mt-4">
-                <Button variant="ghost" size="sm" onClick={clearReg}>
-                  <X className="h-4 w-4 mr-1" /> Limpiar filtros
-                </Button>
-              </div>
-            )}
-          </div>
-
-          {/* Table — desktop */}
-          <div className="hidden md:block rounded-lg border border-border overflow-hidden bg-background">
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-muted/40 hover:bg-muted/40">
-                  <TableHead className="font-semibold text-foreground">Documento</TableHead>
-                  <TableHead className="font-semibold text-foreground w-28">Formulario</TableHead>
-                  <TableHead className="font-semibold text-foreground w-28">Entidad</TableHead>
-                  <TableHead className="font-semibold text-foreground w-28">Periodo</TableHead>
-                  <TableHead className="font-semibold text-foreground w-20">Año</TableHead>
-                  <TableHead className="font-semibold text-foreground w-28">Tamaño</TableHead>
-                  <TableHead className="font-semibold text-foreground w-24 text-right">
-                    Descargar
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredReg.map((doc, i) => {
-                  const form = doc.label.includes("IN-A") ? "IN-A" : "INT-T";
-                  return (
-                    <TableRow key={i}>
-                      <TableCell>
-                        <DocLink doc={doc} />
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant="outline" className="font-mono">
-                          {form}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="text-muted-foreground">{doc.entity}</TableCell>
-                      <TableCell className="text-muted-foreground">{doc.period}</TableCell>
-                      <TableCell className="text-muted-foreground">{doc.year}</TableCell>
-                      <TableCell className="text-muted-foreground">PDF · {doc.size}</TableCell>
-                      <TableCell className="text-right">
-                        <a
+                <div className="page-section-card hidden overflow-hidden rounded-[24px] md:block">
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="border-[var(--surface-border)] bg-[var(--surface-subtle)] hover:bg-[var(--surface-subtle)]">
+                        <TableHead className={cn(DOCUMENT_TABLE_HEAD_CLASS, "font-semibold text-foreground")}>Documento</TableHead>
+                        <TableHead className={cn(DOCUMENT_TABLE_HEAD_CLASS, "w-24 font-semibold text-foreground")}>Año</TableHead>
+                        <TableHead className={cn(DOCUMENT_TABLE_HEAD_CLASS, "w-10")} aria-hidden />
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {filteredAudit.map((doc, i) => (
+                        <DocumentTableRow
+                          key={i}
                           href={doc.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label={`Descargar ${doc.label}`}
-                          className="inline-flex items-center justify-center h-8 w-8 rounded-md text-muted-foreground hover:text-primary hover:bg-muted transition-colors"
-                        >
-                          <Download className="h-4 w-4" />
-                        </a>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-                {filteredReg.length === 0 && (
-                  <TableRow>
-                    <TableCell colSpan={7} className="text-center text-muted-foreground py-12">
-                      No se encontraron documentos con los filtros aplicados.
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </div>
-
-          <div className="md:hidden space-y-3">
-            {filteredReg.map((doc, i) => {
-              const form = doc.label.includes("IN-A") ? "IN-A" : "INT-T";
-              return (
-                <div key={i} className="rounded-lg border border-border p-4 bg-background space-y-3">
-                  <DocLink doc={doc} />
-                  <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-                    <Badge variant="outline" className="font-mono">
-                      {form}
-                    </Badge>
-                    <span>{doc.entity}</span>
-                    <span>·</span>
-                    <span>{doc.period}</span>
-                    <span>·</span>
-                    <span>{doc.year}</span>
-                    <span>·</span>
-                    <span>PDF · {doc.size}</span>
-                  </div>
-                  <a
-                    href={doc.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-sm font-medium text-primary"
-                  >
-                    <Download className="h-4 w-4" />
-                    Descargar
-                  </a>
+                          label={doc.label}
+                          meta={<DocumentMetaCell>{doc.year}</DocumentMetaCell>}
+                        />
+                      ))}
+                      {filteredAudit.length === 0 && (
+                        <TableRow>
+                          <TableCell colSpan={3}>
+                            <EmptyResults message="No se encontraron documentos con los filtros aplicados." />
+                          </TableCell>
+                        </TableRow>
+                      )}
+                    </TableBody>
+                  </Table>
                 </div>
-              );
-            })}
-            {filteredReg.length === 0 && (
-              <p className="text-center text-muted-foreground py-12">
-                No se encontraron documentos con los filtros aplicados.
-              </p>
-            )}
-          </div>
-        </div>
-      </StaticPageSection>
 
-      <StaticPageSection bandIndex={2}>
-        <div className="site-container">
-          <h2 className="type-content-section-headline text-foreground mb-2">
-            Estados Financieros Internos
-          </h2>
-          <p className="text-muted-foreground mb-8">
-            Reportes trimestrales internos por año.
-          </p>
-
-          <div className="hidden md:block rounded-lg border border-border overflow-hidden bg-background">
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-muted/40 hover:bg-muted/40">
-                  <TableHead className="font-semibold text-foreground w-24">Año</TableHead>
-                  <TableHead className="font-semibold text-foreground">Marzo</TableHead>
-                  <TableHead className="font-semibold text-foreground">Junio</TableHead>
-                  <TableHead className="font-semibold text-foreground">Septiembre</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {internos.map((row) => (
-                  <TableRow key={row.year}>
-                    <TableCell className="font-semibold align-top">{row.year}</TableCell>
-                    <TableCell className="align-top">{renderQuarter(row.marzo)}</TableCell>
-                    <TableCell className="align-top">{renderQuarter(row.junio)}</TableCell>
-                    <TableCell className="align-top">{renderQuarter(row.septiembre)}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-
-          <div className="md:hidden space-y-4">
-            {internos.map((row) => (
-              <div key={row.year} className="rounded-lg border border-border p-4 bg-background">
-                <h3 className="font-semibold text-lg text-foreground mb-3">{row.year}</h3>
-                <div className="space-y-2">
-                  {row.marzo && <DocLink doc={row.marzo} />}
-                  {row.junio && <DocLink doc={row.junio} />}
-                  {row.septiembre && <DocLink doc={row.septiembre} />}
-                  {!row.marzo && !row.junio && !row.septiembre && (
-                    <span className="text-sm text-muted-foreground">Sin documentos disponibles.</span>
+                <div className="space-y-4 md:hidden">
+                  {filteredAudit.map((doc, i) => (
+                    <DocumentMobileCard
+                      key={i}
+                      href={doc.url}
+                      label={doc.label}
+                      meta={String(doc.year)}
+                    />
+                  ))}
+                  {filteredAudit.length === 0 && (
+                    <EmptyResults message="No se encontraron documentos con los filtros aplicados." />
                   )}
                 </div>
-              </div>
-            ))}
+              </PageSectionTabPanel>
+
+              <PageSectionTabPanel value="regulatoria" className="mt-0 flex flex-col gap-10 md:gap-12">
+                <SectionHeader
+                  title="Información Regulatoria"
+                  description="Formularios INT-T e IN-A reportados a la Superintendencia de Bancos de Panamá."
+                  count={filteredReg.length}
+                />
+
+                <FilterBar active={regActive} onClear={clearReg}>
+                  <FilterPill
+                    label="Año"
+                    value={regYear}
+                    displayValue={regYear === ALL ? undefined : regYear}
+                    onValueChange={setRegYear}
+                    options={[
+                      { value: ALL, label: "Todos" },
+                      ...regYears.map((y) => ({ value: String(y), label: String(y) })),
+                    ]}
+                  />
+                  <FilterPill
+                    label="Entidad"
+                    value={regEntity}
+                    displayValue={regEntity === ALL ? undefined : regEntity}
+                    onValueChange={setRegEntity}
+                    options={[
+                      { value: ALL, label: "Todas" },
+                      { value: "UniBank", label: "UniBank" },
+                      { value: "UniLeasing", label: "UniLeasing" },
+                    ]}
+                  />
+                  <FilterPill
+                    label="Periodo"
+                    value={regPeriod}
+                    displayValue={regPeriod === ALL ? undefined : regPeriod}
+                    onValueChange={setRegPeriod}
+                    options={[
+                      { value: ALL, label: "Todos" },
+                      ...PERIODS.map((p) => ({ value: p, label: p })),
+                    ]}
+                  />
+                  <FilterPill
+                    label="Formulario"
+                    value={regForm}
+                    displayValue={regForm === ALL ? undefined : regForm}
+                    onValueChange={setRegForm}
+                    options={[
+                      { value: ALL, label: "Todos" },
+                      { value: "INT-T", label: "INT-T" },
+                      { value: "IN-A", label: "IN-A" },
+                    ]}
+                  />
+                </FilterBar>
+
+                <div className="page-section-card hidden overflow-hidden rounded-[24px] md:block">
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="border-[var(--surface-border)] bg-[var(--surface-subtle)] hover:bg-[var(--surface-subtle)]">
+                        <TableHead className={cn(DOCUMENT_TABLE_HEAD_CLASS, "font-semibold text-foreground")}>Documento</TableHead>
+                        <TableHead className={cn(DOCUMENT_TABLE_HEAD_CLASS, "font-semibold text-foreground")} aria-hidden />
+                        <TableHead className={cn(DOCUMENT_TABLE_HEAD_CLASS, "w-10")} aria-hidden />
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {filteredReg.map((doc, i) => (
+                        <DocumentTableRow
+                          key={i}
+                          href={doc.url}
+                          label={doc.label}
+                          meta={
+                            <DocumentTagsCell>
+                              <RegulatoriaTags
+                                label={doc.label}
+                                entity={doc.entity}
+                                period={doc.period}
+                                year={doc.year}
+                              />
+                            </DocumentTagsCell>
+                          }
+                        />
+                      ))}
+                      {filteredReg.length === 0 && (
+                        <TableRow>
+                          <TableCell colSpan={3}>
+                            <EmptyResults message="No se encontraron documentos con los filtros aplicados." />
+                          </TableCell>
+                        </TableRow>
+                      )}
+                    </TableBody>
+                  </Table>
+                </div>
+
+                <div className="space-y-4 md:hidden">
+                  {filteredReg.map((doc, i) => (
+                    <DocumentMobileCard
+                      key={i}
+                      href={doc.url}
+                      label={doc.label}
+                      meta={
+                        <span className="flex flex-wrap gap-1.5">
+                          <RegulatoriaTags
+                            label={doc.label}
+                            entity={doc.entity}
+                            period={doc.period}
+                            year={doc.year}
+                          />
+                        </span>
+                      }
+                    />
+                  ))}
+                  {filteredReg.length === 0 && (
+                    <EmptyResults message="No se encontraron documentos con los filtros aplicados." />
+                  )}
+                </div>
+              </PageSectionTabPanel>
+
+              <PageSectionTabPanel value="internos" className="mt-0 flex flex-col gap-10 md:gap-12">
+                <SectionHeader
+                  title="Estados Financieros Internos"
+                  description="Informes trimestrales al cierre de marzo, junio y septiembre de cada ejercicio."
+                  count={internalDocCount}
+                />
+
+                <FilterBar active={internalActive} onClear={clearInternal}>
+                  <FilterPill
+                    label="Año"
+                    value={internalYear}
+                    displayValue={internalYear === ALL ? undefined : internalYear}
+                    onValueChange={setInternalYear}
+                    options={[
+                      { value: ALL, label: "Todos los años" },
+                      ...internalYears.map((y) => ({ value: String(y), label: String(y) })),
+                    ]}
+                  />
+                </FilterBar>
+
+                <div className="flex flex-col gap-5 md:gap-6">
+                  {filteredInternos.map((row) => (
+                    <InternalYearGroup
+                      key={row.year}
+                      year={row.year}
+                      quarters={getInternalQuarters(row)}
+                    />
+                  ))}
+                  {internalDocCount === 0 && (
+                    <EmptyResults message="No hay informes disponibles para el año seleccionado." />
+                  )}
+                </div>
+              </PageSectionTabPanel>
+            </PageSectionTabs>
           </div>
-        </div>
-      </StaticPageSection>
+        </StaticPageSection>
       </StaticPageFrame>
     </>
   );
