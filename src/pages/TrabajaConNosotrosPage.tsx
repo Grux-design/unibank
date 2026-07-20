@@ -2,7 +2,7 @@ import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import ReCaptcha, { type ReCaptchaHandle } from "@/components/atoms/ReCaptcha";
@@ -16,22 +16,29 @@ import {
   Briefcase,
   Users,
   TrendingUp,
-  Sparkles,
-  
   X,
   FileText,
   Mail,
   CheckCircle2,
+  type Icon,
 } from "@/lib/icons";
-import { PageMasthead, StaticPageSection } from "@/components/organisms/StaticPageLayout";
+import { StaticPageFrame, StaticPageSection } from "@/components/organisms/StaticPageLayout";
+import { Reveal } from "@/components/effects/Reveal";
+import {
+  FIELD_SLOT_CLASS,
+  FIELD_TEXTAREA_INSET_CLASS,
+  FIELD_TEXTAREA_WRAPPER_CLASS,
+  FORM_BODY_CLASS,
+  FORM_FIELDS_STACK_CLASS,
+  FORM_ITEM_CLASS,
+} from "@/constants/formFields";
+import { cn } from "@/lib/utils";
 
-/* ─── Constants ────────────────────────────────────────────── */
-
-const MAX_FILE_BYTES = 5 * 1024 * 1024; // 5 MB
+const MAX_FILE_BYTES = 5 * 1024 * 1024;
 const ALLOWED_EXT = ["pdf", "doc", "docx", "png", "jpg", "jpeg"];
 const ALLOWED_ACCEPT = ".pdf,.doc,.docx,.png,.jpg,.jpeg";
 
-const perks = [
+const perks: { icon: Icon; title: string; desc: string }[] = [
   {
     icon: Briefcase,
     title: "Crecimiento profesional",
@@ -65,9 +72,7 @@ const steps = [
     title: "Te integras",
     desc: "Vive la experiencia de pertenecer a una de las instituciones financieras líderes de Panamá.",
   },
-];
-
-/* ─── Schema ───────────────────────────────────────────────── */
+] as const;
 
 const schema = z.object({
   name: z.string().trim().min(1, "Nombre requerido").max(100),
@@ -83,14 +88,176 @@ type FormValues = {
   message: string;
 };
 
-
 const formatBytes = (b: number) => {
   if (b < 1024) return `${b} B`;
   if (b < 1024 * 1024) return `${(b / 1024).toFixed(1)} KB`;
   return `${(b / 1024 / 1024).toFixed(2)} MB`;
 };
 
-/* ─── Page ─────────────────────────────────────────────────── */
+function SectionIntro({
+  tag,
+  title,
+  description,
+}: {
+  tag: string;
+  title: string;
+  description?: string;
+}) {
+  return (
+    <div className="max-w-2xl">
+      <div className="type-section-tag">{tag}</div>
+      <h2 className="mt-3 type-content-section-headline text-balance text-foreground">{title}</h2>
+      {description ? (
+        <p className="mt-4 text-sm leading-relaxed text-pretty text-muted-foreground md:text-base">
+          {description}
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
+function ProcessScrollSection() {
+  const stepRefs = useRef<(HTMLLIElement | null)[]>([]);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const scrollToStep = useCallback((index: number) => {
+    stepRefs.current[index]?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, []);
+
+  useEffect(() => {
+    const updateActiveStep = () => {
+      const viewportCenter = window.innerHeight * 0.45;
+      let closestIndex = 0;
+      let closestDistance = Infinity;
+
+      stepRefs.current.forEach((element, index) => {
+        if (!element) return;
+        const rect = element.getBoundingClientRect();
+        const stepCenter = rect.top + rect.height / 2;
+        const distance = Math.abs(stepCenter - viewportCenter);
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestIndex = index;
+        }
+      });
+
+      setActiveIndex(closestIndex);
+    };
+
+    updateActiveStep();
+    window.addEventListener("scroll", updateActiveStep, { passive: true });
+    window.addEventListener("resize", updateActiveStep, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", updateActiveStep);
+      window.removeEventListener("resize", updateActiveStep);
+    };
+  }, []);
+
+  const progress = ((activeIndex + 1) / steps.length) * 100;
+
+  return (
+    <div className="site-container flex flex-col gap-10 md:flex-row md:items-start md:gap-12 lg:gap-16">
+      <aside className="md:w-2/5 lg:w-[38%] md:sticky md:top-20 md:self-start lg:top-28">
+        <SectionIntro
+          tag="Cómo funciona"
+          title="Tu camino hacia UniBank, en 3 pasos"
+          description="Un proceso simple: aplicas, conversamos y, si hay fit, te integras al equipo."
+        />
+      </aside>
+
+      <div
+        className="relative min-w-0 flex-1"
+        role="group"
+        aria-label="Pasos del proceso"
+      >
+        <div
+          className="pointer-events-none absolute inset-y-0 left-[9px] w-0.5 rounded-full bg-[var(--surface-border)] md:left-[11px]"
+          aria-hidden
+        >
+          <div
+            className="w-full rounded-full bg-primary transition-[height] duration-500 ease-out"
+            style={{ height: `${progress}%` }}
+          />
+        </div>
+
+        <ol className="m-0 flex list-none flex-col p-0">
+          {steps.map((step, index) => {
+            const isActive = activeIndex === index;
+            const isComplete = index < activeIndex;
+
+            return (
+              <li
+                key={step.num}
+                ref={(element) => {
+                  stepRefs.current[index] = element;
+                }}
+                className="grid grid-cols-[1.25rem_1fr] gap-x-4 md:grid-cols-[1.5rem_1fr] md:gap-x-5"
+              >
+                <div className="relative flex justify-center pt-1.5 md:pt-2">
+                  <button
+                    type="button"
+                    onClick={() => scrollToStep(index)}
+                    aria-label={`Paso ${step.num}: ${step.title}`}
+                    aria-current={isActive ? "step" : undefined}
+                    className={cn(
+                      "relative z-10 size-3 shrink-0 rounded-full border-2 transition-colors md:size-3.5",
+                      isComplete || isActive
+                        ? "border-primary bg-primary"
+                        : "border-[var(--surface-border)] bg-background",
+                      isActive && "ring-4 ring-primary/15",
+                    )}
+                  />
+                </div>
+
+                <div
+                  className={cn(
+                    "border-b border-[var(--surface-border)] py-8 transition-opacity duration-500 last:border-b-0 md:py-10",
+                    isActive ? "opacity-100" : "opacity-45",
+                  )}
+                >
+                  <Reveal y={16} duration={0.5} staggerIndex={index}>
+                    <button
+                      type="button"
+                      onClick={() => scrollToStep(index)}
+                      className="w-full text-left"
+                    >
+                      <p
+                        className={cn(
+                          "font-mono text-sm font-semibold tabular-nums transition-colors",
+                          isActive ? "text-primary" : "text-muted-foreground",
+                        )}
+                      >
+                        {step.num}
+                      </p>
+                      <h3 className="mt-2 type-item-title text-foreground">{step.title}</h3>
+                      <p className="mt-3 max-w-prose text-sm leading-relaxed text-pretty text-muted-foreground md:text-[15px]">
+                        {step.desc}
+                      </p>
+                    </button>
+                  </Reveal>
+                </div>
+              </li>
+            );
+          })}
+        </ol>
+      </div>
+    </div>
+  );
+}
+
+function PerkCard({ icon: Icon, title, desc }: { icon: Icon; title: string; desc: string }) {
+  return (
+    <div className="page-section-card h-full rounded-[24px] p-6 md:p-8">
+      <span className="mb-5 flex size-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
+        <Icon className="size-6" />
+      </span>
+      <h3 className="type-item-title text-foreground">{title}</h3>
+      <p className="mt-2 text-sm leading-relaxed text-pretty text-muted-foreground md:text-[15px]">
+        {desc}
+      </p>
+    </div>
+  );
+}
 
 export default function TrabajaConNosotrosPage() {
   const [sending, setSending] = useState(false);
@@ -137,17 +304,25 @@ export default function TrabajaConNosotrosPage() {
       return;
     }
     if (!recaptchaToken) {
-      toast({ title: "Verificación requerida", description: "Por favor completa el reCAPTCHA.", variant: "destructive" });
+      toast({
+        title: "Verificación requerida",
+        description: "Por favor completa el reCAPTCHA.",
+        variant: "destructive",
+      });
       return;
     }
     setSending(true);
     try {
-      // reCAPTCHA verification
-      const { data: verifyData, error: verifyError } = await supabase.functions.invoke("verify-recaptcha", {
-        body: { token: recaptchaToken },
-      });
+      const { data: verifyData, error: verifyError } = await supabase.functions.invoke(
+        "verify-recaptcha",
+        { body: { token: recaptchaToken } },
+      );
       if (verifyError || !verifyData?.success) {
-        toast({ title: "Verificación fallida", description: "No se pudo validar reCAPTCHA. Intenta de nuevo.", variant: "destructive" });
+        toast({
+          title: "Verificación fallida",
+          description: "No se pudo validar reCAPTCHA. Intenta de nuevo.",
+          variant: "destructive",
+        });
         recaptchaRef.current?.reset();
         setRecaptchaToken(null);
         setSending(false);
@@ -172,7 +347,6 @@ export default function TrabajaConNosotrosPage() {
       });
       if (error) throw error;
 
-      // Notify HR via email (non-blocking for UX)
       try {
         const { error: emailErr } = await supabase.functions.invoke("send-job-application", {
           body: {
@@ -213,7 +387,6 @@ export default function TrabajaConNosotrosPage() {
     }
   };
 
-
   return (
     <>
       <Helmet>
@@ -225,144 +398,65 @@ export default function TrabajaConNosotrosPage() {
         <link rel="canonical" href="https://unibank.com.pa/trabaja-con-nosotros" />
       </Helmet>
 
-      <article className="min-h-screen bg-background">
-        <PageMasthead
-          eyebrow={
-            <>
-              <Sparkles className="h-3.5 w-3.5" />
-              Carreras en UniBank
-            </>
-          }
-          title={
-            <>
-              Construye el futuro
-              <br />
-              de la banca <span className="text-primary">con nosotros</span>.
-            </>
-          }
-          subtitle="¿Deseas formar parte del equipo UniBank? Llena los datos del formulario y serás añadido a nuestra base de datos de Recursos Humanos."
-        >
-          <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 sm:gap-4">
-            <a
-              href="#aplicar"
-              className="inline-flex items-center justify-center rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
-            >
-              Aplicar ahora
-            </a>
-            <a
-              href="#cultura"
-              className="inline-flex items-center justify-center rounded-xl border border-border px-6 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-muted/50"
-            >
-              Conoce nuestra cultura
-            </a>
-          </div>
-
-          <div className="w-full max-w-xl border-t border-[var(--surface-border)] pt-6 md:pt-8">
-            <div className="type-stat-display text-foreground">+30 años</div>
-            <div className="mt-1 text-sm text-muted-foreground">creando oportunidades en Panamá</div>
-          </div>
-        </PageMasthead>
-
-        <StaticPageSection bandIndex={0} id="cultura">
-          <div className="site-container">
-            <div className="max-w-2xl">
-              <div className="type-section-tag">
-                Por qué UniBank
-              </div>
-              <h2 className="mt-3 type-content-section-headline text-foreground">
-                Un lugar donde crecer y dejar huella
-              </h2>
-              <p className="mt-4 text-base leading-relaxed text-muted-foreground">
-                Apostamos por las personas. Por eso construimos un entorno donde el talento
-                encuentra propósito, retos y reconocimiento.
-              </p>
-            </div>
-
-            <div className="mt-10 md:mt-12 grid gap-4 md:gap-6 md:grid-cols-3">
-              {perks.map((p) => (
-                <div
-                  key={p.title}
-                  className="group rounded-2xl border border-border bg-card p-5 md:p-7 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"
-                >
-                  <div
-                    className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl"
-                    style={{
-                      background: "hsl(var(--primary) / 0.1)",
-                      color: "hsl(var(--primary))",
-                    }}
-                  >
-                    <p.icon className="h-6 w-6" />
-                  </div>
-                  <h3 className="type-card-title text-foreground">{p.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{p.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </StaticPageSection>
-
-        <StaticPageSection bandIndex={1}>
-          <div className="site-container">
-            <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
-              <div className="max-w-xl">
-                <div className="type-section-tag">
-                  Cómo funciona
-                </div>
-                <h2 className="mt-3 type-content-section-headline text-foreground">
-                  Tu camino hacia UniBank, en 3 pasos
-                </h2>
+      <StaticPageFrame page="trabaja-con-nosotros">
+        <StaticPageSection bandIndex={0} id="cultura" surface="white">
+          <div className="site-container flex flex-col gap-10 md:gap-12">
+            <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+              <SectionIntro
+                tag="Por qué UniBank"
+                title="Un lugar donde crecer y dejar huella"
+                description="Apostamos por las personas. Por eso construimos un entorno donde el talento encuentra propósito, retos y reconocimiento."
+              />
+              <div className="shrink-0 border-t border-[var(--surface-border)] pt-5 md:border-t-0 md:border-l md:pl-8 md:pt-0">
+                <div className="type-stat-display text-foreground">+30 años</div>
+                <p className="mt-1 text-sm text-muted-foreground">creando oportunidades en Panamá</p>
               </div>
             </div>
 
-            <div className="mt-12 grid gap-8 md:grid-cols-3 md:gap-0">
-              {steps.map((s, i) => (
-                <div
-                  key={s.num}
-                  className={`relative px-0 md:px-8 ${
-                    i !== 0 ? "md:border-l md:border-border" : ""
-                  }`}
-                >
-                  <div className="text-sm font-mono font-semibold text-primary">{s.num}</div>
-                  <h3 className="mt-3 type-card-title text-foreground">{s.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.desc}</p>
-                </div>
+            <ul className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-5">
+              {perks.map((perk) => (
+                <li key={perk.title}>
+                  <PerkCard {...perk} />
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
         </StaticPageSection>
 
-        <StaticPageSection bandIndex={2} id="aplicar">
-          <div className="site-container grid gap-8 lg:gap-12 lg:grid-cols-12">
-            {/* Left col */}
-            <aside className="lg:col-span-5 order-last lg:order-none">
+        <StaticPageSection bandIndex={1} surface="white">
+          <ProcessScrollSection />
+        </StaticPageSection>
+
+        <StaticPageSection bandIndex={2} id="aplicar" surface="white">
+          <div className="site-container grid gap-10 lg:grid-cols-12 lg:gap-12">
+            <aside className="order-last lg:order-none lg:col-span-5">
               <div className="lg:sticky lg:top-28">
-                <div className="type-section-tag">
-                  Aplica ahora
-                </div>
-                <h2 className="mt-3 type-content-section-headline text-foreground">
-                  Cuéntanos sobre ti
-                </h2>
-                <p className="mt-4 text-base leading-relaxed text-muted-foreground">
-                  Comparte tu información y un archivo (CV, portafolio o carta) para que nuestro
-                  equipo de Recursos Humanos pueda conocerte mejor.
-                </p>
+                <SectionIntro
+                  tag="Aplica ahora"
+                  title="Cuéntanos sobre ti"
+                  description="Comparte tu información y un archivo (CV, portafolio o carta) para que nuestro equipo de Recursos Humanos pueda conocerte mejor."
+                />
 
                 <ul className="mt-8 space-y-4">
                   {[
                     "Confidencialidad total de tus datos",
                     "Te contactamos solo si hay una vacante afín",
                     "Tu perfil queda en nuestra base de talento",
-                  ].map((t) => (
-                    <li key={t} className="flex items-start gap-3 text-sm text-foreground/80">
-                      <CheckCircle2 className="mt-0.5 h-5 w-5 flex-none text-primary" />
-                      <span>{t}</span>
+                  ].map((item) => (
+                    <li key={item} className="flex items-start gap-3 text-sm text-foreground/80">
+                      <span className="mt-0.5 shrink-0 text-primary">
+                        <CheckCircle2 className="size-5" />
+                      </span>
+                      <span>{item}</span>
                     </li>
                   ))}
                 </ul>
 
-                <div className="mt-10 rounded-2xl border border-border bg-muted/40 p-5">
+                <div className="page-section-card mt-10 rounded-[24px] p-5 md:p-6">
                   <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
-                    <Mail className="h-4 w-4 text-primary" />
+                    <span className="text-primary">
+                      <Mail className="size-4" />
+                    </span>
                     ¿Dudas sobre el proceso?
                   </div>
                   <p className="mt-2 text-sm text-muted-foreground">
@@ -378,19 +472,21 @@ export default function TrabajaConNosotrosPage() {
               </div>
             </aside>
 
-            {/* Right col — form */}
-            <div className="lg:col-span-7 order-first lg:order-none">
-              <div className="rounded-2xl sm:rounded-3xl border border-border bg-card p-5 shadow-sm sm:p-6 lg:p-10">
+            <div className="order-first lg:order-none lg:col-span-7">
+              <div className="page-section-card rounded-[24px] p-5 sm:p-6 lg:p-8">
                 <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                  <form onSubmit={form.handleSubmit(onSubmit)} className={FORM_FIELDS_STACK_CLASS}>
                     <FormField
                       control={form.control}
                       name="name"
                       render={({ field }) => (
-                        <FormItem>
+                        <FormItem className={FORM_ITEM_CLASS}>
                           <FormLabel>Nombre completo *</FormLabel>
                           <FormControl>
-                            <Input placeholder="Ej. María Pérez" {...field} />
+                            <Input
+                              placeholder="Ej. María Pérez"
+                              {...field}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -402,10 +498,13 @@ export default function TrabajaConNosotrosPage() {
                         control={form.control}
                         name="phone"
                         render={({ field }) => (
-                          <FormItem>
+                          <FormItem className={FORM_ITEM_CLASS}>
                             <FormLabel>Teléfono *</FormLabel>
                             <FormControl>
-                              <Input placeholder="+507 6000-0000" {...field} />
+                              <Input
+                                placeholder="+507 6000-0000"
+                                {...field}
+                              />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -415,10 +514,14 @@ export default function TrabajaConNosotrosPage() {
                         control={form.control}
                         name="email"
                         render={({ field }) => (
-                          <FormItem>
+                          <FormItem className={FORM_ITEM_CLASS}>
                             <FormLabel>Email *</FormLabel>
                             <FormControl>
-                              <Input type="email" placeholder="tucorreo@ejemplo.com" {...field} />
+                              <Input
+                                type="email"
+                                placeholder="tucorreo@ejemplo.com"
+                                {...field}
+                              />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -430,26 +533,25 @@ export default function TrabajaConNosotrosPage() {
                       control={form.control}
                       name="message"
                       render={({ field }) => (
-                        <FormItem>
+                        <FormItem className={FORM_ITEM_CLASS}>
                           <FormLabel>Mensaje *</FormLabel>
-                          <FormControl>
-                            <Textarea
-                              rows={6}
-                              className="resize-none"
-                              placeholder="Cuéntanos sobre tu experiencia, intereses o el área en la que te gustaría aportar."
-                              {...field}
-                            />
-                          </FormControl>
+                          <div className={FIELD_TEXTAREA_WRAPPER_CLASS}>
+                            <FormControl>
+                              <Textarea
+                                rows={6}
+                                className={FIELD_TEXTAREA_INSET_CLASS}
+                                placeholder="Cuéntanos sobre tu experiencia, intereses o el área en la que te gustaría aportar."
+                                {...field}
+                              />
+                            </FormControl>
+                          </div>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
 
-                    {/* File upload */}
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium text-foreground">
-                        Archivos Adjuntos *
-                      </label>
+                    <div className={FORM_ITEM_CLASS}>
+                      <FormLabel>Archivos adjuntos *</FormLabel>
 
                       {!file ? (
                         <div
@@ -465,50 +567,35 @@ export default function TrabajaConNosotrosPage() {
                           }}
                           onDragLeave={() => setDragActive(false)}
                           onDrop={handleDrop}
-                          className={`group cursor-pointer rounded-2xl border-2 border-dashed p-6 sm:p-8 text-center transition-all ${
+                          className={cn(
+                            "cursor-pointer rounded-[12px] border-2 border-dashed p-6 text-center transition-colors sm:p-8",
                             dragActive
-                              ? "border-primary bg-primary/5"
-                              : "border-border hover:border-primary/50 hover:bg-muted/40"
-                          }`}
+                              ? "border-primary bg-[var(--surface-accent)]"
+                              : "border-[var(--surface-border)] bg-[var(--surface-subtle)] hover:border-primary/35 hover:bg-[var(--surface-accent)]/60",
+                          )}
                         >
-                          <div
-                            className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl transition-colors"
-                            style={{
-                              background: "hsl(var(--primary) / 0.1)",
-                              color: "hsl(var(--primary))",
-                            }}
-                          >
-                            <UploadCloud className="h-6 w-6" />
-                          </div>
+                          <span className="mx-auto mb-3 flex size-12 items-center justify-center rounded-xl bg-[var(--surface-accent)] text-primary">
+                            <UploadCloud className="size-6" />
+                          </span>
                           <p className="text-sm font-medium text-foreground">
                             Arrastra tu archivo aquí o{" "}
                             <span className="text-primary">selecciónalo</span>
                           </p>
-                          <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-                            Adjunta tu Hoja de vida, Portafolio o Carta de presentación.
+                          <p className={cn("mt-2", FORM_BODY_CLASS)}>
+                            Adjunta tu hoja de vida, portafolio o carta de presentación.
                             <br />
                             Formatos: PDF, DOC, DOCX, PNG, JPG · Máximo 5 MB.
                           </p>
                         </div>
                       ) : (
-                        <div className="flex items-center justify-between gap-3 rounded-2xl border border-border bg-muted/40 p-4">
+                        <div className={cn("flex items-center justify-between gap-3", FIELD_SLOT_CLASS)}>
                           <div className="flex min-w-0 items-center gap-3">
-                            <div
-                              className="flex h-10 w-10 flex-none items-center justify-center rounded-lg"
-                              style={{
-                                background: "hsl(var(--primary) / 0.1)",
-                                color: "hsl(var(--primary))",
-                              }}
-                            >
-                              <FileText className="h-5 w-5" />
-                            </div>
+                            <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-[var(--surface-accent)] text-primary">
+                              <FileText className="size-5" />
+                            </span>
                             <div className="min-w-0">
-                              <div className="truncate text-sm font-medium text-foreground">
-                                {file.name}
-                              </div>
-                              <div className="text-xs text-muted-foreground">
-                                {formatBytes(file.size)}
-                              </div>
+                              <p className="truncate text-sm font-medium text-foreground">{file.name}</p>
+                              <p className={FORM_BODY_CLASS}>{formatBytes(file.size)}</p>
                             </div>
                           </div>
                           <button
@@ -518,10 +605,10 @@ export default function TrabajaConNosotrosPage() {
                               setFileError(null);
                               if (fileRef.current) fileRef.current.value = "";
                             }}
-                            className="flex h-8 w-8 flex-none items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-background hover:text-foreground"
+                            className="flex size-8 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-background hover:text-foreground"
                             aria-label="Quitar archivo"
                           >
-                            <X className="h-4 w-4" />
+                            <X className="size-4" />
                           </button>
                         </div>
                       )}
@@ -533,21 +620,36 @@ export default function TrabajaConNosotrosPage() {
                         accept={ALLOWED_ACCEPT}
                         onChange={(e) => validateAndSetFile(e.target.files?.[0] ?? null)}
                       />
-                      {fileError && (
+                      {fileError ? (
                         <p className="text-sm font-medium text-destructive">{fileError}</p>
-                      )}
+                      ) : null}
                     </div>
 
-                    <p className="text-xs text-muted-foreground">
+                    <p className={FORM_BODY_CLASS}>
                       Este sitio está protegido por reCAPTCHA y se aplican la{" "}
-                      <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="underline">Política de Privacidad</a>{" "}
+                      <a
+                        href="https://policies.google.com/privacy"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline"
+                      >
+                        Política de Privacidad
+                      </a>{" "}
                       y los{" "}
-                      <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" className="underline">Términos de Servicio</a> de Google.
+                      <a
+                        href="https://policies.google.com/terms"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline"
+                      >
+                        Términos de Servicio
+                      </a>{" "}
+                      de Google.
                     </p>
 
                     <ReCaptcha ref={recaptchaRef} onChange={setRecaptchaToken} />
 
-                    <div className="flex flex-col-reverse gap-4 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="flex flex-col gap-4 border-t border-[var(--surface-border)] pt-6 sm:flex-row sm:items-center sm:justify-between">
                       <p className="text-xs text-muted-foreground sm:max-w-[55%]">
                         Al enviar aceptas que tus datos sean usados únicamente para procesos de
                         selección.
@@ -556,7 +658,7 @@ export default function TrabajaConNosotrosPage() {
                         type="submit"
                         size="lg"
                         disabled={sending || !recaptchaToken}
-                        className="w-full rounded-xl px-8 sm:w-auto"
+                        className="w-full md:w-auto md:self-start"
                       >
                         {sending ? "Enviando…" : "Enviar aplicación"}
                       </Button>
@@ -567,7 +669,7 @@ export default function TrabajaConNosotrosPage() {
             </div>
           </div>
         </StaticPageSection>
-      </article>
+      </StaticPageFrame>
     </>
   );
 }

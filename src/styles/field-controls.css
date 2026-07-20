@@ -1,0 +1,34 @@
+/* UniBank form controls — single 1.5px primary stroke on focus, 12px radius */
+
+.field-control {
+  border-radius: 12px;
+  outline: none !important;
+  outline-offset: 0 !important;
+  box-shadow: none;
+}
+
+/* Inset inputs inside a bordered wrapper — no own border or focus ring */
+.field-control-inner,
+.field-control .field-control-inner:focus,
+.field-control .field-control-inner:focus-visible {
+  border: 0;
+  outline: none !important;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+.field-control *:focus,
+.field-control *:focus-visible {
+  outline: none !important;
+  box-shadow: none;
+}
+
+.field-control:focus,
+.field-control:focus-visible,
+.field-control:focus-within,
+.field-control[data-state="open"] {
+  border-color: hsl(var(--primary));
+  outline: none !important;
+  box-shadow: none;
+  border-radius: 12px;
+}

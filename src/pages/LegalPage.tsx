@@ -6,7 +6,7 @@ import type { Document } from "@contentful/rich-text-types";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Helmet } from "react-helmet-async";
 import { TerminosContent } from "@/components/legal/TerminosContent";
-import { PageMasthead, StaticPageSection } from "@/components/organisms/StaticPageLayout";
+import { StaticPageFrame, StaticPageSection } from "@/components/organisms/StaticPageLayout";
 
 const SLUG_MAP: Record<string, string> = {
   "aviso-de-privacidad": "aviso-de-privacidad-unibank",
@@ -93,9 +93,11 @@ export default function LegalPage() {
         )}
       </Helmet>
 
-      <article className="min-h-screen">
-        <PageMasthead title={displayTitle} align="center" />
-
+      <StaticPageFrame
+        page="legal"
+        title={displayTitle}
+        subtitle={page.seoMeta?.description}
+      >
         {content && !isTerminos && (
           <StaticPageSection bandIndex={0}>
             <div className="site-container max-w-3xl">
@@ -111,7 +113,7 @@ export default function LegalPage() {
             <TerminosContent />
           </StaticPageSection>
         )}
-      </article>
+      </StaticPageFrame>
     </>
   );
 }

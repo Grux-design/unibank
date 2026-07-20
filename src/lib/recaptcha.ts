@@ -1,6 +1,13 @@
 // Google reCAPTCHA v2 (checkbox) helper
 export const RECAPTCHA_SITE_KEY = "6Lf3svcsAAAAADifE5zY-D77UUQG_TieQy8yRwHY";
 
+/** Skip captcha gate on local dev — production domains must complete reCAPTCHA. */
+export function isRecaptchaBypassed(): boolean {
+  if (!import.meta.env.DEV || typeof window === "undefined") return false;
+  const host = window.location.hostname;
+  return host === "localhost" || host === "127.0.0.1";
+}
+
 declare global {
   interface Window {
     grecaptcha?: {

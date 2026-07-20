@@ -1,6 +1,5 @@
 import { useMemo, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { FileText, Search, X, Download, ShieldCheck } from "@/lib/icons";
 import {
   Table,
   TableBody,
@@ -9,17 +8,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { StaticPageFrame, StaticPageSection } from "@/components/organisms/StaticPageLayout";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { PageMasthead, StaticPageSection } from "@/components/organisms/StaticPageLayout";
+  DocumentMetaCell,
+  DocumentMobileCard,
+  DocumentTableRow,
+  EmptyResults,
+  FilterBar,
+  FilterPill,
+  SectionHeader,
+  DOCUMENT_TABLE_HEAD_CLASS,
+} from "@/components/molecules/documentLibraryUi";
+import { cn } from "@/lib/utils";
 
 const ALL = "__all__";
 
@@ -75,28 +75,6 @@ const documentos: RatingDoc[] = [
   },
 ];
 
-function FilterField({
-  label,
-  htmlFor,
-  children,
-}: {
-  label: string;
-  htmlFor?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="flex flex-col gap-1.5">
-      <label
-        htmlFor={htmlFor}
-        className="text-xs font-medium text-muted-foreground uppercase tracking-wide"
-      >
-        {label}
-      </label>
-      {children}
-    </div>
-  );
-}
-
 export default function CalificacionRiesgoPage() {
   const years = useMemo(
     () => [...new Set(documentos.map((d) => d.year))].sort((a, b) => b - a),
@@ -105,25 +83,22 @@ export default function CalificacionRiesgoPage() {
 
   const [year, setYear] = useState<string>(ALL);
   const [period, setPeriod] = useState<string>(ALL);
-  const [search, setSearch] = useState("");
 
   const filtered = useMemo(
     () =>
       documentos.filter(
         (d) =>
           (year === ALL || String(d.year) === year) &&
-          (period === ALL || d.period === period) &&
-          (search === "" || d.label.toLowerCase().includes(search.toLowerCase())),
+          (period === ALL || d.period === period),
       ),
-    [year, period, search],
+    [year, period],
   );
 
-  const active = year !== ALL || period !== ALL || search !== "";
+  const active = year !== ALL || period !== ALL;
 
   const clear = () => {
     setYear(ALL);
     setPeriod(ALL);
-    setSearch("");
   };
 
   return (
@@ -136,199 +111,119 @@ export default function CalificacionRiesgoPage() {
         />
       </Helmet>
 
-      <PageMasthead
-        eyebrow={
-          <Badge variant="outline" className="gap-1.5 border-[var(--surface-border)] bg-[var(--surface-page)]">
-            <ShieldCheck className="h-3.5 w-3.5" />
-            Pacific Credit Rating
-          </Badge>
-        }
-        title="Calificación de Riesgo"
-        subtitle="Una banca ágil, sólida y digital. Nuestra calificación refleja un perfil de negocio bueno para crecer, calidad de cartera saludable, alta liquidez respaldada por depósitos y capitalización adecuada y estable."
-      >
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
-          <div className="page-section-card rounded-xl p-5 md:p-6 flex items-center gap-4 md:gap-5">
-            <div className="flex h-20 w-20 flex-shrink-0 items-center justify-center rounded-2xl bg-primary text-primary-foreground">
-              <span className="text-4xl font-bold leading-none">A</span>
-            </div>
-            <div>
-              <p className="text-xs uppercase tracking-wide text-muted-foreground">Calificación actual</p>
-              <p className="text-lg font-semibold text-foreground">paA</p>
-              <p className="text-sm text-muted-foreground">Perspectiva Estable</p>
-            </div>
-          </div>
-          <div className="page-section-card rounded-xl p-5 md:p-6">
-            <p className="text-xs uppercase tracking-wide text-muted-foreground">Calificadora</p>
-            <p className="mt-2 text-lg font-semibold text-foreground">Pacific Credit Rating</p>
-            <p className="text-sm text-muted-foreground mt-1">PCR · Panamá</p>
-          </div>
-          <div className="page-section-card rounded-xl p-5 md:p-6">
-            <p className="text-xs uppercase tracking-wide text-muted-foreground">Última actualización</p>
-            <p className="mt-2 text-lg font-semibold text-foreground">30 de junio 2025</p>
-            <p className="text-sm text-muted-foreground mt-1">{documentos.length} informes disponibles</p>
-          </div>
-        </div>
-      </PageMasthead>
-
-      <StaticPageSection bandIndex={0}>
-        <div className="site-container">
-          <div className="flex items-baseline justify-between mb-2 flex-wrap gap-2">
-            <h2 className="type-content-section-headline text-foreground">
-              Documentos Relacionados
-            </h2>
-            <span className="text-sm text-muted-foreground">
-              {filtered.length} {filtered.length === 1 ? "documento" : "documentos"}
-            </span>
-          </div>
-          <p className="text-muted-foreground mb-6">
-            Informes históricos de calificación de riesgo emitidos por PCR.
-          </p>
-
-          {/* Filters */}
-          <div className="bg-muted/30 border border-border rounded-lg p-4 md:p-5 mb-6">
-            <div className="grid grid-cols-1 md:grid-cols-[180px_180px_1fr_auto] gap-4 items-end">
-              <FilterField label="Año" htmlFor="cr-year">
-                <Select value={year} onValueChange={setYear}>
-                  <SelectTrigger id="cr-year">
-                    <SelectValue placeholder="Todos" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value={ALL}>Todos los años</SelectItem>
-                    {years.map((y) => (
-                      <SelectItem key={y} value={String(y)}>
-                        {y}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FilterField>
-
-              <FilterField label="Periodo" htmlFor="cr-period">
-                <Select value={period} onValueChange={setPeriod}>
-                  <SelectTrigger id="cr-period">
-                    <SelectValue placeholder="Todos" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value={ALL}>Todos los periodos</SelectItem>
-                    <SelectItem value="Junio">Junio</SelectItem>
-                    <SelectItem value="Diciembre">Diciembre</SelectItem>
-                  </SelectContent>
-                </Select>
-              </FilterField>
-
-              <FilterField label="Buscar" htmlFor="cr-search">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    id="cr-search"
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    placeholder="Buscar por nombre del documento…"
-                    className="pl-9"
-                  />
+      <StaticPageFrame page="calificacion-riesgo">
+        <StaticPageSection bandIndex={0} surface="white">
+          <div className="site-container flex flex-col gap-10 md:gap-12">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-5">
+              <div className="page-section-card flex items-center gap-4 rounded-[24px] p-5 md:gap-5 md:p-6">
+                <div className="flex size-20 shrink-0 items-center justify-center rounded-2xl bg-primary text-primary-foreground">
+                  <span className="text-4xl font-bold leading-none">A</span>
                 </div>
-              </FilterField>
-
-              <Button
-                variant="ghost"
-                onClick={clear}
-                disabled={!active}
-                className="h-10"
-              >
-                <X className="h-4 w-4 mr-1" /> Limpiar
-              </Button>
-            </div>
-          </div>
-
-          {/* Table */}
-          <div className="hidden md:block rounded-lg border border-border overflow-hidden bg-background">
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-muted/40 hover:bg-muted/40">
-                  <TableHead className="font-semibold text-foreground">Documento</TableHead>
-                  <TableHead className="font-semibold text-foreground w-32">Periodo</TableHead>
-                  <TableHead className="font-semibold text-foreground w-24">Año</TableHead>
-                  <TableHead className="font-semibold text-foreground w-32 text-right">
-                    Descargar
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filtered.map((doc, i) => (
-                  <TableRow key={i}>
-                    <TableCell>
-                      <a
-                        href={doc.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 text-primary hover:underline font-medium"
-                      >
-                        <FileText className="h-4 w-4 flex-shrink-0" />
-                        <span>{doc.label}</span>
-                      </a>
-                    </TableCell>
-                    <TableCell className="text-muted-foreground">{doc.period}</TableCell>
-                    <TableCell className="text-muted-foreground">{doc.year}</TableCell>
-                    <TableCell className="text-right">
-                      <a
-                        href={doc.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={`Descargar ${doc.label}`}
-                        className="inline-flex items-center justify-center h-8 w-8 rounded-md text-muted-foreground hover:text-primary hover:bg-muted transition-colors"
-                      >
-                        <Download className="h-4 w-4" />
-                      </a>
-                    </TableCell>
-                  </TableRow>
-                ))}
-                {filtered.length === 0 && (
-                  <TableRow>
-                    <TableCell colSpan={4} className="text-center text-muted-foreground py-12">
-                      No se encontraron documentos con los filtros aplicados.
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </div>
-
-          <div className="md:hidden space-y-3">
-            {filtered.map((doc, i) => (
-              <div key={i} className="rounded-lg border border-border p-4 bg-background space-y-3">
-                <a
-                  href={doc.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-primary hover:underline font-medium"
-                >
-                  <FileText className="h-4 w-4 flex-shrink-0" />
-                  <span>{doc.label}</span>
-                </a>
-                <div className="flex items-center justify-between gap-3 text-sm text-muted-foreground">
-                  <span>
-                    {doc.period} · {doc.year}
-                  </span>
-                  <a
-                    href={doc.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`Descargar ${doc.label}`}
-                    className="inline-flex items-center justify-center h-8 w-8 rounded-md text-muted-foreground hover:text-primary hover:bg-muted transition-colors"
-                  >
-                    <Download className="h-4 w-4" />
-                  </a>
+                <div>
+                  <p className="text-sm text-muted-foreground">Calificación actual</p>
+                  <p className="mt-1 text-lg font-semibold text-foreground">paA</p>
+                  <p className="text-sm text-muted-foreground">Perspectiva Estable</p>
                 </div>
               </div>
-            ))}
-            {filtered.length === 0 && (
-              <p className="text-center text-muted-foreground py-12">
-                No se encontraron documentos con los filtros aplicados.
-              </p>
-            )}
+
+              <div className="page-section-card rounded-[24px] p-5 md:p-6">
+                <p className="text-sm text-muted-foreground">Calificadora</p>
+                <p className="mt-1 text-lg font-semibold text-foreground">Pacific Credit Rating</p>
+                <p className="mt-1 text-sm text-muted-foreground">PCR · Panamá</p>
+              </div>
+
+              <div className="page-section-card rounded-[24px] p-5 md:p-6">
+                <p className="text-sm text-muted-foreground">Última actualización</p>
+                <p className="mt-1 text-lg font-semibold text-foreground">30 de junio 2025</p>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  {documentos.length} informes disponibles
+                </p>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-10 md:gap-12">
+              <SectionHeader
+                title="Documentos relacionados"
+                description="Informes históricos de calificación de riesgo emitidos por PCR."
+                count={filtered.length}
+              />
+
+              <FilterBar active={active} onClear={clear}>
+                <FilterPill
+                  label="Año"
+                  value={year}
+                  displayValue={year === ALL ? undefined : year}
+                  onValueChange={setYear}
+                  options={[
+                    { value: ALL, label: "Todos los años" },
+                    ...years.map((y) => ({ value: String(y), label: String(y) })),
+                  ]}
+                />
+                <FilterPill
+                  label="Periodo"
+                  value={period}
+                  displayValue={period === ALL ? undefined : period}
+                  onValueChange={setPeriod}
+                  options={[
+                    { value: ALL, label: "Todos los periodos" },
+                    { value: "Junio", label: "Junio" },
+                    { value: "Diciembre", label: "Diciembre" },
+                  ]}
+                />
+              </FilterBar>
+
+              <div className="page-section-card hidden overflow-hidden rounded-[24px] md:block">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="border-[var(--surface-border)] bg-[var(--surface-subtle)] hover:bg-[var(--surface-subtle)]">
+                      <TableHead className={cn(DOCUMENT_TABLE_HEAD_CLASS, "font-semibold text-foreground")}>Documento</TableHead>
+                      <TableHead className={cn(DOCUMENT_TABLE_HEAD_CLASS, "w-32 font-semibold text-foreground")}>Periodo</TableHead>
+                      <TableHead className={cn(DOCUMENT_TABLE_HEAD_CLASS, "w-24 font-semibold text-foreground")}>Año</TableHead>
+                      <TableHead className={cn(DOCUMENT_TABLE_HEAD_CLASS, "w-10")} aria-hidden />
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {filtered.map((doc, i) => (
+                      <DocumentTableRow
+                        key={i}
+                        href={doc.url}
+                        label={doc.label}
+                        meta={
+                          <>
+                            <DocumentMetaCell>{doc.period}</DocumentMetaCell>
+                            <DocumentMetaCell>{doc.year}</DocumentMetaCell>
+                          </>
+                        }
+                      />
+                    ))}
+                    {filtered.length === 0 && (
+                      <TableRow>
+                        <TableCell colSpan={4}>
+                          <EmptyResults message="No se encontraron documentos con los filtros aplicados." />
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+              </div>
+
+              <div className="space-y-4 md:hidden">
+                {filtered.map((doc, i) => (
+                  <DocumentMobileCard
+                    key={i}
+                    href={doc.url}
+                    label={doc.label}
+                    meta={`${doc.period} · ${doc.year}`}
+                  />
+                ))}
+                {filtered.length === 0 && (
+                  <EmptyResults message="No se encontraron documentos con los filtros aplicados." />
+                )}
+              </div>
+            </div>
           </div>
-        </div>
-      </StaticPageSection>
+        </StaticPageSection>
+      </StaticPageFrame>
     </>
   );
 }

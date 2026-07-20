@@ -21,12 +21,20 @@
   }
 }
 
-/* Smoother focus rings using brand orange */
-*:focus-visible {
+/* Smoother focus rings using brand orange — form fields use field-controls.css */
+*:focus-visible:not(.field-control) {
   outline: 2px solid hsl(20 100% 56%);
   outline-offset: 3px;
   border-radius: 4px;
   transition: outline-offset 0.15s ease;
+}
+
+.field-control:focus,
+.field-control:focus-visible,
+.field-control:focus-within,
+.field-control *:focus-visible {
+  outline: none;
+  outline-offset: 0;
 }
 
 /* ---- Hero floating particles ---- */

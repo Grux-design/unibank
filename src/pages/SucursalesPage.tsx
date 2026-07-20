@@ -2,7 +2,7 @@ import { Helmet } from "react-helmet-async";
 import { MapPin, Phone, Clock, Map } from "@/lib/icons";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { PageMasthead, StaticPageSection } from "@/components/organisms/StaticPageLayout";
+import { StaticPageFrame, StaticPageSection } from "@/components/organisms/StaticPageLayout";
 import avenidaBalboaImg from "@/assets/branches/avenida-balboa.jpeg";
 import costaDelEsteImg from "@/assets/branches/costa-del-este.png";
 
@@ -57,13 +57,7 @@ export default function SucursalesPage() {
         <link rel="canonical" href="https://unibank.com.pa/sucursales" />
       </Helmet>
 
-      <article className="min-h-screen">
-        <PageMasthead
-          align="center"
-          title="Nuestras Sucursales"
-          subtitle="Visítanos en cualquiera de nuestras oficinas. Estamos aquí para atenderte."
-        />
-
+      <StaticPageFrame page="sucursales">
         <StaticPageSection bandIndex={0}>
           <div className="site-container grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
             {branches.map((b) => (
@@ -141,7 +135,7 @@ export default function SucursalesPage() {
             ))}
           </div>
         </StaticPageSection>
-      </article>
+      </StaticPageFrame>
     </>
   );
 }

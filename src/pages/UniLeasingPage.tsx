@@ -2,7 +2,6 @@ import { Helmet } from "react-helmet-async";
 import { useState } from "react";
 import {
   Mail,
-  Sparkles,
   Package,
   Sun,
   Car,
@@ -20,7 +19,7 @@ import {
   Rocket,
   type Icon,
 } from "@/lib/icons";
-import { PageMasthead, StaticPageSection } from "@/components/organisms/StaticPageLayout";
+import { StaticPageFrame, StaticPageSection } from "@/components/organisms/StaticPageLayout";
 
 const MAIL_TO = "unileasing@unibank.com.pa";
 const MAIL_SUBJECT = "Solicitud de información — Uni Leasing";
@@ -215,20 +214,7 @@ export default function UniLeasingPage() {
         />
       </Helmet>
 
-      <article className="min-h-screen bg-background">
-        <PageMasthead
-          eyebrow={
-            <>
-              <Sparkles className="h-3.5 w-3.5" />
-              Grupo UniBank · Leasing
-            </>
-          }
-          title="Uni Leasing"
-          subtitle="Adquiera los activos que su empresa necesita, con financiamiento flexible y atención personalizada."
-        >
-          <PrimaryCTA />
-        </PageMasthead>
-
+      <StaticPageFrame page="unileasing" mastheadSlot={<PrimaryCTA />}>
         <StaticPageSection bandIndex={0}>
           <div className="site-container">
             <SectionHeader
@@ -314,7 +300,7 @@ export default function UniLeasingPage() {
             </div>
           </div>
         </StaticPageSection>
-      </article>
+      </StaticPageFrame>
     </>
   );
 }

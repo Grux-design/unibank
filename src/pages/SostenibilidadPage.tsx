@@ -1,26 +1,144 @@
 import { Helmet } from "react-helmet-async";
-import { Leaf, Sprout, Recycle, Users, ChevronRight, BadgeCheck } from "@/lib/icons";
-import { PageMasthead, StaticPageSection } from "@/components/organisms/StaticPageLayout";
+import { motion, useReducedMotion } from "motion/react";
+import { BoltLightning, Sun, type Icon } from "@/lib/icons";
+import { StaticPageFrame, StaticPageSection } from "@/components/organisms/StaticPageLayout";
+import {
+  SustainabilityLineArt,
+  type SustainabilityVectorKind,
+} from "@/components/illustrations/SustainabilityLineArt";
+import { EASE } from "@/lib/motion";
 
-const pillars = [
+const commitments = [
   {
-    icon: Sprout,
-    title: "Finanzas sostenibles",
-    desc: "Productos y prácticas alineadas al desarrollo sostenible.",
+    title: "Prácticas financieras responsables",
+    desc: "Productos y decisiones alineadas al desarrollo sostenible del grupo.",
   },
   {
-    icon: Users,
     title: "Inclusión social",
     desc: "Acceso, equidad y bienestar en las comunidades donde operamos.",
   },
   {
-    icon: Recycle,
     title: "Medio ambiente",
-    desc: "Conservación de recursos naturales en cada operación.",
+    desc: "Conservación de recursos naturales para las generaciones presentes y futuras.",
   },
 ] as const;
 
+const greenBondFocusAreas: {
+  title: string;
+  description: string;
+  icon: Icon;
+}[] = [
+  {
+    title: "Energías renovables",
+    description: "Enfoque principal de inversión de los recursos captados.",
+    icon: Sun,
+  },
+  {
+    title: "Eficiencia energética",
+    description: "Proyectos complementarios elegibles bajo el marco de referencia.",
+    icon: BoltLightning,
+  },
+];
+
+function GreenBondFocusItem({
+  title,
+  description,
+  icon: Icon,
+}: {
+  title: string;
+  description: string;
+  icon: Icon;
+}) {
+  return (
+    <li className="flex gap-4 rounded-[16px] bg-[var(--surface-subtle)] p-4 md:p-5">
+      <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+        <Icon className="size-4" />
+      </span>
+      <div>
+        <p className="text-sm font-medium text-foreground md:text-[15px]">{title}</p>
+        <p className="mt-1 text-sm leading-relaxed text-pretty text-muted-foreground">{description}</p>
+      </div>
+    </li>
+  );
+}
+
+const pillars: {
+  kind: SustainabilityVectorKind;
+  title: string;
+  desc: string;
+}[] = [
+  {
+    kind: "finance",
+    title: "Finanzas sostenibles",
+    desc: "Productos y prácticas alineadas al desarrollo sostenible.",
+  },
+  {
+    kind: "inclusion",
+    title: "Inclusión social",
+    desc: "Acceso, equidad y bienestar en las comunidades donde operamos.",
+  },
+  {
+    kind: "environment",
+    title: "Medio ambiente",
+    desc: "Conservación de recursos naturales en cada operación.",
+  },
+];
+
+function SectionIntro({
+  title,
+  description,
+}: {
+  title: string;
+  description?: string;
+}) {
+  return (
+    <div className="max-w-xl">
+      <h2 className="type-content-section-headline text-balance text-foreground">{title}</h2>
+      {description ? (
+        <p className="mt-4 text-sm leading-relaxed text-pretty text-muted-foreground md:text-base">
+          {description}
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
+function PillarCard({
+  kind,
+  title,
+  desc,
+}: {
+  kind: SustainabilityVectorKind;
+  title: string;
+  desc: string;
+}) {
+  const prefersReduced = useReducedMotion();
+
+  return (
+    <motion.li
+      className="group page-hover-primary-card page-section-card h-full overflow-hidden rounded-[24px] transition-[background-color,border-color] duration-300"
+      whileHover={prefersReduced ? undefined : { y: -3 }}
+      transition={{ duration: 0.35, ease: EASE.cinematic }}
+    >
+      <div className="flex h-full flex-col p-6 md:p-8">
+        <SustainabilityLineArt kind={kind} />
+
+        <div className="mt-6 flex flex-1 flex-col gap-2 md:mt-7">
+          <h3 className="page-hover-primary-title type-item-title m-0 text-[clamp(20px,2vw,24px)] leading-snug text-foreground transition-colors duration-300">
+            {title}
+          </h3>
+          <p className="page-hover-primary-body m-0 text-sm leading-relaxed text-pretty text-muted-foreground transition-colors duration-300 md:text-[15px]">
+            {desc}
+          </p>
+        </div>
+      </div>
+    </motion.li>
+  );
+}
+
 export default function SostenibilidadPage() {
+  const prefersReduced = useReducedMotion();
+
   return (
     <>
       <Helmet>
@@ -31,151 +149,91 @@ export default function SostenibilidadPage() {
         />
       </Helmet>
 
-      <article className="min-h-screen bg-background">
-        <PageMasthead
-          eyebrow={
-            <>
-              <Leaf className="h-3.5 w-3.5" />
-              ESG
-            </>
-          }
-          title="Sostenibilidad"
-          subtitle="Nuestro compromiso con el medio ambiente y la sociedad guía cada decisión que tomamos como grupo financiero."
-        >
-          <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
-            {pillars.map(({ icon: Icon, title, desc }) => (
-              <div
-                key={title}
-                className="page-section-card flex flex-col gap-2 rounded-xl p-4 sm:p-5"
-              >
-                <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                  <Icon className="h-5 w-5" />
-                </div>
-                <p className="type-item-title-sm text-foreground">{title}</p>
-                <p className="text-xs leading-relaxed text-muted-foreground">{desc}</p>
-              </div>
-            ))}
-          </div>
-        </PageMasthead>
+      <StaticPageFrame page="sostenibilidad">
+        <StaticPageSection bandIndex={0} id="compromiso" surface="white">
+          <div className="site-container flex flex-col gap-10 md:flex-row md:items-start md:gap-12 lg:gap-16">
+            <div className="md:w-2/5 lg:w-[38%] md:sticky md:top-20 md:self-start lg:top-28">
+              <h2 className="type-content-section-headline text-balance text-foreground">
+                Decisiones responsables, impacto positivo
+              </h2>
+              <p className="mt-5 text-sm leading-relaxed text-pretty text-muted-foreground md:text-base">
+                En Grupo UniBank, la sostenibilidad guía cada decisión — equilibrando crecimiento
+                económico con el bienestar social y la conservación del medio ambiente.
+              </p>
+            </div>
 
-        <StaticPageSection bandIndex={0}>
-          <div className="site-container">
-          <div className="mb-8 md:mb-10">
-            <span className="type-section-tag gap-2">
-              Nuestro compromiso
-            </span>
-            <h2 className="mt-4 type-content-section-headline text-foreground">
-              Decisiones responsables, impacto positivo
-            </h2>
-          </div>
-          <p className="text-sm md:text-base lg:text-lg leading-relaxed text-muted-foreground">
-            En Grupo UniBank, creemos firmemente en la importancia de la sostenibilidad como norte
-            en todas nuestras acciones. Reconocemos que el futuro de nuestro planeta depende de
-            decisiones responsables y conscientes. Por eso, nos comprometemos a promover prácticas
-            financieras sostenibles, fomentar la inclusión social y respetar el medio ambiente en
-            todas nuestras operaciones. Nuestro enfoque en la sostenibilidad nos impulsa a buscar
-            soluciones innovadoras que equilibren el crecimiento económico con la conservación de
-            los recursos naturales, generando así un impacto positivo tanto para nuestras
-            comunidades como para las futuras generaciones.
-          </p>
-
-          {/* Pillars */}
-          <div className="mt-10 md:mt-12 grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-5">
-            {pillars.map(({ icon: Icon, title, desc }) => (
-              <div
-                key={title}
-                className="group page-section-card rounded-2xl p-5 md:p-6 transition-all hover:-translate-y-1 hover:border-primary/40"
-              >
-                <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
-                  <Icon className="h-6 w-6" />
-                </div>
-                <h3 className="type-card-title text-foreground">{title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{desc}</p>
-              </div>
-            ))}
-          </div>
+            <div className="min-w-0 flex-1">
+              <ul className="page-section-card divide-y divide-[var(--surface-border)] overflow-hidden rounded-[24px]">
+                {commitments.map(({ title, desc }) => (
+                  <li key={title} className="p-6 md:p-8">
+                    <h3 className="type-item-title text-base text-foreground md:text-lg">{title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-pretty text-muted-foreground md:text-[15px]">
+                      {desc}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </StaticPageSection>
 
-        <StaticPageSection bandIndex={1}>
-          <div className="site-container">
-            <div className="grid grid-cols-1 gap-8 min-[1200px]:grid-cols-2 min-[1200px]:items-center min-[1200px]:gap-10">
-              <div className="order-2 min-[1200px]:order-1">
-                <span className="type-section-tag gap-2">
-                  <BadgeCheck className="h-3.5 w-3.5" />
-                  Hito histórico
-                </span>
-                <h2 className="mt-4 type-content-section-headline text-foreground">
-                  Bonos Verdes
-                </h2>
-                <p className="mt-5 text-sm md:text-base lg:text-lg leading-relaxed text-muted-foreground">
-                  Reconocemos la gran importancia de los bonos verdes en nuestra estrategia
-                  financiera, siendo el{" "}
-                  <span className="font-semibold text-foreground">
-                    primer grupo financiero de capital panameño
-                  </span>{" "}
-                  en emitir una serie de Bonos Verdes en el mercado y registrado en la Bolsa
-                  Latinoamericana de Valores. Estos bonos nos permiten invertir de manera específica
-                  en proyectos alineados con el desarrollo sostenible, bajo un enfoque en energías
-                  renovables y eficiencia energética.
-                </p>
+        <StaticPageSection bandIndex={1} id="pilares" surface="white">
+          <div className="site-container flex flex-col gap-10 md:gap-12">
+            <SectionIntro
+              title="Tres pilares"
+              description="Un enfoque integral que conecta finanzas, personas y planeta en cada operación del grupo."
+            />
 
-                <a
-                  href="https://www.flipsnack.com/unibankpanama/marco-de-referencia-bono-verde-unileasing/full-view.html"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-8 inline-flex w-full max-w-sm sm:w-auto items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:opacity-95"
-                >
-                  Conoce nuestro Marco de Referencia
-                  <ChevronRight className="h-4 w-4" />
-                </a>
-                <p className="mt-3 text-xs text-muted-foreground">
-                  Emitido por Uni Leasing · Estructurado por Invertis Securities
-                </p>
-              </div>
+            <ul className="grid grid-cols-1 gap-5 md:grid-cols-3 md:gap-6">
+              {pillars.map((pillar) => (
+                <PillarCard key={pillar.kind} {...pillar} />
+              ))}
+            </ul>
+          </div>
+        </StaticPageSection>
 
-              {/* Decorative stat card */}
-              <div className="order-1 min-[1200px]:order-2 relative">
-                <div className="relative overflow-hidden rounded-2xl md:rounded-3xl border border-border bg-card p-6 md:p-10">
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                      <Leaf className="h-6 w-6" />
-                    </div>
-                    <div className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-                      Bonos Verdes
-                    </div>
-                  </div>
-                  <div className="mt-8">
-                    <div className="type-stat-display text-foreground">1°</div>
-                    <p className="mt-3 text-base leading-relaxed text-muted-foreground">
-                      Primer grupo financiero de capital panameño en emitir Bonos Verdes
-                      registrados en la Bolsa Latinoamericana de Valores.
-                    </p>
-                  </div>
-                  <div className="mt-8 grid grid-cols-2 gap-4 border-t border-border pt-6">
-                    <div>
-                      <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                        Enfoque
-                      </div>
-                      <div className="mt-1 text-sm font-medium text-foreground">
-                        Energías renovables
-                      </div>
-                    </div>
-                    <div>
-                      <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                        Y
-                      </div>
-                      <div className="mt-1 text-sm font-medium text-foreground">
-                        Eficiencia energética
-                      </div>
-                    </div>
-                  </div>
+        <StaticPageSection bandIndex={2} id="bonos-verdes" surface="white">
+          <div className="site-container flex flex-col gap-10 md:gap-12">
+            <SectionIntro
+              title="Bonos Verdes"
+              description="El primer grupo financiero de capital panameño en emitir Bonos Verdes registrados en la Bolsa Latinoamericana de Valores."
+            />
+
+            <div className="page-section-card overflow-hidden rounded-[24px]">
+              <div className="grid grid-cols-1 md:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] md:divide-x md:divide-[var(--surface-border)]">
+                <div className="flex flex-col justify-center p-6 md:p-8 lg:p-10">
+                  <p className="type-stat-display text-foreground">1°</p>
+                  <p className="mt-4 max-w-md text-base leading-relaxed text-pretty text-muted-foreground">
+                    Primer grupo financiero de capital panameño en emitir Bonos Verdes registrados en
+                    la Bolsa Latinoamericana de Valores.
+                  </p>
+                  <p className="mt-6 text-sm leading-relaxed text-pretty text-muted-foreground md:text-[15px]">
+                    Estos bonos nos permiten invertir de manera específica en proyectos alineados con
+                    el desarrollo sostenible.
+                  </p>
+                </div>
+
+                <div className="flex flex-col p-6 md:p-8 lg:p-10">
+                  <p className="text-sm font-medium text-foreground">Áreas de inversión</p>
+                  <ul className="mt-4 flex flex-col gap-3 md:mt-5 md:gap-4">
+                    {greenBondFocusAreas.map(({ title, description, icon }) => (
+                      <GreenBondFocusItem
+                        key={title}
+                        title={title}
+                        description={description}
+                        icon={icon}
+                      />
+                    ))}
+                  </ul>
+                  <p className="mt-6 border-t border-[var(--surface-border)] pt-5 text-xs text-muted-foreground md:mt-8 md:pt-6">
+                    Emitido por Uni Leasing · Estructurado por Invertis Securities
+                  </p>
                 </div>
               </div>
             </div>
           </div>
         </StaticPageSection>
-      </article>
+      </StaticPageFrame>
     </>
   );
 }

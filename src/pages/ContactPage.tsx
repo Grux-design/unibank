@@ -8,7 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import ReCaptcha, { type ReCaptchaHandle } from "@/components/atoms/ReCaptcha";
 import type { Lang } from "@/components/layout/SiteLayout";
-import { SimplePageHero, StaticPageSection } from "@/components/organisms/StaticPageLayout";
+import { StaticPageFrame, StaticPageSection } from "@/components/organisms/StaticPageLayout";
 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -98,9 +98,15 @@ export default function ContactPage() {
         <link rel="canonical" href="https://unibank.com.pa/contact" />
       </Helmet>
 
-      <article className="min-h-screen bg-background">
-        <SimplePageHero title={t.h1} subtitle={t.sub} />
-
+      <StaticPageFrame
+        page="contact"
+        title={t.h1}
+        subtitle={t.sub}
+        eyebrow={{
+          icon: "mail",
+          label: isEs ? "Canales de atención" : "Support channels",
+        }}
+      >
         <StaticPageSection bandIndex={0}>
           <div className="site-container max-w-2xl">
             <div className="page-section-card rounded-2xl p-5 shadow-sm sm:p-6 md:p-8">
@@ -172,7 +178,7 @@ export default function ContactPage() {
             </div>
           </div>
         </StaticPageSection>
-      </article>
+      </StaticPageFrame>
     </>
   );
 }

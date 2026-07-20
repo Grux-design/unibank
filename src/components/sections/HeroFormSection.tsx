@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 import type { CmsSectionProps } from "@/components/organisms/PageBuilder";
-import { PageMasthead } from "@/components/organisms/PageMasthead";
+import { ConfiguredPageMasthead } from "@/components/organisms/StaticPageFrame";
+import { cmsSectionToMastheadContent } from "@/lib/pageMasthead";
 import { CmsCtaButton } from "@/components/molecules/CmsCtaButton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,23 +10,15 @@ import { CTA_BUTTON_LAYOUT_CLASS } from "@/constants/ctaButtons";
 import { filterCmsCtaItems } from "@/lib/cmsLinks";
 
 export function HeroFormSection({ section }: CmsSectionProps) {
-  const { title, headline, subheadline, mainImage, showForm } = section;
+  const { showForm } = section;
   const [idValue, setIdValue] = useState("");
   const bp = useBreakpoint();
   const isMobile = bp === "mobile";
 
-  const imgSrc = mainImage?.fields?.file?.url;
   const ctaItems = filterCmsCtaItems(section.items);
 
   return (
-    <PageMasthead
-      eyebrow={title}
-      title={headline ?? ""}
-      titleHtml={headline}
-      subtitle={subheadline}
-      imageSrc={imgSrc}
-      imageAlt={mainImage?.fields?.title ?? headline ?? ""}
-    >
+    <ConfiguredPageMasthead preset="cms-product" {...cmsSectionToMastheadContent(section)}>
       {ctaItems.length > 0 && (
         <div className="flex flex-col md:flex-row flex-wrap gap-3 mt-2 w-full">
           {ctaItems.map((item) => (
@@ -56,6 +49,6 @@ export function HeroFormSection({ section }: CmsSectionProps) {
           </Button>
         </div>
       )}
-    </PageMasthead>
+    </ConfiguredPageMasthead>
   );
 }

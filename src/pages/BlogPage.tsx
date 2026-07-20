@@ -4,7 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
-import { PageMasthead } from "@/components/organisms/StaticPageLayout";
+import { StaticPageFrame } from "@/components/organisms/StaticPageLayout";
 import {
   Select,
   SelectContent,
@@ -229,34 +229,7 @@ export default function BlogPage() {
         <link rel="canonical" href="https://unibank.com.pa/blog" />
       </Helmet>
 
-      <article className="min-h-screen pb-16 md:pb-24 lg:pb-28 bg-background">
-        <PageMasthead
-          align="center"
-          eyebrow={
-            <>
-              <Newspaper className="w-3.5 h-3.5" />
-              Sala de Prensa · Blog Unibank
-            </>
-          }
-          title="Noticias y Blog"
-          subtitle="Mantente informado con las últimas noticias, consejos financieros y novedades de UniBank."
-        >
-          {!isLoading && posts.length > 0 && (
-            <div className="flex flex-wrap items-center justify-center gap-2 mt-1">
-              <span className="type-section-tag text-[10px] px-3 py-1">
-                <strong className="text-foreground">{posts.length}</strong>
-                &nbsp;{posts.length === 1 ? "artículo" : "artículos"}
-              </span>
-              {lastUpdated && (
-                <span className="type-section-tag text-[10px] px-3 py-1">
-                  Actualizado&nbsp;
-                  <strong className="text-foreground">{lastUpdated}</strong>
-                </span>
-              )}
-            </div>
-          )}
-        </PageMasthead>
-
+      <StaticPageFrame page="blog" articleClassName="min-h-screen pb-16 md:pb-24 lg:pb-28 bg-background">
         {isLoading && (
           <section className="page-surface-white py-12 md:py-16">
             <div className="site-container space-y-6">
@@ -300,9 +273,21 @@ export default function BlogPage() {
                     Destacados
                   </h2>
                 </div>
-                <span className="text-xs uppercase tracking-[0.12em] text-muted-foreground font-medium">
-                  Lo más reciente
-                </span>
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="type-section-tag text-[10px] px-3 py-1">
+                    <strong className="text-foreground">{posts.length}</strong>
+                    &nbsp;{posts.length === 1 ? "artículo" : "artículos"}
+                  </span>
+                  {lastUpdated && (
+                    <span className="type-section-tag text-[10px] px-3 py-1">
+                      Actualizado&nbsp;
+                      <strong className="text-foreground">{lastUpdated}</strong>
+                    </span>
+                  )}
+                  <span className="text-xs uppercase tracking-[0.12em] text-muted-foreground font-medium">
+                    Lo más reciente
+                  </span>
+                </div>
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
@@ -561,7 +546,7 @@ export default function BlogPage() {
             </section>
           </>
         )}
-      </article>
+      </StaticPageFrame>
     </>
   );
 }

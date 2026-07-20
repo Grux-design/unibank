@@ -470,6 +470,18 @@
     padding-bottom: calc(clamp(32px, 5vw, 64px) - 20px);
   }
 
+  .page-masthead-editorial-band--no-media {
+    padding-bottom: clamp(32px, 5vw, 64px);
+  }
+
+  .page-masthead-editorial-grid--no-media {
+    position: relative;
+    isolation: isolate;
+    min-height: clamp(200px, 24vh, 280px);
+    justify-content: center;
+    padding-block: clamp(24px, 4vw, 48px);
+  }
+
   .page-masthead-editorial-watermark {
     position: absolute;
     pointer-events: none;
@@ -525,6 +537,10 @@
   .page-masthead-editorial-grid-texture img {
     width: 100%;
     height: 100%;
+  }
+
+  .page-masthead-editorial-grid-texture--gray {
+    opacity: 0.58;
   }
 
   .page-masthead-editorial-copy {
@@ -645,6 +661,10 @@
       bottom: clamp(-64px, -12vw, -28px);
       transform: rotate(-60deg);
     }
+
+    .page-masthead-editorial-grid-texture--gray {
+      opacity: 0.52;
+    }
   }
 
   .page-masthead-editorial-copy .type-eyebrow,
@@ -658,6 +678,50 @@
   .page-section-card {
     background: var(--surface-warm);
     border: 1px solid var(--surface-border);
+  }
+
+  .page-hover-primary-card:hover,
+  .board-member-card:hover {
+    background: hsl(var(--primary));
+    border-color: hsl(var(--primary) / 0.3);
+  }
+
+  .page-hover-primary-card:hover .page-hover-primary-title,
+  .board-member-card:hover .board-member-name {
+    color: hsl(var(--primary-foreground));
+  }
+
+  .page-hover-primary-card:hover .page-hover-primary-body,
+  .board-member-card:hover .board-member-role {
+    color: hsl(var(--primary-foreground) / 0.9);
+  }
+
+  .page-hover-primary-card:hover .page-hover-primary-icon,
+  .board-member-card:hover .board-member-avatar {
+    background: hsl(var(--primary-foreground) / 0.15);
+    color: hsl(var(--primary-foreground));
+  }
+
+  .page-hover-primary-card:hover .page-hover-primary-label {
+    color: hsl(var(--primary-foreground));
+  }
+
+  .page-line-art {
+    color: hsl(var(--primary) / 0.62);
+    transition: color 0.3s ease;
+  }
+
+  .page-line-art .line-art-fill {
+    fill: hsl(0 0% 100%);
+    transition: fill 0.3s ease;
+  }
+
+  .page-hover-primary-card:hover .page-line-art {
+    color: hsl(var(--primary-foreground));
+  }
+
+  .page-hover-primary-card:hover .page-line-art .line-art-fill {
+    fill: hsl(var(--primary-foreground) / 0.16);
   }
 
   /* Subtle interaction — no shadows (product CMS sections) */
