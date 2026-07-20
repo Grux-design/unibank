@@ -4,7 +4,7 @@ import { ChevronRight } from "@/lib/icons";
 import { Button } from "@/components/ui/button";
 import { BenefitSectionTextures } from "@/components/atoms/BenefitSectionTextures";
 import { Reveal } from "@/components/effects/Reveal";
-import { ConfiguredPageMasthead } from "@/components/organisms/StaticPageLayout";
+import { ConfiguredPageMasthead, StaticPageSection } from "@/components/organisms/StaticPageLayout";
 import {
   OrangePrefooterBanner,
   OrangePrefooterButton,

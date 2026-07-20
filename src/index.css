@@ -680,6 +680,50 @@
     border: 1px solid var(--surface-border);
   }
 
+  .page-hover-primary-card:hover,
+  .board-member-card:hover {
+    background: hsl(var(--primary));
+    border-color: hsl(var(--primary) / 0.3);
+  }
+
+  .page-hover-primary-card:hover .page-hover-primary-title,
+  .board-member-card:hover .board-member-name {
+    color: hsl(var(--primary-foreground));
+  }
+
+  .page-hover-primary-card:hover .page-hover-primary-body,
+  .board-member-card:hover .board-member-role {
+    color: hsl(var(--primary-foreground) / 0.9);
+  }
+
+  .page-hover-primary-card:hover .page-hover-primary-icon,
+  .board-member-card:hover .board-member-avatar {
+    background: hsl(var(--primary-foreground) / 0.15);
+    color: hsl(var(--primary-foreground));
+  }
+
+  .page-hover-primary-card:hover .page-hover-primary-label {
+    color: hsl(var(--primary-foreground));
+  }
+
+  .page-line-art {
+    color: hsl(var(--primary) / 0.62);
+    transition: color 0.3s ease;
+  }
+
+  .page-line-art .line-art-fill {
+    fill: hsl(0 0% 100%);
+    transition: fill 0.3s ease;
+  }
+
+  .page-hover-primary-card:hover .page-line-art {
+    color: hsl(var(--primary-foreground));
+  }
+
+  .page-hover-primary-card:hover .page-line-art .line-art-fill {
+    fill: hsl(var(--primary-foreground) / 0.16);
+  }
+
   /* Subtle interaction — no shadows (product CMS sections) */
   @media (prefers-reduced-motion: no-preference) {
     .page-touch-card {
