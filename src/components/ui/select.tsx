@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as SelectPrimitive from "@radix-ui/react-select";
 import { Check, ChevronDown, ChevronUp } from "@/lib/icons";
+import { FIELD_SELECT_TRIGGER_CLASS } from "@/constants/formFields";
 
 import { cn } from "@/lib/utils";
 
@@ -17,7 +18,8 @@ const SelectTrigger = React.forwardRef<
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(
-      "flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-none focus:outline-none focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 [&>span[data-placeholder]]:font-normal [&>span[data-placeholder]]:!text-muted-foreground [&>span]:line-clamp-1",
+      FIELD_SELECT_TRIGGER_CLASS,
+      "[&>span]:line-clamp-1",
       className,
     )}
     {...props}

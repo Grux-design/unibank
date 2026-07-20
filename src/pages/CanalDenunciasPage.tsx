@@ -63,26 +63,19 @@ const reasons = [
 ];
 const knowledgeSources = ["Me sucedió a mí", "Lo he visto", "Lo he escuchado", "Me lo han dicho", "Vi un documento", "Otro"];
 
-const FIELD_INPUT_CLASS =
-  "h-12 px-3 py-3 text-sm rounded-[12px] border border-[var(--surface-border)] bg-[var(--surface-subtle)] text-foreground outline-none shadow-none ring-0 ring-offset-0 overflow-hidden placeholder:font-normal placeholder:text-muted-foreground focus:outline-none focus:ring-0 focus:ring-offset-0 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0";
-
-const FIELD_SELECT_TRIGGER_CLASS = cn(
-  FIELD_INPUT_CLASS,
-  "data-[state=open]:rounded-[12px] data-[state=closed]:rounded-[12px]",
-);
-
-const FIELD_SELECT_VALUE_CLASS =
-  "data-[placeholder]:font-normal data-[placeholder]:!text-muted-foreground";
-
-const FIELD_DATE_TRIGGER_CLASS = cn(
-  FIELD_INPUT_CLASS,
-  "inline-flex items-center text-sm font-normal hover:bg-[var(--surface-subtle)] hover:text-foreground active:bg-[var(--surface-subtle)] focus-visible:ring-0 focus-visible:ring-offset-0 data-[state=open]:rounded-[12px] data-[state=closed]:rounded-[12px]",
-);
-
-const FIELD_EMPTY_LABEL_CLASS = "text-muted-foreground font-normal";
-
-const FORM_ITEM_CLASS = "space-y-3";
-const FORM_FIELDS_STACK_CLASS = "space-y-6";
+import {
+  FIELD_DATE_TRIGGER_CLASS,
+  FIELD_EMPTY_LABEL_CLASS,
+  FIELD_SELECT_CONTENT_CLASS,
+  FIELD_SELECT_TRIGGER_CLASS,
+  FIELD_SELECT_VALUE_CLASS,
+  FIELD_SLOT_CLASS,
+  FIELD_TEXTAREA_INSET_CLASS,
+  FIELD_TEXTAREA_WRAPPER_CLASS,
+  FORM_BODY_CLASS,
+  FORM_FIELDS_STACK_CLASS,
+  FORM_ITEM_CLASS,
+} from "@/constants/formFields";
 
 const FORM_PLACEHOLDERS = {
   relationship: "Seleccione su relación con el grupo",
@@ -296,21 +289,8 @@ const FIELD_CALENDAR_CLASS_NAMES = {
   day_disabled: "text-muted-foreground opacity-30",
 };
 
-const FIELD_TEXTAREA_CLASS =
-  "min-h-[160px] resize-none rounded-none border-0 bg-transparent px-3 py-3 text-sm text-foreground shadow-none ring-0 ring-offset-0 outline-none placeholder:font-normal placeholder:text-muted-foreground focus:outline-none focus:ring-0 focus:ring-offset-0 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0";
-
-const FIELD_TEXTAREA_WRAPPER_CLASS =
-  "overflow-hidden rounded-[12px] border border-[var(--surface-border)] bg-[var(--surface-subtle)] focus-within:outline-none";
-
-const FIELD_SELECT_CONTENT_CLASS =
-  "rounded-[12px] border-[var(--surface-border)] bg-[var(--surface-page)] shadow-none data-[side=bottom]:translate-y-0 data-[side=top]:translate-y-0";
-
-const FIELD_SLOT_CLASS =
-  "min-h-12 rounded-[12px] border border-[var(--surface-border)] bg-[var(--surface-page)] px-3 py-3";
-
 /** Form copy scale — aligns labels, body, hints and legal text */
 const FORM_TITLE_CLASS = "type-item-title-sm text-foreground";
-const FORM_BODY_CLASS = "text-sm leading-relaxed text-muted-foreground";
 
 const INFO_BANNER_TITLE_CLASS = "text-base font-semibold leading-snug text-foreground";
 const INFO_BANNER_BODY_CLASS = "text-sm font-normal leading-[1.65] text-foreground";
@@ -938,14 +918,14 @@ export default function CanalDenunciasPage() {
                                 <FormField control={form.control} name="name" render={({ field }) => (
                                   <FormItem className={FORM_ITEM_CLASS}>
                                     <FormLabel>Nombre completo *</FormLabel>
-                                    <FormControl><Input className={FIELD_INPUT_CLASS} placeholder={FORM_PLACEHOLDERS.name} {...field} /></FormControl>
+                                    <FormControl><Input placeholder={FORM_PLACEHOLDERS.name} {...field} /></FormControl>
                                     <FormMessage />
                                   </FormItem>
                                 )} />
                                 <FormField control={form.control} name="phone" render={({ field }) => (
                                   <FormItem className={FORM_ITEM_CLASS}>
                                     <FormLabel>Teléfono *</FormLabel>
-                                    <FormControl><Input className={FIELD_INPUT_CLASS} placeholder={FORM_PLACEHOLDERS.phone} {...field} /></FormControl>
+                                    <FormControl><Input placeholder={FORM_PLACEHOLDERS.phone} {...field} /></FormControl>
                                     <FormMessage />
                                   </FormItem>
                                 )} />
@@ -953,7 +933,7 @@ export default function CanalDenunciasPage() {
                               <FormField control={form.control} name="email" render={({ field }) => (
                                 <FormItem className={FORM_ITEM_CLASS}>
                                   <FormLabel>Correo electrónico *</FormLabel>
-                                  <FormControl><Input className={FIELD_INPUT_CLASS} type="email" placeholder={FORM_PLACEHOLDERS.email} {...field} /></FormControl>
+                                  <FormControl><Input type="email" placeholder={FORM_PLACEHOLDERS.email} {...field} /></FormControl>
                                   <FormMessage />
                                 </FormItem>
                               )} />
@@ -998,7 +978,7 @@ export default function CanalDenunciasPage() {
                               <FormLabel>Descripción de los hechos *</FormLabel>
                               <div className={FIELD_TEXTAREA_WRAPPER_CLASS}>
                                 <FormControl>
-                                  <Textarea rows={6} className={FIELD_TEXTAREA_CLASS} placeholder={FORM_PLACEHOLDERS.description} {...field} />
+                                  <Textarea rows={6} className={FIELD_TEXTAREA_INSET_CLASS} placeholder={FORM_PLACEHOLDERS.description} {...field} />
                                 </FormControl>
                               </div>
                               <div className={cn("flex justify-between pt-1", FORM_BODY_CLASS)}>

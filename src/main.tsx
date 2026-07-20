@@ -3,6 +3,7 @@ import App from "./App.tsx";
 import "./index.css";
 import "./App.css";
 import "./styles/wow.css";
+import "./styles/field-controls.css";
 import { dismissSplashBoot, shouldPlaySplashBoot } from "@/lib/splashBoot";
 
 // Non-home routes never mount IntroSplash — remove the static boot overlay immediately.

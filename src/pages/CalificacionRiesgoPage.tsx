@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import {
   Table,
@@ -19,11 +19,6 @@ import {
   SectionHeader,
   DOCUMENT_TABLE_HEAD_CLASS,
 } from "@/components/molecules/documentLibraryUi";
-import {
-  PageSectionTabPanel,
-  PageSectionTabs,
-  type PageSectionTab,
-} from "@/components/molecules/PageSectionTabs";
 import { cn } from "@/lib/utils";
 
 const ALL = "__all__";
@@ -80,43 +75,14 @@ const documentos: RatingDoc[] = [
   },
 ];
 
-const RATING_TABS = [
-  { value: "resumen", label: "Calificación actual" },
-  { value: "documentos", label: "Documentos relacionados" },
-] as const satisfies readonly PageSectionTab[];
-
-type RatingTab = (typeof RATING_TABS)[number]["value"];
-
-function isRatingTab(value: string): value is RatingTab {
-  return RATING_TABS.some((tab) => tab.value === value);
-}
-
-function getTabFromHash(): RatingTab {
-  const hash = window.location.hash.replace(/^#/, "");
-  return isRatingTab(hash) ? hash : "resumen";
-}
-
 export default function CalificacionRiesgoPage() {
   const years = useMemo(
     () => [...new Set(documentos.map((d) => d.year))].sort((a, b) => b - a),
     [],
   );
 
-  const [tab, setTab] = useState<RatingTab>(getTabFromHash);
   const [year, setYear] = useState<string>(ALL);
   const [period, setPeriod] = useState<string>(ALL);
-
-  useEffect(() => {
-    const syncFromHash = () => setTab(getTabFromHash());
-    window.addEventListener("hashchange", syncFromHash);
-    return () => window.removeEventListener("hashchange", syncFromHash);
-  }, []);
-
-  const handleTabChange = (value: string) => {
-    if (!isRatingTab(value)) return;
-    setTab(value);
-    window.history.replaceState(null, "", `#${value}`);
-  };
 
   const filtered = useMemo(
     () =>
@@ -147,123 +113,114 @@ export default function CalificacionRiesgoPage() {
 
       <StaticPageFrame page="calificacion-riesgo">
         <StaticPageSection bandIndex={0} surface="white">
-          <div className="site-container">
-            <PageSectionTabs
-              value={tab}
-              onValueChange={handleTabChange}
-              tabs={[...RATING_TABS]}
-              ariaLabel="Secciones de calificación de riesgo"
-            >
-              <PageSectionTabPanel value="resumen" className="mt-0">
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-5">
-                  <div className="page-section-card flex items-center gap-4 rounded-[24px] p-5 md:gap-5 md:p-6">
-                    <div className="flex size-20 shrink-0 items-center justify-center rounded-2xl bg-primary text-primary-foreground">
-                      <span className="text-4xl font-bold leading-none">A</span>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Calificación actual</p>
-                      <p className="mt-1 text-lg font-semibold text-foreground">paA</p>
-                      <p className="text-sm text-muted-foreground">Perspectiva Estable</p>
-                    </div>
-                  </div>
-
-                  <div className="page-section-card rounded-[24px] p-5 md:p-6">
-                    <p className="text-sm text-muted-foreground">Calificadora</p>
-                    <p className="mt-1 text-lg font-semibold text-foreground">Pacific Credit Rating</p>
-                    <p className="mt-1 text-sm text-muted-foreground">PCR · Panamá</p>
-                  </div>
-
-                  <div className="page-section-card rounded-[24px] p-5 md:p-6">
-                    <p className="text-sm text-muted-foreground">Última actualización</p>
-                    <p className="mt-1 text-lg font-semibold text-foreground">30 de junio 2025</p>
-                    <p className="mt-1 text-sm text-muted-foreground">
-                      {documentos.length} informes disponibles
-                    </p>
-                  </div>
+          <div className="site-container flex flex-col gap-10 md:gap-12">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-5">
+              <div className="page-section-card flex items-center gap-4 rounded-[24px] p-5 md:gap-5 md:p-6">
+                <div className="flex size-20 shrink-0 items-center justify-center rounded-2xl bg-primary text-primary-foreground">
+                  <span className="text-4xl font-bold leading-none">A</span>
                 </div>
-              </PageSectionTabPanel>
+                <div>
+                  <p className="text-sm text-muted-foreground">Calificación actual</p>
+                  <p className="mt-1 text-lg font-semibold text-foreground">paA</p>
+                  <p className="text-sm text-muted-foreground">Perspectiva Estable</p>
+                </div>
+              </div>
 
-              <PageSectionTabPanel value="documentos" className="mt-0 flex flex-col gap-10 md:gap-12">
-                <SectionHeader
-                  title="Documentos relacionados"
-                  description="Informes históricos de calificación de riesgo emitidos por PCR."
-                  count={filtered.length}
+              <div className="page-section-card rounded-[24px] p-5 md:p-6">
+                <p className="text-sm text-muted-foreground">Calificadora</p>
+                <p className="mt-1 text-lg font-semibold text-foreground">Pacific Credit Rating</p>
+                <p className="mt-1 text-sm text-muted-foreground">PCR · Panamá</p>
+              </div>
+
+              <div className="page-section-card rounded-[24px] p-5 md:p-6">
+                <p className="text-sm text-muted-foreground">Última actualización</p>
+                <p className="mt-1 text-lg font-semibold text-foreground">30 de junio 2025</p>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  {documentos.length} informes disponibles
+                </p>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-10 md:gap-12">
+              <SectionHeader
+                title="Documentos relacionados"
+                description="Informes históricos de calificación de riesgo emitidos por PCR."
+                count={filtered.length}
+              />
+
+              <FilterBar active={active} onClear={clear}>
+                <FilterPill
+                  label="Año"
+                  value={year}
+                  displayValue={year === ALL ? undefined : year}
+                  onValueChange={setYear}
+                  options={[
+                    { value: ALL, label: "Todos los años" },
+                    ...years.map((y) => ({ value: String(y), label: String(y) })),
+                  ]}
                 />
+                <FilterPill
+                  label="Periodo"
+                  value={period}
+                  displayValue={period === ALL ? undefined : period}
+                  onValueChange={setPeriod}
+                  options={[
+                    { value: ALL, label: "Todos los periodos" },
+                    { value: "Junio", label: "Junio" },
+                    { value: "Diciembre", label: "Diciembre" },
+                  ]}
+                />
+              </FilterBar>
 
-                <FilterBar active={active} onClear={clear}>
-                  <FilterPill
-                    label="Año"
-                    value={year}
-                    displayValue={year === ALL ? undefined : year}
-                    onValueChange={setYear}
-                    options={[
-                      { value: ALL, label: "Todos los años" },
-                      ...years.map((y) => ({ value: String(y), label: String(y) })),
-                    ]}
-                  />
-                  <FilterPill
-                    label="Periodo"
-                    value={period}
-                    displayValue={period === ALL ? undefined : period}
-                    onValueChange={setPeriod}
-                    options={[
-                      { value: ALL, label: "Todos los periodos" },
-                      { value: "Junio", label: "Junio" },
-                      { value: "Diciembre", label: "Diciembre" },
-                    ]}
-                  />
-                </FilterBar>
-
-                <div className="page-section-card hidden overflow-hidden rounded-[24px] md:block">
-                  <Table>
-                    <TableHeader>
-                      <TableRow className="border-[var(--surface-border)] bg-[var(--surface-subtle)] hover:bg-[var(--surface-subtle)]">
-                        <TableHead className={cn(DOCUMENT_TABLE_HEAD_CLASS, "font-semibold text-foreground")}>Documento</TableHead>
-                        <TableHead className={cn(DOCUMENT_TABLE_HEAD_CLASS, "w-32 font-semibold text-foreground")}>Periodo</TableHead>
-                        <TableHead className={cn(DOCUMENT_TABLE_HEAD_CLASS, "w-24 font-semibold text-foreground")}>Año</TableHead>
-                        <TableHead className={cn(DOCUMENT_TABLE_HEAD_CLASS, "w-10")} aria-hidden />
+              <div className="page-section-card hidden overflow-hidden rounded-[24px] md:block">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="border-[var(--surface-border)] bg-[var(--surface-subtle)] hover:bg-[var(--surface-subtle)]">
+                      <TableHead className={cn(DOCUMENT_TABLE_HEAD_CLASS, "font-semibold text-foreground")}>Documento</TableHead>
+                      <TableHead className={cn(DOCUMENT_TABLE_HEAD_CLASS, "w-32 font-semibold text-foreground")}>Periodo</TableHead>
+                      <TableHead className={cn(DOCUMENT_TABLE_HEAD_CLASS, "w-24 font-semibold text-foreground")}>Año</TableHead>
+                      <TableHead className={cn(DOCUMENT_TABLE_HEAD_CLASS, "w-10")} aria-hidden />
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {filtered.map((doc, i) => (
+                      <DocumentTableRow
+                        key={i}
+                        href={doc.url}
+                        label={doc.label}
+                        meta={
+                          <>
+                            <DocumentMetaCell>{doc.period}</DocumentMetaCell>
+                            <DocumentMetaCell>{doc.year}</DocumentMetaCell>
+                          </>
+                        }
+                      />
+                    ))}
+                    {filtered.length === 0 && (
+                      <TableRow>
+                        <TableCell colSpan={4}>
+                          <EmptyResults message="No se encontraron documentos con los filtros aplicados." />
+                        </TableCell>
                       </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {filtered.map((doc, i) => (
-                        <DocumentTableRow
-                          key={i}
-                          href={doc.url}
-                          label={doc.label}
-                          meta={
-                            <>
-                              <DocumentMetaCell>{doc.period}</DocumentMetaCell>
-                              <DocumentMetaCell>{doc.year}</DocumentMetaCell>
-                            </>
-                          }
-                        />
-                      ))}
-                      {filtered.length === 0 && (
-                        <TableRow>
-                          <TableCell colSpan={4}>
-                            <EmptyResults message="No se encontraron documentos con los filtros aplicados." />
-                          </TableCell>
-                        </TableRow>
-                      )}
-                    </TableBody>
-                  </Table>
-                </div>
+                    )}
+                  </TableBody>
+                </Table>
+              </div>
 
-                <div className="space-y-4 md:hidden">
-                  {filtered.map((doc, i) => (
-                    <DocumentMobileCard
-                      key={i}
-                      href={doc.url}
-                      label={doc.label}
-                      meta={`${doc.period} · ${doc.year}`}
-                    />
-                  ))}
-                  {filtered.length === 0 && (
-                    <EmptyResults message="No se encontraron documentos con los filtros aplicados." />
-                  )}
-                </div>
-              </PageSectionTabPanel>
-            </PageSectionTabs>
+              <div className="space-y-4 md:hidden">
+                {filtered.map((doc, i) => (
+                  <DocumentMobileCard
+                    key={i}
+                    href={doc.url}
+                    label={doc.label}
+                    meta={`${doc.period} · ${doc.year}`}
+                  />
+                ))}
+                {filtered.length === 0 && (
+                  <EmptyResults message="No se encontraron documentos con los filtros aplicados." />
+                )}
+              </div>
+            </div>
           </div>
         </StaticPageSection>
       </StaticPageFrame>

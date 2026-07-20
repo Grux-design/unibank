@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { motion, useReducedMotion } from "motion/react";
-import { ChevronRight } from "@/lib/icons";
+import { BoltLightning, Sun, type Icon } from "@/lib/icons";
 import { StaticPageFrame, StaticPageSection } from "@/components/organisms/StaticPageLayout";
 import {
   SustainabilityLineArt,
@@ -22,6 +22,45 @@ const commitments = [
     desc: "Conservación de recursos naturales para las generaciones presentes y futuras.",
   },
 ] as const;
+
+const greenBondFocusAreas: {
+  title: string;
+  description: string;
+  icon: Icon;
+}[] = [
+  {
+    title: "Energías renovables",
+    description: "Enfoque principal de inversión de los recursos captados.",
+    icon: Sun,
+  },
+  {
+    title: "Eficiencia energética",
+    description: "Proyectos complementarios elegibles bajo el marco de referencia.",
+    icon: BoltLightning,
+  },
+];
+
+function GreenBondFocusItem({
+  title,
+  description,
+  icon: Icon,
+}: {
+  title: string;
+  description: string;
+  icon: Icon;
+}) {
+  return (
+    <li className="flex gap-4 rounded-[16px] bg-[var(--surface-subtle)] p-4 md:p-5">
+      <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+        <Icon className="size-4" />
+      </span>
+      <div>
+        <p className="text-sm font-medium text-foreground md:text-[15px]">{title}</p>
+        <p className="mt-1 text-sm leading-relaxed text-pretty text-muted-foreground">{description}</p>
+      </div>
+    </li>
+  );
+}
 
 const pillars: {
   kind: SustainabilityVectorKind;
@@ -154,57 +193,44 @@ export default function SostenibilidadPage() {
         </StaticPageSection>
 
         <StaticPageSection bandIndex={2} id="bonos-verdes" surface="white">
-          <div className="site-container flex flex-col gap-10 md:flex-row md:items-start md:gap-12 lg:gap-16">
-            <div className="md:w-2/5 lg:w-[38%] md:sticky md:top-20 md:self-start lg:top-28">
-              <SectionIntro
-                title="Bonos Verdes"
-                description="El primer grupo financiero de capital panameño en emitir Bonos Verdes registrados en la Bolsa Latinoamericana de Valores."
-              />
+          <div className="site-container flex flex-col gap-10 md:gap-12">
+            <SectionIntro
+              title="Bonos Verdes"
+              description="El primer grupo financiero de capital panameño en emitir Bonos Verdes registrados en la Bolsa Latinoamericana de Valores."
+            />
 
-              <p className="mt-6 text-sm leading-relaxed text-pretty text-muted-foreground md:text-base">
-                Estos bonos nos permiten invertir de manera específica en proyectos alineados con
-                el desarrollo sostenible, bajo un enfoque en energías renovables y eficiencia
-                energética.
-              </p>
+            <div className="page-section-card overflow-hidden rounded-[24px]">
+              <div className="grid grid-cols-1 md:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] md:divide-x md:divide-[var(--surface-border)]">
+                <div className="flex flex-col justify-center p-6 md:p-8 lg:p-10">
+                  <p className="type-stat-display text-foreground">1°</p>
+                  <p className="mt-4 max-w-md text-base leading-relaxed text-pretty text-muted-foreground">
+                    Primer grupo financiero de capital panameño en emitir Bonos Verdes registrados en
+                    la Bolsa Latinoamericana de Valores.
+                  </p>
+                  <p className="mt-6 text-sm leading-relaxed text-pretty text-muted-foreground md:text-[15px]">
+                    Estos bonos nos permiten invertir de manera específica en proyectos alineados con
+                    el desarrollo sostenible.
+                  </p>
+                </div>
 
-              <a
-                href="https://www.flipsnack.com/unibankpanama/marco-de-referencia-bono-verde-unileasing/full-view.html"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90 md:w-auto md:self-start"
-              >
-                Marco de Referencia
-                <ChevronRight className="size-4" />
-              </a>
-              <p className="mt-3 text-xs text-muted-foreground">
-                Emitido por Uni Leasing · Estructurado por Invertis Securities
-              </p>
-            </div>
-
-            <motion.div
-              className="min-w-0 flex-1"
-              whileHover={prefersReduced ? undefined : { y: -3 }}
-              transition={{ duration: 0.35, ease: EASE.cinematic }}
-            >
-              <div className="page-section-card overflow-hidden rounded-[24px] p-6 md:p-8 lg:p-10">
-                <p className="type-stat-display text-foreground">1°</p>
-                <p className="mt-4 max-w-md text-base leading-relaxed text-pretty text-muted-foreground">
-                  Primer grupo financiero de capital panameño en emitir Bonos Verdes registrados en
-                  la Bolsa Latinoamericana de Valores.
-                </p>
-
-                <ul className="mt-8 space-y-4 border-t border-[var(--surface-border)] pt-6">
-                  <li className="text-sm leading-relaxed text-pretty text-muted-foreground">
-                    <span className="font-medium text-foreground">Energías renovables</span> — enfoque
-                    principal de inversión de los recursos captados.
-                  </li>
-                  <li className="text-sm leading-relaxed text-pretty text-muted-foreground">
-                    <span className="font-medium text-foreground">Eficiencia energética</span> —
-                    proyectos complementarios elegibles bajo el marco de referencia.
-                  </li>
-                </ul>
+                <div className="flex flex-col p-6 md:p-8 lg:p-10">
+                  <p className="text-sm font-medium text-foreground">Áreas de inversión</p>
+                  <ul className="mt-4 flex flex-col gap-3 md:mt-5 md:gap-4">
+                    {greenBondFocusAreas.map(({ title, description, icon }) => (
+                      <GreenBondFocusItem
+                        key={title}
+                        title={title}
+                        description={description}
+                        icon={icon}
+                      />
+                    ))}
+                  </ul>
+                  <p className="mt-6 border-t border-[var(--surface-border)] pt-5 text-xs text-muted-foreground md:mt-8 md:pt-6">
+                    Emitido por Uni Leasing · Estructurado por Invertis Securities
+                  </p>
+                </div>
               </div>
-            </motion.div>
+            </div>
           </div>
         </StaticPageSection>
       </StaticPageFrame>
