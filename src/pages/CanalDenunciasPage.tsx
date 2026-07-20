@@ -7,7 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import ReCaptcha, { type ReCaptchaHandle } from "@/components/atoms/ReCaptcha";
 import { isRecaptchaBypassed } from "@/lib/recaptcha";
-import { PageMasthead, StaticPageSection } from "@/components/organisms/StaticPageLayout";
+import { StaticPageFrame, StaticPageSection } from "@/components/organisms/StaticPageLayout";
 import { CTA_BUTTON_LAYOUT_CLASS } from "@/constants/ctaButtons";
 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -797,18 +797,7 @@ export default function CanalDenunciasPage() {
         <link rel="canonical" href="https://unibank.com.pa/canal-de-denuncias" />
       </Helmet>
 
-      <article className="min-h-screen bg-background">
-        <PageMasthead
-          eyebrow={
-            <>
-              <ShieldCheck className="h-3.5 w-3.5" />
-              Ética y cumplimiento
-            </>
-          }
-          title="Canal de Denuncias"
-          subtitle="Reporte situaciones que contravengan la ética, la legalidad o nuestras políticas internas. Su información será tratada de manera confidencial, objetiva e imparcial."
-        />
-
+      <StaticPageFrame page="canal-denuncias">
         <StaticPageSection bandIndex={0}>
           <div className="site-container">
             <div className="grid gap-10 lg:grid-cols-12 lg:gap-14">
@@ -1219,7 +1208,7 @@ export default function CanalDenunciasPage() {
             </div>
           </div>
         </StaticPageSection>
-      </article>
+      </StaticPageFrame>
     </>
   );
 }

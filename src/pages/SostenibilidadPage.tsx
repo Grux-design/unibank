@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
-import { Leaf, Sprout, Recycle, Users, ChevronRight, BadgeCheck } from "@/lib/icons";
-import { PageMasthead, StaticPageSection } from "@/components/organisms/StaticPageLayout";
+import { Sprout, Recycle, Users, ChevronRight, BadgeCheck } from "@/lib/icons";
+import { StaticPageFrame, StaticPageSection } from "@/components/organisms/StaticPageLayout";
 
 const pillars = [
   {
@@ -31,18 +31,10 @@ export default function SostenibilidadPage() {
         />
       </Helmet>
 
-      <article className="min-h-screen bg-background">
-        <PageMasthead
-          eyebrow={
-            <>
-              <Leaf className="h-3.5 w-3.5" />
-              ESG
-            </>
-          }
-          title="Sostenibilidad"
-          subtitle="Nuestro compromiso con el medio ambiente y la sociedad guía cada decisión que tomamos como grupo financiero."
-        >
-          <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
+      <StaticPageFrame page="sostenibilidad">
+        <StaticPageSection bandIndex={0}>
+          <div className="site-container">
+          <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4 mb-10 md:mb-12">
             {pillars.map(({ icon: Icon, title, desc }) => (
               <div
                 key={title}
@@ -56,10 +48,6 @@ export default function SostenibilidadPage() {
               </div>
             ))}
           </div>
-        </PageMasthead>
-
-        <StaticPageSection bandIndex={0}>
-          <div className="site-container">
           <div className="mb-8 md:mb-10">
             <span className="type-section-tag gap-2">
               Nuestro compromiso
@@ -175,7 +163,7 @@ export default function SostenibilidadPage() {
             </div>
           </div>
         </StaticPageSection>
-      </article>
+      </StaticPageFrame>
     </>
   );
 }

@@ -1,6 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import { Target, Eye, Crown, Users2, Briefcase } from "@/lib/icons";
-import { PageMasthead, StaticPageSection } from "@/components/organisms/StaticPageLayout";
+import { StaticPageFrame, StaticPageSection } from "@/components/organisms/StaticPageLayout";
+import { cn } from "@/lib/utils";
 
 interface Person {
   name: string;
@@ -51,17 +52,26 @@ function getInitials(name: string) {
 function PersonCard({ person, accent = false }: { person: Person; accent?: boolean }) {
   return (
     <div
-      className={`group relative rounded-2xl border bg-card p-5 md:p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${
-        accent ? "border-primary/30 bg-primary/5" : "border-border hover:border-primary/40"
-      }`}
+      className={cn(
+        "page-section-card page-hover-cell relative rounded-2xl p-5 md:p-6",
+        accent && "border-primary/25",
+      )}
     >
+      {accent && (
+        <span
+          className="absolute bottom-5 left-0 top-5 w-1 rounded-r-full bg-primary"
+          aria-hidden
+        />
+      )}
       <div className="flex items-start gap-4">
         <div
-          className={`flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-full text-base font-semibold tracking-wide transition-colors ${
+          className={cn(
+            "flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-full text-base font-semibold tracking-wide",
             accent
               ? "bg-primary text-primary-foreground"
-              : "bg-muted text-foreground group-hover:bg-primary group-hover:text-primary-foreground"
-          }`}
+              : "bg-muted text-foreground",
+            person.avatar && accent && "ring-2 ring-primary/20 ring-offset-2 ring-offset-[var(--surface-page)]",
+          )}
         >
           {person.avatar ? (
             <img
@@ -119,19 +129,13 @@ export default function JuntaDirectivaPage() {
         />
       </Helmet>
 
-      <article className="min-h-screen bg-background">
-        <PageMasthead
-          eyebrow="Gobierno Corporativo"
-          title="Junta Directiva"
-          subtitle="Liderazgo comprometido con la excelencia, la transparencia y la cercanía al cliente. Conoce a las personas que guían el rumbo de UniBank."
-        />
-
+      <StaticPageFrame page="junta-directiva">
         <StaticPageSection bandIndex={0}>
           <div className="site-container">
           <div className="grid gap-4 md:gap-6 md:grid-cols-2">
-            <div className="group relative overflow-hidden rounded-2xl md:rounded-3xl border border-border bg-card p-6 md:p-10 transition-all hover:border-primary/40 hover:shadow-lg">
-              <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                <Target className="h-6 w-6" />
+            <div className="page-section-card page-hover-cell rounded-2xl p-6 md:rounded-3xl md:p-10">
+              <div className="mb-6 inline-flex size-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                <Target className="size-6" />
               </div>
               <h3 className="text-sm font-semibold uppercase tracking-wider text-primary">Misión</h3>
               <p className="mt-4 text-base md:text-lg lg:text-xl font-medium leading-relaxed text-foreground">
@@ -139,9 +143,9 @@ export default function JuntaDirectivaPage() {
                 de servicios bancarios.”
               </p>
             </div>
-            <div className="group relative overflow-hidden rounded-2xl md:rounded-3xl border border-border bg-card p-6 md:p-10 transition-all hover:border-primary/40 hover:shadow-lg">
-              <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                <Eye className="h-6 w-6" />
+            <div className="page-section-card page-hover-cell rounded-2xl p-6 md:rounded-3xl md:p-10">
+              <div className="mb-6 inline-flex size-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                <Eye className="size-6" />
               </div>
               <h3 className="text-sm font-semibold uppercase tracking-wider text-primary">Visión</h3>
               <p className="mt-4 text-base md:text-lg lg:text-xl font-medium leading-relaxed text-foreground">
@@ -192,7 +196,7 @@ export default function JuntaDirectivaPage() {
             </div>
           </div>
         </StaticPageSection>
-      </article>
+      </StaticPageFrame>
     </>
   );
 }

@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import { Button } from "@/components/ui/button";
 import { Download, FileText } from "@/lib/icons";
-import { PageMasthead, StaticPageSection } from "@/components/organisms/StaticPageLayout";
+import { StaticPageFrame, StaticPageSection } from "@/components/organisms/StaticPageLayout";
 
 const PDF_URL = "https://unibank.com.pa/sites/default/files/attachment/tarifario_-enero.2026v2.0.pdf";
 
@@ -14,13 +14,7 @@ export default function TarifarioPage() {
         <link rel="canonical" href="https://unibank.com.pa/tarifario" />
       </Helmet>
 
-      <article className="min-h-screen">
-        <PageMasthead
-          align="center"
-          title="Tarifario"
-          subtitle="Consulta nuestras tasas, comisiones y tarifas vigentes."
-        />
-
+      <StaticPageFrame page="tarifario">
         <StaticPageSection bandIndex={0}>
           <div className="site-container">
             <div className="page-section-card flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 mb-6 md:mb-8 p-4 rounded-xl">
@@ -50,7 +44,7 @@ export default function TarifarioPage() {
             </div>
           </div>
         </StaticPageSection>
-      </article>
+      </StaticPageFrame>
     </>
   );
 }

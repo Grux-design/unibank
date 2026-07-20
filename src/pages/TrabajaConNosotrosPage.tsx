@@ -16,14 +16,12 @@ import {
   Briefcase,
   Users,
   TrendingUp,
-  Sparkles,
-  
   X,
   FileText,
   Mail,
   CheckCircle2,
 } from "@/lib/icons";
-import { PageMasthead, StaticPageSection } from "@/components/organisms/StaticPageLayout";
+import { StaticPageFrame, StaticPageSection } from "@/components/organisms/StaticPageLayout";
 
 /* ─── Constants ────────────────────────────────────────────── */
 
@@ -225,46 +223,23 @@ export default function TrabajaConNosotrosPage() {
         <link rel="canonical" href="https://unibank.com.pa/trabaja-con-nosotros" />
       </Helmet>
 
-      <article className="min-h-screen bg-background">
-        <PageMasthead
-          eyebrow={
-            <>
-              <Sparkles className="h-3.5 w-3.5" />
-              Carreras en UniBank
-            </>
-          }
-          title={
-            <>
-              Construye el futuro
-              <br />
-              de la banca <span className="text-primary">con nosotros</span>.
-            </>
-          }
-          subtitle="¿Deseas formar parte del equipo UniBank? Llena los datos del formulario y serás añadido a nuestra base de datos de Recursos Humanos."
-        >
-          <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 sm:gap-4">
-            <a
-              href="#aplicar"
-              className="inline-flex items-center justify-center rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
-            >
-              Aplicar ahora
-            </a>
-            <a
-              href="#cultura"
-              className="inline-flex items-center justify-center rounded-xl border border-border px-6 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-muted/50"
-            >
-              Conoce nuestra cultura
-            </a>
-          </div>
-
-          <div className="w-full max-w-xl border-t border-[var(--surface-border)] pt-6 md:pt-8">
-            <div className="type-stat-display text-foreground">+30 años</div>
-            <div className="mt-1 text-sm text-muted-foreground">creando oportunidades en Panamá</div>
-          </div>
-        </PageMasthead>
-
+      <StaticPageFrame page="trabaja-con-nosotros">
         <StaticPageSection bandIndex={0} id="cultura">
           <div className="site-container">
+            <div className="flex flex-col md:flex-row flex-wrap gap-3 mb-8 md:mb-10">
+              <Button asChild className="w-full md:w-auto md:self-start">
+                <a href="#aplicar">Aplicar ahora</a>
+              </Button>
+              <Button asChild variant="outline" className="w-full md:w-auto md:self-start">
+                <a href="#cultura">Conoce nuestra cultura</a>
+              </Button>
+            </div>
+
+            <div className="mb-10 md:mb-12 max-w-xl border-t border-[var(--surface-border)] pt-6 md:pt-8">
+              <div className="type-stat-display text-foreground">+30 años</div>
+              <div className="mt-1 text-sm text-muted-foreground">creando oportunidades en Panamá</div>
+            </div>
+
             <div className="max-w-2xl">
               <div className="type-section-tag">
                 Por qué UniBank
@@ -567,7 +542,7 @@ export default function TrabajaConNosotrosPage() {
             </div>
           </div>
         </StaticPageSection>
-      </article>
+      </StaticPageFrame>
     </>
   );
 }

@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 import { THEME } from "@/data/heroSlides";
-import { AuthorityLineDecor } from "@/components/atoms/AuthorityLineDecor";
 import { BenefitLineDecor } from "@/components/atoms/BenefitLineDecor";
 import { Reveal } from "@/components/effects/Reveal";
 import type { PageMastheadProps } from "@/components/organisms/PageMastheadClassic";
@@ -25,28 +24,31 @@ export function PageMastheadEditorial({
 
   return (
     <section className={`page-masthead-editorial ${className ?? ""}`.trim()}>
-      <div className="page-masthead-editorial-band">
-        {!hasMedia && (
-          <>
-            <div className="page-masthead-editorial-watermark page-masthead-editorial-watermark--bl" aria-hidden>
-              <AuthorityLineDecor variant="bottom-left" width={320} height={320} />
-            </div>
-            <div className="page-masthead-editorial-watermark page-masthead-editorial-watermark--tr" aria-hidden>
-              <AuthorityLineDecor variant="top-right" width={280} height={280} />
-            </div>
-          </>
-        )}
-
+      <div
+        className={`page-masthead-editorial-band${hasMedia ? "" : " page-masthead-editorial-band--no-media"}`}
+      >
         <div className="site-container relative z-[1]">
           <Reveal y={20} duration={0.55} amount={0.15}>
             <div
-              className={`page-masthead-editorial-grid${hasMedia ? " page-masthead-editorial-grid--media" : ""}`}
+              className={`page-masthead-editorial-grid${
+                hasMedia
+                  ? " page-masthead-editorial-grid--media"
+                  : " page-masthead-editorial-grid--no-media"
+              }`}
             >
-              {hasMedia && (
-                <div className="page-masthead-editorial-grid-texture" aria-hidden>
-                  <BenefitLineDecor variant="bottom-left" width={683} height={683} />
-                </div>
-              )}
+              <div
+                className={`page-masthead-editorial-grid-texture${
+                  hasMedia ? "" : " page-masthead-editorial-grid-texture--gray"
+                }`}
+                aria-hidden
+              >
+                <BenefitLineDecor
+                  variant="bottom-left"
+                  width={683}
+                  height={683}
+                  tone={hasMedia ? "orange" : "gray"}
+                />
+              </div>
 
               <div
                 className={`page-masthead-editorial-copy${centered ? " page-masthead-editorial-copy--center" : ""}`}

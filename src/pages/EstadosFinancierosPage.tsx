@@ -23,7 +23,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { PageMasthead, StaticPageSection } from "@/components/organisms/StaticPageLayout";
+import { StaticPageFrame, StaticPageSection } from "@/components/organisms/StaticPageLayout";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
@@ -147,11 +147,7 @@ export default function EstadosFinancierosPage() {
         />
       </Helmet>
 
-      <PageMasthead
-        title="Estados Financieros"
-        subtitle="Consulta y descarga nuestros informes financieros auditados, formularios regulatorios y reportes internos."
-      />
-
+      <StaticPageFrame page="estados-financieros">
       <StaticPageSection bandIndex={0}>
         <div className="site-container">
           <div className="flex items-baseline justify-between mb-2 flex-wrap gap-2">
@@ -527,6 +523,7 @@ export default function EstadosFinancierosPage() {
           </div>
         </div>
       </StaticPageSection>
+      </StaticPageFrame>
     </>
   );
 }

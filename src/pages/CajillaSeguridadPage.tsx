@@ -1,10 +1,10 @@
 import type { ReactNode } from "react";
 import { Helmet } from "react-helmet-async";
-import { ChevronRight, ShieldCheck } from "@/lib/icons";
+import { ChevronRight } from "@/lib/icons";
 import { Button } from "@/components/ui/button";
 import { BenefitSectionTextures } from "@/components/atoms/BenefitSectionTextures";
 import { Reveal } from "@/components/effects/Reveal";
-import { PageMasthead, StaticPageSection } from "@/components/organisms/StaticPageLayout";
+import { ConfiguredPageMasthead } from "@/components/organisms/StaticPageLayout";
 import {
   OrangePrefooterBanner,
   OrangePrefooterButton,
@@ -16,8 +16,6 @@ import { FeatureIconTile } from "@/lib/benefitIcons";
 import { CTA_BUTTON_LAYOUT_CLASS } from "@/constants/ctaButtons";
 import { cn } from "@/lib/utils";
 
-const HERO_IMAGE =
-  "https://images.unsplash.com/photo-1601597111158-2fceff292cdc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1400";
 const KEY_IMAGE =
   "https://images.unsplash.com/photo-1633158829585-23ba8f7c8caf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=900";
 
@@ -141,26 +139,14 @@ export default function CajillaSeguridadPage() {
         <meta property="og:type" content="website" />
       </Helmet>
 
-      <PageMasthead
-        eyebrow={
-          <>
-            <ShieldCheck size={14} />
-            Servicio exclusivo
-          </>
-        }
-        title="Cajillas de Seguridad"
-        highlight="Protege lo que más valoras"
-        subtitle="En UniBank entendemos que tus pertenencias más valiosas merecen el más alto nivel de protección. Por eso, ponemos a tu disposición nuestro servicio de Cajillas de Seguridad, diseñado para resguardar documentos importantes, joyas y objetos de valor con total confidencialidad y seguridad."
-        imageSrc={HERO_IMAGE}
-        imageAlt="Bóveda de seguridad bancaria UniBank"
-      >
+      <ConfiguredPageMasthead page="cajilla-seguridad">
         <a href="#contacto" className={CTA_BUTTON_LAYOUT_CLASS}>
           <Button size="lg" className="h-[52px] px-8 text-[15px] w-full md:w-auto">
             Solicitar información
             <ChevronRight className="w-4 h-4" />
           </Button>
         </a>
-      </PageMasthead>
+      </ConfiguredPageMasthead>
 
       <PageServiceIntro
         bandIndex={0}

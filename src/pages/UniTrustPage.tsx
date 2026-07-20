@@ -2,7 +2,6 @@ import { Helmet } from "react-helmet-async";
 import {
   Mail,
   Landmark,
-  Sparkles,
   Handshake,
   Settings2,
   Zap,
@@ -15,7 +14,7 @@ import {
   KeyRound,
   type Icon,
 } from "@/lib/icons";
-import { PageMasthead, StaticPageSection } from "@/components/organisms/StaticPageLayout";
+import { StaticPageFrame, StaticPageSection } from "@/components/organisms/StaticPageLayout";
 
 const MAIL_TO = "unitrust@unibank.com.pa";
 const MAIL_SUBJECT = "Solicitud de asesoría — UniTrust";
@@ -151,20 +150,7 @@ export default function UniTrustPage() {
         />
       </Helmet>
 
-      <article className="min-h-screen bg-background">
-        <PageMasthead
-          eyebrow={
-            <>
-              <Sparkles className="h-3.5 w-3.5" />
-              Grupo UniBank · Fiduciaria
-            </>
-          }
-          title="UniTrust"
-          subtitle="Socio estratégico para la gestión y planificación de su patrimonio personal y empresarial."
-        >
-          <PrimaryCTA />
-        </PageMasthead>
-
+      <StaticPageFrame page="unitrust" mastheadSlot={<PrimaryCTA />}>
         <StaticPageSection bandIndex={0}>
           <div className="site-container">
             <div className="grid grid-cols-1 gap-8 min-[1200px]:grid-cols-5 min-[1200px]:items-center min-[1200px]:gap-10">
@@ -268,7 +254,7 @@ export default function UniTrustPage() {
             </div>
           </div>
         </StaticPageSection>
-      </article>
+      </StaticPageFrame>
     </>
   );
 }

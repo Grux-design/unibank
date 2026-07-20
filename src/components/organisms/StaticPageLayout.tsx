@@ -1,4 +1,5 @@
 import { PageMasthead } from "@/components/organisms/PageMasthead";
+import { ConfiguredPageMasthead, StaticPageFrame } from "@/components/organisms/StaticPageFrame";
 import { getContentSectionSurface, PAGE_SURFACE_CLASS } from "@/constants/pageSurfaces";
 import type { PageSurface } from "@/constants/pageSurfaces";
 import type { ReactNode } from "react";
@@ -51,4 +52,4 @@ export function SimplePageHero({ eyebrow, title, subtitle, align, children }: Si
   );
 }
 
-export { PageMasthead };
+export { PageMasthead, ConfiguredPageMasthead, StaticPageFrame };

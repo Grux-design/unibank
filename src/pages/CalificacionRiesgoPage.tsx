@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { FileText, Search, X, Download, ShieldCheck } from "@/lib/icons";
+import { FileText, Search, X, Download } from "@/lib/icons";
 import {
   Table,
   TableBody,
@@ -18,8 +18,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { PageMasthead, StaticPageSection } from "@/components/organisms/StaticPageLayout";
+import { StaticPageFrame, StaticPageSection } from "@/components/organisms/StaticPageLayout";
 
 const ALL = "__all__";
 
@@ -136,42 +135,32 @@ export default function CalificacionRiesgoPage() {
         />
       </Helmet>
 
-      <PageMasthead
-        eyebrow={
-          <Badge variant="outline" className="gap-1.5 border-[var(--surface-border)] bg-[var(--surface-page)]">
-            <ShieldCheck className="h-3.5 w-3.5" />
-            Pacific Credit Rating
-          </Badge>
-        }
-        title="Calificación de Riesgo"
-        subtitle="Una banca ágil, sólida y digital. Nuestra calificación refleja un perfil de negocio bueno para crecer, calidad de cartera saludable, alta liquidez respaldada por depósitos y capitalización adecuada y estable."
-      >
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
-          <div className="page-section-card rounded-xl p-5 md:p-6 flex items-center gap-4 md:gap-5">
-            <div className="flex h-20 w-20 flex-shrink-0 items-center justify-center rounded-2xl bg-primary text-primary-foreground">
-              <span className="text-4xl font-bold leading-none">A</span>
-            </div>
-            <div>
-              <p className="text-xs uppercase tracking-wide text-muted-foreground">Calificación actual</p>
-              <p className="text-lg font-semibold text-foreground">paA</p>
-              <p className="text-sm text-muted-foreground">Perspectiva Estable</p>
-            </div>
-          </div>
-          <div className="page-section-card rounded-xl p-5 md:p-6">
-            <p className="text-xs uppercase tracking-wide text-muted-foreground">Calificadora</p>
-            <p className="mt-2 text-lg font-semibold text-foreground">Pacific Credit Rating</p>
-            <p className="text-sm text-muted-foreground mt-1">PCR · Panamá</p>
-          </div>
-          <div className="page-section-card rounded-xl p-5 md:p-6">
-            <p className="text-xs uppercase tracking-wide text-muted-foreground">Última actualización</p>
-            <p className="mt-2 text-lg font-semibold text-foreground">30 de junio 2025</p>
-            <p className="text-sm text-muted-foreground mt-1">{documentos.length} informes disponibles</p>
-          </div>
-        </div>
-      </PageMasthead>
-
+      <StaticPageFrame page="calificacion-riesgo">
       <StaticPageSection bandIndex={0}>
         <div className="site-container">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full mb-10 md:mb-12">
+            <div className="page-section-card rounded-xl p-5 md:p-6 flex items-center gap-4 md:gap-5">
+              <div className="flex h-20 w-20 flex-shrink-0 items-center justify-center rounded-2xl bg-primary text-primary-foreground">
+                <span className="text-4xl font-bold leading-none">A</span>
+              </div>
+              <div>
+                <p className="text-xs uppercase tracking-wide text-muted-foreground">Calificación actual</p>
+                <p className="text-lg font-semibold text-foreground">paA</p>
+                <p className="text-sm text-muted-foreground">Perspectiva Estable</p>
+              </div>
+            </div>
+            <div className="page-section-card rounded-xl p-5 md:p-6">
+              <p className="text-xs uppercase tracking-wide text-muted-foreground">Calificadora</p>
+              <p className="mt-2 text-lg font-semibold text-foreground">Pacific Credit Rating</p>
+              <p className="text-sm text-muted-foreground mt-1">PCR · Panamá</p>
+            </div>
+            <div className="page-section-card rounded-xl p-5 md:p-6">
+              <p className="text-xs uppercase tracking-wide text-muted-foreground">Última actualización</p>
+              <p className="mt-2 text-lg font-semibold text-foreground">30 de junio 2025</p>
+              <p className="text-sm text-muted-foreground mt-1">{documentos.length} informes disponibles</p>
+            </div>
+          </div>
+
           <div className="flex items-baseline justify-between mb-2 flex-wrap gap-2">
             <h2 className="type-content-section-headline text-foreground">
               Documentos Relacionados
@@ -329,6 +318,7 @@ export default function CalificacionRiesgoPage() {
           </div>
         </div>
       </StaticPageSection>
+      </StaticPageFrame>
     </>
   );
 }
