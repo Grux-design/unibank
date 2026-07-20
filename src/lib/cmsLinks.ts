@@ -1,6 +1,17 @@
 const UNIBANK_HOST = "unibank.com.pa";
 const UNIBANK_HOST_SUFFIX = `.${UNIBANK_HOST}`;
 
+/**
+ * Trusted non-Unibank hosts used by CMS hero/banner CTAs
+ * (e.g. "Contactar a un asesor" on product pages).
+ */
+const ALLOWED_EXTERNAL_HOSTS = new Set([
+  "api.whatsapp.com",
+  "wa.me",
+  "whatsapp.com",
+  "www.whatsapp.com",
+]);
+
 /** Internal paths that resolve to SPA 404 / LegalPage in production. */
 const BLOCKED_INTERNAL_PATHS = new Set([
   "/login",
@@ -21,6 +32,10 @@ function normalizePath(path: string): string {
 function isUnibankHostname(hostname: string): boolean {
   const host = hostname.toLowerCase();
   return host === UNIBANK_HOST || host.endsWith(UNIBANK_HOST_SUFFIX);
+}
+
+function isAllowedExternalHostname(hostname: string): boolean {
+  return ALLOWED_EXTERNAL_HOSTS.has(hostname.toLowerCase());
 }
 
 function isMainUnibankSiteHostname(hostname: string): boolean {
@@ -45,7 +60,7 @@ export function isAllowedCmsHref(href?: string | null): href is string {
   if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
     try {
       const url = new URL(trimmed);
-      return isUnibankHostname(url.hostname);
+      return isUnibankHostname(url.hostname) || isAllowedExternalHostname(url.hostname);
     } catch {
       return false;
     }
