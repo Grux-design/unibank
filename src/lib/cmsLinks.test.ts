@@ -7,6 +7,22 @@ describe("cmsLinks", () => {
     expect(isAllowedCmsHref("https://ebanking.unibank.com.pa/DIBS_UNIBANK_PANAMA/pages/loginP.jsp")).toBe(true);
   });
 
+  it("allows WhatsApp advisor CTAs used on product heroes", () => {
+    expect(
+      isAllowedCmsHref(
+        "https://api.whatsapp.com/send?phone=50763280229&text=%C2%A1Hola!,%20Tengo%20una%20Consulta",
+      ),
+    ).toBe(true);
+    expect(isAllowedCmsHref("https://wa.me/50763280229")).toBe(true);
+    expect(
+      getCmsCtaHref(
+        "https://api.whatsapp.com/send?phone=50763280229&text=%C2%A1Hola!,%20Tengo%20una%20Consulta",
+      ),
+    ).toBe(
+      "https://api.whatsapp.com/send?phone=50763280229&text=%C2%A1Hola!,%20Tengo%20una%20Consulta",
+    );
+  });
+
   it("blocks third-party domains", () => {
     expect(isAllowedCmsHref("https://play.google.com/store/apps/details?id=com.newtech.unibank")).toBe(false);
     expect(isAllowedCmsHref("https://univivir.com.pa")).toBe(false);
@@ -34,11 +50,15 @@ describe("cmsLinks", () => {
   it("filters CTA items without valid links", () => {
     const items = [
       { title: "OK", link: "https://onboard.unibank.com.pa/es/auth/login" },
+      {
+        title: "WhatsApp",
+        link: "https://api.whatsapp.com/send?phone=50763280229&text=%C2%A1Hola!,%20Tengo%20una%20Consulta",
+      },
       { title: "Bad", link: "https://play.google.com/store/apps" },
       { title: "Empty" },
     ];
 
-    expect(filterCmsCtaItems(items)).toHaveLength(1);
-    expect(filterCmsCtaItems(items)[0].title).toBe("OK");
+    expect(filterCmsCtaItems(items)).toHaveLength(2);
+    expect(filterCmsCtaItems(items).map((item) => item.title)).toEqual(["OK", "WhatsApp"]);
   });
 });
