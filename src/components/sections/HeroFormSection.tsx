@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
+import { useLocation } from "react-router-dom";
 import type { CmsSectionProps } from "@/components/organisms/PageBuilder";
 import { ConfiguredPageMasthead } from "@/components/organisms/StaticPageFrame";
 import { cmsSectionToMastheadContent } from "@/lib/pageMasthead";
@@ -14,8 +15,21 @@ export function HeroFormSection({ section }: CmsSectionProps) {
   const [idValue, setIdValue] = useState("");
   const bp = useBreakpoint();
   const isMobile = bp === "mobile";
+  const location = useLocation();
 
-  const ctaItems = filterCmsCtaItems(section.items);
+  const segments = location.pathname.split("/").filter(Boolean);
+  const isEmpresas = segments.includes("empresas");
+
+  const ctaItems = [...filterCmsCtaItems(section.items)];
+  const hasCta = ctaItems.some((item) => item && item.link);
+
+  if (isEmpresas && !hasCta) {
+    ctaItems.push({
+      sys: { id: "generic-cta" } as any,
+      title: "Solicítalo aquí",
+      link: "mailto:ideas@unibank.com.pa",
+    });
+  }
 
   return (
     <ConfiguredPageMasthead preset="cms-product" {...cmsSectionToMastheadContent(section)}>
