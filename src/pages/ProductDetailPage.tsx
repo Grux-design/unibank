@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet-async";
 import { ChevronLeft } from "@/lib/icons";
 import { useContentfulPage } from "@/hooks/useContentfulPage";
 import { PageBuilder } from "@/components/organisms/PageBuilder";
+import { ProductTutorialBanner } from "@/components/sections/ProductTutorialBanner";
 
 /* ── Loading Skeleton ──────────────────────────────────────── */
 function PageSkeleton() {
@@ -191,7 +192,13 @@ export default function ProductDetailPage() {
 
       {!showSkeleton && !isError && data && (
         <article className="pb-16 md:pb-24 lg:pb-28">
-          <PageBuilder sections={data.sections} />
+          {data.sections.length > 0 && (
+            <PageBuilder sections={[data.sections[0]]} />
+          )}
+          <ProductTutorialBanner slug={slug} />
+          {data.sections.length > 1 && (
+            <PageBuilder sections={data.sections.slice(1)} />
+          )}
         </article>
       )}
 
