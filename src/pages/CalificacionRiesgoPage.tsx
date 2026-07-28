@@ -32,6 +32,12 @@ interface RatingDoc {
 
 const documentos: RatingDoc[] = [
   {
+    label: "Calificación de Riesgo - Diciembre 2025",
+    year: 2025,
+    period: "Diciembre",
+    url: "https://www.unibank.com.pa/sites/default/files/attachment/pa-unibank-em-202512-final-v2_1.pdf",
+  },
+  {
     label: "Calificación de Riesgo - Junio 2025",
     year: 2025,
     period: "Junio",
@@ -134,7 +140,7 @@ export default function CalificacionRiesgoPage() {
 
               <div className="page-section-card rounded-[24px] p-5 md:p-6">
                 <p className="text-sm text-muted-foreground">Última actualización</p>
-                <p className="mt-1 text-lg font-semibold text-foreground">30 de junio 2025</p>
+                <p className="mt-1 text-lg font-semibold text-foreground">31 de diciembre 2025</p>
                 <p className="mt-1 text-sm text-muted-foreground">
                   {documentos.length} informes disponibles
                 </p>
