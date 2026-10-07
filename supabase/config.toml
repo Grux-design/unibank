@@ -11,3 +11,6 @@ verify_jwt = false
 
 [functions.send-complaint]
 verify_jwt = false
+
+[functions.contentful-proxy]
+verify_jwt = false
