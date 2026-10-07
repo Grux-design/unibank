@@ -122,6 +122,15 @@
     scroll-behavior: smooth;
   }
 
+  /* Never allow sideways panning on mobile, even if third-party scripts
+     (GTM, widgets) inject content wider than the viewport.
+     `clip` (unlike `hidden`) keeps the sticky header working. */
+  html,
+  body {
+    overflow-x: hidden;
+    overflow-x: clip;
+  }
+
   body {
     @apply bg-background text-foreground;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;

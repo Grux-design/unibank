@@ -79,7 +79,6 @@ export function ProductTutorialBanner({ slug }: { slug?: string }) {
                   {/* Left: Text Content */}
                   <div className="flex-1 space-y-3 z-10">
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-xs font-semibold tracking-wider text-primary uppercase">
-                      <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
                       {config.tagline}
                     </div>
                     <h3 className="text-xl md:text-2xl font-bold tracking-tight text-white leading-tight">
