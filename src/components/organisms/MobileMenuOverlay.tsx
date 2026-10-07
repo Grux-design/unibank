@@ -139,7 +139,7 @@ export function MobileMenuOverlay({ lang, onClose, onLangChange }: MobileMenuOve
         className="site-container-nav shell-safe-bottom"
         style={{
           flexShrink: 0,
-          paddingTop: 16,
+          paddingTop: isMobile ? 10 : 16,
           borderTop: "1px solid #E8E4E0",
           background: "#FFFFFF",
         }}
