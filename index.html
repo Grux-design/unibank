@@ -13,6 +13,27 @@
     <title>UniBank – Tu Banco de Confianza en Panamá</title>
     <meta name="description" content="UniBank ofrece soluciones bancarias personales y empresariales en Panamá. Cuentas, préstamos, tarjetas y más.">
     <meta name="google-site-verification" content="CzuXddJkppsrZwtdEOAxIud96SG7BRLaBBUmrD8pces" />
+    <script>
+      // A GTM Custom HTML tag injects the verification code as plain visible text
+      // at the end of <body>. Verification is handled by the meta tag above, so
+      // drop that stray text node as soon as it is added.
+      (function () {
+        function strip(node) {
+          if (
+            node.nodeType === 3 &&
+            node.parentNode === document.body &&
+            node.textContent.indexOf("google-site-verification=") !== -1
+          ) {
+            node.parentNode.removeChild(node);
+          }
+        }
+        new MutationObserver(function (mutations) {
+          for (var i = 0; i < mutations.length; i++) {
+            mutations[i].addedNodes.forEach(strip);
+          }
+        }).observe(document.documentElement, { childList: true, subtree: true });
+      })();
+    </script>
     <meta name="author" content="UniBank" />
 
     <link rel="preload" href="/textureUniBank.svg" as="image" type="image/svg+xml" />
