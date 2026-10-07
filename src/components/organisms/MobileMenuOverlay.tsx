@@ -60,7 +60,7 @@ export function MobileMenuOverlay({ lang, onClose, onLangChange }: MobileMenuOve
         className="site-container-nav shell-safe-top"
         style={{
           flexShrink: 0,
-          paddingBottom: isMobile ? 20 : 12,
+          paddingBottom: isMobile ? 8 : 12,
           borderBottom: isMobile ? "1px solid #E8E4E0" : undefined,
         }}
       >
@@ -69,7 +69,7 @@ export function MobileMenuOverlay({ lang, onClose, onLangChange }: MobileMenuOve
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            paddingBottom: isMobile ? 16 : 0,
+            paddingBottom: isMobile ? 6 : 0,
           }}
         >
           <Link
@@ -107,15 +107,17 @@ export function MobileMenuOverlay({ lang, onClose, onLangChange }: MobileMenuOve
           layoutId="mobile-menu-segment-pill"
           align="left"
           stretch={isMobile}
-          wrapperStyle={{ padding: isMobile ? "0 0 12px" : "16px 0 12px" }}
+          wrapperStyle={{ padding: isMobile ? 0 : "16px 0 12px" }}
         />
-
-        {isMobile && (
-          <HeaderPymeBadge lang={lang} variant="menu" onNavigate={onClose} />
-        )}
       </div>
 
       <div style={{ flex: 1, overflowY: "auto", WebkitOverflowScrolling: "touch" }}>
+        {/* Scrolls with the list so the fixed top stays compact */}
+        {isMobile && (
+          <div className="site-container-nav" style={{ paddingTop: 12 }}>
+            <HeaderPymeBadge lang={lang} variant="menu" onNavigate={onClose} />
+          </div>
+        )}
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
