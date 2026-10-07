@@ -58,8 +58,9 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
           borderRadius: layout.cardBorderRadius,
           overflow: "hidden",
           position: "relative",
-          height: layoutTier === "mobile" ? HERO_LAYOUT.mobile.cardHeight : layoutTier === "full" && "cardHeight" in layout && layout.cardHeight ? layout.cardHeight : undefined,
-          minHeight: layoutTier === "mobile" ? HERO_LAYOUT.mobile.cardHeight : layout.cardMinHeight,
+          // Mobile grows with its content (min height only) so CTAs are never clipped
+          height: layoutTier === "full" && "cardHeight" in layout && layout.cardHeight ? layout.cardHeight : undefined,
+          minHeight: layoutTier === "mobile" ? HERO_LAYOUT.mobile.cardMinHeight : layout.cardMinHeight,
           display: isStacked || layoutTier === "full" ? "flex" : undefined,
           flexDirection: isStacked || layoutTier === "full" ? "column" : undefined,
           paddingTop: isStacked ? 0 : layoutTier === "full" ? 32 : 24,
@@ -83,7 +84,8 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
               style={{
                 position: "relative",
                 width: "100%",
-                flex: `0 0 ${HERO_LAYOUT.mobile.imageFlexBasis}`,
+                flex: "0 0 auto",
+                height: HERO_LAYOUT.mobile.imageHeight,
                 minHeight: 0,
                 overflow: "hidden",
                 padding: `${HERO_LAYOUT.mobile.imagePaddingTop}px ${HERO_LAYOUT.mobile.imagePadding}px ${HERO_LAYOUT.mobile.imagePadding}px`,
@@ -94,7 +96,7 @@ export function HeroCarousel({ lang: _lang }: HeroCarouselProps) {
             </div>
           )}
 
-          <HeroSlideContent slide={slide} dir={dir} layoutTier={layoutTier} />
+          <HeroSlideContent slide={slide} dir={dir} layoutTier={layoutTier} sizerSlides={slides} />
 
           {!isStacked && (
             <div

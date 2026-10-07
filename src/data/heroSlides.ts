@@ -92,8 +92,10 @@ export const HERO_LAYOUT = {
     sectionPaddingTop: 16,
     sectionPaddingBottom: 16,
     cardBorderRadius: 28,
-    cardHeight: "98vh",
-    imageFlexBasis: "52%",
+    // No viewport-height units on mobile: the card is sized by its content and
+    // the image scales with the (scroll-stable) viewport width
+    cardMinHeight: undefined,
+    imageHeight: "clamp(220px, 72vw, 380px)",
     imagePadding: 12,
     imagePaddingTop: 28,
     contentPadding: "20px 20px 4px",

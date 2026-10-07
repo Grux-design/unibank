@@ -556,7 +556,7 @@ function MobileStickyPanel({
   const topItems = features.slice(0, activeIndex + 1);
   const bottomItems = features.slice(activeIndex + 1);
   const isPinnedStack = bottomItems.length > 0;
-  const panelHeight = `calc(100dvh - ${MOBILE_SCROLL.stickyTop}px)`;
+  const panelHeight = `calc(100svh - ${MOBILE_SCROLL.stickyTop}px)`;
 
   return (
     <motion.div
