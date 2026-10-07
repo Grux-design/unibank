@@ -54,7 +54,12 @@ export function Header({ lang, onToggleLang }: HeaderProps) {
 
   useEffect(() => {
     document.body.style.overflow = mobilePanel ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    // Hides the Atom chat widget (index.html) while the mobile menu is open
+    document.documentElement.classList.toggle("mobile-menu-open", mobilePanel === "menu");
+    return () => {
+      document.body.style.overflow = "";
+      document.documentElement.classList.remove("mobile-menu-open");
+    };
   }, [mobilePanel]);
 
   useEffect(() => {
