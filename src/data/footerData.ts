@@ -72,5 +72,6 @@ export const socialIcons: SocialIconEntry[] = [
 export const legalLinks = [
   { label: "Aviso de Privacidad",    path: "/aviso-de-privacidad" },
   { label: "Políticas de Privacidad y Seguridad", path: "/terminos-y-condiciones" },
-  { label: "Política de Cookies",    path: "/politica-de-cookies" },
+  // Hidden until the cookie policy page has content in Contentful
+  // { label: "Política de Cookies",    path: "/politica-de-cookies" },
 ];
